@@ -13,7 +13,7 @@ Pod::Spec.new do |spec|
     visual and interactive experience of your notifications.
                    DESC
 
-  spec.homepage     = "https://github.com/castledio/castled-notifications-ios"
+  spec.homepage     = "https://github.com/castledio/castled-ios-sdk"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author       = { "Castled Data" => "https://castled.io" }
 
