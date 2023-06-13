@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Castled
+import Castled_iOS_SDK
 
 class ViewController: UIViewController {
     @IBOutlet weak var btnRegisterUser: UIButton!

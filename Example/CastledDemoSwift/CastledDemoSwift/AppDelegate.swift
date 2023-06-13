@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Castled
+import Castled_iOS_SDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate  {
