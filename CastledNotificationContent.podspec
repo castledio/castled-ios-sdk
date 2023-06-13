@@ -8,10 +8,10 @@ Pod::Spec.new do |spec|
 The CastledNotificationContent framework provides a Notification Content Extension that allows you to create custom interfaces for displaying rich content in push notifications on iOS.
                    DESC
 
-  spec.homepage     = "https://github.com/castledio/castled-notifications-ios"
+  spec.homepage     = "https://github.com/castledio/castled-ios-sdk"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author       = { "Castled Data" => "https://castled.io" }
-
+  
   spec.ios.deployment_target = "13.0"
   spec.swift_version = "5.7"
   spec.weak_frameworks = 'UserNotifications', 'UIKit'
