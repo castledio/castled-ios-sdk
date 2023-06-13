@@ -1,0 +1,39 @@
+# Uncomment the next line to define a global platform for your project
+
+target 'CastledDemoSwift' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for CastledDemo
+  pod 'Castled', :path => '../../'
+  # Custom test target name
+  target 'CastledDemoSwiftTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end  
+  target 'CastledDemoSwiftUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+ 
+ 
+
+end
+
+target 'CNotificationContentDemo' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+ 
+  pod 'CastledNotificationContent', :path => '../../'
+  # Pods for CNotificationContentDemo
+
+end
+
+target 'CNotificationServiceDemo' do
+  use_frameworks!
+
+  # Comment the next line if you don't want to use dynamic frameworks
+  pod 'CastledNotificationService', :path => '../../'
+
+  
+end

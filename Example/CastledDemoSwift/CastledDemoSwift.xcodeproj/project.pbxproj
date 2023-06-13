@@ -1,0 +1,1125 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		065CF887764C581A5F6336C4 /* Pods_CastledDemoSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1691A0DBB29D7B130198F7F2 /* Pods_CastledDemoSwiftTests.framework */; };
+		0A4350D92A30E74E00890CE8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A4350D82A30E74E00890CE8 /* Main.storyboard */; };
+		0A4350DC2A30E75A00890CE8 /* DeeplinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */; };
+		0A4350DD2A30E75A00890CE8 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */; };
+		0AC0217D2A30B9D300656DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC0217C2A30B9D300656DFD /* AppDelegate.swift */; };
+		0AC0217F2A30B9D300656DFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC0217E2A30B9D300656DFD /* SceneDelegate.swift */; };
+		0AC021812A30B9D300656DFD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC021802A30B9D300656DFD /* ViewController.swift */; };
+		0AC021862A30B9D300656DFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AC021852A30B9D300656DFD /* Assets.xcassets */; };
+		0AC021892A30B9D300656DFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AC021872A30B9D300656DFD /* LaunchScreen.storyboard */; };
+		0AC021942A30B9D400656DFD /* CastledDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC021932A30B9D400656DFD /* CastledDemoTests.swift */; };
+		0AC0219E2A30B9D400656DFD /* CastledDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC0219D2A30B9D400656DFD /* CastledDemoUITests.swift */; };
+		0AC021A02A30B9D400656DFD /* CastledDemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC0219F2A30B9D400656DFD /* CastledDemoUITestsLaunchTests.swift */; };
+		0AC021E92A30BBD400656DFD /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC021E82A30BBD400656DFD /* NotificationService.swift */; };
+		0AC021ED2A30BBD400656DFD /* CNotificationServiceDemo.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0AC021E62A30BBD400656DFD /* CNotificationServiceDemo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0AC021F62A30BBEA00656DFD /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC021C22A30BA1300656DFD /* UserNotifications.framework */; };
+		0AC021F72A30BBEA00656DFD /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC021C42A30BA1300656DFD /* UserNotificationsUI.framework */; };
+		0AC021FA2A30BBEA00656DFD /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC021F92A30BBEA00656DFD /* NotificationViewController.swift */; };
+		0AC021FD2A30BBEA00656DFD /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AC021FB2A30BBEA00656DFD /* MainInterface.storyboard */; };
+		0AC022012A30BBEA00656DFD /* CNotificationContentDemo.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0AC021F52A30BBEA00656DFD /* CNotificationContentDemo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		64F2E591D25FEDE8A9A9E41B /* Pods_CNotificationServiceDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4517BDE90BC364165962D895 /* Pods_CNotificationServiceDemo.framework */; };
+		6C3A392D21A14056492780B1 /* Pods_CastledDemoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92D5787215F23B2935D084D8 /* Pods_CastledDemoSwift.framework */; };
+		DA3662D929DAC5D5522C1F5B /* Pods_CNotificationContentDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 454B90681C2E26AAA2FD2F8F /* Pods_CNotificationContentDemo.framework */; };
+		E2C6F7187A39C71202C27D72 /* Pods_CastledDemoSwiftUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92631D316FDAC9730694709D /* Pods_CastledDemoSwiftUITests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0AC021902A30B9D400656DFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AC021712A30B9D300656DFD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AC021782A30B9D300656DFD;
+			remoteInfo = CastledDemo;
+		};
+		0AC0219A2A30B9D400656DFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AC021712A30B9D300656DFD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AC021782A30B9D300656DFD;
+			remoteInfo = CastledDemo;
+		};
+		0AC021EB2A30BBD400656DFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AC021712A30B9D300656DFD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AC021E52A30BBD400656DFD;
+			remoteInfo = CNotificationServiceDemo;
+		};
+		0AC021FF2A30BBEA00656DFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AC021712A30B9D300656DFD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AC021F42A30BBEA00656DFD;
+			remoteInfo = CNotificationContentDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0AC021BB2A30B9FE00656DFD /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0AC022012A30BBEA00656DFD /* CNotificationContentDemo.appex in Embed Foundation Extensions */,
+				0AC021ED2A30BBD400656DFD /* CNotificationServiceDemo.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		03FBD1A6F18AB70FD487806D /* Pods-CNotificationContentDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CNotificationContentDemo.release.xcconfig"; path = "Target Support Files/Pods-CNotificationContentDemo/Pods-CNotificationContentDemo.release.xcconfig"; sourceTree = "<group>"; };
+		053015FB7FD99FADBDBD1635 /* Pods-CNotificationServiceDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CNotificationServiceDemo.debug.xcconfig"; path = "Target Support Files/Pods-CNotificationServiceDemo/Pods-CNotificationServiceDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		0A4350D82A30E74E00890CE8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkViewController.swift; sourceTree = "<group>"; };
+		0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		0A4350DE2A30E7B300890CE8 /* CastledDemoSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CastledDemoSwift.entitlements; sourceTree = "<group>"; };
+		0AC021792A30B9D300656DFD /* CastledDemoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CastledDemoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AC0217C2A30B9D300656DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		0AC0217E2A30B9D300656DFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		0AC021802A30B9D300656DFD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0AC021852A30B9D300656DFD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0AC021882A30B9D300656DFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		0AC0218A2A30B9D300656DFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0AC0218F2A30B9D400656DFD /* CastledDemoSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CastledDemoSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AC021932A30B9D400656DFD /* CastledDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDemoTests.swift; sourceTree = "<group>"; };
+		0AC021992A30B9D400656DFD /* CastledDemoSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CastledDemoSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AC0219D2A30B9D400656DFD /* CastledDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDemoUITests.swift; sourceTree = "<group>"; };
+		0AC0219F2A30B9D400656DFD /* CastledDemoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDemoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		0AC021C22A30BA1300656DFD /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		0AC021C42A30BA1300656DFD /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		0AC021E62A30BBD400656DFD /* CNotificationServiceDemo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CNotificationServiceDemo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AC021E82A30BBD400656DFD /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		0AC021EA2A30BBD400656DFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0AC021F52A30BBEA00656DFD /* CNotificationContentDemo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CNotificationContentDemo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AC021F92A30BBEA00656DFD /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		0AC021FC2A30BBEA00656DFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		0AC021FE2A30BBEA00656DFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1691A0DBB29D7B130198F7F2 /* Pods_CastledDemoSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CastledDemoSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25BE53B039DDFE937290C57D /* Pods-CNotificationContentDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CNotificationContentDemo.debug.xcconfig"; path = "Target Support Files/Pods-CNotificationContentDemo/Pods-CNotificationContentDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		4517BDE90BC364165962D895 /* Pods_CNotificationServiceDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CNotificationServiceDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		454B90681C2E26AAA2FD2F8F /* Pods_CNotificationContentDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CNotificationContentDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		57F85A32637900D5BE8E22C8 /* Pods-CastledDemoSwiftUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoSwiftUITests.release.xcconfig"; path = "Target Support Files/Pods-CastledDemoSwiftUITests/Pods-CastledDemoSwiftUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8B36BF604D8A1D12496A36F1 /* Pods-CastledDemoSwiftTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoSwiftTests.debug.xcconfig"; path = "Target Support Files/Pods-CastledDemoSwiftTests/Pods-CastledDemoSwiftTests.debug.xcconfig"; sourceTree = "<group>"; };
+		92631D316FDAC9730694709D /* Pods_CastledDemoSwiftUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CastledDemoSwiftUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92D5787215F23B2935D084D8 /* Pods_CastledDemoSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CastledDemoSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		99C8DA8DA651EBA24E8D9AA6 /* Pods-CastledDemoSwiftTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoSwiftTests.release.xcconfig"; path = "Target Support Files/Pods-CastledDemoSwiftTests/Pods-CastledDemoSwiftTests.release.xcconfig"; sourceTree = "<group>"; };
+		D5B0BB7818A85D57F34B159A /* Pods-CastledDemoSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoSwift.release.xcconfig"; path = "Target Support Files/Pods-CastledDemoSwift/Pods-CastledDemoSwift.release.xcconfig"; sourceTree = "<group>"; };
+		E20832B50B65F4F41C78C220 /* Pods-CastledDemoSwiftUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoSwiftUITests.debug.xcconfig"; path = "Target Support Files/Pods-CastledDemoSwiftUITests/Pods-CastledDemoSwiftUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		E6AFA900C9FC8715F604FC2F /* Pods-CastledDemoSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoSwift.debug.xcconfig"; path = "Target Support Files/Pods-CastledDemoSwift/Pods-CastledDemoSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		FBB5A6EE4170E482C311B6E6 /* Pods-CNotificationServiceDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CNotificationServiceDemo.release.xcconfig"; path = "Target Support Files/Pods-CNotificationServiceDemo/Pods-CNotificationServiceDemo.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0AC021762A30B9D300656DFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C3A392D21A14056492780B1 /* Pods_CastledDemoSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC0218C2A30B9D400656DFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				065CF887764C581A5F6336C4 /* Pods_CastledDemoSwiftTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021962A30B9D400656DFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2C6F7187A39C71202C27D72 /* Pods_CastledDemoSwiftUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021E32A30BBD400656DFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64F2E591D25FEDE8A9A9E41B /* Pods_CNotificationServiceDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021F22A30BBEA00656DFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC021F72A30BBEA00656DFD /* UserNotificationsUI.framework in Frameworks */,
+				0AC021F62A30BBEA00656DFD /* UserNotifications.framework in Frameworks */,
+				DA3662D929DAC5D5522C1F5B /* Pods_CNotificationContentDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0AC021702A30B9D300656DFD = {
+			isa = PBXGroup;
+			children = (
+				0AC0217B2A30B9D300656DFD /* CastledDemoSwift */,
+				0AC021922A30B9D400656DFD /* CastledDemoTests */,
+				0AC0219C2A30B9D400656DFD /* CastledDemoUITests */,
+				0AC021E72A30BBD400656DFD /* CNotificationServiceDemo */,
+				0AC021F82A30BBEA00656DFD /* CNotificationContentDemo */,
+				0AC021C12A30BA1300656DFD /* Frameworks */,
+				0AC0217A2A30B9D300656DFD /* Products */,
+				8F9C0C4E772D76A42AFDCF45 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		0AC0217A2A30B9D300656DFD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0AC021792A30B9D300656DFD /* CastledDemoSwift.app */,
+				0AC0218F2A30B9D400656DFD /* CastledDemoSwiftTests.xctest */,
+				0AC021992A30B9D400656DFD /* CastledDemoSwiftUITests.xctest */,
+				0AC021E62A30BBD400656DFD /* CNotificationServiceDemo.appex */,
+				0AC021F52A30BBEA00656DFD /* CNotificationContentDemo.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0AC0217B2A30B9D300656DFD /* CastledDemoSwift */ = {
+			isa = PBXGroup;
+			children = (
+				0A4350DE2A30E7B300890CE8 /* CastledDemoSwift.entitlements */,
+				0AC0217C2A30B9D300656DFD /* AppDelegate.swift */,
+				0AC0217E2A30B9D300656DFD /* SceneDelegate.swift */,
+				0AC021802A30B9D300656DFD /* ViewController.swift */,
+				0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */,
+				0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */,
+				0A4350D82A30E74E00890CE8 /* Main.storyboard */,
+				0AC021852A30B9D300656DFD /* Assets.xcassets */,
+				0AC021872A30B9D300656DFD /* LaunchScreen.storyboard */,
+				0AC0218A2A30B9D300656DFD /* Info.plist */,
+			);
+			path = CastledDemoSwift;
+			sourceTree = "<group>";
+		};
+		0AC021922A30B9D400656DFD /* CastledDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				0AC021932A30B9D400656DFD /* CastledDemoTests.swift */,
+			);
+			path = CastledDemoTests;
+			sourceTree = "<group>";
+		};
+		0AC0219C2A30B9D400656DFD /* CastledDemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				0AC0219D2A30B9D400656DFD /* CastledDemoUITests.swift */,
+				0AC0219F2A30B9D400656DFD /* CastledDemoUITestsLaunchTests.swift */,
+			);
+			path = CastledDemoUITests;
+			sourceTree = "<group>";
+		};
+		0AC021C12A30BA1300656DFD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0AC021C22A30BA1300656DFD /* UserNotifications.framework */,
+				0AC021C42A30BA1300656DFD /* UserNotificationsUI.framework */,
+				454B90681C2E26AAA2FD2F8F /* Pods_CNotificationContentDemo.framework */,
+				4517BDE90BC364165962D895 /* Pods_CNotificationServiceDemo.framework */,
+				92D5787215F23B2935D084D8 /* Pods_CastledDemoSwift.framework */,
+				1691A0DBB29D7B130198F7F2 /* Pods_CastledDemoSwiftTests.framework */,
+				92631D316FDAC9730694709D /* Pods_CastledDemoSwiftUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0AC021E72A30BBD400656DFD /* CNotificationServiceDemo */ = {
+			isa = PBXGroup;
+			children = (
+				0AC021E82A30BBD400656DFD /* NotificationService.swift */,
+				0AC021EA2A30BBD400656DFD /* Info.plist */,
+			);
+			path = CNotificationServiceDemo;
+			sourceTree = "<group>";
+		};
+		0AC021F82A30BBEA00656DFD /* CNotificationContentDemo */ = {
+			isa = PBXGroup;
+			children = (
+				0AC021F92A30BBEA00656DFD /* NotificationViewController.swift */,
+				0AC021FB2A30BBEA00656DFD /* MainInterface.storyboard */,
+				0AC021FE2A30BBEA00656DFD /* Info.plist */,
+			);
+			path = CNotificationContentDemo;
+			sourceTree = "<group>";
+		};
+		8F9C0C4E772D76A42AFDCF45 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				25BE53B039DDFE937290C57D /* Pods-CNotificationContentDemo.debug.xcconfig */,
+				03FBD1A6F18AB70FD487806D /* Pods-CNotificationContentDemo.release.xcconfig */,
+				053015FB7FD99FADBDBD1635 /* Pods-CNotificationServiceDemo.debug.xcconfig */,
+				FBB5A6EE4170E482C311B6E6 /* Pods-CNotificationServiceDemo.release.xcconfig */,
+				E6AFA900C9FC8715F604FC2F /* Pods-CastledDemoSwift.debug.xcconfig */,
+				D5B0BB7818A85D57F34B159A /* Pods-CastledDemoSwift.release.xcconfig */,
+				8B36BF604D8A1D12496A36F1 /* Pods-CastledDemoSwiftTests.debug.xcconfig */,
+				99C8DA8DA651EBA24E8D9AA6 /* Pods-CastledDemoSwiftTests.release.xcconfig */,
+				E20832B50B65F4F41C78C220 /* Pods-CastledDemoSwiftUITests.debug.xcconfig */,
+				57F85A32637900D5BE8E22C8 /* Pods-CastledDemoSwiftUITests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0AC021782A30B9D300656DFD /* CastledDemoSwift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AC021A32A30B9D400656DFD /* Build configuration list for PBXNativeTarget "CastledDemoSwift" */;
+			buildPhases = (
+				A294742FAABA2905CC007405 /* [CP] Check Pods Manifest.lock */,
+				0AC021752A30B9D300656DFD /* Sources */,
+				0AC021762A30B9D300656DFD /* Frameworks */,
+				0AC021772A30B9D300656DFD /* Resources */,
+				0AC021BB2A30B9FE00656DFD /* Embed Foundation Extensions */,
+				14813CE6591C07F46F4957E9 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0AC021EC2A30BBD400656DFD /* PBXTargetDependency */,
+				0AC022002A30BBEA00656DFD /* PBXTargetDependency */,
+			);
+			name = CastledDemoSwift;
+			productName = CastledDemo;
+			productReference = 0AC021792A30B9D300656DFD /* CastledDemoSwift.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0AC0218E2A30B9D400656DFD /* CastledDemoSwiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AC021A62A30B9D400656DFD /* Build configuration list for PBXNativeTarget "CastledDemoSwiftTests" */;
+			buildPhases = (
+				E34ED934729BDF47F5A1ACC9 /* [CP] Check Pods Manifest.lock */,
+				0AC0218B2A30B9D400656DFD /* Sources */,
+				0AC0218C2A30B9D400656DFD /* Frameworks */,
+				0AC0218D2A30B9D400656DFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0AC021912A30B9D400656DFD /* PBXTargetDependency */,
+			);
+			name = CastledDemoSwiftTests;
+			productName = CastledDemoTests;
+			productReference = 0AC0218F2A30B9D400656DFD /* CastledDemoSwiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		0AC021982A30B9D400656DFD /* CastledDemoSwiftUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AC021A92A30B9D400656DFD /* Build configuration list for PBXNativeTarget "CastledDemoSwiftUITests" */;
+			buildPhases = (
+				FDBB64AE25AC1D6F775A24E1 /* [CP] Check Pods Manifest.lock */,
+				0AC021952A30B9D400656DFD /* Sources */,
+				0AC021962A30B9D400656DFD /* Frameworks */,
+				0AC021972A30B9D400656DFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0AC0219B2A30B9D400656DFD /* PBXTargetDependency */,
+			);
+			name = CastledDemoSwiftUITests;
+			productName = CastledDemoUITests;
+			productReference = 0AC021992A30B9D400656DFD /* CastledDemoSwiftUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		0AC021E52A30BBD400656DFD /* CNotificationServiceDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AC021EE2A30BBD400656DFD /* Build configuration list for PBXNativeTarget "CNotificationServiceDemo" */;
+			buildPhases = (
+				90D6B9C5825D30887D2C10A9 /* [CP] Check Pods Manifest.lock */,
+				0AC021E22A30BBD400656DFD /* Sources */,
+				0AC021E32A30BBD400656DFD /* Frameworks */,
+				0AC021E42A30BBD400656DFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CNotificationServiceDemo;
+			productName = CNotificationServiceDemo;
+			productReference = 0AC021E62A30BBD400656DFD /* CNotificationServiceDemo.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		0AC021F42A30BBEA00656DFD /* CNotificationContentDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AC022022A30BBEA00656DFD /* Build configuration list for PBXNativeTarget "CNotificationContentDemo" */;
+			buildPhases = (
+				BA3EA0E70D46C08ED4A04C73 /* [CP] Check Pods Manifest.lock */,
+				0AC021F12A30BBEA00656DFD /* Sources */,
+				0AC021F22A30BBEA00656DFD /* Frameworks */,
+				0AC021F32A30BBEA00656DFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CNotificationContentDemo;
+			productName = CNotificationContentDemo;
+			productReference = 0AC021F52A30BBEA00656DFD /* CNotificationContentDemo.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0AC021712A30B9D300656DFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					0AC021782A30B9D300656DFD = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					0AC0218E2A30B9D400656DFD = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 0AC021782A30B9D300656DFD;
+					};
+					0AC021982A30B9D400656DFD = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 0AC021782A30B9D300656DFD;
+					};
+					0AC021E52A30BBD400656DFD = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					0AC021F42A30BBEA00656DFD = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 0AC021742A30B9D300656DFD /* Build configuration list for PBXProject "CastledDemoSwift" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0AC021702A30B9D300656DFD;
+			productRefGroup = 0AC0217A2A30B9D300656DFD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0AC021782A30B9D300656DFD /* CastledDemoSwift */,
+				0AC0218E2A30B9D400656DFD /* CastledDemoSwiftTests */,
+				0AC021982A30B9D400656DFD /* CastledDemoSwiftUITests */,
+				0AC021E52A30BBD400656DFD /* CNotificationServiceDemo */,
+				0AC021F42A30BBEA00656DFD /* CNotificationContentDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0AC021772A30B9D300656DFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A4350D92A30E74E00890CE8 /* Main.storyboard in Resources */,
+				0AC021892A30B9D300656DFD /* LaunchScreen.storyboard in Resources */,
+				0AC021862A30B9D300656DFD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC0218D2A30B9D400656DFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021972A30B9D400656DFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021E42A30BBD400656DFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021F32A30BBEA00656DFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC021FD2A30BBEA00656DFD /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		14813CE6591C07F46F4957E9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CastledDemoSwift/Pods-CastledDemoSwift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CastledDemoSwift/Pods-CastledDemoSwift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CastledDemoSwift/Pods-CastledDemoSwift-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		90D6B9C5825D30887D2C10A9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CNotificationServiceDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A294742FAABA2905CC007405 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CastledDemoSwift-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA3EA0E70D46C08ED4A04C73 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CNotificationContentDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E34ED934729BDF47F5A1ACC9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CastledDemoSwiftTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FDBB64AE25AC1D6F775A24E1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CastledDemoSwiftUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0AC021752A30B9D300656DFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC021812A30B9D300656DFD /* ViewController.swift in Sources */,
+				0AC0217D2A30B9D300656DFD /* AppDelegate.swift in Sources */,
+				0A4350DC2A30E75A00890CE8 /* DeeplinkViewController.swift in Sources */,
+				0A4350DD2A30E75A00890CE8 /* SecondViewController.swift in Sources */,
+				0AC0217F2A30B9D300656DFD /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC0218B2A30B9D400656DFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC021942A30B9D400656DFD /* CastledDemoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021952A30B9D400656DFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC021A02A30B9D400656DFD /* CastledDemoUITestsLaunchTests.swift in Sources */,
+				0AC0219E2A30B9D400656DFD /* CastledDemoUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021E22A30BBD400656DFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC021E92A30BBD400656DFD /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AC021F12A30BBEA00656DFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AC021FA2A30BBEA00656DFD /* NotificationViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0AC021912A30B9D400656DFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AC021782A30B9D300656DFD /* CastledDemoSwift */;
+			targetProxy = 0AC021902A30B9D400656DFD /* PBXContainerItemProxy */;
+		};
+		0AC0219B2A30B9D400656DFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AC021782A30B9D300656DFD /* CastledDemoSwift */;
+			targetProxy = 0AC0219A2A30B9D400656DFD /* PBXContainerItemProxy */;
+		};
+		0AC021EC2A30BBD400656DFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AC021E52A30BBD400656DFD /* CNotificationServiceDemo */;
+			targetProxy = 0AC021EB2A30BBD400656DFD /* PBXContainerItemProxy */;
+		};
+		0AC022002A30BBEA00656DFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AC021F42A30BBEA00656DFD /* CNotificationContentDemo */;
+			targetProxy = 0AC021FF2A30BBEA00656DFD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0AC021872A30B9D300656DFD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0AC021882A30B9D300656DFD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		0AC021FB2A30BBEA00656DFD /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0AC021FC2A30BBEA00656DFD /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0AC021A12A30B9D400656DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		0AC021A22A30B9D400656DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0AC021A42A30B9D400656DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6AFA900C9FC8715F604FC2F /* Pods-CastledDemoSwift.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CastledDemoSwift/CastledDemoSwift.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CastledDemoSwift/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledPushDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0AC021A52A30B9D400656DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D5B0BB7818A85D57F34B159A /* Pods-CastledDemoSwift.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CastledDemoSwift/CastledDemoSwift.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CastledDemoSwift/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledPushDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0AC021A72A30B9D400656DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8B36BF604D8A1D12496A36F1 /* Pods-CastledDemoSwiftTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CastledDemoSwift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CastledDemoSwift";
+			};
+			name = Debug;
+		};
+		0AC021A82A30B9D400656DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 99C8DA8DA651EBA24E8D9AA6 /* Pods-CastledDemoSwiftTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CastledDemoSwift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CastledDemoSwift";
+			};
+			name = Release;
+		};
+		0AC021AA2A30B9D400656DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E20832B50B65F4F41C78C220 /* Pods-CastledDemoSwiftUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CastledDemo;
+			};
+			name = Debug;
+		};
+		0AC021AB2A30B9D400656DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 57F85A32637900D5BE8E22C8 /* Pods-CastledDemoSwiftUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CastledDemo;
+			};
+			name = Release;
+		};
+		0AC021EF2A30BBD400656DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 053015FB7FD99FADBDBD1635 /* Pods-CNotificationServiceDemo.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CNotificationServiceDemo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CNotificationServiceDemo;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledPushDemo.CastledNotification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0AC021F02A30BBD400656DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FBB5A6EE4170E482C311B6E6 /* Pods-CNotificationServiceDemo.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CNotificationServiceDemo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CNotificationServiceDemo;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledPushDemo.CastledNotification;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0AC022032A30BBEA00656DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25BE53B039DDFE937290C57D /* Pods-CNotificationContentDemo.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CNotificationContentDemo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CNotificationContentDemo;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledPushDemo.DemoAppNotificationContent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0AC022042A30BBEA00656DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 03FBD1A6F18AB70FD487806D /* Pods-CNotificationContentDemo.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CNotificationContentDemo/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = CNotificationContentDemo;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledPushDemo.DemoAppNotificationContent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0AC021742A30B9D300656DFD /* Build configuration list for PBXProject "CastledDemoSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AC021A12A30B9D400656DFD /* Debug */,
+				0AC021A22A30B9D400656DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AC021A32A30B9D400656DFD /* Build configuration list for PBXNativeTarget "CastledDemoSwift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AC021A42A30B9D400656DFD /* Debug */,
+				0AC021A52A30B9D400656DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AC021A62A30B9D400656DFD /* Build configuration list for PBXNativeTarget "CastledDemoSwiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AC021A72A30B9D400656DFD /* Debug */,
+				0AC021A82A30B9D400656DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AC021A92A30B9D400656DFD /* Build configuration list for PBXNativeTarget "CastledDemoSwiftUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AC021AA2A30B9D400656DFD /* Debug */,
+				0AC021AB2A30B9D400656DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AC021EE2A30BBD400656DFD /* Build configuration list for PBXNativeTarget "CNotificationServiceDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AC021EF2A30BBD400656DFD /* Debug */,
+				0AC021F02A30BBD400656DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AC022022A30BBEA00656DFD /* Build configuration list for PBXNativeTarget "CNotificationContentDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AC022032A30BBEA00656DFD /* Debug */,
+				0AC022042A30BBEA00656DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0AC021712A30B9D300656DFD /* Project object */;
+}

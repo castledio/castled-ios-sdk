@@ -1,0 +1,985 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A1AFE6F2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1AFE6E2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift */; };
+		0A1AFE742A167F2E006C8844 /* ContentAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A1AFE732A167F2E006C8844 /* ContentAssets.xcassets */; };
+		0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */; };
+		0A33BB8A29E6D80C0005ACED /* CastledPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8929E6D80C0005ACED /* CastledPrint.swift */; };
+		0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */; };
+		0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */; };
+		0A6A93E129E7F53C0083249E /* CastledInAppDisplaySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6A93E029E7F53C0083249E /* CastledInAppDisplaySettings.swift */; };
+		0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74E08C29E6D615004F2610 /* CastledInApps.swift */; };
+		0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */; };
+		0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */; };
+		0A8F25AA29E5AE4E00FBD9E0 /* CastledInAppObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */; };
+		0AA0DE9E2A14F15900CECFA8 /* CastledNotificationMediaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0DE9D2A14F15900CECFA8 /* CastledNotificationMediaObject.swift */; };
+		0AA0DEA42A15124E00CECFA8 /* CastledMediasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0DEA22A15124E00CECFA8 /* CastledMediasViewController.swift */; };
+		0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */; };
+		0AB469A32A31EF68008680A3 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AB469A22A31EF68008680A3 /* SDWebImage.framework */; };
+		0AB5C554291C222C0027C36B /* Castled.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB5C553291C222C0027C36B /* Castled.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0AB5C599291C27840027C36B /* CastledExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58C291C27830027C36B /* CastledExceptions.swift */; };
+		0AB5C59A291C27840027C36B /* CastledResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58D291C27830027C36B /* CastledResponse.swift */; };
+		0AB5C59B291C27840027C36B /* CastledNetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58E291C27830027C36B /* CastledNetworkRouter.swift */; };
+		0AB5C59C291C27840027C36B /* CastledNetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58F291C27830027C36B /* CastledNetworkLayer.swift */; };
+		0AB5C59D291C27840027C36B /* CastledUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C591291C27830027C36B /* CastledUserDefaults.swift */; };
+		0AB5C59E291C27840027C36B /* CastledConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C592291C27830027C36B /* CastledConstants.swift */; };
+		0AB5C59F291C27840027C36B /* CastledSwizzler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C594291C27830027C36B /* CastledSwizzler.swift */; };
+		0AB5C5A0291C27840027C36B /* CastledAPIs+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C596291C27830027C36B /* CastledAPIs+Extensions.swift */; };
+		0AB5C5A1291C27840027C36B /* CastledNotifications+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C597291C27830027C36B /* CastledNotifications+Extensions.swift */; };
+		0AB5C5A2291C27840027C36B /* Castled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C598291C27830027C36B /* Castled.swift */; };
+		0ABDE8B429FBF24B00D3EF79 /* CastledBGManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDE8B329FBF24B00D3EF79 /* CastledBGManager.swift */; };
+		0ABDE8B629FBFEB500D3EF79 /* CastledRetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDE8B529FBFEB500D3EF79 /* CastledRetryHandler.swift */; };
+		0ABDE8BE29FC41F400D3EF79 /* CastledConfigs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDE8BD29FC41F400D3EF79 /* CastledConfigs.swift */; };
+		0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */; };
+		12C72C4F2947986300B6B3DC /* CastledInAppDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */; };
+		12C72C512947989300B6B3DC /* CastledInAppModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C502947989300B6B3DC /* CastledInAppModalViewController.swift */; };
+		12C72C53294798B700B6B3DC /* CastledInAppFullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C52294798B700B6B3DC /* CastledInAppFullScreenViewController.swift */; };
+		12C72C55294798E300B6B3DC /* CastledInAppFooterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C54294798E300B6B3DC /* CastledInAppFooterViewController.swift */; };
+		12C72C5A29479CDB00B6B3DC /* CastledInAppModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C72C5929479CDB00B6B3DC /* CastledInAppModalViewController.xib */; };
+		12C72C5C29479CF700B6B3DC /* CastledInAppFullScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C72C5B29479CF700B6B3DC /* CastledInAppFullScreenViewController.xib */; };
+		12C72C5E29479D0700B6B3DC /* CastledInAppFooterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C72C5D29479D0700B6B3DC /* CastledInAppFooterViewController.xib */; };
+		12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */; };
+		66D18AEF2A057AC90075AB43 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66D18AEB2A057AB40075AB43 /* UserNotifications.framework */; };
+		66D18AF22A057ACC0075AB43 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66D18AEC2A057AB40075AB43 /* UserNotificationsUI.framework */; };
+		66D18B282A062B760075AB43 /* CastledNotificationService.h in Headers */ = {isa = PBXBuildFile; fileRef = 66D18B1A2A062B760075AB43 /* CastledNotificationService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66D18B2F2A062BCF0075AB43 /* CastledNotificationService.docc in Sources */ = {isa = PBXBuildFile; fileRef = 66D18B1B2A062B760075AB43 /* CastledNotificationService.docc */; };
+		66D18B312A062BF70075AB43 /* CastledNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D18B302A062BF70075AB43 /* CastledNotificationService.swift */; };
+		66D18BB62A0D55960075AB43 /* CastledNotificationContent.docc in Sources */ = {isa = PBXBuildFile; fileRef = 66D18BB52A0D55950075AB43 /* CastledNotificationContent.docc */; };
+		66D18BC22A0D55970075AB43 /* CastledNotificationContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 66D18BB42A0D55950075AB43 /* CastledNotificationContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66D18BCA2A0D568C0075AB43 /* CastledNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66D18BC92A0D568C0075AB43 /* CastledNotificationViewController.swift */; };
+		66D18BCB2A0D56B80075AB43 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66D18AEB2A057AB40075AB43 /* UserNotifications.framework */; };
+		66D18BCC2A0D56B80075AB43 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66D18AEC2A057AB40075AB43 /* UserNotificationsUI.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A1AFE6E2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
+		0A1AFE732A167F2E006C8844 /* ContentAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ContentAssets.xcassets; sourceTree = "<group>"; };
+		0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CastledAssets.xcassets; sourceTree = "<group>"; };
+		0A33BB8929E6D80C0005ACED /* CastledPrint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledPrint.swift; sourceTree = "<group>"; };
+		0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzlingAppear.swift; sourceTree = "<group>"; };
+		0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTouchThroughWindow.swift; sourceTree = "<group>"; };
+		0A6A93E029E7F53C0083249E /* CastledInAppDisplaySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppDisplaySettings.swift; sourceTree = "<group>"; };
+		0A74E08C29E6D615004F2610 /* CastledInApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInApps.swift; sourceTree = "<group>"; };
+		0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppTriggerEvaluator.swift; sourceTree = "<group>"; };
+		0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasstledTriggerParamsConditionEvaluator.swift; sourceTree = "<group>"; };
+		0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppObject.swift; sourceTree = "<group>"; };
+		0AA0DE9D2A14F15900CECFA8 /* CastledNotificationMediaObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationMediaObject.swift; sourceTree = "<group>"; };
+		0AA0DEA22A15124E00CECFA8 /* CastledMediasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledMediasViewController.swift; sourceTree = "<group>"; };
+		0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledPublicEnums.swift; sourceTree = "<group>"; };
+		0AB469A22A31EF68008680A3 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = SOURCE_ROOT; };
+		0AB5C550291C222C0027C36B /* Castled.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Castled.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AB5C553291C222C0027C36B /* Castled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Castled.h; sourceTree = "<group>"; };
+		0AB5C58C291C27830027C36B /* CastledExceptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledExceptions.swift; sourceTree = "<group>"; };
+		0AB5C58D291C27830027C36B /* CastledResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledResponse.swift; sourceTree = "<group>"; };
+		0AB5C58E291C27830027C36B /* CastledNetworkRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNetworkRouter.swift; sourceTree = "<group>"; };
+		0AB5C58F291C27830027C36B /* CastledNetworkLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNetworkLayer.swift; sourceTree = "<group>"; };
+		0AB5C591291C27830027C36B /* CastledUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledUserDefaults.swift; sourceTree = "<group>"; };
+		0AB5C592291C27830027C36B /* CastledConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledConstants.swift; sourceTree = "<group>"; };
+		0AB5C594291C27830027C36B /* CastledSwizzler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzler.swift; sourceTree = "<group>"; };
+		0AB5C596291C27830027C36B /* CastledAPIs+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CastledAPIs+Extensions.swift"; sourceTree = "<group>"; };
+		0AB5C597291C27830027C36B /* CastledNotifications+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CastledNotifications+Extensions.swift"; sourceTree = "<group>"; };
+		0AB5C598291C27830027C36B /* Castled.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Castled.swift; sourceTree = "<group>"; };
+		0ABDE8B329FBF24B00D3EF79 /* CastledBGManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledBGManager.swift; sourceTree = "<group>"; };
+		0ABDE8B529FBFEB500D3EF79 /* CastledRetryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledRetryHandler.swift; sourceTree = "<group>"; };
+		0ABDE8BD29FC41F400D3EF79 /* CastledConfigs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledConfigs.swift; sourceTree = "<group>"; };
+		0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledReachability.swift; sourceTree = "<group>"; };
+		12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppDisplayViewController.swift; sourceTree = "<group>"; };
+		12C72C502947989300B6B3DC /* CastledInAppModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppModalViewController.swift; sourceTree = "<group>"; };
+		12C72C52294798B700B6B3DC /* CastledInAppFullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppFullScreenViewController.swift; sourceTree = "<group>"; };
+		12C72C54294798E300B6B3DC /* CastledInAppFooterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppFooterViewController.swift; sourceTree = "<group>"; };
+		12C72C5929479CDB00B6B3DC /* CastledInAppModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CastledInAppModalViewController.xib; sourceTree = "<group>"; };
+		12C72C5B29479CF700B6B3DC /* CastledInAppFullScreenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CastledInAppFullScreenViewController.xib; sourceTree = "<group>"; };
+		12C72C5D29479D0700B6B3DC /* CastledInAppFooterViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CastledInAppFooterViewController.xib; sourceTree = "<group>"; };
+		12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledCommonClass.swift; sourceTree = "<group>"; };
+		66D18AD12A04D75F0075AB43 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		66D18AD32A04D75F0075AB43 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		66D18AEB2A057AB40075AB43 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/System/Library/Frameworks/UserNotifications.framework; sourceTree = DEVELOPER_DIR; };
+		66D18AEC2A057AB40075AB43 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/System/iOSSupport/System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = DEVELOPER_DIR; };
+		66D18B182A062B750075AB43 /* CastledNotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CastledNotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		66D18B1A2A062B760075AB43 /* CastledNotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledNotificationService.h; sourceTree = "<group>"; };
+		66D18B1B2A062B760075AB43 /* CastledNotificationService.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = CastledNotificationService.docc; sourceTree = "<group>"; };
+		66D18B302A062BF70075AB43 /* CastledNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationService.swift; sourceTree = "<group>"; };
+		66D18BA92A0BA3C80075AB43 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		66D18BAB2A0BA3E50075AB43 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.3.sdk/System/iOSSupport/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		66D18BB22A0D55950075AB43 /* CastledNotificationContent.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CastledNotificationContent.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		66D18BB42A0D55950075AB43 /* CastledNotificationContent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledNotificationContent.h; sourceTree = "<group>"; };
+		66D18BB52A0D55950075AB43 /* CastledNotificationContent.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = CastledNotificationContent.docc; sourceTree = "<group>"; };
+		66D18BC92A0D568C0075AB43 /* CastledNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0AB5C54D291C222C0027C36B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66D18AF22A057ACC0075AB43 /* UserNotificationsUI.framework in Frameworks */,
+				66D18AEF2A057AC90075AB43 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18B152A062B750075AB43 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18BAF2A0D55950075AB43 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66D18BCC2A0D56B80075AB43 /* UserNotificationsUI.framework in Frameworks */,
+				0AB469A32A31EF68008680A3 /* SDWebImage.framework in Frameworks */,
+				66D18BCB2A0D56B80075AB43 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A1AFE702A1600EC006C8844 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AA0DE9D2A14F15900CECFA8 /* CastledNotificationMediaObject.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0A1AFE712A1600F4006C8844 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0A1AFE722A1600FD006C8844 /* Cell */,
+				0AA0DEA22A15124E00CECFA8 /* CastledMediasViewController.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0A1AFE722A1600FD006C8844 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				0A1AFE6E2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		0A33BB8F29E6E7240005ACED /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0A33BB9029E6E7390005ACED /* Model */,
+				0A5D9F572A0D638900FB3FAE /* Trigger */,
+				0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */,
+				0A6A93E029E7F53C0083249E /* CastledInAppDisplaySettings.swift */,
+				0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0A33BB9029E6E7390005ACED /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0A5D9F572A0D638900FB3FAE /* Trigger */ = {
+			isa = PBXGroup;
+			children = (
+				0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */,
+				0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */,
+			);
+			path = Trigger;
+			sourceTree = "<group>";
+		};
+		0A7505EC29EDE69500B84973 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				12C72C4D2947951B00B6B3DC /* Resources */,
+				12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */,
+				12C72C502947989300B6B3DC /* CastledInAppModalViewController.swift */,
+				12C72C52294798B700B6B3DC /* CastledInAppFullScreenViewController.swift */,
+				12C72C54294798E300B6B3DC /* CastledInAppFooterViewController.swift */,
+				0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0AB5C546291C222C0027C36B = {
+			isa = PBXGroup;
+			children = (
+				0AB5C552291C222C0027C36B /* Castled */,
+				66D18B192A062B760075AB43 /* CastledNotificationService */,
+				66D18BB32A0D55950075AB43 /* CastledNotificationContent */,
+				0AB5C551291C222C0027C36B /* Products */,
+				C9263364291CD3F800ACE169 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		0AB5C551291C222C0027C36B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0AB5C550291C222C0027C36B /* Castled.framework */,
+				66D18B182A062B750075AB43 /* CastledNotificationService.framework */,
+				66D18BB22A0D55950075AB43 /* CastledNotificationContent.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0AB5C552291C222C0027C36B /* Castled */ = {
+			isa = PBXGroup;
+			children = (
+				0AB5C553291C222C0027C36B /* Castled.h */,
+				0AB5C598291C27830027C36B /* Castled.swift */,
+				0AB5C595291C27830027C36B /* Helpers */,
+				0AB5C58B291C27830027C36B /* Networking */,
+				0AB5C590291C27830027C36B /* Constants */,
+				0AB5C593291C27830027C36B /* Swizzling */,
+				12C051AD29657DFA004BE89D /* Data */,
+				12C72C482947865B00B6B3DC /* InApps */,
+				0ABDE8B229FBF23400D3EF79 /* BackgroundProcessing */,
+			);
+			path = Castled;
+			sourceTree = "<group>";
+		};
+		0AB5C58B291C27830027C36B /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				0AB5C58C291C27830027C36B /* CastledExceptions.swift */,
+				0AB5C58D291C27830027C36B /* CastledResponse.swift */,
+				0AB5C58E291C27830027C36B /* CastledNetworkRouter.swift */,
+				0AB5C58F291C27830027C36B /* CastledNetworkLayer.swift */,
+				0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		0AB5C590291C27830027C36B /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				0AB5C591291C27830027C36B /* CastledUserDefaults.swift */,
+				0AB5C592291C27830027C36B /* CastledConstants.swift */,
+				0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		0AB5C593291C27830027C36B /* Swizzling */ = {
+			isa = PBXGroup;
+			children = (
+				0AB5C594291C27830027C36B /* CastledSwizzler.swift */,
+			);
+			path = Swizzling;
+			sourceTree = "<group>";
+		};
+		0AB5C595291C27830027C36B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0A33BB8929E6D80C0005ACED /* CastledPrint.swift */,
+				12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */,
+				0AB5C596291C27830027C36B /* CastledAPIs+Extensions.swift */,
+				0AB5C597291C27830027C36B /* CastledNotifications+Extensions.swift */,
+				0ABDE8BD29FC41F400D3EF79 /* CastledConfigs.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0ABDE8B229FBF23400D3EF79 /* BackgroundProcessing */ = {
+			isa = PBXGroup;
+			children = (
+				0ABDE8B329FBF24B00D3EF79 /* CastledBGManager.swift */,
+				0ABDE8B529FBFEB500D3EF79 /* CastledRetryHandler.swift */,
+			);
+			path = BackgroundProcessing;
+			sourceTree = "<group>";
+		};
+		12C051AD29657DFA004BE89D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		12C72C482947865B00B6B3DC /* InApps */ = {
+			isa = PBXGroup;
+			children = (
+				0A74E08C29E6D615004F2610 /* CastledInApps.swift */,
+				0A33BB8F29E6E7240005ACED /* Helpers */,
+				0A7505EC29EDE69500B84973 /* Views */,
+			);
+			path = InApps;
+			sourceTree = "<group>";
+		};
+		12C72C4D2947951B00B6B3DC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				12C72C5929479CDB00B6B3DC /* CastledInAppModalViewController.xib */,
+				12C72C5B29479CF700B6B3DC /* CastledInAppFullScreenViewController.xib */,
+				12C72C5D29479D0700B6B3DC /* CastledInAppFooterViewController.xib */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		66D18B192A062B760075AB43 /* CastledNotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				66D18B1A2A062B760075AB43 /* CastledNotificationService.h */,
+				66D18B1B2A062B760075AB43 /* CastledNotificationService.docc */,
+				66D18B302A062BF70075AB43 /* CastledNotificationService.swift */,
+			);
+			path = CastledNotificationService;
+			sourceTree = "<group>";
+		};
+		66D18BB32A0D55950075AB43 /* CastledNotificationContent */ = {
+			isa = PBXGroup;
+			children = (
+				0AB469A22A31EF68008680A3 /* SDWebImage.framework */,
+				66D18BB42A0D55950075AB43 /* CastledNotificationContent.h */,
+				66D18BB52A0D55950075AB43 /* CastledNotificationContent.docc */,
+				66D18BC92A0D568C0075AB43 /* CastledNotificationViewController.swift */,
+				0A1AFE702A1600EC006C8844 /* Model */,
+				0A1AFE712A1600F4006C8844 /* Views */,
+				0A1AFE732A167F2E006C8844 /* ContentAssets.xcassets */,
+			);
+			path = CastledNotificationContent;
+			sourceTree = "<group>";
+		};
+		C9263364291CD3F800ACE169 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				66D18BA92A0BA3C80075AB43 /* MobileCoreServices.framework */,
+				66D18BAB2A0BA3E50075AB43 /* MobileCoreServices.framework */,
+				66D18AEB2A057AB40075AB43 /* UserNotifications.framework */,
+				66D18AEC2A057AB40075AB43 /* UserNotificationsUI.framework */,
+				66D18AD12A04D75F0075AB43 /* UserNotifications.framework */,
+				66D18AD32A04D75F0075AB43 /* UserNotificationsUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		0AB5C54B291C222C0027C36B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AB5C554291C222C0027C36B /* Castled.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18B132A062B750075AB43 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66D18B282A062B760075AB43 /* CastledNotificationService.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18BAD2A0D55950075AB43 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66D18BC22A0D55970075AB43 /* CastledNotificationContent.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0AB5C54F291C222C0027C36B /* Castled */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AB5C557291C222C0027C36B /* Build configuration list for PBXNativeTarget "Castled" */;
+			buildPhases = (
+				0AB5C54B291C222C0027C36B /* Headers */,
+				0AB5C54C291C222C0027C36B /* Sources */,
+				0AB5C54D291C222C0027C36B /* Frameworks */,
+				0AB5C54E291C222C0027C36B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Castled;
+			productName = Castled;
+			productReference = 0AB5C550291C222C0027C36B /* Castled.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		66D18B172A062B750075AB43 /* CastledNotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66D18B292A062B760075AB43 /* Build configuration list for PBXNativeTarget "CastledNotificationService" */;
+			buildPhases = (
+				66D18B132A062B750075AB43 /* Headers */,
+				66D18B142A062B750075AB43 /* Sources */,
+				66D18B152A062B750075AB43 /* Frameworks */,
+				66D18B162A062B750075AB43 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CastledNotificationService;
+			productName = CastledNotificationService;
+			productReference = 66D18B182A062B750075AB43 /* CastledNotificationService.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		66D18BB12A0D55950075AB43 /* CastledNotificationContent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 66D18BC32A0D55970075AB43 /* Build configuration list for PBXNativeTarget "CastledNotificationContent" */;
+			buildPhases = (
+				66D18BAD2A0D55950075AB43 /* Headers */,
+				66D18BAE2A0D55950075AB43 /* Sources */,
+				66D18BAF2A0D55950075AB43 /* Frameworks */,
+				66D18BB02A0D55950075AB43 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CastledNotificationContent;
+			productName = CastledNotificationContent;
+			productReference = 66D18BB22A0D55950075AB43 /* CastledNotificationContent.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0AB5C547291C222C0027C36B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					0AB5C54F291C222C0027C36B = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
+					66D18B172A062B750075AB43 = {
+						CreatedOnToolsVersion = 14.3;
+					};
+					66D18BB12A0D55950075AB43 = {
+						CreatedOnToolsVersion = 14.3;
+					};
+				};
+			};
+			buildConfigurationList = 0AB5C54A291C222C0027C36B /* Build configuration list for PBXProject "Castled" */;
+			compatibilityVersion = "Xcode 12.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+				he,
+				ar,
+				"zh-Hans",
+				ja,
+				"zh-TW",
+				uk,
+				"zh-HK",
+				nb,
+				es,
+				da,
+				"es-419",
+				et,
+				it,
+				ms,
+				sv,
+				cs,
+				km,
+				ko,
+				fil,
+				"zh-Hant",
+				my,
+				pl,
+				vi,
+				lo,
+				"es-MX",
+				ru,
+				fr,
+				fi,
+				id,
+				nl,
+				th,
+				pt,
+				"pt-PT",
+				hi,
+				zh,
+			);
+			mainGroup = 0AB5C546291C222C0027C36B;
+			productRefGroup = 0AB5C551291C222C0027C36B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0AB5C54F291C222C0027C36B /* Castled */,
+				66D18B172A062B750075AB43 /* CastledNotificationService */,
+				66D18BB12A0D55950075AB43 /* CastledNotificationContent */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0AB5C54E291C222C0027C36B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				12C72C5A29479CDB00B6B3DC /* CastledInAppModalViewController.xib in Resources */,
+				12C72C5C29479CF700B6B3DC /* CastledInAppFullScreenViewController.xib in Resources */,
+				12C72C5E29479D0700B6B3DC /* CastledInAppFooterViewController.xib in Resources */,
+				0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18B162A062B750075AB43 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18BB02A0D55950075AB43 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A1AFE742A167F2E006C8844 /* ContentAssets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0AB5C54C291C222C0027C36B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A6A93E129E7F53C0083249E /* CastledInAppDisplaySettings.swift in Sources */,
+				0AB5C599291C27840027C36B /* CastledExceptions.swift in Sources */,
+				0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */,
+				0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */,
+				0ABDE8B629FBFEB500D3EF79 /* CastledRetryHandler.swift in Sources */,
+				0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */,
+				0AB5C59B291C27840027C36B /* CastledNetworkRouter.swift in Sources */,
+				0AB5C59E291C27840027C36B /* CastledConstants.swift in Sources */,
+				0AB5C59A291C27840027C36B /* CastledResponse.swift in Sources */,
+				0A8F25AA29E5AE4E00FBD9E0 /* CastledInAppObject.swift in Sources */,
+				0AB5C5A2291C27840027C36B /* Castled.swift in Sources */,
+				0ABDE8B429FBF24B00D3EF79 /* CastledBGManager.swift in Sources */,
+				12C72C4F2947986300B6B3DC /* CastledInAppDisplayViewController.swift in Sources */,
+				0ABDE8BE29FC41F400D3EF79 /* CastledConfigs.swift in Sources */,
+				12C72C512947989300B6B3DC /* CastledInAppModalViewController.swift in Sources */,
+				0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */,
+				12C72C55294798E300B6B3DC /* CastledInAppFooterViewController.swift in Sources */,
+				12C72C53294798B700B6B3DC /* CastledInAppFullScreenViewController.swift in Sources */,
+				0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */,
+				0AB5C59C291C27840027C36B /* CastledNetworkLayer.swift in Sources */,
+				0AB5C59D291C27840027C36B /* CastledUserDefaults.swift in Sources */,
+				0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */,
+				0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */,
+				12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */,
+				0AB5C59F291C27840027C36B /* CastledSwizzler.swift in Sources */,
+				0A33BB8A29E6D80C0005ACED /* CastledPrint.swift in Sources */,
+				0AB5C5A1291C27840027C36B /* CastledNotifications+Extensions.swift in Sources */,
+				0AB5C5A0291C27840027C36B /* CastledAPIs+Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18B142A062B750075AB43 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66D18B312A062BF70075AB43 /* CastledNotificationService.swift in Sources */,
+				66D18B2F2A062BCF0075AB43 /* CastledNotificationService.docc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66D18BAE2A0D55950075AB43 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A1AFE6F2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift in Sources */,
+				0AA0DE9E2A14F15900CECFA8 /* CastledNotificationMediaObject.swift in Sources */,
+				66D18BCA2A0D568C0075AB43 /* CastledNotificationViewController.swift in Sources */,
+				0AA0DEA42A15124E00CECFA8 /* CastledMediasViewController.swift in Sources */,
+				66D18BB62A0D55960075AB43 /* CastledNotificationContent.docc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0AB5C555291C222C0027C36B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		0AB5C556291C222C0027C36B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		0AB5C558291C222C0027C36B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_CFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0AB5C559291C222C0027C36B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_CFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		66D18B2A2A062B760075AB43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		66D18B2B2A062B760075AB43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledNotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		66D18BC42A0D55970075AB43 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CastledNotificationContent",
+					"$(PROJECT_DIR)/CastledNotificationContent/Views/Cell",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledNotificationContent;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		66D18BC52A0D55970075AB43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 2BYR4Y5453;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CastledNotificationContent",
+					"$(PROJECT_DIR)/CastledNotificationContent/Views/Cell",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledNotificationContent;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0AB5C54A291C222C0027C36B /* Build configuration list for PBXProject "Castled" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AB5C555291C222C0027C36B /* Debug */,
+				0AB5C556291C222C0027C36B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AB5C557291C222C0027C36B /* Build configuration list for PBXNativeTarget "Castled" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AB5C558291C222C0027C36B /* Debug */,
+				0AB5C559291C222C0027C36B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66D18B292A062B760075AB43 /* Build configuration list for PBXNativeTarget "CastledNotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66D18B2A2A062B760075AB43 /* Debug */,
+				66D18B2B2A062B760075AB43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66D18BC32A0D55970075AB43 /* Build configuration list for PBXNativeTarget "CastledNotificationContent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66D18BC42A0D55970075AB43 /* Debug */,
+				66D18BC52A0D55970075AB43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0AB5C547291C222C0027C36B /* Project object */;
+}
