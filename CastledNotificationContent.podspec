@@ -17,7 +17,7 @@ The CastledNotificationContent framework provides a Notification Content Extensi
   spec.weak_frameworks = 'UserNotifications', 'UIKit'
   spec.dependency "SDWebImage", "~> 5.11"
 
-  spec.source        = { :git => "https://github.com/castledio/castled-notifications-ios.git", :tag => "#{spec.version}" }
+  spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
   spec.source_files = 'Sources/CastledNotificationContent/**/*.{h,m,swift}'
  spec.resource_bundles = {
