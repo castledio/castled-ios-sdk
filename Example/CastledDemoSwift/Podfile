@@ -8,7 +8,7 @@ target 'CastledDemoSwift' do
   pod 'Castled-iOS-SDK', :path => '../../'
   # Custom test target name
   target 'CastledDemoSwiftTests' do
-    inherit! :search_paths
+    inherit! :search_paths  
     # Pods for testing
   end  
   target 'CastledDemoSwiftUITests' do
