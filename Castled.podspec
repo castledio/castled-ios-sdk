@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
 
-  spec.name         = "Castled"
+  spec.name         = "Castled-iOS-SDK"
   spec.version      =  ENV['LIB_VERSION'] || '1.0.2' #fallback to major version
   spec.summary      = "iOS SDK for Castled Push and InApp support"
 
