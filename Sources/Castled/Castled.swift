@@ -423,6 +423,7 @@ public class Castled : NSObject
             }
         }
     }
+    
     func getPushPayload(event : String, teamID : String, sourceContext : String, actionLabel : String? = "",actionType : String? = "") -> [String : String]{
         let timezone = TimeZone.current
         let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
