@@ -1,2 +1,2 @@
-# castled-notifications-ios
+# castled-iOS SDK
 IOS Notification library for IOS
