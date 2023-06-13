@@ -22,7 +22,7 @@ Pod::Spec.new do |spec|
 
   spec.weak_frameworks  = 'UserNotifications'
 
-  spec.source        = { :git => "https://github.com/castledio/castled-notifications-ios.git", :tag => "#{spec.version}" }
+  spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
   spec.source_files = 'Sources/CastledNotificationService/**/*.{h,m,swift}'
 
