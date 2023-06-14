@@ -187,21 +187,43 @@ class CastledInAppDisplayViewController: UIViewController {
     }
     
 }
+
 extension Bundle {
     
-    static func resourceBundle(for frameworkClass: AnyClass) -> Bundle {
-        guard let moduleName = String(reflecting: frameworkClass).components(separatedBy: ".").first else {
-            fatalError("Couldn't determine module name from class \(frameworkClass)")
+    static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
+        
+        let mainBundle = Bundle.main
+        let sourceBundle = Bundle(for: bundleClass)
+        guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
+            fatalError("Couldn't determine module name from class \(bundleClass)")
+        }
+        // SPM
+        var bundle: Bundle?
+        if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        // CocoaPods (static)
+        if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
+            bundle = Bundle(path: staticBundlePath)
         }
         
-        let frameworkBundle = Bundle(for: frameworkClass)
-        
-        guard let resourceBundleURL = frameworkBundle.url(forResource: moduleName, withExtension: "bundle"),
-              let resourceBundle = Bundle(url: resourceBundleURL) else {
-            fatalError("\(moduleName).bundle not found in \(frameworkBundle)")
+        // CocoaPods (framework)
+        if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
+            bundle = Bundle(path: frameworkBundlePath)
         }
-        
-        return resourceBundle
+        return bundle ?? sourceBundle
     }
 }
 

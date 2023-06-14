@@ -21,7 +21,7 @@ The CastledNotificationContent framework provides a Notification Content Extensi
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
   spec.source_files = 'Sources/CastledNotificationContent/**/*.{h,m,swift}'
  spec.resource_bundles = {
-    spec.name => ['Sources/CastledNotificationContent/**/*.{xcassets,storyboard,xib}']
+    "Castled" => ['Sources/CastledNotificationContent/**/*.{xcassets,storyboard,xib}']
   }
 
 end
