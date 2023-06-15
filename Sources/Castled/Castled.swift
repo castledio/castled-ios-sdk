@@ -39,9 +39,9 @@ extension CastledNotificationDelegate {
     }
 }
 
-public class Castled : NSObject
+@objc public class Castled : NSObject
 {
-    public static var sharedInstance: Castled?
+   public static var sharedInstance: Castled?
     //private var appDelegate: UIApplicationDelegate
     //private var application: UIApplication
     private var shouldClearDeliveredNotifications = true

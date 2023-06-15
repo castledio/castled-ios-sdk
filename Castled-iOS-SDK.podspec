@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
   spec.source_files = 'Sources/Castled/**/*.{h,m,swift}'
   spec.resource_bundles = {
-    spec.name => ['Sources/Castled/**/*.{xcassets,storyboard,xib}']
+    "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib}']
   }
 
 end

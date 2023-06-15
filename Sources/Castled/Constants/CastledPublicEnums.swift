@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public enum CastledLocation {
+@objc public enum CastledLocation: Int {
     case US
     case AP
     case INDIA

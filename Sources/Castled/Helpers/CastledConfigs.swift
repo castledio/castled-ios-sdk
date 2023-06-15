@@ -6,19 +6,19 @@
 //
 
 import Foundation
-public class CastledConfigs {
+@objc public class CastledConfigs: NSObject {
     
-    public static var sharedInstance = CastledConfigs()
+    @objc public static var sharedInstance = CastledConfigs()
     
-    private init() {
+    private override init() {
         
     }
     
-    public lazy var permittedBGIdentifier: String = {
+    @objc public lazy var permittedBGIdentifier: String = {
         return ""
     }()
     
-    public lazy var enablePush = false {
+    @objc public lazy var enablePush = false {
         didSet {
             if enablePush == true{
                 Castled.sharedInstance?.registerForPushNotifications()
@@ -26,19 +26,19 @@ public class CastledConfigs {
         }
     }
     
-    public lazy var disableLog: Bool = {
+    @objc public lazy var disableLog: Bool = {
         return false
     }()
     
-    public lazy var enableInApp: Bool = {
+    @objc public lazy var enableInApp: Bool = {
         return false
     }()
     
-    public lazy var inAppFetchIntervalSec: Int = {
+    @objc public lazy var inAppFetchIntervalSec: Int = {
         return 15*60
     }()
     
-    public lazy var location: CastledLocation = {
+    @objc public lazy var location: CastledLocation = {
         return CastledLocation.US
     }()
     
