@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 import UserNotificationsUI
 
-open class CastledNotificationViewController: UIViewController, UNNotificationContentExtension {
+@objc open class CastledNotificationViewController: UIViewController, UNNotificationContentExtension {
     
     private static let kCustomKey        = "castled"
     private static let kMsg_frames       = "msg_frames"

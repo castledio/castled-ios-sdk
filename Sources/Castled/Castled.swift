@@ -41,7 +41,7 @@ extension CastledNotificationDelegate {
 
 @objc public class Castled : NSObject
 {
-   public static var sharedInstance: Castled?
+    @objc public static var sharedInstance: Castled?
     //private var appDelegate: UIApplicationDelegate
     //private var application: UIApplication
     private var shouldClearDeliveredNotifications = true
@@ -60,7 +60,7 @@ extension CastledNotificationDelegate {
      Static method for conguring the Castled framework.
      */
     @objc static public func configure(registerIn application: UIApplication,launchOptions : [UIApplication.LaunchOptionsKey: Any]?,
-                                       instanceId: String,delegate: CastledNotificationDelegate,clearNotifications : NSNumber? = 1){
+                                       instanceId: String,delegate: CastledNotificationDelegate){
         
         if Castled.sharedInstance == nil {
             Castled.sharedInstance = Castled.init(registerIn: application, launchOptions: launchOptions, instanceId: instanceId, delegate: delegate)
@@ -200,7 +200,7 @@ extension CastledNotificationDelegate {
     }
     
     
-    public func setDeviceToken(deviceToken : Data){
+    @objc public func setDeviceToken(deviceToken : Data){
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         castledLog("deviceTokenString  \(deviceTokenString)")
         
@@ -215,7 +215,7 @@ extension CastledNotificationDelegate {
         }
     }
     
-    public func handleNotificationInForeground(notification: UNNotification){
+    @objc public func handleNotificationInForeground(notification: UNNotification){
         processCastledPushEvents(userInfo: notification.request.content.userInfo, isForeGround: true)
         
         //Castled.sharedInstance?.registerNotificationCategories(userInfo: notification.request.content.userInfo)
@@ -224,7 +224,7 @@ extension CastledNotificationDelegate {
     
     
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
-    public func handleNotificationAction(response: UNNotificationResponse){
+    @objc public func handleNotificationAction(response: UNNotificationResponse){
         // Returning the same options we've requested
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier{

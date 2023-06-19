@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class CastledUserDefaults {
+@objc public class CastledUserDefaults: NSObject {
     
     // static let userDefaults = UserDefaults.init(suiteName: appConfiguration.suitName) ?? UserDefaults.standard
     
@@ -15,8 +15,8 @@ public class CastledUserDefaults {
     //Userdefault keys
     internal static var kCastledIsTokenRegisteredKey        = "_castledIsTokenRegistered_"
     internal static var kCastledAnonymousIdKey              = "_castledAnonymousId_"
-    public static var kCastledUserIdKey                   = "_castledUserId_"
-    public static let kCastledAPNsTokenKey         = "_castledApnsToken_"
+    @objc public static var kCastledUserIdKey                   = "_castledUserId_"
+    @objc public static let kCastledAPNsTokenKey         = "_castledApnsToken_"
     public static let kCastledInAppsList               = "castled_inapps"
     public static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
     
@@ -27,8 +27,8 @@ public class CastledUserDefaults {
     
     
     
-    public class func getString(_ key: String, userDefaultsOnly: Bool = false) -> String? {
-        
+    @objc public static func getString(_ key: String) -> String? {
+
         // Fetch value from UserDefaults
         if let stringValue = userDefaults.string(forKey: key){
             return stringValue

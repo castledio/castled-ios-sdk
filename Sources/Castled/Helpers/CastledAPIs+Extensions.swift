@@ -13,7 +13,7 @@ extension Castled {
     /**
      Funtion which alllows to register the User & Token with Castled.
      */
-    public static func registerUser(userId uid : String, apnsToken token : String?){
+    @objc public static func registerUser(userId uid : String, apnsToken token : String?){
         
         var deviceToken = token
         if deviceToken == nil{

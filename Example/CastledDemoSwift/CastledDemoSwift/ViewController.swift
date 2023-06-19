@@ -23,8 +23,8 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
-        CastledConfigs.sharedInstance.enablePush = true
+//        Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
+//        CastledConfigs.sharedInstance.enablePush = true
     }
     
     func showRequiredViews(){
