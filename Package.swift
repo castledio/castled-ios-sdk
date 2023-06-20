@@ -8,7 +8,6 @@ import PackageDescription
 
 let package = Package(
     name: "Castled",
-    version: Version(1, 0, 9)
     defaultLocalization: "en",
     platforms: [
         .iOS(.v13)
