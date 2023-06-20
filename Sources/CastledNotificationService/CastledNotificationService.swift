@@ -8,7 +8,7 @@
 import Foundation
 import UserNotifications
 
-@objc open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
+open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     
     
     private static let kCustomKey        = "castled"

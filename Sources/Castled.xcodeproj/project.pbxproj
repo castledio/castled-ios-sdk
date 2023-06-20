@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A0E11182A40E36D004F247F /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A0E11172A40E36D004F247F /* SDWebImage.framework */; platformFilter = ios; };
+		0A0E111B2A40EE29004F247F /* CastledNotificationServiceObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E11192A40EE29004F247F /* CastledNotificationServiceObjC.m */; };
+		0A0E111C2A40EE29004F247F /* CastledNotificationServiceObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0E111A2A40EE29004F247F /* CastledNotificationServiceObjC.h */; };
+		0A0E11202A41F4C4004F247F /* CastledNotificationViewControllerObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */; };
+		0A0E11212A41F4C4004F247F /* CastledNotificationViewControllerObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */; };
 		0A1AFE6F2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1AFE6E2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift */; };
 		0A1AFE742A167F2E006C8844 /* ContentAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A1AFE732A167F2E006C8844 /* ContentAssets.xcassets */; };
 		0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */; };
@@ -21,7 +26,6 @@
 		0AA0DE9E2A14F15900CECFA8 /* CastledNotificationMediaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0DE9D2A14F15900CECFA8 /* CastledNotificationMediaObject.swift */; };
 		0AA0DEA42A15124E00CECFA8 /* CastledMediasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0DEA22A15124E00CECFA8 /* CastledMediasViewController.swift */; };
 		0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */; };
-		0AB469A32A31EF68008680A3 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AB469A22A31EF68008680A3 /* SDWebImage.framework */; };
 		0AB5C554291C222C0027C36B /* Castled.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB5C553291C222C0027C36B /* Castled.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0AB5C599291C27840027C36B /* CastledExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58C291C27830027C36B /* CastledExceptions.swift */; };
 		0AB5C59A291C27840027C36B /* CastledResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58D291C27830027C36B /* CastledResponse.swift */; };
@@ -58,6 +62,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A0E11172A40E36D004F247F /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDWebImage.framework; path = ../../../../../../../../Desktop/SD/SDWebImage.framework; sourceTree = "<group>"; };
+		0A0E11192A40EE29004F247F /* CastledNotificationServiceObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastledNotificationServiceObjC.m; sourceTree = "<group>"; };
+		0A0E111A2A40EE29004F247F /* CastledNotificationServiceObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledNotificationServiceObjC.h; sourceTree = "<group>"; };
+		0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledNotificationViewControllerObjC.h; sourceTree = "<group>"; };
+		0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CastledNotificationViewControllerObjC.m; sourceTree = "<group>"; };
 		0A1AFE6E2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		0A1AFE732A167F2E006C8844 /* ContentAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ContentAssets.xcassets; sourceTree = "<group>"; };
 		0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CastledAssets.xcassets; sourceTree = "<group>"; };
@@ -72,7 +81,6 @@
 		0AA0DE9D2A14F15900CECFA8 /* CastledNotificationMediaObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationMediaObject.swift; sourceTree = "<group>"; };
 		0AA0DEA22A15124E00CECFA8 /* CastledMediasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledMediasViewController.swift; sourceTree = "<group>"; };
 		0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledPublicEnums.swift; sourceTree = "<group>"; };
-		0AB469A22A31EF68008680A3 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = SOURCE_ROOT; };
 		0AB5C550291C222C0027C36B /* Castled.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Castled.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB5C553291C222C0027C36B /* Castled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Castled.h; sourceTree = "<group>"; };
 		0AB5C58C291C27830027C36B /* CastledExceptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledExceptions.swift; sourceTree = "<group>"; };
@@ -135,7 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66D18BCC2A0D56B80075AB43 /* UserNotificationsUI.framework in Frameworks */,
-				0AB469A32A31EF68008680A3 /* SDWebImage.framework in Frameworks */,
+				0A0E11182A40E36D004F247F /* SDWebImage.framework in Frameworks */,
 				66D18BCB2A0D56B80075AB43 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +151,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A0E11122A40E2AD004F247F /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				0A0E111A2A40EE29004F247F /* CastledNotificationServiceObjC.h */,
+				0A0E11192A40EE29004F247F /* CastledNotificationServiceObjC.m */,
+			);
+			path = ObjC;
+			sourceTree = "<group>";
+		};
+		0A0E111D2A41F49E004F247F /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */,
+				0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */,
+			);
+			path = ObjC;
+			sourceTree = "<group>";
+		};
 		0A1AFE702A1600EC006C8844 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +357,7 @@
 				66D18B1A2A062B760075AB43 /* CastledNotificationService.h */,
 				66D18B1B2A062B760075AB43 /* CastledNotificationService.docc */,
 				66D18B302A062BF70075AB43 /* CastledNotificationService.swift */,
+				0A0E11122A40E2AD004F247F /* ObjC */,
 			);
 			path = CastledNotificationService;
 			sourceTree = "<group>";
@@ -338,10 +365,11 @@
 		66D18BB32A0D55950075AB43 /* CastledNotificationContent */ = {
 			isa = PBXGroup;
 			children = (
-				0AB469A22A31EF68008680A3 /* SDWebImage.framework */,
+				0A0E11172A40E36D004F247F /* SDWebImage.framework */,
 				66D18BB42A0D55950075AB43 /* CastledNotificationContent.h */,
 				66D18BB52A0D55950075AB43 /* CastledNotificationContent.docc */,
 				66D18BC92A0D568C0075AB43 /* CastledNotificationViewController.swift */,
+				0A0E111D2A41F49E004F247F /* ObjC */,
 				0A1AFE702A1600EC006C8844 /* Model */,
 				0A1AFE712A1600F4006C8844 /* Views */,
 				0A1AFE732A167F2E006C8844 /* ContentAssets.xcassets */,
@@ -377,6 +405,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A0E111C2A40EE29004F247F /* CastledNotificationServiceObjC.h in Headers */,
 				66D18B282A062B760075AB43 /* CastledNotificationService.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -386,6 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66D18BC22A0D55970075AB43 /* CastledNotificationContent.h in Headers */,
+				0A0E11202A41F4C4004F247F /* CastledNotificationViewControllerObjC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,16 +484,18 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					0AB5C54F291C222C0027C36B = {
 						CreatedOnToolsVersion = 14.0.1;
 					};
 					66D18B172A062B750075AB43 = {
 						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
 					};
 					66D18BB12A0D55950075AB43 = {
 						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
 					};
 				};
 			};
@@ -592,6 +624,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A0E111B2A40EE29004F247F /* CastledNotificationServiceObjC.m in Sources */,
 				66D18B312A062BF70075AB43 /* CastledNotificationService.swift in Sources */,
 				66D18B2F2A062BCF0075AB43 /* CastledNotificationService.docc in Sources */,
 			);
@@ -603,6 +636,7 @@
 			files = (
 				0A1AFE6F2A15FEDD006C8844 /* CastledMediaCollectionViewCell.swift in Sources */,
 				0AA0DE9E2A14F15900CECFA8 /* CastledNotificationMediaObject.swift in Sources */,
+				0A0E11212A41F4C4004F247F /* CastledNotificationViewControllerObjC.m in Sources */,
 				66D18BCA2A0D568C0075AB43 /* CastledNotificationViewController.swift in Sources */,
 				0AA0DEA42A15124E00CECFA8 /* CastledMediasViewController.swift in Sources */,
 				66D18BB62A0D55960075AB43 /* CastledNotificationContent.docc in Sources */,
@@ -616,6 +650,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -679,6 +714,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -736,6 +772,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -743,6 +780,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -754,6 +792,8 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.castled;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -768,6 +808,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -775,6 +816,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -786,6 +828,8 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				OTHER_CFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.castled;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -800,6 +844,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -824,6 +870,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -833,6 +880,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -866,6 +915,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -896,6 +947,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -905,6 +957,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;

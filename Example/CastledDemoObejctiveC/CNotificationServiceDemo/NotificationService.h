@@ -6,7 +6,8 @@
 //
 
 #import <UserNotifications/UserNotifications.h>
+#import <CastledNotificationService/CastledNotificationServiceObjC.h>
 
-@interface NotificationService : UNNotificationServiceExtension
+@interface NotificationService : CastledNotificationServiceObjC
 
 @end

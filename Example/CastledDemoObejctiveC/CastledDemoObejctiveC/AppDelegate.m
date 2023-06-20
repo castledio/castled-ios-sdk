@@ -7,7 +7,6 @@
 
 #import "AppDelegate.h"
 #import <UserNotifications/UserNotifications.h>
-
 #import <Castled_iOS_SDK/Castled_iOS_SDK-Swift.h>
 
 @interface AppDelegate ()<UIApplicationDelegate,UNUserNotificationCenterDelegate,CastledNotificationDelegate>
@@ -31,6 +30,9 @@
 
     [Castled configureWithRegisterIn:application launchOptions:launchOptions instanceId:@"829c38e2e359d94372a2e0d35e1f74df" delegate:(id)self];
 
+    NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
+    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:notificationCategories];
+
 
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *navBarAppearance = [[UINavigationBarAppearance alloc] init];
@@ -49,6 +51,24 @@
     return YES;
 }
 
+- (NSSet<UNNotificationCategory *> *)getNotificationCategories {
+    // Create the custom actions
+    UNNotificationAction *action1 = [UNNotificationAction actionWithIdentifier:@"ACCEPT" title:@"Accept" options:UNNotificationActionOptionForeground];
+    UNNotificationAction *action2 = [UNNotificationAction actionWithIdentifier:@"DECLINE" title:@"Decline" options:0];
+
+    // Create the category with the custom actions
+    UNNotificationCategory *customCategory1 = [UNNotificationCategory categoryWithIdentifier:@"ACCEPT_DECLINE" actions:@[action1, action2] intentIdentifiers:@[] options:0];
+
+    UNNotificationAction *action3 = [UNNotificationAction actionWithIdentifier:@"YES" title:@"Yes" options:UNNotificationActionOptionForeground];
+    UNNotificationAction *action4 = [UNNotificationAction actionWithIdentifier:@"NO" title:@"No" options:0];
+
+    // Create the category with the custom actions
+    UNNotificationCategory *customCategory2 = [UNNotificationCategory categoryWithIdentifier:@"YES_NO" actions:@[action3, action4] intentIdentifiers:@[] options:0];
+
+    NSSet<UNNotificationCategory *> *categoriesSet = [NSSet setWithObjects:customCategory1, customCategory2, nil];
+
+    return categoriesSet;
+}
 
 #pragma mark - UISceneSession lifecycle
 
@@ -117,9 +137,7 @@
 #pragma mark - CastledNotification Delegate Methods
 
 
-- (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center
-               willPresentNotification:(UNNotification *)notification
-                 withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+- (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center willPresent:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
 
     NSLog(@"will present notification: %@ %@ %@", self.description,NSStringFromSelector(_cmd),notification.request.content.userInfo);
 
@@ -127,10 +145,8 @@
 
 
 }
-
-- (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center
-        didReceiveNotificationResponse:(UNNotificationResponse *)response
-                 withCompletionHandler:(void (^)(void))completionHandler{
+- (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center didReceive:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+{
     NSLog(@"didReceive: %@ %@", self.description,NSStringFromSelector(_cmd));
 
     completionHandler();
@@ -141,6 +157,7 @@
     NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@ %@ %@", self.description,NSStringFromSelector(_cmd),error.localizedDescription);
 
 }
+
 
 - (void)castled_application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@ %@", self.description,NSStringFromSelector(_cmd),deviceToken.debugDescription);

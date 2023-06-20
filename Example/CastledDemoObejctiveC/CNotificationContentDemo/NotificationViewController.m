@@ -23,7 +23,7 @@
 }
 
 - (void)didReceiveNotification:(UNNotification *)notification {
-    self.label.text = notification.request.content.body;
+    [super didReceiveNotification:notification];
 }
 
 @end

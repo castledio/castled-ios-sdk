@@ -28,7 +28,7 @@
     __weak typeof(self) weakSelf = self;
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSLog(@"showRequiredViews %@",[CastledUserDefaults getString:CastledUserDefaults.kCastledUserIdKey]);
+
 
         if ([CastledUserDefaults getString:CastledUserDefaults.kCastledUserIdKey] != nil) {
             weakSelf.btnGotoSecondVC.hidden = NO;
@@ -46,7 +46,7 @@
 }
 
 - (void)registerUserAPI {
-    NSString *userId = @"abhilash@castled.io"; // user-101
+    NSString *userId = @"antony@castled.io"; // user-101
     NSString *token = [CastledUserDefaults getString:CastledUserDefaults.kCastledAPNsTokenKey];
     [Castled registerUserWithUserId:userId apnsToken:token];
     [self showRequiredViews];

@@ -6,7 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CastledNotificationContent/CastledNotificationViewControllerObjC.h>
 
-@interface NotificationViewController : UIViewController
+@interface NotificationViewController : CastledNotificationViewControllerObjC
 
 @end
