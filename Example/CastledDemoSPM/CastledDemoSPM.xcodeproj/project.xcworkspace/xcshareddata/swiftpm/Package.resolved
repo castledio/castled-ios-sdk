@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "castled-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/castledio/castled-ios-sdk.git",
+      "state" : {
+        "revision" : "e8518c16fa2365e7d16445fc5ca9130858a0b027",
+        "version" : "2.0.3"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "c51ba84499268ea3020e6aee9e229c0f56b9d924",
+        "version" : "5.16.0"
+      }
+    }
+  ],
+  "version" : 2
+}
