@@ -284,7 +284,9 @@ extension Bundle {
         if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-
+        if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
         if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
