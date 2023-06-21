@@ -7,9 +7,6 @@
 
 import UIKit
 
-
-import UIKit
-
 class CastledMediasViewController: UIViewController {
     
     private var mediaObjects: [CastledNotificationMediaObject]
@@ -86,8 +83,9 @@ extension CastledMediasViewController: UICollectionViewDataSource,UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        
+
+        self.extensionContext?.performNotificationDefaultAction()
+
     }
     internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let mediaObject = mediaObjects[indexPath.row]

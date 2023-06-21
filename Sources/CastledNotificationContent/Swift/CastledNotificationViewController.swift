@@ -9,7 +9,7 @@ import Foundation
 import UserNotifications
 import UserNotificationsUI
 
-open class CastledNotificationViewController: UIViewController, UNNotificationContentExtension {
+@objc open class CastledNotificationViewController: UIViewController, UNNotificationContentExtension {
     
     private static let kCustomKey        = "castled"
     private static let kMsg_frames       = "msg_frames"
@@ -26,8 +26,8 @@ open class CastledNotificationViewController: UIViewController, UNNotificationCo
     }
     
     @available(iOSApplicationExtension 10.0, *)
-    open func didReceive(_ notification: UNNotification) {
-        
+    @objc open func didReceive(_ notification: UNNotification) {
+
         if let customCasledDict = notification.request.content.userInfo[CastledNotificationViewController.kCustomKey] as? NSDictionary{
             
             if  let msgFramesString = customCasledDict[CastledNotificationViewController.kMsg_frames] as? String{
@@ -53,7 +53,7 @@ open class CastledNotificationViewController: UIViewController, UNNotificationCo
     }
     
     //Handle next previos action here
-    public func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
+    @objc public func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
         // Your code implementation here
         
         completion(.dismissAndForwardAction)
