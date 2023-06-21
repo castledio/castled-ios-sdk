@@ -3,17 +3,12 @@
 
 import PackageDescription
 
-// swift-tools-version:5.3
-import PackageDescription
-
 let package = Package(
-    name: "Castled",
+    name: "castled-ios-sdk",
     defaultLocalization: "en",
     platforms: [
         .iOS(.v13)
     ],
-
-
     products: [
         .library(
             name: "Castled",
@@ -26,7 +21,6 @@ let package = Package(
             targets: ["CastledNotificationService"])
     ],
     dependencies: [
-        .package(url: "https://github.com/castledio/castled-ios-sdk.git", branch: "SPM"),
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1")
     ],
     targets: [
@@ -61,4 +55,3 @@ let package = Package(
         )
     ]
 )
-

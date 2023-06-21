@@ -279,6 +279,9 @@ extension Bundle {
         if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
+        if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
         if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }

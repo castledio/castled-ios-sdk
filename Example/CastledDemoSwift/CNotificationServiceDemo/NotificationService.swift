@@ -15,7 +15,6 @@ class NotificationService: CastledNotificationServiceExtension {
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         
-        print("coming here 1")
         super.didReceive(request, withContentHandler: contentHandler)
     }
     

@@ -8,18 +8,16 @@
 import UIKit
 import UserNotifications
 import UserNotificationsUI
+import CastledNotificationContent
 
-class NotificationViewController: UIViewController, UNNotificationContentExtension {
+class NotificationViewController: CastledNotificationViewController {
 
-    @IBOutlet var label: UILabel?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any required interface initialization here.
     }
-    
-    func didReceive(_ notification: UNNotification) {
-        self.label?.text = notification.request.content.body
+
+    override func didReceive(_ notification: UNNotification) {
+        super.didReceive(notification)
     }
 
 }
