@@ -264,7 +264,6 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
         removePlayerItems()
     }
 }
-
 extension Bundle {
 
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
@@ -285,7 +284,7 @@ extension Bundle {
         if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        
+
         if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
@@ -310,3 +309,4 @@ extension Bundle {
         return bundle ?? sourceBundle
     }
 }
+
