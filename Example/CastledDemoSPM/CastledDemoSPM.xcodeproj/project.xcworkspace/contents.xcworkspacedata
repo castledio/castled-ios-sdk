@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/antony/Documents/Antony/Projects/Castled/Repo/castled-ios-sdk/Example/CastledDemoSPM/CastledDemoSPM.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

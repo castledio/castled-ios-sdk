@@ -16,8 +16,8 @@ let package = Package(
 
     products: [
         .library(
-            name: "Castled-iOS-SDK",
-            targets: ["Castled-iOS-SDK"]),
+            name: "Castled",
+            targets: ["Castled"]),
         .library(
             name: "CastledNotificationContent",
             targets: ["CastledNotificationContent"]),
@@ -31,7 +31,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Castled-iOS-SDK",
+            name: "Castled",
             path: "Sources/Castled",
             linkerSettings: [
                 .linkedFramework("AVFoundation"),
