@@ -27,6 +27,10 @@ let package = Package(
         .target(
             name: "Castled",
             path: "Sources/Castled",
+            resources: [
+                .process("InApps/Views/CastledAssets.xcassets"),
+                .process("InApps/Views/Resources")
+            ],
             linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit"),
@@ -38,6 +42,9 @@ let package = Package(
             dependencies: [
                 "SDWebImage",
             ], path: "Sources/CastledNotificationContent/Swift",
+            resources: [
+                .process("ContentAssets.xcassets")
+            ],
             linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit"),

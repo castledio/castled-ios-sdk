@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/castledio/castled-ios-sdk.git",
       "state" : {
-        "revision" : "e8518c16fa2365e7d16445fc5ca9130858a0b027",
-        "version" : "2.0.3"
+        "revision" : "4be6641545a04b4898b1d6812fb9bed40f4a9181",
+        "version" : "2.0.5"
       }
     },
     {

@@ -25,9 +25,9 @@
 		0A365DED2A4367F00048BD09 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365DEA2A4367F00048BD09 /* SecondViewController.swift */; };
 		0A365DEE2A4367F00048BD09 /* DeeplinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365DEB2A4367F00048BD09 /* DeeplinkViewController.swift */; };
 		0A365DF02A4367FD0048BD09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A365DEF2A4367FD0048BD09 /* Main.storyboard */; };
-		0A365DFC2A436DB50048BD09 /* Castled in Frameworks */ = {isa = PBXBuildFile; productRef = 0A365DFB2A436DB50048BD09 /* Castled */; };
-		0A365DFE2A436DB50048BD09 /* CastledNotificationContent in Frameworks */ = {isa = PBXBuildFile; productRef = 0A365DFD2A436DB50048BD09 /* CastledNotificationContent */; };
-		0A365E002A436DB50048BD09 /* CastledNotificationService in Frameworks */ = {isa = PBXBuildFile; productRef = 0A365DFF2A436DB50048BD09 /* CastledNotificationService */; };
+		0A365E062A4375070048BD09 /* Castled in Frameworks */ = {isa = PBXBuildFile; productRef = 0A365E052A4375070048BD09 /* Castled */; };
+		0A365E082A4375070048BD09 /* CastledNotificationContent in Frameworks */ = {isa = PBXBuildFile; productRef = 0A365E072A4375070048BD09 /* CastledNotificationContent */; };
+		0A365E0A2A4375070048BD09 /* CastledNotificationService in Frameworks */ = {isa = PBXBuildFile; productRef = 0A365E092A4375070048BD09 /* CastledNotificationService */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A365DFC2A436DB50048BD09 /* Castled in Frameworks */,
+				0A365E062A4375070048BD09 /* Castled in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +133,7 @@
 			files = (
 				0A365DC42A43674F0048BD09 /* UserNotificationsUI.framework in Frameworks */,
 				0A365DC22A43674F0048BD09 /* UserNotifications.framework in Frameworks */,
-				0A365DFE2A436DB50048BD09 /* CastledNotificationContent in Frameworks */,
+				0A365E082A4375070048BD09 /* CastledNotificationContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,7 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A365E002A436DB50048BD09 /* CastledNotificationService in Frameworks */,
+				0A365E0A2A4375070048BD09 /* CastledNotificationService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,7 +255,7 @@
 			);
 			name = CastledDemoSPM;
 			packageProductDependencies = (
-				0A365DFB2A436DB50048BD09 /* Castled */,
+				0A365E052A4375070048BD09 /* Castled */,
 			);
 			productName = CastledDemoSPM;
 			productReference = 0A365D882A4366FE0048BD09 /* CastledDemoSPM.app */;
@@ -311,7 +311,7 @@
 			);
 			name = CNotificationContentDemo;
 			packageProductDependencies = (
-				0A365DFD2A436DB50048BD09 /* CastledNotificationContent */,
+				0A365E072A4375070048BD09 /* CastledNotificationContent */,
 			);
 			productName = CNotificationContentDemo;
 			productReference = 0A365DBF2A43674F0048BD09 /* CNotificationContentDemo.appex */;
@@ -331,7 +331,7 @@
 			);
 			name = CNotificationServiceDemo;
 			packageProductDependencies = (
-				0A365DFF2A436DB50048BD09 /* CastledNotificationService */,
+				0A365E092A4375070048BD09 /* CastledNotificationService */,
 			);
 			productName = CNotificationServiceDemo;
 			productReference = 0A365DD72A4367640048BD09 /* CNotificationServiceDemo.appex */;
@@ -376,7 +376,7 @@
 			);
 			mainGroup = 0A365D7F2A4366FE0048BD09;
 			packageReferences = (
-				0A365DFA2A436DB50048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */,
+				0A365E042A4375070048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */,
 			);
 			productRefGroup = 0A365D892A4366FE0048BD09 /* Products */;
 			projectDirPath = "";
@@ -940,7 +940,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0A365DFA2A436DB50048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */ = {
+		0A365E042A4375070048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/castledio/castled-ios-sdk.git";
 			requirement = {
@@ -951,19 +951,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0A365DFB2A436DB50048BD09 /* Castled */ = {
+		0A365E052A4375070048BD09 /* Castled */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0A365DFA2A436DB50048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */;
+			package = 0A365E042A4375070048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */;
 			productName = Castled;
 		};
-		0A365DFD2A436DB50048BD09 /* CastledNotificationContent */ = {
+		0A365E072A4375070048BD09 /* CastledNotificationContent */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0A365DFA2A436DB50048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */;
+			package = 0A365E042A4375070048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */;
 			productName = CastledNotificationContent;
 		};
-		0A365DFF2A436DB50048BD09 /* CastledNotificationService */ = {
+		0A365E092A4375070048BD09 /* CastledNotificationService */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0A365DFA2A436DB50048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */;
+			package = 0A365E042A4375070048BD09 /* XCRemoteSwiftPackageReference "castled-ios-sdk" */;
 			productName = CastledNotificationService;
 		};
 /* End XCSwiftPackageProductDependency section */
