@@ -189,9 +189,9 @@ class CastledInAppDisplayViewController: UIViewController {
 }
 
 extension Bundle {
-    
+
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-        
+
         let mainBundle = Bundle.main
         let sourceBundle = Bundle(for: bundleClass)
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
@@ -202,32 +202,34 @@ extension Bundle {
         if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-
-        if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
+        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
         // CocoaPods (static)
-        if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
+        else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
             bundle = Bundle(path: staticBundlePath)
         }
-        
+
         // CocoaPods (framework)
-        if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
+        else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
             bundle = Bundle(path: frameworkBundlePath)
         }
         return bundle ?? sourceBundle
