@@ -12,6 +12,8 @@ let package = Package(
     platforms: [
         .iOS(.v13)
     ],
+
+
     products: [
         .library(
             name: "Castled-iOS-SDK",
@@ -24,6 +26,7 @@ let package = Package(
             targets: ["CastledNotificationService"])
     ],
     dependencies: [
+        .package(url: "https://github.com/castledio/castled-ios-sdk.git", branch: "SPM"),
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1")
     ],
     targets: [
