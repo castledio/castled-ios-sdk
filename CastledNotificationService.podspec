@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "CastledNotificationService"
-  spec.version      =  ENV['LIB_VERSION'] || '2.1.0' #fallback to major version
+  spec.version      =  ENV['LIB_VERSION'] || '2.1.2' #fallback to major version
   spec.summary      = "A Notification Service extension for customizing push notifications in your app."
 
   spec.description  = <<-DESC
