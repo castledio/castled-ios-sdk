@@ -3,19 +3,16 @@
 
 import PackageDescription
 
-// swift-tools-version:5.3
-import PackageDescription
-
 let package = Package(
-    name: "Castled",
+    name: "castled-ios-sdk",
     defaultLocalization: "en",
     platforms: [
         .iOS(.v13)
     ],
     products: [
         .library(
-            name: "Castled-iOS-SDK",
-            targets: ["Castled-iOS-SDK"]),
+            name: "Castled",
+            targets: ["Castled"]),
         .library(
             name: "CastledNotificationContent",
             targets: ["CastledNotificationContent"]),
@@ -28,8 +25,12 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Castled-iOS-SDK",
+            name: "Castled",
             path: "Sources/Castled",
+            resources: [
+                .process("InApps/Views/CastledAssets.xcassets"),
+                .process("InApps/Views/Resources")
+            ],
             linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit"),
@@ -41,6 +42,9 @@ let package = Package(
             dependencies: [
                 "SDWebImage",
             ], path: "Sources/CastledNotificationContent/Swift",
+            resources: [
+                .process("ContentAssets.xcassets")
+            ],
             linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit"),
@@ -58,4 +62,3 @@ let package = Package(
         )
     ]
 )
-
