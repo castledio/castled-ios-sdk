@@ -12,7 +12,7 @@
 		0A0E11202A41F4C4004F247F /* CastledNotificationViewControllerObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */; };
 		0A0E11212A41F4C4004F247F /* CastledNotificationViewControllerObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */; };
 		0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */; };
-		0A2975862A476E1300EA9FB7 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2975852A476E1300EA9FB7 /* SDWebImage.framework */; };
+		0A2975882A47727B00EA9FB7 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2975872A47727B00EA9FB7 /* SDWebImage.framework */; };
 		0A33BB8A29E6D80C0005ACED /* CastledPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8929E6D80C0005ACED /* CastledPrint.swift */; };
 		0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */; };
 		0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */; };
@@ -67,7 +67,7 @@
 		0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledNotificationViewControllerObjC.h; sourceTree = "<group>"; };
 		0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CastledNotificationViewControllerObjC.m; sourceTree = "<group>"; };
 		0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CastledAssets.xcassets; sourceTree = "<group>"; };
-		0A2975852A476E1300EA9FB7 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
+		0A2975872A47727B00EA9FB7 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
 		0A33BB8929E6D80C0005ACED /* CastledPrint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledPrint.swift; sourceTree = "<group>"; };
 		0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzlingAppear.swift; sourceTree = "<group>"; };
 		0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTouchThroughWindow.swift; sourceTree = "<group>"; };
@@ -143,7 +143,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66D18BCC2A0D56B80075AB43 /* UserNotificationsUI.framework in Frameworks */,
-				0A2975862A476E1300EA9FB7 /* SDWebImage.framework in Frameworks */,
+				0A2975882A47727B00EA9FB7 /* SDWebImage.framework in Frameworks */,
 				66D18BCB2A0D56B80075AB43 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,7 +384,7 @@
 		66D18BB32A0D55950075AB43 /* CastledNotificationContent */ = {
 			isa = PBXGroup;
 			children = (
-				0A2975852A476E1300EA9FB7 /* SDWebImage.framework */,
+				0A2975872A47727B00EA9FB7 /* SDWebImage.framework */,
 				66D18BB42A0D55950075AB43 /* CastledNotificationContent.h */,
 				0A9C26652A42411100ADB960 /* Swift */,
 				66D18BB52A0D55950075AB43 /* CastledNotificationContent.docc */,
