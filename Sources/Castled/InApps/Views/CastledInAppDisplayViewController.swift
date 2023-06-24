@@ -189,9 +189,9 @@ class CastledInAppDisplayViewController: UIViewController {
 }
 
 extension Bundle {
-
+    
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-
+        
         let mainBundle = Bundle.main
         let sourceBundle = Bundle(for: bundleClass)
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
@@ -227,7 +227,7 @@ extension Bundle {
         else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
             bundle = Bundle(path: staticBundlePath)
         }
-
+        
         // CocoaPods (framework)
         else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
             bundle = Bundle(path: frameworkBundlePath)
