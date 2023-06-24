@@ -97,7 +97,7 @@ Pods/
 
 # Exclude SDWebImage framework
 Frameworks/SDWebImage.framework
-Sources/SDWebImage.framework
+Sources/CastledNotificationContent/SDWebImage.framework
 
 # CocoaPods
 Pods/
