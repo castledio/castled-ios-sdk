@@ -21,22 +21,10 @@ import UIKit
     @objc optional func castled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error)
     
     @objc optional func castled_application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
-    
-    @objc optional func navigateToScreen(scheme: String?, viewControllerName: String?)
-    
-    @objc optional func handleDeepLink(url: URL?, useWebview: Bool , additionalData: [String: Any]?)
-    
-    @objc optional func handleNavigateToScreen(screenName: String?, useWebview: Bool , additionalData: [String: Any]?)
-    
-    @objc optional func handleRichLanding(screenName: String?, useWebview: Bool , additionalData: [String: Any]?)
-    
-}
 
-extension CastledNotificationDelegate {
-    // without the completion parameter
-    func navigateToScreen(scheme: String, viewControllerName: String) {
-        navigateToScreen?(scheme: nil, viewControllerName: nil)
-    }
+    @objc optional func notificationClicked(withType type: CastledPushActionType, kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any])
+
+    
 }
 
 @objc public class Castled : NSObject
@@ -176,11 +164,11 @@ extension CastledNotificationDelegate {
     @objc public func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                       willPresentNotification notification: UNNotification,
                                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        castledLog("willPresent swizzled")
+//        castledLog("willPresent swizzled")
         
         Castled.sharedInstance?.handleNotificationInForeground(notification: notification)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, willPresent: notification, withCompletionHandler: completionHandler)) != nil else{
-            castledLog("willPresent  not implemented")
+            castledLog("castled_userNotificationCenter willPresent  not implemented")
             completionHandler( [[.alert, .badge, .sound]])
             return
         }
@@ -189,11 +177,11 @@ extension CastledNotificationDelegate {
     @objc public func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                       didReceiveNotificationResponse response: UNNotificationResponse,
                                                       withCompletionHandler completionHandler: @escaping () -> Void) {
-        castledLog("didReceive swizzled")
+//        castledLog("didReceive swizzled")
         
         Castled.sharedInstance?.handleNotificationAction(response: response)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, didReceive: response, withCompletionHandler: completionHandler)) != nil else{
-            castledLog("didReceive  not implemented")
+            castledLog("castled_userNotificationCenter didReceive  not implemented")
             completionHandler()
             return
         }
@@ -219,77 +207,85 @@ extension CastledNotificationDelegate {
         processCastledPushEvents(userInfo: notification.request.content.userInfo, isForeGround: true)
         
         //Castled.sharedInstance?.registerNotificationCategories(userInfo: notification.request.content.userInfo)
-        castledLog("notification userInfo \(notification.request.content.userInfo)")
+       // castledLog("notification userInfo \(notification.request.content.userInfo)")
     }
     
     
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
     @objc public func handleNotificationAction(response: UNNotificationResponse){
         // Returning the same options we've requested
+        var pushActionType = CastledPushActionType.other
+
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier{
-            if let defaultActionDetails : [String : Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo){
-                let defaultAction = defaultActionDetails["default_action"] as! String,
-                    defaultActionURL = defaultActionDetails["default_action_url"] as? String,
-                    url = URL(string: defaultActionURL ?? "")
-                
-                if defaultAction == CastledConstants.PushNotification.ActionType.deepLink.rawValue{
-                    Castled.sharedInstance?.delegate.handleDeepLink?(url: url, useWebview: false, additionalData: nil)
-                }
-                //Navigate to screen
-                else if defaultAction == CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue{
-                    Castled.sharedInstance?.delegate.handleNavigateToScreen?(screenName: defaultActionURL, useWebview: false, additionalData: nil)
-                }
-                else if defaultAction == CastledConstants.PushNotification.ActionType.richLanding.rawValue{
-                    Castled.sharedInstance?.delegate.handleRichLanding?(screenName: defaultActionURL, useWebview: false, additionalData: nil)
-                }
-                else if defaultAction == CastledConstants.PushNotification.ActionType.discardNotification.rawValue{
-                    castledLog("discard")
-                }
-                processCastledPushEvents(userInfo: userInfo,isOpened: true)
+
+            if let defaultActionDetails : [String : Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo),
+               let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String{
+
+                        if defaultAction == CastledConstants.PushNotification.ActionType.deepLink.rawValue{
+
+                            pushActionType = CastledPushActionType.deepLink
+                        }
+                        //Navigate to screen
+                        else if defaultAction == CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue{
+                            pushActionType = CastledPushActionType.navigateToScreen
+
+                        }
+                        else if defaultAction == CastledConstants.PushNotification.ActionType.richLanding.rawValue{
+                            pushActionType = CastledPushActionType.richLanding
+
+                        }
+                        else if defaultAction == CastledConstants.PushNotification.ActionType.discardNotification.rawValue{
+
+                        }
+                        Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
+
             }
-            
+            else{
+                // handle other actions
+                Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: nil, userInfo: userInfo)
+
+            }
+
+            processCastledPushEvents(userInfo: userInfo,isOpened: true)
+
         }
         else if response.actionIdentifier == UNNotificationDismissActionIdentifier{
+
+            Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: nil, userInfo: userInfo)
             processCastledPushEvents(userInfo: userInfo,isDismissed: true)
         }
         else {
-            if let actionDetails : [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier){
-                let clickAction = actionDetails["clickAction"] as! String,
-                    url = actionDetails["url"] as! String,
-                    useWebView = actionDetails["useWebview"] as! Bool
-                
-                //Deeplink
-                if clickAction == CastledConstants.PushNotification.ActionType.deepLink.rawValue{
-                    castledLog("Deeplink")
-                    //Castled.sharedInstance?.delegate.navigateToScreen(scheme:url, viewControllerName: nil)
-                    if let url = URL(string: url) {
-                        //UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                        Castled.sharedInstance?.delegate.handleDeepLink?(url: url, useWebview: useWebView, additionalData: nil)
-                    }
-                    
-                    processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.kCastledPushActionTypeDeeplink)
-                }
-                //Navigate to screen
-                else if clickAction == CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue{
-                    castledLog("navigatetoscreen")
-                    Castled.sharedInstance?.delegate.handleNavigateToScreen?(screenName: url, useWebview: useWebView, additionalData: nil)
-                    
-                    processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.kCastledPushActionTypeNavigate)
-                }
-                //Richlanding
-                else if clickAction == CastledConstants.PushNotification.ActionType.richLanding.rawValue{
-                    castledLog("richlanding")
-                    Castled.sharedInstance?.delegate.handleRichLanding?(screenName: url, useWebview: useWebView, additionalData: nil)
-                    
-                    processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.kCastledPushActionTypeRichLanding)
-                }
-                //Discard
-                else if clickAction == CastledConstants.PushNotification.ActionType.discardNotification.rawValue{
-                    castledLog("discard")
-                    processCastledPushEvents(userInfo: userInfo,isDiscardedRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.kCastledPushActionTypeDiscardNotifications)
-                }
+            if let actionDetails : [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
+               let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction]   as? String{
+
+                        //Deeplink
+                            if clickAction == CastledConstants.PushNotification.ActionType.deepLink.rawValue{
+                                pushActionType = CastledPushActionType.deepLink
+                                processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.deepLink.rawValue)
+                            }
+                            //Navigate to screen
+                            else if clickAction == CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue{
+                                pushActionType = CastledPushActionType.navigateToScreen
+                                processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue)
+                            }
+                            //Richlanding
+                            else if clickAction == CastledConstants.PushNotification.ActionType.richLanding.rawValue{
+                                pushActionType = CastledPushActionType.richLanding
+                                processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.richLanding.rawValue)
+                            }
+                            //Discard
+                            else if clickAction == CastledConstants.PushNotification.ActionType.discardNotification.rawValue{
+                                processCastledPushEvents(userInfo: userInfo,isDiscardedRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.discardNotification.rawValue)
+                            }
+                            Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: actionDetails, userInfo: userInfo)
+
             }
+            else{
+                Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: nil, userInfo: userInfo)
+
+            }
+
         }
     }
     
@@ -339,7 +335,7 @@ extension CastledNotificationDelegate {
     func processCastledPushEvents(userInfo : [AnyHashable : Any],isForeGround: Bool? = false , isOpened : Bool? = false, isDismissed : Bool? = false, isDiscardedRich: Bool? = false, isAcceptRich: Bool? = false, actionLabel: String? = "", actionType: String? = ""){
         castledNotificationQueue.async{
             if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary{
-                castledLog("Castled PushEvents \(customCasledDict)")
+                //  castledLog("Castled PushEvents \(customCasledDict)")
                 if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String{
                     let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String
                     let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String
@@ -437,5 +433,5 @@ extension CastledNotificationDelegate {
             params["actionType"] = actionType
         }
         return params
-    } 
+    }
 }

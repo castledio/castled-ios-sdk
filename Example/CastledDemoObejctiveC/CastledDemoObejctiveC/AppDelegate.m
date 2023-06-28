@@ -114,15 +114,16 @@
 }
 
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-
-    NSLog(@"didReceiveNotificationResponse: %@ %@", self.description, response.notification.request.content.userInfo);
+    //response.notification.request.content.userInfo
+    NSLog(@"didReceiveNotificationResponse: %@", self.description);
     [[Castled sharedInstance] handleNotificationActionWithResponse:response];
 
     completionHandler();
 }
 
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
-    NSLog(@"willPresentNotification: %@ %@", self.description, notification.request.content.userInfo);
+    //notification.request.content.userInfo
+    NSLog(@"willPresentNotification: %@", self.description);
     [[Castled sharedInstance] handleNotificationInForegroundWithNotification:notification];
 
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
@@ -138,8 +139,8 @@
 
 
 - (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center willPresent:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
-
-    NSLog(@"will present notification: %@ %@ %@", self.description,NSStringFromSelector(_cmd),notification.request.content.userInfo);
+    ///notification.request.content.userInfo
+    NSLog(@"will present notification: %@ %@", self.description,NSStringFromSelector(_cmd));
 
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
 
@@ -163,29 +164,27 @@
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@ %@", self.description,NSStringFromSelector(_cmd),deviceToken.debugDescription);
 
 }
+- (void)notificationClickedWithType:(CastledPushActionType)type kvPairs:(NSDictionary<id, id> * _Nullable)kvPairs userInfo:(NSDictionary<id, id> *)userInfo;
+{
 
-- (void)navigateToScreenWithScheme:(NSString *)scheme viewControllerName:(NSString *)viewControllerName{
-    NSLog(@"navigateToScreenWithScheme: %@ %@ %@", self.description,NSStringFromSelector(_cmd),viewControllerName);
-
+    NSLog(@"*****************NotificationClicked: %@ %@ Action type %ld ***************** ", self.description,NSStringFromSelector(_cmd),(long)type);
+    switch (type) {
+        case CastledPushActionTypeDeepLink:
+            NSLog(@"handleDeepLinkWithURL %@",kvPairs[@"clickActionUrl"]);
+            break;
+        case CastledPushActionTypeNavigateToScreen:
+            NSLog(@"navigateToScreen %@",kvPairs[@"clickActionUrl"]);
+            break;
+        case CastledPushActionTypeRichLanding:
+            NSLog(@"handleRichLandingWithScreenName %@",kvPairs);
+            break;
+        case CastledPushActionTypeOther:
+            NSLog(@"handle other actions %@",kvPairs);
+            break;
+        default:
+            break;
+    }
 
 }
-
-- (void)handleDeepLinkWithURL:(NSURL *)url useWebview:(BOOL)useWebview additionalData:(NSDictionary<NSString *, id> *)additionalData{
-    NSLog(@"handleDeepLinkWithURL: %@ %@ %@", self.description,NSStringFromSelector(_cmd),additionalData);
-
-
-}
-
-- (void)handleNavigateToScreenWithScreenName:(NSString *)screenName useWebview:(BOOL)useWebview additionalData:(NSDictionary<NSString *, id> *)additionalData{
-    NSLog(@"handleNavigateToScreenWithScreenName: %@ %@ %@", self.description,NSStringFromSelector(_cmd),additionalData);
-
-}
-
-- (void)handleRichLandingWithScreenName:(NSString *)screenName useWebview:(BOOL)useWebview additionalData:(NSDictionary<NSString *, id> *)additionalData{
-    NSLog(@"handleRichLandingWithScreenName: %@ %@ %@", self.description,NSStringFromSelector(_cmd),additionalData);
-
-
-}
-
 
 @end

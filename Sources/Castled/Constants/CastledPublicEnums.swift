@@ -27,3 +27,9 @@ import Foundation
     }
     
 }
+@objc public enum CastledPushActionType: Int {
+    case deepLink
+    case navigateToScreen
+    case richLanding
+    case other
+}

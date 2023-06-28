@@ -84,7 +84,10 @@ extension CastledMediasViewController: UICollectionViewDataSource,UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-        self.extensionContext?.performNotificationDefaultAction()
+        let mediaObject = mediaObjects[indexPath.row]
+        if mediaObject.mediaType == .image{
+            self.extensionContext?.performNotificationDefaultAction()
+        }
 
     }
     internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

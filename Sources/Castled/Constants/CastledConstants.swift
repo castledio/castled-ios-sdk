@@ -11,14 +11,8 @@ public class CastledConstants {
     
     //Plist Key for enable/ Disable swizzling
     static let kCastledSwzzlingDisableKey          = "CastledSwizzlingDisabled"
-    
-    
-    public static let kCastledPushActionTypeNavigate       = "NAVIGATE_TO_SCREEN"
-    public static let kCastledPushActionTypeDeeplink       = "DEEP_LINKING"
-    public static let kCastledPushActionTypeDiscardNotifications      = "DISMISS_NOTIFICATION"
-    public static let kCastledPushActionTypeRichLanding      = "RICH_LANDING"
-    
-    public struct PushNotification {
+
+    internal struct PushNotification {
         
         public static let customKey = "castled"
         public static let apsKey = "aps"
@@ -45,6 +39,7 @@ public class CastledConstants {
                 public struct Action {
                     public static let actionId = "actionId"
                     public static let clickAction = "clickAction"
+                    public static let clickActionUrl = "clickActionUrl"
                     public static let url = "url"
                     public static let useWebView = "useWebview"
                 }

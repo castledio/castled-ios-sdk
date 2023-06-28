@@ -61,27 +61,48 @@ class CastledCommonClass{
         for action in actionsArray {
             if let identifier = action[CastledConstants.PushNotification.CustomProperties.Category.Action.actionId] as? String, identifier == actionType {
                 return [
-                    "category" :category,
-                    "actionId": identifier,
-                    "clickAction": action[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "",
-                    "url": action[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String ?? "",
-                    "useWebview": action[CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView] as? Bool ?? false
+                    CastledConstants.PushNotification.ApsProperties.category: category,
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.actionId: identifier,
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction: action[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "",
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl: action[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String ?? "",
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView: action[CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView] as? Bool ?? false
                 ]
             }
         }
         return nil
     }
     
-    static func getDefaultActionDetails(dict: [AnyHashable: Any]) -> [String: Any]? {
+    static func getDefaultActionDetails(dict: [AnyHashable: Any], index : Int? = 0) -> [String: Any]? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? [String: Any]
         else {
             return nil
         }
-        
-        return ["default_action" : customDict[CastledConstants.PushNotification.CustomProperties.defaultAction] as? String ?? "",
-                "default_action_url" : customDict[CastledConstants.PushNotification.CustomProperties.defaultActionURL] as? String ?? ""]
+        if let msgFramesString = customDict["msg_frames"] as? String,
+           let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? Array<Any>,
+           detailsArray.count > index!,
+           let selectedCategory = detailsArray[index!] as? [String : Any]{
+
+            return selectedCategory
+         
+        }
+        return nil
+
+
     }
-    
+   static func convertToArray(text: String) -> Any?  {
+        guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
+        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+    }
+//    private func convertToArray(text: String) -> [CastledNotificationMediaObject]? {
+//        // Convert the string to data
+//        guard let jsonData = text.data(using: .utf8) else {
+//            return nil
+//        }
+//
+//        let jsonDecoder = JSONDecoder()
+//        let convertedAttachments = try? jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
+//        return convertedAttachments
+//    }
     
     static func getAppURLSchemes() -> [String]? {
         guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] else {

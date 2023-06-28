@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  CastledPusher
+//  CastledDemoSPM
 //
 //  Created by Antony Joe Mathew.
 //
@@ -173,65 +173,33 @@ extension AppDelegate: CastledNotificationDelegate {
 
     }
 
-    func navigateToScreen(scheme: String?, viewControllerName: String?) {
-        print("navigate to screens")
-        if let urlScheme = scheme {
-            print(urlScheme)
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController {
-                let nav = UINavigationController(rootViewController: vc)
-                nav.modalPresentationStyle = .fullScreen
-                self.topController().present(nav, animated: true) {
-                    vc.lblEventType.text = "Deeplink Event"
+    func notificationClicked(withType type: CastledPushActionType, kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any]){
+
+        switch type {
+            case CastledPushActionType.deepLink:
+                if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {
+                    handleDeepLink(url: url)
                 }
-            }
-            return
-        }
 
-        if let viewController = viewControllerName {
-            print(viewController)
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController {
-                let nav = UINavigationController(rootViewController: vc)
-                nav.modalPresentationStyle = .fullScreen
-                self.topController().present(nav, animated: true) {
-                    vc.lblEventType.text = "Navigation to screen Event"
+                break
+            case CastledPushActionType.navigateToScreen:
+                if let details = kvPairs, let value = details["clickActionUrl"] as? String {
+                    handleNavigateToScreen(screenName: value)
                 }
-            }
-            return
+                break
+            case CastledPushActionType.richLanding:
+                //TODO:
+
+                break
+            case CastledPushActionType.other:
+                //TODO:
+
+                break
+            default:
+                break
         }
-    }
-
-    func handleDeepLink(url: URL?, useWebview: Bool, additionalData: [String: Any]?) {
-        guard let url = url else { return }
-        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        let scheme = components?.scheme // "com.castled"
-        let path = components?.path // "/deeplinkvc"
-        let host = components?.host
-
-
-        print("Path \(String(describing: path))")
-        guard scheme == "com.castled", path == "/deeplinkvc" || host == "deeplinkvc" else { return }
-
-        // Instantiate the deeplink view controller and pass the query parameters
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController else { return }
-
-        presentViewController(vc)
-    }
-
-    func handleNavigateToScreen(screenName: String?, useWebview: Bool , additionalData: [String: Any]?){
-        guard let screenName = screenName else { return }
-        guard let vc = instantiateViewController(screenName: screenName) else {
-            return
-        }
-        presentViewController(vc)
-    }
-    func handleRichLanding(screenName: String?, useWebview: Bool , additionalData: [String: Any]?){
 
     }
-
-
 
 
 
@@ -282,9 +250,37 @@ extension AppDelegate : UNUserNotificationCenterDelegate{
 }
 
 
+
 // MARK: - Supporting Methods for CastledPusherExample
 
 extension AppDelegate{
+    fileprivate func handleDeepLink(url: URL?) {
+        guard let url = url else { return }
+        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        let scheme = components?.scheme // "com.castled"
+        let path = components?.path // "/deeplinkvc"
+        let host = components?.host
+        print("Path \(String(describing: path))")
+        guard scheme == "com.castled", path == "/deeplinkvc" || host == "deeplinkvc" else { return }
+
+        // Instantiate the deeplink view controller and pass the query parameters
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController else { return }
+
+        presentViewController(vc)
+    }
+
+    fileprivate  func handleNavigateToScreen(screenName: String?){
+        guard let screenName = screenName else { return }
+        guard let vc = instantiateViewController(screenName: screenName) else {
+            return
+        }
+        presentViewController(vc)
+    }
+    fileprivate func handleRichLanding(screenName: String?){
+
+    }
+
     fileprivate func getVisibleViewController(from viewController: UIViewController) -> UIViewController {
         if let navigationController = viewController as? UINavigationController {
             return getVisibleViewController(from: navigationController.visibleViewController ?? navigationController)
