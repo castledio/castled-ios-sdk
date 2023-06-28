@@ -53,15 +53,7 @@ public class CastledConstants {
             case richLanding = "RICH_LANDING"
             case defaultAction = "DEFAULT"
         }
-        
-        enum EventTypes: String {
-            case send = "SEND"
-            case clicked = "CLICKED"
-            case discarded = "DISCARDED"
-            case received = "RECEIVED"
-            case foreground = "FOREGROUND"
-            case viewed = "VIEWED"
-        }
+
     }
     
     
@@ -76,16 +68,7 @@ public class CastledConstants {
         static let defaultAction = "default_action"
         static let keyValuePair =  "key_vals"
     }
-    
-    enum PushNotificationActionType : String{
-        case navigateToScreen = "NAVIGATE_TO_SCREEN"
-        case deepLink = "DEEP_LINKING"
-        case discardNotification = "DISMISS_NOTIFICATION"
-        case richLanding = "RICH_LANDING"
-        case defaultAction = "DEFAULT"
-    }
-    
-    
+
     
     internal enum  CastledEventTypes: String {
         case send            = "SEND"
@@ -121,18 +104,18 @@ public class CastledConstants {
         
         internal var sortOrder: Int {
             switch self {
-            case .urgent:
-                return 4
-            case .high:
-                return 3
-            case .moderate:
-                return 2
-            case .low:
-                return 1
-            case .minimum:
-                return 0
-                
-                
+                case .urgent:
+                    return 4
+                case .high:
+                    return 3
+                case .moderate:
+                    return 2
+                case .low:
+                    return 1
+                case .minimum:
+                    return 0
+
+
             }
         }
         
