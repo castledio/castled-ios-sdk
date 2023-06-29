@@ -13,7 +13,9 @@ import Foundation
     private override init() {
         
     }
-    
+    @objc public lazy var instanceId: String = {
+        return ""
+    }()
     @objc public lazy var permittedBGIdentifier: String = {
         return ""
     }()
@@ -39,7 +41,7 @@ import Foundation
     }()
     
     @objc public lazy var location: CastledLocation = {
-        return CastledLocation.US
+        return CastledLocation.TEST
     }()
     
 }

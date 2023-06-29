@@ -15,18 +15,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let config = CastledConfigs.sharedInstance
-        // config.permittedBGIdentifier = "com.castled.backgroundtask"
+        config.instanceId = "829c38e2e359d94372a2e0d35e1f74df"
+        //config.permittedBGIdentifier = "com.castled.backgroundtask"
         config.enablePush  = true
         config.enableInApp = true
         config.location    = CastledLocation.US
         //config.disableLog = true
-        
-        Castled.configure(registerIn: application, launchOptions: launchOptions, instanceId: "829c38e2e359d94372a2e0d35e1f74df", delegate: self)
-        
+
         // Register the custom category
         let notificationCategories = getNotificationCategories();
-        UNUserNotificationCenter.current().setNotificationCategories(notificationCategories)
+
+        Castled.initialize(withConfig: config, delegate: self,andNotificationCategories: notificationCategories)
+
         
+
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -42,7 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
         
         return true
     }
-    
     func getNotificationCategories() -> Set<UNNotificationCategory>{
         // Create the custom actions
         let action1 = UNNotificationAction(identifier: "ACCEPT", title: "Accept", options: UNNotificationActionOptions.foreground)
@@ -173,25 +174,33 @@ extension AppDelegate: CastledNotificationDelegate {
         
     }
 
-    func notificationClicked(withType type: CastledPushActionType, kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any]){
-
-        switch type {
-            case CastledPushActionType.deepLink:
+    func notificationClicked(withNotificationType type: CastledNotificationType,action: CastledClickActionType , kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any]){
+        print("type \(type.rawValue) action \(action.rawValue)")
+        switch action {
+            case .deepLink:
                 if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {
                     handleDeepLink(url: url)
                 }
 
                 break
-            case CastledPushActionType.navigateToScreen:
+            case .navigateToScreen:
                 if let details = kvPairs, let value = details["clickActionUrl"] as? String {
                     handleNavigateToScreen(screenName: value)
                 }
                 break
-            case CastledPushActionType.richLanding:
+            case .richLanding:
                 //TODO:
 
                 break
-            case CastledPushActionType.other:
+            case .reuestForPush:
+                //TODO:
+
+                break
+            case .dismiss:
+                //TODO:
+
+                break
+            case .other:
                 //TODO:
 
                 break

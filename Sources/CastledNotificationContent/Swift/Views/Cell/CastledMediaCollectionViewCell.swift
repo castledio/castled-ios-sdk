@@ -117,21 +117,16 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
         //  imageView.image = nil
         
         let urlImageString = mediaViewModel.thumbUrl
-        if let url = URL(string: urlImageString) {
-            
-            imageView.sd_setImage(with: url, completed: nil)
-            /**URLSession.downloadImage(atURL: url) { [weak self] (data, error) in
-             if let data = data{
-             DispatchQueue.main.async { [weak self] in
-             self?.imageView.image = UIImage(data: data)
-             }
-             }
-             
-             }*/
+        let placeholderImage = UIImage(named: "media_placeholder", in: Bundle.resourceBundle(for: CastledMediaCollectionViewCell.self), compatibleWith: nil)
+        if urlImageString.count > 0,let url = URL(string: urlImageString) {
+
+            imageView.sd_setImage(with: url, placeholderImage: placeholderImage)
+
+
         }
         else
         {
-            imageView.image = nil
+            imageView.image = placeholderImage
         }
         
         switch mediaViewModel.mediaType {

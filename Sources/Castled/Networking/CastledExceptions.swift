@@ -16,7 +16,7 @@ enum CastledExceptionMessages: String {
     case userNotRegistered  = "Please register the user with Castled using the api 'registerUser:'."
     case emptyEventsArray   = "Notificaion Id array cannot be empty"
     case noDeviceToken      = "Register User needs a valid APNS token"
-    case permittedIdentifiersNotInitialised      = "Kindly add 'BGTaskSchedulerPermittedIdentifiers' key to the Info.plist and pass the same value  as 'CastledConfigs.sharedInstance.permittedBGIdentifier'. Please note that In iOS 13 and later, adding a BGTaskSchedulerPermittedIdentifiers key to the Info.plist disables the application(_:performFetchWithCompletionHandler:) and setMinimumBackgroundFetchInterval(_:) methods."
+    case permittedIdentifiersNotInitialised      = "Kindly add 'BGTaskSchedulerPermittedIdentifiers' key to the Info.plist and pass the same value  as 'CastledConfigs permittedBGIdentifier'. Please note that In iOS 13 and later, adding a BGTaskSchedulerPermittedIdentifiers key to the Info.plist disables the application(_:performFetchWithCompletionHandler:) and setMinimumBackgroundFetchInterval(_:) methods."
     case backgroundProcessNotenabled = "Please enable background Processing capability in your app by making sure that the 'Background Modes' capability is enabled, and that the 'Background Processing' and 'Remote notifications' options are selected."
     
 }

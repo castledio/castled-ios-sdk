@@ -28,8 +28,6 @@ public class CastledConstants {
             public static let mediaType = "media_type"
             public static let mediaURL = "media_url"
             public static let categoryActions = "category_actions"
-            public static let defaultActionURL = "default_action_url"
-            public static let defaultAction = "default_action"
             public static let keyValuePair = "key_vals"
             public struct Category {
                 public static let type = "type"
@@ -46,12 +44,15 @@ public class CastledConstants {
             }
         }
         
-        enum ActionType: String {
+         enum ClickActionType: String, Codable {
             case navigateToScreen = "NAVIGATE_TO_SCREEN"
-            case deepLink = "DEEP_LINKING"
+            case deepLink         = "DEEP_LINKING"
+            case richLanding      = "RICH_LANDING"
+            case defaultAction    = "DEFAULT"
             case discardNotification = "DISMISS_NOTIFICATION"
-            case richLanding = "RICH_LANDING"
-            case defaultAction = "DEFAULT"
+            case requestPushPermission = "REQUEST_PUSH_PERMISSION"//this is for inapp
+            case none                = "NONE"
+
         }
 
     }
@@ -70,7 +71,7 @@ public class CastledConstants {
     }
 
     
-    internal enum  CastledEventTypes: String {
+    internal enum CastledEventTypes: String {
         case send            = "SEND"
         case cliked          = "CLICKED"
         case discarded       = "DISCARDED"
@@ -82,12 +83,7 @@ public class CastledConstants {
     }
     
     internal static let CastledSlugValueIdentifierKey    = "ceis"
-    
-    internal enum  CastledSlugValueEventIdentifier: String {
-        case push            = "push"
-        case inapp           = "inapp"
-    }
-    
+
     internal enum InAppsConfigKeys: String {
         case inAppNotificationId = "nid"
         case inAppCurrentDisplayCounter = "dc"

@@ -62,7 +62,7 @@ internal enum  CIMessageType: String, Codable {
 internal struct CIBannerPresentation: Codable {
     internal let type: String
     internal let imageURL: String
-    internal let clickAction : CIButtonActionsType
+    internal let clickAction : CastledConstants.PushNotification.ClickActionType
     internal let  url, body, bgColor: String
     internal let fontSize: Int
     internal let fontColor: String
@@ -155,22 +155,22 @@ internal struct CIFullScreenPresentation: Codable {
 
 // MARK: - ActionButton
 internal struct CIActionButton: Codable {
-    internal let clickAction : CIButtonActionsType
+    internal let clickAction : CastledConstants.PushNotification.ClickActionType
     internal let label, url, buttonColor: String
     internal let fontColor, borderColor: String
     internal let keyVals: [String : String]?
 }
 
-internal enum  CIButtonActionsType: String, Codable {
-    case deep_linking        = "DEEP_LINKING"
-    case navigate_to_Screen  = "NAVIGATE_TO_SCREEN"
-    case rich_landing        = "RICH_LANDING"
-    case dismiss             = "DISMISS_NOTIFICATION"
-    case request_push_permission    = "REQUEST_PUSH_PERMISSION"
-    case none                = "NONE"
-    
-    
-}
+//internal enum  CIButtonActionsType: CastledConstants.PushNotification.ClickActionType {
+//    case deep_linking        = "DEEP_LINKING"
+//    case navigate_to_Screen  = "NAVIGATE_TO_SCREEN"
+//    case rich_landing        = "RICH_LANDING"
+//    case dismiss             = "DISMISS_NOTIFICATION"
+//    case request_push_permission    = "REQUEST_PUSH_PERMISSION"
+//    case none                = "NONE"
+//
+//
+//}
 // MARK: - KeyVals
 
 internal struct CIKeyVals: Codable {

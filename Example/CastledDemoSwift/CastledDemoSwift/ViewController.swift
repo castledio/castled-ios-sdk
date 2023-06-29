@@ -50,9 +50,9 @@ class ViewController: UIViewController {
     //Function for registering the user with Castled
     func registerUserAPI() {
         
-        //let userId    = "antony@castled.io"//user-101
+        let userId    = "antony@castled.io"//user-101
         //        let userId    = "frank@castled.io"//user-101
-       let userId    = "abhilash@castled.io"//user-101
+      // let userId    = "abhilash@castled.io"//user-101
         
         let token =  CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
         Castled.registerUser(userId: userId, apnsToken: token)

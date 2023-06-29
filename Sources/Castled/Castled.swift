@@ -22,10 +22,8 @@ import UIKit
     
     @objc optional func castled_application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
 
-    @objc optional func notificationClicked(withType type: CastledPushActionType, kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any])
-
-    
-}
+    @objc optional func notificationClicked(withNotificationType type: CastledNotificationType,action: CastledClickActionType , kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any])
+ }
 
 @objc public class Castled : NSObject
 {
@@ -47,39 +45,38 @@ import UIKit
     /**
      Static method for conguring the Castled framework.
      */
-    @objc static public func configure(registerIn application: UIApplication,launchOptions : [UIApplication.LaunchOptionsKey: Any]?,
-                                       instanceId: String,delegate: CastledNotificationDelegate){
-        
+
+    @objc static public func initialize(withConfig config: CastledConfigs,delegate: CastledNotificationDelegate, andNotificationCategories categories: Set<UNNotificationCategory>? = Set<UNNotificationCategory>()){
+
         if Castled.sharedInstance == nil {
-            Castled.sharedInstance = Castled.init(registerIn: application, launchOptions: launchOptions, instanceId: instanceId, delegate: delegate)
+            Castled.sharedInstance = Castled.init(instanceId: config.instanceId, delegate: delegate,categories: categories ?? Set<UNNotificationCategory>())
         }
+
+
     }
-    
-    
-    private init(registerIn application: UIApplication,launchOptions : [UIApplication.LaunchOptionsKey: Any]? ,instanceId: String,delegate: CastledNotificationDelegate,clearNotifications : NSNumber? = 1) {
-        
-        //self.application = application
-        //self.appDelegate = application.delegate!
+
+    private init(instanceId: String,delegate: CastledNotificationDelegate,categories: Set<UNNotificationCategory>){
+
+        if instanceId.count == 0{
+            fatalError("'instanceId' cannot be empty")
+        }
         self.instanceId  = instanceId
         self.delegate    = delegate
-        
+
         super.init()
-        
+
         if Castled.sharedInstance == nil {
             Castled.sharedInstance = self
         }
-        
-        shouldClearDeliveredNotifications = ((clearNotifications?.boolValue) != nil)
+
         CastledSwizzler.enableSwizzlingForNotifications()
-        
+        setNotificationCategories(withItems: categories)
         let config = CastledConfigs.sharedInstance
-        
         if config.enablePush == true || CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey) == true{
             registerForPushNotifications()
         }
         initialSetup()
     }
-    
     private func initialSetup(){
         
         UIViewController.swizzleViewDidAppear()
@@ -88,27 +85,9 @@ import UIKit
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
-    @objc public func appBecomeActive() {
-        Castled.sharedInstance?.logAppOpenedEventIfAny()
-        Castled.sharedInstance?.processAllDeliveredNotifications(shouldClear: false)
-        if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
-            perform(#selector(executeBGTaskWithDelay), with: nil, afterDelay: 2.5)
-        }
-    }
-    
-    @objc private func executeBGTaskWithDelay(){
-        CastledBGManager.sharedInstance.executeBackgroundTask {
-        }
-    }
-    
-    // MARK: - Private
-    // Method to register for push notification
-    internal func registerForPushNotifications() {
-        CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey, true)
-        Castled.sharedInstance?.delegate.registerForPush?()
-    }
-    
-    /**
+
+
+  /**
      Function that allows users to set the badge on the app icon manually.
      */
     public func setBadge(to count: Int) {
@@ -137,17 +116,7 @@ import UIKit
         CastledInApps.sharedInstance.logAppEvent(context: context, eventName: eventName, params: params,showLog: showLog)
     }
     
-    
-    internal func logAppOpenedEventIfAny(showLog : Bool? = false) {
-        if CastledConfigs.sharedInstance.enableInApp == false{
-            return;
-        }
-        if Castled.sharedInstance == nil {
-            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
-            return
-        }
-        CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil,showLog: showLog)
-    }
+
     
     @objc public  func swizzled_application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         castledLog("didRegisterForRemoteNotificationsWithDeviceToken swizzled \(self) \(deviceToken.debugDescription)")
@@ -164,7 +133,7 @@ import UIKit
     @objc public func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                       willPresentNotification notification: UNNotification,
                                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//        castledLog("willPresent swizzled")
+        //        castledLog("willPresent swizzled")
         
         Castled.sharedInstance?.handleNotificationInForeground(notification: notification)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, willPresent: notification, withCompletionHandler: completionHandler)) != nil else{
@@ -177,7 +146,7 @@ import UIKit
     @objc public func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                       didReceiveNotificationResponse response: UNNotificationResponse,
                                                       withCompletionHandler completionHandler: @escaping () -> Void) {
-//        castledLog("didReceive swizzled")
+        //        castledLog("didReceive swizzled")
         
         Castled.sharedInstance?.handleNotificationAction(response: response)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, didReceive: response, withCompletionHandler: completionHandler)) != nil else{
@@ -207,14 +176,14 @@ import UIKit
         processCastledPushEvents(userInfo: notification.request.content.userInfo, isForeGround: true)
         
         //Castled.sharedInstance?.registerNotificationCategories(userInfo: notification.request.content.userInfo)
-       // castledLog("notification userInfo \(notification.request.content.userInfo)")
+        // castledLog("notification userInfo \(notification.request.content.userInfo)")
     }
     
     
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
     @objc public func handleNotificationAction(response: UNNotificationResponse){
         // Returning the same options we've requested
-        var pushActionType = CastledPushActionType.other
+        var pushActionType = CastledClickActionType.other
 
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier{
@@ -222,28 +191,31 @@ import UIKit
             if let defaultActionDetails : [String : Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo),
                let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String{
 
-                        if defaultAction == CastledConstants.PushNotification.ActionType.deepLink.rawValue{
+                if defaultAction == CastledConstants.PushNotification.ClickActionType.deepLink.rawValue{
 
-                            pushActionType = CastledPushActionType.deepLink
-                        }
-                        //Navigate to screen
-                        else if defaultAction == CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue{
-                            pushActionType = CastledPushActionType.navigateToScreen
+                    pushActionType = CastledClickActionType.deepLink
+                }
+                //Navigate to screen
+                else if defaultAction == CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue{
+                    pushActionType = CastledClickActionType.navigateToScreen
 
-                        }
-                        else if defaultAction == CastledConstants.PushNotification.ActionType.richLanding.rawValue{
-                            pushActionType = CastledPushActionType.richLanding
+                }
+                else if defaultAction == CastledConstants.PushNotification.ClickActionType.richLanding.rawValue{
+                    pushActionType = CastledClickActionType.richLanding
 
-                        }
-                        else if defaultAction == CastledConstants.PushNotification.ActionType.discardNotification.rawValue{
+                }
+                else if defaultAction == CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue{
+                    pushActionType = CastledClickActionType.dismiss
 
-                        }
-                        Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
+
+                }
+                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
+
 
             }
             else{
                 // handle other actions
-                Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: nil, userInfo: userInfo)
+                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
 
             }
 
@@ -251,38 +223,39 @@ import UIKit
 
         }
         else if response.actionIdentifier == UNNotificationDismissActionIdentifier{
-
-            Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: nil, userInfo: userInfo)
+            Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .push, action: .dismiss, kvPairs: nil, userInfo: userInfo)
             processCastledPushEvents(userInfo: userInfo,isDismissed: true)
         }
         else {
             if let actionDetails : [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
                let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction]   as? String{
 
-                        //Deeplink
-                            if clickAction == CastledConstants.PushNotification.ActionType.deepLink.rawValue{
-                                pushActionType = CastledPushActionType.deepLink
-                                processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.deepLink.rawValue)
-                            }
-                            //Navigate to screen
-                            else if clickAction == CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue{
-                                pushActionType = CastledPushActionType.navigateToScreen
-                                processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.navigateToScreen.rawValue)
-                            }
-                            //Richlanding
-                            else if clickAction == CastledConstants.PushNotification.ActionType.richLanding.rawValue{
-                                pushActionType = CastledPushActionType.richLanding
-                                processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.richLanding.rawValue)
-                            }
-                            //Discard
-                            else if clickAction == CastledConstants.PushNotification.ActionType.discardNotification.rawValue{
-                                processCastledPushEvents(userInfo: userInfo,isDiscardedRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ActionType.discardNotification.rawValue)
-                            }
-                            Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: actionDetails, userInfo: userInfo)
+                //Deeplink
+                if clickAction == CastledConstants.PushNotification.ClickActionType.deepLink.rawValue{
+                    pushActionType = CastledClickActionType.deepLink
+                    processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.deepLink.rawValue)
+                }
+                //Navigate to screen
+                else if clickAction == CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue{
+                    pushActionType = CastledClickActionType.navigateToScreen
+                    processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue)
+                }
+                //Richlanding
+                else if clickAction == CastledConstants.PushNotification.ClickActionType.richLanding.rawValue{
+                    pushActionType = CastledClickActionType.richLanding
+                    processCastledPushEvents(userInfo: userInfo,isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.richLanding.rawValue)
+                }
+                //Discard
+                else if clickAction == CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue{
+                    pushActionType = CastledClickActionType.dismiss
+                    processCastledPushEvents(userInfo: userInfo,isDiscardedRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue)
+                }
+                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: actionDetails, userInfo: userInfo)
+
 
             }
             else{
-                Castled.sharedInstance?.delegate.notificationClicked?(withType: pushActionType, kvPairs: nil, userInfo: userInfo)
+                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
 
             }
 
@@ -433,5 +406,42 @@ import UIKit
             params["actionType"] = actionType
         }
         return params
+    }
+    private func setNotificationCategories(withItems items:Set<UNNotificationCategory>){
+        var categorySet = items
+        categorySet.insert(getCastledCategory())
+        UNUserNotificationCenter.current().setNotificationCategories(categorySet)
+
+    }
+    private func getCastledCategory() -> UNNotificationCategory{
+        let castledCategory = UNNotificationCategory.init(identifier: "CASTLED_PUSH_TEMPLATE", actions: [], intentIdentifiers: [], options: .customDismissAction)
+        return castledCategory
+
+    }
+    @objc private func executeBGTaskWithDelay(){
+        CastledBGManager.sharedInstance.executeBackgroundTask {
+        }
+    }
+    @objc internal func appBecomeActive() {
+        Castled.sharedInstance?.logAppOpenedEventIfAny()
+        Castled.sharedInstance?.processAllDeliveredNotifications(shouldClear: false)
+        if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
+            perform(#selector(executeBGTaskWithDelay), with: nil, afterDelay: 2.5)
+        }
+    }
+
+    internal func registerForPushNotifications() {
+        CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey, true)
+        Castled.sharedInstance?.delegate.registerForPush?()
+    }
+    private func logAppOpenedEventIfAny(showLog : Bool? = false) {
+        if CastledConfigs.sharedInstance.enableInApp == false{
+            return;
+        }
+        if Castled.sharedInstance == nil {
+            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
+            return
+        }
+        CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil,showLog: showLog)
     }
 }

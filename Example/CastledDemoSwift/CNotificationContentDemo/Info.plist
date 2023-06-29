@@ -10,8 +10,7 @@
 			<true/>
 			<key>UNNotificationExtensionCategory</key>
 			<array>
-				<string>YES_NO</string>
-				<string>ACCEPT_DECLINE</string>
+				<string>CASTLED_PUSH_TEMPLATE</string>
 			</array>
 			<key>UNNotificationExtensionInitialContentSizeRatio</key>
 			<integer>1</integer>

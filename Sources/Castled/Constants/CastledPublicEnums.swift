@@ -27,9 +27,26 @@ import Foundation
     }
     
 }
-@objc public enum CastledPushActionType: Int {
+@objc public enum CastledClickActionType: Int {
     case deepLink
     case navigateToScreen
     case richLanding
+    case reuestForPush //this is for inapp
+    case dismiss
     case other
+
 }
+@objc public enum CastledNotificationType: Int {
+    case push
+    case inapp
+    case other
+
+    public func value() -> String {
+        switch self {
+            case .push: return "push"
+            case .inapp: return "inapp"
+            case .other: return "other"
+        }
+    }
+}
+
