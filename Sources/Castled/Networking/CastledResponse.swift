@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CastledResponse<T: Any>: NSObject {
+internal class CastledResponse<T: Any>: NSObject {
     
     let statusCode  : Int
     public var success   : Bool

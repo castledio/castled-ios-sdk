@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@objc public class CastledUserDefaults: NSObject {
+@objc internal class CastledUserDefaults: NSObject {
     
     // static let userDefaults = UserDefaults.init(suiteName: appConfiguration.suitName) ?? UserDefaults.standard
     
@@ -15,15 +15,14 @@ import Foundation
     //Userdefault keys
     internal static var kCastledIsTokenRegisteredKey        = "_castledIsTokenRegistered_"
     internal static var kCastledAnonymousIdKey              = "_castledAnonymousId_"
-    @objc public static var kCastledUserIdKey                   = "_castledUserId_"
-    @objc public static let kCastledAPNsTokenKey         = "_castledApnsToken_"
-    public static let kCastledInAppsList               = "castled_inapps"
-    public static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
-    
-    internal static let kCastledSendingInAppsEvents       = "_castledSendingInAppEvents_"
-    internal static let kCastledSendingPushEvents         = "_castledSendingPushEvents_"
-    internal static let kCastledSavedInappConfigs         = "_castledSavedInappConfigs_"
-    internal static let kCastledLastInappDisplayedTime         = "_castledLastInappDisplayedTime_"
+    @objc public static var kCastledUserIdKey               = "_castledUserId_"
+    @objc public static let kCastledAPNsTokenKey            = "_castledApnsToken_"
+    public static let kCastledInAppsList                    = "castled_inapps"
+    public static var kCastledEnablePushNotificationKey     = "_castledEnablePushNotification_"
+    internal static let kCastledSendingInAppsEvents         = "_castledSendingInAppEvents_"
+    internal static let kCastledSendingPushEvents           = "_castledSendingPushEvents_"
+    internal static let kCastledSavedInappConfigs           = "_castledSavedInappConfigs_"
+    internal static let kCastledLastInappDisplayedTime      = "_castledLastInappDisplayedTime_"
     
     
     

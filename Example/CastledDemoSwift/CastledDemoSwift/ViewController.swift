@@ -9,6 +9,7 @@ import UIKit
 import Castled_iOS_SDK
 
 class ViewController: UIViewController {
+    let userIdKey = "userIdKey"
     @IBOutlet weak var btnRegisterUser: UIButton!
     @IBOutlet weak var btnGotoSecondVC: UIButton!
     var mainWindow: UIWindow?
@@ -29,8 +30,8 @@ class ViewController: UIViewController {
     
     func showRequiredViews(){
         DispatchQueue.main.async { [weak self] in
-            
-            if  CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
+
+            if  UserDefaults.standard.value(forKey: self?.userIdKey ?? "userIdKey") != nil {
                 self?.btnGotoSecondVC.isHidden = false
             }
             else
@@ -50,23 +51,18 @@ class ViewController: UIViewController {
     //Function for registering the user with Castled
     func registerUserAPI() {
         
-        let userId    = "antony@castled.io"//user-101
-        //        let userId    = "frank@castled.io"//user-101
-      // let userId    = "abhilash@castled.io"//user-101
-        
-        let token =  CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
+        let userId    = "antony@castled.io"
+        //let userId    = "frank@castled.io"
+        // let userId    = "abhilash@castled.io"
+
+        let token : String? = nil // Replace with valid token
         Castled.registerUser(userId: userId, apnsToken: token)
+        UserDefaults.standard.setValue(userId, forKey: userIdKey)
+        UserDefaults.standard.synchronize()
         showRequiredViews()
         
     }
-    
-    func registerEvents(){
-        
-    }
-    
-    func triggerCampaign() {
-        
-    }
+
     
     //For testing purpose
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

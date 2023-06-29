@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CastledConstants {
+internal class CastledConstants {
     
     //Plist Key for enable/ Disable swizzling
     static let kCastledSwzzlingDisableKey          = "CastledSwizzlingDisabled"

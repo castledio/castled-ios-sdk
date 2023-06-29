@@ -20,19 +20,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    CastledConfigs *config = [CastledConfigs sharedInstance];
-    config.permittedBGIdentifier = @"";
+    CastledConfigs *config = [CastledConfigs initializeWithInstanceId:@"829c38e2e359d94372a2e0d35e1f74df"];
+//    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
     config.enableInApp = TRUE;
-    config.disableLog = FALSE;
+//    config.disableLog = FALSE;
     config.location = CastledLocationUS;
-
-
-    [Castled configureWithRegisterIn:application launchOptions:launchOptions instanceId:@"829c38e2e359d94372a2e0d35e1f74df" delegate:(id)self];
-
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
-    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:notificationCategories];
-
+    [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];
 
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *navBarAppearance = [[UINavigationBarAppearance alloc] init];
@@ -164,27 +159,79 @@
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@ %@", self.description,NSStringFromSelector(_cmd),deviceToken.debugDescription);
 
 }
-- (void)notificationClickedWithType:(CastledPushActionType)type kvPairs:(NSDictionary<id, id> * _Nullable)kvPairs userInfo:(NSDictionary<id, id> *)userInfo;
-{
+- (void)notificationClickedWithNotificationType:(CastledNotificationType)type
+                                         action:(CastledClickActionType)action
+                                        kvPairs:(NSDictionary<id, id> * _Nullable)kvPairs
+                                       userInfo:(NSDictionary<id, id> *)userInfo {
+    NSLog(@"type %ld action %ld", (long)type, (long)action);
 
-    NSLog(@"*****************NotificationClicked: %@ %@ Action type %ld ***************** ", self.description,NSStringFromSelector(_cmd),(long)type);
-    switch (type) {
-        case CastledPushActionTypeDeepLink:
-            NSLog(@"handleDeepLinkWithURL %@",kvPairs[@"clickActionUrl"]);
+    switch (action) {
+        case CastledClickActionTypeDeepLink:
+            if (kvPairs) {
+                NSString *value = kvPairs[@"clickActionUrl"];
+                NSURL *url = [NSURL URLWithString:value];
+                if (url) {
+                    [self handleDeepLinkWithURL:url];
+                }
+            }
             break;
-        case CastledPushActionTypeNavigateToScreen:
-            NSLog(@"navigateToScreen %@",kvPairs[@"clickActionUrl"]);
+
+        case CastledClickActionTypeNavigateToScreen:
+            if (kvPairs) {
+                NSString *screenName = kvPairs[@"clickActionUrl"];
+                [self handleNavigateToScreenWithScreenName:screenName];
+            }
             break;
-        case CastledPushActionTypeRichLanding:
-            NSLog(@"handleRichLandingWithScreenName %@",kvPairs);
+
+        case CastledClickActionTypeRichLanding:
+            // TODO:
             break;
-        case CastledPushActionTypeOther:
-            NSLog(@"handle other actions %@",kvPairs);
+
+        case CastledClickActionTypeRequestForPush:
+            // TODO:
             break;
+
+        case CastledClickActionTypeDismiss:
+            // TODO:
+            break;
+
+        case CastledClickActionTypeOther:
+            // TODO:
+            break;
+
         default:
             break;
     }
-
 }
+
+- (void)handleDeepLinkWithURL:(NSURL *)url {
+    if (!url) {
+        return;
+    }
+
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    NSString *scheme = components.scheme;
+    NSString *path = components.path;
+    NSString *host = components.host;
+    NSLog(@"Path %@", path);
+
+    if ([scheme isEqualToString:@"com.castled"] && ([path isEqualToString:@"/deeplinkvc"] || [host isEqualToString:@"deeplinkvc"])) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DeeplinkViewController"];
+        if (vc) {
+            // implement presentation logic using vc
+        }
+    }
+}
+
+- (void)handleNavigateToScreenWithScreenName:(NSString *)screenName {
+    if (!screenName) {
+        return;
+    }
+
+    // implement presentation logic with screen name
+}
+
+
 
 @end

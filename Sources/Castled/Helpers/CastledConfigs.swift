@@ -8,14 +8,21 @@
 import Foundation
 @objc public class CastledConfigs: NSObject {
     
-    @objc public static var sharedInstance = CastledConfigs()
-    
-    private override init() {
-        
+    private static var sharedConfig: CastledConfigs?
+    internal var instanceId: String = ""
+
+    // MARK: - initialization method
+    @objc public static func initialize(withInstanceId instanceId: String) -> CastledConfigs{
+        if let existingConfig = CastledConfigs.sharedConfig {
+            existingConfig.instanceId = instanceId
+        }
+        else{
+            CastledConfigs.sharedConfig =  CastledConfigs.init(instanceId: instanceId)
+        }
+        return CastledConfigs.sharedConfig!
     }
-    @objc public lazy var instanceId: String = {
-        return ""
-    }()
+
+    // MARK: - Supporting properites
     @objc public lazy var permittedBGIdentifier: String = {
         return ""
     }()
@@ -43,5 +50,23 @@ import Foundation
     @objc public lazy var location: CastledLocation = {
         return CastledLocation.TEST
     }()
+
+
+    // MARK: - Supporting private methods
+    private init(instanceId: String){
+        self.instanceId = instanceId
+        super.init()
+        if CastledConfigs.sharedConfig == nil{
+            CastledConfigs.sharedConfig = self
+        }
+    }
+    static internal var sharedInstance: CastledConfigs {
+        guard let sharedConfig = sharedConfig else {
+            fatalError("CastledConfigs has not been initialized. Call CastledConfigs.initialize(instanceId:) first.")
+        }
+        return sharedConfig
+    }
+
+
     
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-@objc public class CastledInApps : NSObject {
+@objc internal class CastledInApps : NSObject {
     
     internal static var sharedInstance = CastledInApps()
     internal var savedInApps = [CastledInAppObject]()
@@ -184,7 +184,7 @@ import UIKit
                 
                 break
             case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .reuestForPush, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .requestForPush, kvPairs: params, userInfo: params ?? [String: String]())
                 break
             case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .dismiss, kvPairs: params, userInfo: params ?? [String: String]())

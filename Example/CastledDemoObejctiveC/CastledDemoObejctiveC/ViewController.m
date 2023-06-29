@@ -8,6 +8,7 @@
 #import "ViewController.h"
 #import <Castled_iOS_SDK/Castled_iOS_SDK-Swift.h>
 
+static NSString *userIdKey = @"userIdKey";
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *btnRegisterUser;
 @property (weak, nonatomic) IBOutlet UIButton *btnGotoSecondVC;
@@ -30,7 +31,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
 
 
-        if ([CastledUserDefaults getString:CastledUserDefaults.kCastledUserIdKey] != nil) {
+        if ([[NSUserDefaults standardUserDefaults] valueForKey:userIdKey] != nil) {
             weakSelf.btnGotoSecondVC.hidden = NO;
         } else {
             weakSelf.btnGotoSecondVC.hidden = YES;
@@ -47,8 +48,10 @@
 
 - (void)registerUserAPI {
     NSString *userId = @"antony@castled.io"; // user-101
-    NSString *token = [CastledUserDefaults getString:CastledUserDefaults.kCastledAPNsTokenKey];
+    NSString *token = nil;// Replace with valid token
     [Castled registerUserWithUserId:userId apnsToken:token];
+    [[NSUserDefaults standardUserDefaults] setValue:userId forKey:userIdKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self showRequiredViews];
 }
 

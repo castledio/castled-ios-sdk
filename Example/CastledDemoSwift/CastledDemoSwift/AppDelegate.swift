@@ -13,9 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        let config = CastledConfigs.sharedInstance
-        config.instanceId = "829c38e2e359d94372a2e0d35e1f74df"
+
+        let config = CastledConfigs.initialize(withInstanceId: "829c38e2e359d94372a2e0d35e1f74df")
         //config.permittedBGIdentifier = "com.castled.backgroundtask"
         config.enablePush  = true
         config.enableInApp = true
@@ -24,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
 
         // Register the custom category
         let notificationCategories = getNotificationCategories();
-
         Castled.initialize(withConfig: config, delegate: self,andNotificationCategories: notificationCategories)
 
         
@@ -184,15 +182,15 @@ extension AppDelegate: CastledNotificationDelegate {
 
                 break
             case .navigateToScreen:
-                if let details = kvPairs, let value = details["clickActionUrl"] as? String {
-                    handleNavigateToScreen(screenName: value)
+                if let details = kvPairs, let screenName = details["clickActionUrl"] as? String {
+                    handleNavigateToScreen(screenName: screenName)
                 }
                 break
             case .richLanding:
                 //TODO:
 
                 break
-            case .reuestForPush:
+            case .requestForPush:
                 //TODO:
 
                 break
