@@ -418,7 +418,7 @@ import UIKit
         return castledCategory
         
     }
-    @objc private func executeBGTaskWithDelay(){
+    @objc internal func executeBGTaskWithDelay(){
         CastledBGManager.sharedInstance.executeBackgroundTask {
         }
     }

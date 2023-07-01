@@ -24,18 +24,19 @@ extension Castled {
             CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, deviceToken)
         }
         CastledUserDefaults.setString(CastledUserDefaults.kCastledUserIdKey, uid)
-        
-        defer{
-            Castled.sharedInstance?.appBecomeActive()
-        }
-        
+
+
         if deviceToken != nil && CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false
         {
             Castled.sharedInstance?.api_RegisterUser(userId: uid, apnsToken: deviceToken!) {response in
                 if response.success{
+                    Castled.sharedInstance?.executeBGTaskWithDelay()
 
                 }
             }
+        }
+        else{
+            Castled.sharedInstance?.executeBGTaskWithDelay()
         }
     }
     
