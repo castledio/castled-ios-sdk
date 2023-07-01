@@ -51,8 +51,8 @@ class ViewController: UIViewController {
     //Function for registering the user with Castled
     func registerUserAPI() {
         
-        let userId    = "antony@castled.io"
-        //let userId    = "frank@castled.io"
+        //let userId    = "antony@castled.io"
+        let userId    = "frank@castled.io"
         // let userId    = "abhilash@castled.io"
 
         let token : String? = nil // Replace with valid token

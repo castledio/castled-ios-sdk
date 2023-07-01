@@ -19,7 +19,10 @@ extension Castled {
         if deviceToken == nil{
             deviceToken =  CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
         }
-        
+        else if (CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey) == nil){
+            // Saving this in ud for retry mechanism, in the case of failure in the below api
+            CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, deviceToken)
+        }
         CastledUserDefaults.setString(CastledUserDefaults.kCastledUserIdKey, uid)
         
         defer{
@@ -30,10 +33,7 @@ extension Castled {
         {
             Castled.sharedInstance?.api_RegisterUser(userId: uid, apnsToken: deviceToken!) {response in
                 if response.success{
-                    CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, true)
-                    if (CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey) == nil){
-                        CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, deviceToken)
-                    }
+
                 }
             }
         }
@@ -115,7 +115,7 @@ extension Castled {
 
 extension Castled{
     
-    private func api_RegisterUser(userId uid : String, apnsToken token : String,  completion: @escaping (_ response: CastledResponse<[String : String]>) -> Void){
+    internal func api_RegisterUser(userId uid : String, apnsToken token : String,  completion: @escaping (_ response: CastledResponse<[String : String]>) -> Void){
         
         guard let instance_id = Castled.sharedInstance?.instanceId else{
             castledLog("Register User Error:❌❌❌\(CastledExceptionMessages.notInitialised.rawValue)")
@@ -135,6 +135,7 @@ extension Castled{
             switch response {
             case .success(let responsJSON):
                 castledLog("Register User Success:✅✅✅ \(responsJSON)")
+                CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, true)
                 completion(CastledResponse(response: responsJSON as! [String : String]))
                 
             case .failure(let error):

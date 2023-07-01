@@ -426,7 +426,7 @@ import UIKit
         Castled.sharedInstance?.logAppOpenedEventIfAny()
         Castled.sharedInstance?.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
-            perform(#selector(executeBGTaskWithDelay), with: nil, afterDelay: 2.5)
+            perform(#selector(executeBGTaskWithDelay), with: nil, afterDelay: 2.0)
         }
     }
     

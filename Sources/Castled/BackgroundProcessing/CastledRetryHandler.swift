@@ -21,8 +21,15 @@ internal class CastledRetryHandler {
             let savedInAppEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents) as? [[String:String]]) ?? [[String:String]]()
             
             let savedPushEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingPushEvents) as? [[String:String]]) ?? [[String:String]]()
-            
-            guard savedInAppEvents.count > 0 || savedPushEvents.count > 0  else {
+
+            var shouldCallRegister = false
+            let pushToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
+            if pushToken != nil && CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false
+            {
+                shouldCallRegister = true
+            }
+
+            guard savedInAppEvents.count > 0 || savedPushEvents.count > 0 || shouldCallRegister == true else {
                 completion?()
                 return
             }
@@ -63,7 +70,18 @@ internal class CastledRetryHandler {
                     }
                 })
             }
-            
+            if shouldCallRegister == true{
+
+                self?.castledSemaphore.wait()
+                self?.castledGroup.enter()
+
+                Castled.sharedInstance?.api_RegisterUser(userId: CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) ?? "", apnsToken: pushToken ?? "") {response in
+
+                    self?.castledSemaphore.signal()
+                    self?.castledGroup.leave()
+
+                }
+            }
             
             self?.castledGroup.notify(queue: .main) {
                 completion?()
