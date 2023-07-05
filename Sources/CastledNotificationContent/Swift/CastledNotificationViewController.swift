@@ -10,14 +10,20 @@ import UserNotifications
 import UserNotificationsUI
 
 @objc open class CastledNotificationViewController: UIViewController, UNNotificationContentExtension {
-    
+
+    @objc public var appGroupId = "" {
+        didSet{
+            if let mediaVC = childViewController as? CastledMediasViewController{
+                mediaVC.setUserdefaults(FromAppgroup: appGroupId)
+            }
+        }
+    }
+
     private static let kCustomKey        = "castled"
     private static let kMsg_frames       = "msg_frames"
-    
-    
     @IBOutlet var imageView: UIImageView!
     var childViewController: UIViewController?
-    
+
     open override func viewDidLoad() {
         super.viewDidLoad()
         self.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -37,6 +43,9 @@ import UserNotificationsUI
                     addChild(mediaListVC)
                     mediaListVC.view.frame = view.frame
                     view.addSubview(mediaListVC.view)
+                    if appGroupId.count > 0{
+                        mediaListVC.setUserdefaults(FromAppgroup: appGroupId)
+                    }
                     childViewController = mediaListVC
                     mediaListVC.view.layoutIfNeeded()
                     self.preferredContentSize = mediaListVC.preferredContentSize
@@ -70,6 +79,7 @@ import UserNotificationsUI
         let convertedAttachments = try? jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
         return convertedAttachments
     }
+
 }
 
 

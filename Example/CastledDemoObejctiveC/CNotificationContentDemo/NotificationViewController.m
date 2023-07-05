@@ -19,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     // Do any required interface initialization here.
 }
 

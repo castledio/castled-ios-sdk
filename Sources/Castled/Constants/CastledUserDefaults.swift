@@ -7,11 +7,9 @@
 
 import Foundation
 @objc internal class CastledUserDefaults: NSObject {
-    
-    // static let userDefaults = UserDefaults.init(suiteName: appConfiguration.suitName) ?? UserDefaults.standard
-    
-    static let userDefaults = UserDefaults.standard
-    
+
+    static let userDefaults = UserDefaults.init(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
+
     //Userdefault keys
     internal static var kCastledIsTokenRegisteredKey        = "_castledIsTokenRegistered_"
     internal static var kCastledAnonymousIdKey              = "_castledAnonymousId_"
@@ -23,9 +21,8 @@ import Foundation
     internal static let kCastledSendingPushEvents           = "_castledSendingPushEvents_"
     internal static let kCastledSavedInappConfigs           = "_castledSavedInappConfigs_"
     internal static let kCastledLastInappDisplayedTime      = "_castledLastInappDisplayedTime_"
-    
-    
-    
+    internal static let kCastledClickedNotiContentIndx      = "_kCastledClickedNotiContentIndx_"
+
     @objc public static func getString(_ key: String) -> String? {
 
         // Fetch value from UserDefaults

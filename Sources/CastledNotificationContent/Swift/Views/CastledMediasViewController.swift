@@ -8,8 +8,11 @@
 import UIKit
 
 class CastledMediasViewController: UIViewController {
-    
+
+    private var userDefaults : UserDefaults?
     private var mediaObjects: [CastledNotificationMediaObject]
+    private static let kCastledClickedNotiContentIndx      = "_kCastledClickedNotiContentIndx_"
+
     private let pageControl: UIPageControl = {
         let control = UIPageControl()
         control.translatesAutoresizingMaskIntoConstraints = false
@@ -66,6 +69,12 @@ class CastledMediasViewController: UIViewController {
         
         pageControl.numberOfPages = mediaObjects.count
     }
+    func setUserdefaults(FromAppgroup appGroupId: String){
+        userDefaults =  UserDefaults.init(suiteName: appGroupId)
+        userDefaults?.removeObject(forKey: CastledMediasViewController.kCastledClickedNotiContentIndx)
+        userDefaults?.synchronize()
+    }
+    
 }
 
 extension CastledMediasViewController: UICollectionViewDataSource,UICollectionViewDelegate {
@@ -77,7 +86,6 @@ extension CastledMediasViewController: UICollectionViewDataSource,UICollectionVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CastledMediaCollectionViewCell.reuseIdentifier, for: indexPath) as! CastledMediaCollectionViewCell
         let mediaObject = mediaObjects[indexPath.row]
-        
         cell.configure(with: mediaObject)
         return cell
     }
@@ -86,7 +94,10 @@ extension CastledMediasViewController: UICollectionViewDataSource,UICollectionVi
 
         let mediaObject = mediaObjects[indexPath.row]
         if mediaObject.mediaType == .image{
+            userDefaults?.setValue(indexPath.item, forKey: CastledMediasViewController.kCastledClickedNotiContentIndx)
+            userDefaults?.synchronize()
             self.extensionContext?.performNotificationDefaultAction()
+
         }
 
     }

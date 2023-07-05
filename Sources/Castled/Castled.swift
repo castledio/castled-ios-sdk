@@ -187,10 +187,9 @@ import UIKit
         
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier{
-            
-            if let defaultActionDetails : [String : Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo),
+            if let defaultActionDetails : [String : Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo,index: CastledUserDefaults.userDefaults.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
                let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String{
-                
+
                 if defaultAction == CastledConstants.PushNotification.ClickActionType.deepLink.rawValue{
                     
                     pushActionType = CastledClickActionType.deepLink
@@ -211,7 +210,7 @@ import UIKit
                 }
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
                 
-                
+                CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx)
             }
             else{
                 // handle other actions

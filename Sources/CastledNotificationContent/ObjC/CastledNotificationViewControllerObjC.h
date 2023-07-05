@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CastledNotificationViewControllerObjC : UIViewController <UNNotificationContentExtension>
 
+@property (nonatomic,retain) NSString *appGroupId;
 - (void)didReceiveNotification:(UNNotification *)notification;
 
 @end

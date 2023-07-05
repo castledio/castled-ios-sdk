@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
 
         let config = CastledConfigs.initialize(withInstanceId: "829c38e2e359d94372a2e0d35e1f74df")
         //config.permittedBGIdentifier = "com.castled.backgroundtask"
+        config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         config.enablePush  = true
         config.enableInApp = true
         config.location    = CastledLocation.US

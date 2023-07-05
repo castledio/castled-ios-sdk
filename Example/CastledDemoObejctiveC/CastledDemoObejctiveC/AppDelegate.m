@@ -24,6 +24,7 @@
 //    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
     config.enableInApp = TRUE;
+    config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
 //    config.disableLog = FALSE;
     config.location = CastledLocationUS;
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];

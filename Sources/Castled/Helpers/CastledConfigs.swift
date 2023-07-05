@@ -23,10 +23,19 @@ import Foundation
     }
 
     // MARK: - Supporting properites
-    @objc public lazy var permittedBGIdentifier: String = {
+
+    @objc public lazy var appGroupId: String = {
         return ""
     }()
-    
+
+    @objc public lazy var disableLog: Bool = {
+        return false
+    }()
+
+    @objc public lazy var enableInApp: Bool = {
+        return false
+    }()
+
     @objc public lazy var enablePush = false {
         didSet {
             if enablePush == true{
@@ -34,22 +43,19 @@ import Foundation
             }
         }
     }
-    
-    @objc public lazy var disableLog: Bool = {
-        return false
-    }()
-    
-    @objc public lazy var enableInApp: Bool = {
-        return false
-    }()
-    
+
     @objc public lazy var inAppFetchIntervalSec: Int = {
         return 15*60
     }()
-    
+
     @objc public lazy var location: CastledLocation = {
         return CastledLocation.TEST
     }()
+
+    @objc public lazy var permittedBGIdentifier: String = {
+        return ""
+    }()
+
 
 
     // MARK: - Supporting private methods
@@ -66,7 +72,4 @@ import Foundation
         }
         return sharedConfig
     }
-
-
-    
 }
