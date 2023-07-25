@@ -72,11 +72,11 @@ internal class CastledConstants {
 
     
     internal enum CastledEventTypes: String {
-        case send            = "SEND"
+       // case send            = "SEND"
         case cliked          = "CLICKED"
         case discarded       = "DISCARDED"
         case received        = "RECEIVED"
-        case foreground      = "FOREGROUND"
+//        case foreground      = "FOREGROUND"
         case viewed          = "VIEWED"
         
         

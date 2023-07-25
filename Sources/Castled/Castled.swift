@@ -173,6 +173,7 @@ import UIKit
     }
     
     @objc public func handleNotificationInForeground(notification: UNNotification){
+        //castledLog(notification.request.content.userInfo)
         processCastledPushEvents(userInfo: notification.request.content.userInfo, isForeGround: true)
         
         //Castled.sharedInstance?.registerNotificationCategories(userInfo: notification.request.content.userInfo)
@@ -329,7 +330,7 @@ import UIKit
                     }
                     
                     if isForeGround == true {
-                        event = CastledConstants.CastledEventTypes.foreground.rawValue
+                        event = CastledConstants.CastledEventTypes.received.rawValue
                     }
                     
                     
@@ -355,6 +356,9 @@ import UIKit
     }
     
     func processAllDeliveredNotifications(shouldClear : Bool){
+        if CastledConfigs.sharedInstance.enablePush == false{
+            return
+        }
         castledNotificationQueue.async {
             if #available(iOS 10.0, *) {
                 let center = UNUserNotificationCenter.current()
