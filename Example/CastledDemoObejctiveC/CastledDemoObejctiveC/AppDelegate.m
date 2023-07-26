@@ -20,7 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    CastledConfigs *config = [CastledConfigs initializeWithInstanceId:@"829c38e2e359d94372a2e0d35e1f74df"];
+    CastledConfigs *config = [CastledConfigs initializeWithInstanceId:@"718c38e2e359d94367a2e0d35e1fd4df"];
 //    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
     config.enableInApp = TRUE;
@@ -112,7 +112,7 @@
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
     //response.notification.request.content.userInfo
     NSLog(@"didReceiveNotificationResponse: %@", self.description);
-    [[Castled sharedInstance] handleNotificationActionWithResponse:response];
+    [[Castled sharedInstance] userNotificationCenter:center didReceive:response];
 
     completionHandler();
 }
@@ -120,14 +120,17 @@
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
     //notification.request.content.userInfo
     NSLog(@"willPresentNotification: %@", self.description);
-    [[Castled sharedInstance] handleNotificationInForegroundWithNotification:notification];
+    [[Castled sharedInstance] userNotificationCenter:center willPresent:notification];
 
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     NSLog(@"didReceiveRemoteNotification with completionHandler: %@ %@", self.description, userInfo);
-    completionHandler(UIBackgroundFetchResultNewData);
+    [[Castled sharedInstance] didReceiveRemoteNotificationInApplication:application withInfo:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult) {
+        completionHandler(UIBackgroundFetchResultNewData);
+
+    }];
 }
 
 
@@ -149,6 +152,11 @@
     completionHandler();
 
 }
+- (void)castled_application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    NSLog(@"didReceiveRemoteNotification: %@ %@", self.description,NSStringFromSelector(_cmd));
+    completionHandler(UIBackgroundFetchResultNewData);
+
+}
 
 - (void)castled_application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@ %@ %@", self.description,NSStringFromSelector(_cmd),error.localizedDescription);
@@ -160,6 +168,8 @@
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@ %@", self.description,NSStringFromSelector(_cmd),deviceToken.debugDescription);
 
 }
+
+
 - (void)notificationClickedWithNotificationType:(CastledNotificationType)type
                                          action:(CastledClickActionType)action
                                         kvPairs:(NSDictionary<id, id> * _Nullable)kvPairs

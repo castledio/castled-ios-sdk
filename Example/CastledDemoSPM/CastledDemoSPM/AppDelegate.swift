@@ -14,10 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        let config = CastledConfigs.initialize(withInstanceId: "829c38e2e359d94372a2e0d35e1f74df")
+        let config = CastledConfigs.initialize(withInstanceId: "718c38e2e359d94367a2e0d35e1fd4df")
         //config.permittedBGIdentifier = "com.castled.backgroundtask"
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
-
         config.enablePush  = true
         config.enableInApp = true
         config.location    = CastledLocation.US
@@ -82,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
 
         if url.scheme == "com.castled"{
             let host = url.host
-            let pathComponents = url.pathComponents
+            //let pathComponents = url.pathComponents
             var parameters: [String: String] = [:]
             URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.forEach {
                 parameters[$0.name] = $0.value
@@ -141,7 +140,6 @@ extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
 
         UNUserNotificationCenter.current().delegate = self
-
         UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: {granted, error in
             if granted {
                 DispatchQueue.main.async {
@@ -153,6 +151,7 @@ extension AppDelegate: CastledNotificationDelegate {
 
     func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("willPresent \(self.description) \(#function)")
+        print(notification.request.content.userInfo)
         completionHandler( [[.alert, .badge, .sound]])
 
     }
@@ -173,7 +172,12 @@ extension AppDelegate: CastledNotificationDelegate {
         print("didRegisterForRemoteNotificationsWithDeviceToken \(self.description) \(#function)")
 
     }
+    func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
+        print("\(self.description) \(#function)")
+        completionHandler(.newData)
+
+    }
     func notificationClicked(withNotificationType type: CastledNotificationType,action: CastledClickActionType , kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any]){
         print("type \(type.rawValue) action \(action.rawValue)")
         switch action {
@@ -222,7 +226,6 @@ extension AppDelegate : UNUserNotificationCenterDelegate{
     func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
 
         Castled.sharedInstance?.setDeviceToken(deviceToken: deviceToken)
-
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         print("APNs token \(deviceTokenString) \(self.description)")
 
@@ -234,27 +237,27 @@ extension AppDelegate : UNUserNotificationCenterDelegate{
 
     }
 
+
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 
         print("didReceive \(self.description)")
-
         //Handle the click events
-        Castled.sharedInstance?.handleNotificationAction(response: response)
-
+        Castled.sharedInstance?.userNotificationCenter(center, didReceive: response)
         completionHandler()
     }
-
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("willPresent \(self.description)")
-
-        Castled.sharedInstance?.handleNotificationInForeground(notification: notification)
+        Castled.sharedInstance?.userNotificationCenter(center, willPresent: notification)
         completionHandler( [.alert, .badge, .sound])
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
-        print("didReceiveRemoteNotification \(self.description)")
-        completionHandler(.newData)
+        Castled.sharedInstance?.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { result in
+            print("didReceiveRemoteNotification \(self.description)")
+            completionHandler(.newData)
+
+        })
     }
 }
 
@@ -344,3 +347,4 @@ extension AppDelegate{
     }
 
 }
+

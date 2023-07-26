@@ -24,6 +24,8 @@ class CastledSwizzler {
         self.swizzleImplementations(type(of: appDelegate), "application:didFailToRegisterForRemoteNotificationsWithError:")
         self.swizzleImplementations(type(of: appDelegate), "userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")
         self.swizzleImplementations(type(of: appDelegate), "userNotificationCenter:willPresentNotification:withCompletionHandler:")
+        self.swizzleImplementations(type(of: appDelegate), "application:didReceiveRemoteNotification:fetchCompletionHandler:")
+
     }
     
     
