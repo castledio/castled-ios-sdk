@@ -15,6 +15,7 @@
 		0A33BB8A29E6D80C0005ACED /* CastledPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8929E6D80C0005ACED /* CastledPrint.swift */; };
 		0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */; };
 		0A365E032A43744E0048BD09 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A365E022A43744E0048BD09 /* SDWebImage.framework */; };
+		0A446E252A7AD08E004A6376 /* CastledInAppModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A446E242A7AD08E004A6376 /* CastledInAppModalViewController.swift */; };
 		0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */; };
 		0A6A93E129E7F53C0083249E /* CastledInAppDisplaySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6A93E029E7F53C0083249E /* CastledInAppDisplaySettings.swift */; };
 		0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74E08C29E6D615004F2610 /* CastledInApps.swift */; };
@@ -44,7 +45,6 @@
 		0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */; };
 		0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */; };
 		12C72C4F2947986300B6B3DC /* CastledInAppDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */; };
-		12C72C512947989300B6B3DC /* CastledInAppModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C502947989300B6B3DC /* CastledInAppModalViewController.swift */; };
 		12C72C53294798B700B6B3DC /* CastledInAppFullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C52294798B700B6B3DC /* CastledInAppFullScreenViewController.swift */; };
 		12C72C55294798E300B6B3DC /* CastledInAppFooterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C54294798E300B6B3DC /* CastledInAppFooterViewController.swift */; };
 		12C72C5A29479CDB00B6B3DC /* CastledInAppModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C72C5929479CDB00B6B3DC /* CastledInAppModalViewController.xib */; };
@@ -70,6 +70,7 @@
 		0A33BB8929E6D80C0005ACED /* CastledPrint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledPrint.swift; sourceTree = "<group>"; };
 		0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzlingAppear.swift; sourceTree = "<group>"; };
 		0A365E022A43744E0048BD09 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
+		0A446E242A7AD08E004A6376 /* CastledInAppModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInAppModalViewController.swift; sourceTree = "<group>"; };
 		0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTouchThroughWindow.swift; sourceTree = "<group>"; };
 		0A6A93E029E7F53C0083249E /* CastledInAppDisplaySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppDisplaySettings.swift; sourceTree = "<group>"; };
 		0A74E08C29E6D615004F2610 /* CastledInApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInApps.swift; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledReachability.swift; sourceTree = "<group>"; };
 		12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppDisplayViewController.swift; sourceTree = "<group>"; };
-		12C72C502947989300B6B3DC /* CastledInAppModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppModalViewController.swift; sourceTree = "<group>"; };
 		12C72C52294798B700B6B3DC /* CastledInAppFullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppFullScreenViewController.swift; sourceTree = "<group>"; };
 		12C72C54294798E300B6B3DC /* CastledInAppFooterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppFooterViewController.swift; sourceTree = "<group>"; };
 		12C72C5929479CDB00B6B3DC /* CastledInAppModalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CastledInAppModalViewController.xib; sourceTree = "<group>"; };
@@ -220,8 +220,8 @@
 			children = (
 				12C72C4D2947951B00B6B3DC /* Resources */,
 				12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */,
-				12C72C502947989300B6B3DC /* CastledInAppModalViewController.swift */,
 				12C72C52294798B700B6B3DC /* CastledInAppFullScreenViewController.swift */,
+				0A446E242A7AD08E004A6376 /* CastledInAppModalViewController.swift */,
 				12C72C54294798E300B6B3DC /* CastledInAppFooterViewController.swift */,
 				0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */,
 			);
@@ -619,13 +619,13 @@
 				0ABDE8B429FBF24B00D3EF79 /* CastledBGManager.swift in Sources */,
 				12C72C4F2947986300B6B3DC /* CastledInAppDisplayViewController.swift in Sources */,
 				0ABDE8BE29FC41F400D3EF79 /* CastledConfigs.swift in Sources */,
-				12C72C512947989300B6B3DC /* CastledInAppModalViewController.swift in Sources */,
 				0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */,
 				12C72C55294798E300B6B3DC /* CastledInAppFooterViewController.swift in Sources */,
 				12C72C53294798B700B6B3DC /* CastledInAppFullScreenViewController.swift in Sources */,
 				0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */,
 				0AB5C59C291C27840027C36B /* CastledNetworkLayer.swift in Sources */,
 				0AB5C59D291C27840027C36B /* CastledUserDefaults.swift in Sources */,
+				0A446E252A7AD08E004A6376 /* CastledInAppModalViewController.swift in Sources */,
 				0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */,
 				0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */,
 				12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */,

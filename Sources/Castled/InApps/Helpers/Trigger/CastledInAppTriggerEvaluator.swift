@@ -15,7 +15,7 @@ import Foundation
     }
    internal func shouldTriggerEvent(filter : CIEventFilter?,params : [String:Any]?,showLog : Bool? = true) -> Bool{
         guard let eventFilter = filter else{
-            return false
+            return true
         }
         
         let filters = eventFilter.filters

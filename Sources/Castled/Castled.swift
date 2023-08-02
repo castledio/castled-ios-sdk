@@ -104,6 +104,10 @@ import UIKit
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             return
         }
+        else if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) == nil {
+            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.userNotRegistered.rawValue)")
+            return
+        }
         CastledInApps.sharedInstance.logAppEvent(context: context, eventName: CIEventType.page_viewed.rawValue, params: ["name" : String(describing: type(of: context))],showLog: showLog)
     }
     
@@ -466,9 +470,9 @@ import UIKit
         }
     }
     @objc internal func appBecomeActive() {
-        Castled.sharedInstance?.logAppOpenedEventIfAny()
         Castled.sharedInstance?.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
+            Castled.sharedInstance?.logAppOpenedEventIfAny()
             perform(#selector(executeBGTaskWithDelay), with: nil, afterDelay: 2.0)
         }
     }

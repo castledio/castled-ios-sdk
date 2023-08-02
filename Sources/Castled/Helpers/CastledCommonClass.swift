@@ -93,17 +93,6 @@ class CastledCommonClass{
         guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
-//    private func convertToArray(text: String) -> [CastledNotificationMediaObject]? {
-//        // Convert the string to data
-//        guard let jsonData = text.data(using: .utf8) else {
-//            return nil
-//        }
-//
-//        let jsonDecoder = JSONDecoder()
-//        let convertedAttachments = try? jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
-//        return convertedAttachments
-//    }
-    
     static func getAppURLSchemes() -> [String]? {
         guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] else {
             return nil
@@ -215,6 +204,54 @@ extension UIWindow {
         return top
     }
 }
+extension Bundle {
+
+    static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
+
+        let mainBundle = Bundle.main
+        let sourceBundle = Bundle(for: bundleClass)
+        guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
+            fatalError("Couldn't determine module name from class \(bundleClass)")
+        }
+        // SPM
+        var bundle: Bundle?
+        if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        // CocoaPods (static)
+        else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
+            bundle = Bundle(path: staticBundlePath)
+        }
+
+        // CocoaPods (framework)
+        else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
+            bundle = Bundle(path: frameworkBundlePath)
+        }
+        return bundle ?? sourceBundle
+    }
+}
+
 
 extension UIImageView {
     func loadImage(from url: URL) {

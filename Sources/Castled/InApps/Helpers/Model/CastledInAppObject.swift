@@ -56,11 +56,11 @@ internal enum  CIMessageType: String, Codable {
     case modal   = "MODAL"
     case banner  =  "BANNER"
     case fs      = "FULL_SCREEN"
-    
 }
 
 internal struct CIBannerPresentation: Codable {
-    internal let type: String
+    internal let type: CITemplateType
+    internal let html: String?
     internal let imageURL: String
     internal let clickAction : CastledConstants.PushNotification.ClickActionType
     internal let  url, body, bgColor: String
@@ -72,14 +72,16 @@ internal struct CIBannerPresentation: Codable {
         case type
         case keyVals
         case imageURL = "imageUrl"
-        case clickAction, url, body, bgColor, fontSize, fontColor
+        case clickAction, url, body, bgColor, fontSize, fontColor,html
     }
 }
 
 // MARK: - Modal
 internal struct CIModalPresentation: Codable {
-    internal let type: String
+    internal let type: CITemplateType
     internal let imageURL: String
+    internal let html: String?
+
     internal let defaultClickAction: String
     internal let url: String
     internal let title, titleFontColor: String
@@ -92,12 +94,14 @@ internal struct CIModalPresentation: Codable {
     internal enum CodingKeys: String, CodingKey {
         case type
         case imageURL = "imageUrl"
-        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons
+        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons,html
     }
     
     internal init(from decoder: Decoder) throws {
         let container       = try decoder.container(keyedBy: CodingKeys.self)
-        self.type     = (try? container.decodeIfPresent(String.self, forKey: .type)) ?? ""
+        self.type     = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
+        self.html     = (try? container.decodeIfPresent(String.self, forKey: .html)) ?? ""
+
         self.imageURL     = (try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? ""
         self.defaultClickAction     = (try? container.decodeIfPresent(String.self, forKey: .defaultClickAction)) ?? ""
         self.title     = (try? container.decodeIfPresent(String.self, forKey: .title)) ?? ""
@@ -117,7 +121,8 @@ internal struct CIModalPresentation: Codable {
 }
 
 internal struct CIFullScreenPresentation: Codable {
-    internal let type: String
+    internal let type: CITemplateType
+    internal let html: String?
     internal let imageURL: String
     internal let defaultClickAction: String
     internal let url: String
@@ -131,12 +136,14 @@ internal struct CIFullScreenPresentation: Codable {
     internal enum CodingKeys: String, CodingKey {
         case type
         case imageURL = "imageUrl"
-        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons
+        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons,html
     }
     
     internal init(from decoder: Decoder) throws {
         let container       = try decoder.container(keyedBy: CodingKeys.self)
-        self.type     = (try? container.decodeIfPresent(String.self, forKey: .type)) ?? ""
+        self.type     = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
+        self.html     = (try? container.decodeIfPresent(String.self, forKey: .html)) ?? ""
+
         self.imageURL     = (try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? ""
         self.defaultClickAction     = (try? container.decodeIfPresent(String.self, forKey: .defaultClickAction)) ?? ""
         self.title     = (try? container.decodeIfPresent(String.self, forKey: .title)) ?? ""
@@ -181,13 +188,30 @@ internal struct CIKeyVals: Codable {
 internal struct CITrigger: Codable {
     internal let type, eventID : String
     internal let eventName : String
-    internal let eventFilter: CIEventFilter
+    internal let eventFilter: CIEventFilter?
     
     internal enum CodingKeys: String, CodingKey {
         case type
         case eventID = "eventId"
         case eventName, eventFilter
     }
+    internal init(from decoder: Decoder) throws {
+        let container       = try decoder.container(keyedBy: CodingKeys.self)
+        self.type           = (try? container.decodeIfPresent(String.self, forKey: .type)) ?? ""
+        self.eventID     = (try? container.decodeIfPresent(String.self, forKey: .eventID)) ?? ""
+        self.eventName     = (try? container.decodeIfPresent(String.self, forKey: .eventName)) ?? ""
+        self.eventFilter     = (try? container.decodeIfPresent(CIEventFilter.self, forKey: .eventFilter)) 
+
+
+    }
+}
+internal enum  CITemplateType: String, Codable {
+    case default_template = "DEFAULT"
+    case image_buttons    = "IMG_AND_BUTTONS"
+    case text_buttons     = "TEXT_AND_BUTTONS"
+    case image_only       = "IMG_ONLY"
+    case custom_html      = "CUSTOM_HTML"
+
 }
 
 internal enum  CIEventType: String, Codable {

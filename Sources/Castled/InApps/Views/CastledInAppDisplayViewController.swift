@@ -21,8 +21,8 @@ class CastledInAppDisplayViewController: UIViewController {
     }
     
     func instantiateFromNib<T: UIViewController>(vc : T.Type) -> T {
-        //        return T.init(nibName: String(describing: T.self), bundle:Bundle(identifier:"com.castled.pusherswift.Castled"))
-        
+
+
         return T.init(nibName: String(describing: T.self), bundle:Bundle.resourceBundle(for: Self.self))
     }
     
@@ -36,17 +36,13 @@ class CastledInAppDisplayViewController: UIViewController {
             vc.parentContainerVC = self
             vc.inAppDisplaySettings = inAppDisplaySettings
             vc.mainImage = image
-            
             childVC = vc
-            
-            childViewFrame = CGRect(x: 20, y: 20, width: 200, height: 200)
         }
         else if selectedInAppObject?.message?.type.rawValue == CIMessageType.fs.rawValue {
             let vc = instantiateFromNib(vc: CastledInAppFullScreenViewController.self)
             vc.parentContainerVC = self
             vc.inAppDisplaySettings = inAppDisplaySettings
             vc.mainImage = image
-            
             childVC = vc
             
             
@@ -81,8 +77,6 @@ class CastledInAppDisplayViewController: UIViewController {
             inAppWindow = CastledTouchThroughWindow(
                 frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
         }
-        
-        
         guard let window = inAppWindow else{
             castledChildViewController = nil
             return
@@ -188,52 +182,5 @@ class CastledInAppDisplayViewController: UIViewController {
     
 }
 
-extension Bundle {
-    
-    static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-        
-        let mainBundle = Bundle.main
-        let sourceBundle = Bundle(for: bundleClass)
-        guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
-            fatalError("Couldn't determine module name from class \(bundleClass)")
-        }
-        // SPM
-        var bundle: Bundle?
-        if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        // CocoaPods (static)
-        else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: staticBundlePath)
-        }
-        
-        // CocoaPods (framework)
-        else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: frameworkBundlePath)
-        }
-        return bundle ?? sourceBundle
-    }
-}
 
 
