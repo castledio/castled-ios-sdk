@@ -174,6 +174,29 @@ class CastledCommonClass{
             alpha: CGFloat(1.0)
         )
     }
+    static internal func instantiateFromNib<T: UIViewController>(vc : T.Type) -> T {
+
+
+        return T.init(nibName: String(describing: T.self), bundle:Bundle.resourceBundle(for: Self.self))
+    }
+
+    
+    static func loadView<T :UIView>(fromNib name: String, withType type: T.Type) -> T? {
+        let bundle  = Bundle.resourceBundle(for: T.self)
+
+
+        if let view1 = UINib(
+            nibName: name,
+            bundle: bundle
+        ).instantiate(withOwner: nil, options: nil)[0] as? T {
+            return view1
+        }
+        if let view = bundle.loadNibNamed(name, owner: nil, options: nil)?.first as? T {
+            return view
+        }
+        return nil
+
+    }
 }
 
 extension UIView {
@@ -204,7 +227,10 @@ extension UIWindow {
         return top
     }
 }
+
+
 extension Bundle {
+
 
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="touchdisabled" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="CIBannerDefaultView" customModule="Castled" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gwt-nh-DVg">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZsH-X1-npL">
+                            <rect key="frame" x="10" y="10" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="ZsH-X1-npL" secondAttribute="height" multiplier="1:1" id="pFu-JK-rzd"/>
+                                <constraint firstAttribute="width" constant="50" id="wqf-nE-Urk"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hS3-Kk-BmQ">
+                            <rect key="frame" x="70" y="5" width="275" height="60"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJe-LD-IRk">
+                            <rect key="frame" x="350" y="0.0" width="35" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="35" id="WAL-IS-61C"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="castled_arrow_right"/>
+                            <connections>
+                                <action selector="detailsButtonClikd:" destination="iN0-l3-epB" eventType="touchUpInside" id="DzO-I4-Xca"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CLY-gJ-PU8">
+                            <rect key="frame" x="0.0" y="0.0" width="390" height="70"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <connections>
+                                <action selector="detailsButtonClikd:" destination="iN0-l3-epB" eventType="touchUpInside" id="5dL-5B-keZ"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="hS3-Kk-BmQ" firstAttribute="top" secondItem="gwt-nh-DVg" secondAttribute="top" constant="5" id="1IC-2V-Tci"/>
+                        <constraint firstItem="CLY-gJ-PU8" firstAttribute="centerX" secondItem="gwt-nh-DVg" secondAttribute="centerX" id="3op-KF-oAf"/>
+                        <constraint firstItem="CLY-gJ-PU8" firstAttribute="width" secondItem="gwt-nh-DVg" secondAttribute="width" id="EMn-09-fnB"/>
+                        <constraint firstAttribute="trailing" secondItem="mJe-LD-IRk" secondAttribute="trailing" constant="5" id="GYX-06-DEe"/>
+                        <constraint firstItem="mJe-LD-IRk" firstAttribute="leading" secondItem="hS3-Kk-BmQ" secondAttribute="trailing" constant="5" id="Kpl-P5-Vm8"/>
+                        <constraint firstAttribute="bottom" secondItem="mJe-LD-IRk" secondAttribute="bottom" id="UKv-6v-aEN"/>
+                        <constraint firstItem="CLY-gJ-PU8" firstAttribute="centerY" secondItem="gwt-nh-DVg" secondAttribute="centerY" id="Xqy-np-Qor"/>
+                        <constraint firstItem="ZsH-X1-npL" firstAttribute="centerY" secondItem="gwt-nh-DVg" secondAttribute="centerY" id="Zdw-bc-joO"/>
+                        <constraint firstItem="CLY-gJ-PU8" firstAttribute="height" secondItem="gwt-nh-DVg" secondAttribute="height" id="gLi-XB-aBu"/>
+                        <constraint firstItem="ZsH-X1-npL" firstAttribute="leading" secondItem="gwt-nh-DVg" secondAttribute="leading" constant="10" id="kPV-U2-Z6z"/>
+                        <constraint firstItem="hS3-Kk-BmQ" firstAttribute="leading" secondItem="ZsH-X1-npL" secondAttribute="trailing" constant="10" id="lg6-Tm-WDo"/>
+                        <constraint firstAttribute="bottom" secondItem="hS3-Kk-BmQ" secondAttribute="bottom" constant="5" id="rgf-B6-2TO"/>
+                        <constraint firstItem="mJe-LD-IRk" firstAttribute="top" secondItem="gwt-nh-DVg" secondAttribute="top" id="xix-7n-GTr"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="ZAn-3v-FqT"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="gwt-nh-DVg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="AcT-cq-Haa"/>
+                <constraint firstItem="gwt-nh-DVg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Wff-uc-hRh"/>
+                <constraint firstAttribute="bottom" secondItem="gwt-nh-DVg" secondAttribute="bottom" id="fms-p1-H1Y"/>
+                <constraint firstAttribute="trailing" secondItem="gwt-nh-DVg" secondAttribute="trailing" id="fwn-xk-I1m"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="btnDetails" destination="mJe-LD-IRk" id="wJF-tf-VlK"/>
+                <outlet property="imgViewMain" destination="ZsH-X1-npL" id="j70-es-wVS"/>
+                <outlet property="lblTitle" destination="hS3-Kk-BmQ" id="2MV-AE-0OG"/>
+                <outlet property="viewMainContainer" destination="gwt-nh-DVg" id="zlh-Qs-W4i"/>
+            </connections>
+            <point key="canvasLocation" x="27.69230769230769" y="-1.4218009478672986"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="castled_arrow_right" width="10" height="16"/>
+    </resources>
+</document>

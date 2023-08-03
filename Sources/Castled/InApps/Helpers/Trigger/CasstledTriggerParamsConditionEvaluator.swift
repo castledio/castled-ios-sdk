@@ -6,11 +6,11 @@
 //
 
 import Foundation
-protocol CTParamsConditionEvaluatable {
+protocol CIParamsConditionEvaluatable {
     //    associatedtype T
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool
 }
-internal class CTStringEvaluator: CTParamsConditionEvaluatable {
+internal class CIStringEvaluator: CIParamsConditionEvaluatable {
     
     public func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let textValue = value as? String else {
@@ -32,7 +32,7 @@ internal class CTStringEvaluator: CTParamsConditionEvaluatable {
     
 }
 
-internal class CTNumberEvaluator: CTParamsConditionEvaluatable {
+internal class CINumberEvaluator: CIParamsConditionEvaluatable {
     
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let numberValue = value as? NSNumber else { return false }
@@ -73,7 +73,7 @@ internal class CTNumberEvaluator: CTParamsConditionEvaluatable {
     
 }
 
-internal class CTBoolEvaluator: CTParamsConditionEvaluatable {
+internal class CIBoolEvaluator: CIParamsConditionEvaluatable {
     
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let aBool = value as? Bool else {
@@ -94,7 +94,7 @@ internal class CTBoolEvaluator: CTParamsConditionEvaluatable {
     
 }
 
-internal class CTDateEvaluator: CTParamsConditionEvaluatable {
+internal class CIDateEvaluator: CIParamsConditionEvaluatable {
     
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         

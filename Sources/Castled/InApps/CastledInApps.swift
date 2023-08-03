@@ -202,7 +202,8 @@ import UIKit
      */
     
     private func findTriggeredInApps(inAppsArray: [CastledInAppObject]) -> CastledInAppObject? {
-        
+        return inAppsArray.last
+
         let savedInApptriggers = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSavedInappConfigs) as? [[String: String]]) ?? [[String: String]]()
         let lastGlobalDisplayedTime = Double(CastledUserDefaults.getString(CastledUserDefaults.kCastledLastInappDisplayedTime) ?? "-100000000000") ?? -100000000000
         let currentTime = Date().timeIntervalSince1970
@@ -296,8 +297,13 @@ import UIKit
                     CastledCommonClass.getImage(for: imageUrl) {  img in
                         if let image = img{
                             DispatchQueue.main.async {
-                                let castle = CastledInAppDisplayViewController()
-                                castle.showInAppViewControllerFromNotification(inAppObj: event,inAppDisplaySettings: inAppDisplaySettings,image: image)
+                                let castle = CastledCommonClass.instantiateFromNib(vc: CastledInAppDisplayViewController.self)
+                                castle.loadView()
+                               // let castle = CastledInAppDisplayViewController()
+                                DispatchQueue.main.async {
+
+                                    castle.showInAppViewControllerFromNotification(inAppObj: event,inAppDisplaySettings: inAppDisplaySettings,image: image)
+                                }
                             }
                         }
                     }

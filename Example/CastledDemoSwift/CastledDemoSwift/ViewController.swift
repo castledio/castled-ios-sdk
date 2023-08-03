@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Castled_iOS_SDK
+import Castled
 
 class ViewController: UIViewController {
     let userIdKey = "userIdKey"

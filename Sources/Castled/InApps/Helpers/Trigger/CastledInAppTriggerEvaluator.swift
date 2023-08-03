@@ -73,17 +73,17 @@ import Foundation
         }
         return false
     }
-    private func getParamEvaluator(triggerType : String) -> (any CTParamsConditionEvaluatable)? {
+    private func getParamEvaluator(triggerType : String) -> (any CIParamsConditionEvaluatable)? {
         
         switch triggerType {
         case CITriggerPropertyType.string.rawValue:
-            return CTStringEvaluator()
+            return CIStringEvaluator()
         case CITriggerPropertyType.number.rawValue:
-            return CTNumberEvaluator()
+            return CINumberEvaluator()
         case CITriggerPropertyType.bool.rawValue:
-            return CTBoolEvaluator()
+            return CIBoolEvaluator()
         case CITriggerPropertyType.date.rawValue:
-            return CTDateEvaluator()
+            return CIDateEvaluator()
         default: break
             
         }

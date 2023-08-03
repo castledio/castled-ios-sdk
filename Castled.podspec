@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
-  spec.name         = "Castled-iOS-SDK"
-  spec.version      =  ENV['LIB_VERSION'] || '2.2.4' #fallback to major version
+  spec.name         = "Castled"
+  spec.version      =  ENV['LIB_VERSION'] || '2.2.6' #fallback to major version
   spec.summary      = "iOS SDK for Castled Push and InApp support"
 
   spec.description  = <<-DESC
@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
   spec.source_files = 'Sources/Castled/**/*.{h,m,swift}'
   spec.resource_bundles = {
-    "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib}']
+    "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib,js}']
   }
 
 end
