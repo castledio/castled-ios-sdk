@@ -279,37 +279,4 @@ extension Bundle {
 }
 
 
-extension UIImageView {
-    func loadImage(from url: URL) {
-        let cache = URLCache.shared
-        let request = URLRequest(url: url)
-        
-        // Try to load the image from the cache
-        if let data = cache.cachedResponse(for: request)?.data,
-           let image = UIImage(data: data) {
-            self.image = image
-            return
-        }
-        
-        // If the image isn't in the cache, download it
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            if let data = data, let response = response,
-               let image = UIImage(data: data) {
-                // Cache the image
-                let cachedData = CachedURLResponse(response: response, data: data)
-                cache.storeCachedResponse(cachedData, for: request)
-                
-                // Display the image
-                DispatchQueue.main.async {
-                    self.image = image
-                }
-            }
-        }
-        task.resume()
-    }
-}
+

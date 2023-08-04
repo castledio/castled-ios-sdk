@@ -293,21 +293,12 @@ import UIKit
                 let inAppDisplaySettings = InAppDisplayConfig()
                 inAppDisplaySettings.populateConfigurationsFrom(inAppObject: event)
                 
-                if let imageUrl = URL(string: inAppDisplaySettings.imageUrl){
-                    CastledCommonClass.getImage(for: imageUrl) {  img in
-                        if let image = img{
-                            DispatchQueue.main.async {
-                                let castle = CastledCommonClass.instantiateFromNib(vc: CastledInAppDisplayViewController.self)
-                                castle.loadView()
-                               // let castle = CastledInAppDisplayViewController()
-                                DispatchQueue.main.async {
-
-                                    castle.showInAppViewControllerFromNotification(inAppObj: event,inAppDisplaySettings: inAppDisplaySettings,image: image)
-                                }
-                            }
-                        }
-                    }
+                DispatchQueue.main.async {
+                    let castle = CastledCommonClass.instantiateFromNib(vc: CastledInAppDisplayViewController.self)
+                    castle.loadView()
+                    castle.showInAppViewControllerFromNotification(inAppObj: event,inAppDisplaySettings: inAppDisplaySettings)
                 }
+
                 saveInappDisplayStatus(event: event)
             }
         }

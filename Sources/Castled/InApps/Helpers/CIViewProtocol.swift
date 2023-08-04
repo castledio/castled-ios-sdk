@@ -14,7 +14,6 @@ protocol CIViewProtocol  {
     var viewContainer : UIView? { get set }
     var selectedInAppObject : CastledInAppObject? {get set}
     var inAppDisplaySettings : InAppDisplayConfig? {get set}
-    var mainImage : UIImage? { get set }
     func configureTheViews()
     func addTheInappViewInContainer(inappView view :UIView)
 }

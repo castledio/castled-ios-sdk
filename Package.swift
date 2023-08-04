@@ -26,6 +26,9 @@ let package = Package(
     targets: [
         .target(
             name: "Castled",
+             dependencies: [
+                "SDWebImage",
+            ],
             path: "Sources/Castled",
             resources: [
                 .process("InApps/Views/CastledAssets.xcassets"),

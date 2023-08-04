@@ -10,7 +10,7 @@ import UIKit
 class CastledInAppFullScreenViewController: UIViewController {
     var parentContainerVC: CastledInAppDisplayViewController?
     var inAppDisplaySettings : InAppDisplayConfig?
-    var mainImage : UIImage?
+
     
     @IBOutlet weak var viewMainContainer: UIView!
     
@@ -73,7 +73,7 @@ class CastledInAppFullScreenViewController: UIViewController {
         imgClose.layer.cornerRadius = imgClose.frame.size.height/2
         imgClose.addShadow(radius: 5, opacity: 0.6, offset: CGSize(width: 0, height: 2), color: UIColor.black)
         
-        imgViewMain.image = mainImage
+        imgViewMain.loadImage(from: inAppDisplaySettings?.imageUrl)
         //        if let imageUrl = URL(string:inAppDisplaySettings?.imageUrl ?? ""){
         //            imgViewMain.loadImage(from: imageUrl)
         //

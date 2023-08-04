@@ -10,8 +10,7 @@ import UIKit
 class CastledInAppFooterViewController: UIViewController {
     var parentContainerVC: CastledInAppDisplayViewController?
     var inAppDisplaySettings : InAppDisplayConfig?
-    var mainImage : UIImage?
-    
+
     @IBOutlet weak var imgClose: UIImageView!
     @IBOutlet weak var btnDetails: UIButton!
     @IBOutlet weak var lblTitle: UILabel!
@@ -49,7 +48,8 @@ class CastledInAppFooterViewController: UIViewController {
         //            imgViewMain.loadImage(from: imageUrl)
         //
         //        }
-        imgViewMain.image = mainImage
+        imgViewMain.loadImage(from: inAppDisplaySettings?.imageUrl)
+
         let closeImage = imgClose.image?.withRenderingMode(.alwaysTemplate)
         imgClose.image = closeImage
         imgClose.tintColor = .white

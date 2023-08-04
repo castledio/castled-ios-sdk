@@ -12,7 +12,6 @@ class CastledInAppModalViewController: UIViewController {
     @IBOutlet weak var constraintImageHeight: NSLayoutConstraint!
     var parentContainerVC: CastledInAppDisplayViewController?
     var inAppDisplaySettings : InAppDisplayConfig?
-    var mainImage : UIImage?
     
     @IBOutlet weak var viewMainContainer: UIView!
     
@@ -70,8 +69,8 @@ class CastledInAppModalViewController: UIViewController {
         imgClose.addShadow(radius: 5, opacity: 0.6, offset: CGSize(width: 0, height: 2), color: UIColor.black)
         
         
-        imgViewMain.image = mainImage
-      
+        imgViewMain.loadImage(from: inAppDisplaySettings?.imageUrl)
+
         
         if let color = inAppDisplaySettings?.leftButtonBorderColor{
             btnLeftOfView.layer.borderColor = color.cgColor

@@ -68,7 +68,7 @@ internal class InAppDisplayConfig {
     }()
     
     internal lazy var buttonFont: UIFont = {
-        return UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
+        return UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)
         
     }()
     /**

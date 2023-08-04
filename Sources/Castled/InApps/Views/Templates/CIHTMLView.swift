@@ -10,7 +10,6 @@ import WebKit
 
 class CIHTMLView: UIView,CIViewProtocol {
 
-    var mainImage: UIImage?
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?

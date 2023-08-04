@@ -26,7 +26,7 @@ class CastledInAppDisplayViewController: UIViewController {
     
 
     
-    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject,inAppDisplaySettings : InAppDisplayConfig,image : UIImage?) {
+    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject,inAppDisplaySettings : InAppDisplayConfig) {
 
         if #available(iOS 13, tvOS 13.0, *) {
             let connectedScenes = UIApplication.shared.connectedScenes
@@ -71,7 +71,6 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppView?.viewContainer = containerView
         inAppView?.inAppDisplaySettings = inAppDisplaySettings
         inAppView?.selectedInAppObject = selectedInAppObject
-        inAppView?.mainImage = image
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
 
 
@@ -158,22 +157,64 @@ extension CastledInAppDisplayViewController{
         switch inappAObject.message?.type.rawValue {
             case CIMessageType.modal.rawValue:
                 container = viewModalContainer
-                inppV  = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
 
+                switch inappAObject.message?.modal?.type.rawValue {
+                    case CITemplateType.default_template.rawValue:
+                        inppV  = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
+                        break
+                    case CITemplateType.image_buttons.rawValue:
+                        break
+                    case CITemplateType.text_buttons.rawValue:
+                        break
+                    case CITemplateType.image_only.rawValue:
+                        break
+                    case CITemplateType.custom_html.rawValue:
+                        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        break
+                    default:
+                        break
+                }
                 break
             case CIMessageType.fs.rawValue:
                 container = viewFSContainer
+
+                switch inappAObject.message?.fs?.type.rawValue {
+                    case CITemplateType.default_template.rawValue:
+                        inppV  = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
+                        break
+                    case CITemplateType.image_buttons.rawValue:
+                        break
+                    case CITemplateType.text_buttons.rawValue:
+                        break
+                    case CITemplateType.image_only.rawValue:
+                        break
+                    case CITemplateType.custom_html.rawValue:
+                        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        break
+                    default:
+                        break
+                }
                 break
             case CIMessageType.banner.rawValue:
                 container = viewBannerContainer
                 view.restorationIdentifier = "touchdisabled"
 
+                switch inappAObject.message?.banner?.type.rawValue {
+                    case CITemplateType.default_template.rawValue:
+                        inppV  = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
+                        break
+                    case CITemplateType.custom_html.rawValue:
+                        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        break
+                    default:
+                        break
+                }
                 break
             default:
                 break
         }
-        container = viewBannerContainer
-        inppV  = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
+//        container = viewBannerContainer
+//        inppV  = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
 
         return (inppV,container)
     }
