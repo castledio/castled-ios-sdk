@@ -99,6 +99,8 @@ Pods/
 Frameworks/SDWebImage.framework
 Sources/SDWebImage.framework
 
+Package.resolved
+
 # CocoaPods
 Pods/
 Podfile.lock
