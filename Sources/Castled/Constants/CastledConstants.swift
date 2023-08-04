@@ -51,7 +51,7 @@ internal class CastledConstants {
             case defaultAction    = "DEFAULT"
             case discardNotification = "DISMISS_NOTIFICATION"
             case requestPushPermission = "REQUEST_PUSH_PERMISSION"//this is for inapp
-            case none                = "NONE"
+            case custom = "CUSTOM"//this is for inapp
 
         }
 

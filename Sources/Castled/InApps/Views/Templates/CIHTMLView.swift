@@ -1,6 +1,6 @@
 //
 //  CIWebView.swift
-//  SB
+//  Castled
 //
 //  Created by antony on 02/08/2023.
 //
@@ -19,19 +19,8 @@ class CIHTMLView: UIView,CIViewProtocol {
     var htmlString = ""
     var webView: WKWebView!
     var webViewBridge: CastledInAppJSBridge! // Declare the bridge instance as a property
-
-
-    override init(frame: CGRect = .zero) {
-        super.init(frame: frame)
-        setupWKWebview()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupWKWebview()
-    }
     func configureTheViews() {
-
+        setupWKWebview()
     }
 
     private func setupWKWebview() {
@@ -71,7 +60,17 @@ class CIHTMLView: UIView,CIViewProtocol {
 }
 extension CIHTMLView : CastledInAppJSBridgeDelegate{
     func castledInAppDidRecevedClickActionWith(_ params: NSDictionary) {
-        print(params)
+
+        var btnLabel = ""
+        if let optional_params = params["custom_params"] as? [String: Any] {
+            btnLabel = optional_params["button_title"] as? String ?? ""
+        }
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "", btnLabel: btnLabel, actionUri: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? "")
+
+        CastledInApps.sharedInstance.performButtonActionFor(webParams: params as? [String : Any])
+        webViewBridge.delegate = nil
+        webViewBridge.delegate = nil
+        parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
 
     }
 

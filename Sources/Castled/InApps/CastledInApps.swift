@@ -153,26 +153,33 @@ import UIKit
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
-    internal func performButtonActionFor(buttonAction : CIActionButton? = nil, slide:CIBannerPresentation? = nil)
+    internal func performButtonActionFor(buttonAction : CIActionButton? = nil, slide:CIBannerPresentation? = nil,webParams:[String : Any]? = nil)
     {
-        var clickAction : CastledConstants.PushNotification.ClickActionType?
-        var params: [String: String]?
+        var clickAction = CastledConstants.PushNotification.ClickActionType.custom.rawValue
+        var params: [String: Any]?
         var url: String?
         
         if let action = buttonAction{
-            clickAction = action.clickAction
+            clickAction = action.clickAction.rawValue
             params = action.keyVals ?? [String: String]()
             url = action.url
         }
         else if let slideUp = slide{
-            clickAction = slideUp.clickAction
+            clickAction = slideUp.clickAction.rawValue
             params = slideUp.keyVals ?? [String: String]()
             url = slideUp.url
         }
+        else if let webP = webParams{
+            params = webP
+            url = params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? ""
+            clickAction = params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? ""
+
+        }
+
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url ?? ""
-        params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction?.rawValue ?? ""
+        params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction
         
-        switch clickAction?.rawValue {
+        switch clickAction {
             case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .deepLink, kvPairs: params, userInfo: params ?? [String: String]())
                 break
@@ -189,8 +196,11 @@ import UIKit
             case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .dismiss, kvPairs: params, userInfo: params ?? [String: String]())
                 break
+            case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
+                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
+                break
             default:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .other, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
                 break
                 
         }

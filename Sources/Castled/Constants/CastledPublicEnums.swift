@@ -33,7 +33,8 @@ import Foundation
     case richLanding
     case requestForPush //this is for inapp
     case dismiss
-    case other
+    case custom
+
 
 }
 @objc public enum CastledNotificationType: Int {

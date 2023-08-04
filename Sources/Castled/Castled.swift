@@ -229,7 +229,7 @@ import UIKit
     
     func handleNotificationAction(response: UNNotificationResponse){
         // Returning the same options we've requested
-        var pushActionType = CastledClickActionType.other
+        var pushActionType = CastledClickActionType.custom
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier{
             if let defaultActionDetails : [String : Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo,index: CastledUserDefaults.userDefaults.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),

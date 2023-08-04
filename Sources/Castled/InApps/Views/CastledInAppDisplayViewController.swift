@@ -72,8 +72,11 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppView?.inAppDisplaySettings = inAppDisplaySettings
         inAppView?.selectedInAppObject = selectedInAppObject
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
-
-
+        if let html = views.2{
+            let htmlView = inAppView as! CIHTMLView
+            htmlView.htmlString = html
+            htmlView.loadHtmlString()
+        }
 
         let inAppParentView = self.view!
         inAppParentView.frame = window.bounds
@@ -149,11 +152,23 @@ class CastledInAppDisplayViewController: UIViewController {
     
 }
 extension CastledInAppDisplayViewController{
+    private func getHTML() -> String {
+        var html = ""
+         if let htmlPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "index1", withExtension: "html"){
+            do {
+                html = try String(contentsOf: htmlPathURL, encoding: .utf8)
+            } catch  {
+                print("Unable to get the file.")
+            }
+        }
 
-    fileprivate func getInappViewFrom(inappAObject : CastledInAppObject) -> ((any CIViewProtocol)?,contanerV : UIView?) {
+        return html
+    }
+    fileprivate func getInappViewFrom(inappAObject : CastledInAppObject) -> ((any CIViewProtocol)?,contanerV : UIView?,htmlString : String?) {
 
         var inppV : (any CIViewProtocol)?
         var container : UIView?
+        let html : String?
         switch inappAObject.message?.type.rawValue {
             case CIMessageType.modal.rawValue:
                 container = viewModalContainer
@@ -213,10 +228,10 @@ extension CastledInAppDisplayViewController{
             default:
                 break
         }
-//        container = viewBannerContainer
-//        inppV  = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
-
-        return (inppV,container)
+        container = viewFSContainer
+        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+        html = getHTML()
+        return (inppV,container,html)
     }
 }
 
