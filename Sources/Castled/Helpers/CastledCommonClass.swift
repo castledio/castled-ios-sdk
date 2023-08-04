@@ -185,11 +185,11 @@ class CastledCommonClass{
         let bundle  = Bundle.resourceBundle(for: T.self)
 
 
-        if let view1 = UINib(
+        if let view = UINib(
             nibName: name,
             bundle: bundle
         ).instantiate(withOwner: nil, options: nil)[0] as? T {
-            return view1
+            return view
         }
         if let view = bundle.loadNibNamed(name, owner: nil, options: nil)?.first as? T {
             return view

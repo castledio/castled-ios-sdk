@@ -20,7 +20,10 @@ class CIHTMLView: UIView,CIViewProtocol {
     var webView: WKWebView!
     var webViewBridge: CastledInAppJSBridge! // Declare the bridge instance as a property
     func configureTheViews() {
+
         setupWKWebview()
+        webView?.layer.cornerRadius = 5
+
     }
 
     private func setupWKWebview() {
@@ -35,7 +38,7 @@ class CIHTMLView: UIView,CIViewProtocol {
             configuration:configuration
         )
         addSubview(self.webView)
-
+        self.webView.clipsToBounds = true
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.webView.leadingAnchor.constraint(equalTo: self.leadingAnchor),

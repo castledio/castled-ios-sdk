@@ -15,6 +15,7 @@ class CastledInAppDisplayViewController: UIViewController {
     @IBOutlet weak var constraintBannerBottom: NSLayoutConstraint!
     @IBOutlet weak var constraintBannerTop: NSLayoutConstraint!
 
+    @IBOutlet weak var dismissView: CastledDismissButton!
     private var inAppWindow: CastledTouchThroughWindow?
     internal var selectedInAppObject : CastledInAppObject?
     private var isSlideUpInApp = false
@@ -22,11 +23,11 @@ class CastledInAppDisplayViewController: UIViewController {
     var inAppView : (any CIViewProtocol)?
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
 
-    
-    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject,inAppDisplaySettings : InAppDisplayConfig) {
+
+    }
+
+  func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject,inAppDisplaySettings : InAppDisplayConfig) {
 
         if #available(iOS 13, tvOS 13.0, *) {
             let connectedScenes = UIApplication.shared.connectedScenes
@@ -46,23 +47,16 @@ class CastledInAppDisplayViewController: UIViewController {
             return
         }
         selectedInAppObject = inAppObj
-
-
-
-        //        let vc112 = CastledCommonClass.loadView(fromNib: "CTCustomView", withType: CTCustomView.self)
-        //
-        //        let vc11 = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
-        //        print(vc11)
-
-
-        let views = getInappViewFrom(inappAObject: inAppObj)
-        inAppView =  views.0
-        let containerView = views.1
+        let items = getInappViewFrom(inappAObject: inAppObj)
+        inAppView =  items.0
+        let containerView = items.1
 
         if inAppView == nil || containerView == nil{
             return
         }
+
         containerView?.isHidden = false
+        arrangeDismissButton(containerView: containerView!)
         isSlideUpInApp = containerView == viewBannerContainer
         inAppWindow?.shouldPassThrough = isSlideUpInApp //for enabling touch only for banner
 
@@ -72,7 +66,7 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppView?.inAppDisplaySettings = inAppDisplaySettings
         inAppView?.selectedInAppObject = selectedInAppObject
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
-        if let html = views.2{
+        if let html = items.2{
             let htmlView = inAppView as! CIHTMLView
             htmlView.htmlString = html
             htmlView.loadHtmlString()
@@ -140,14 +134,25 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppWindow = nil
         
     }
+
+    private func dismissButtonClicked(_ sender: Any) {
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
+        hideInAppViewFromWindow(withAnimation: true)
+    }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //        if isSlideUpInApp == true{
-        //
-        //            CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
-        //
-        //            hideInAppViewFromWindow()
-        //        }
+    private func arrangeDismissButton(containerView: UIView){
+        let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
+        dismissView.initialiseActions(actions: action)
+        if containerView == viewFSContainer{
+            let safeArea = view.safeAreaLayoutGuide
+            dismissView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10).isActive = true
+            dismissView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 0).isActive = true
+
+        }else
+        {
+            dismissView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: dismissView.frame.size.width/2).isActive = true
+            dismissView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: -dismissView.frame.size.width/2).isActive = true
+        }
     }
     
 }
@@ -168,7 +173,7 @@ extension CastledInAppDisplayViewController{
 
         var inppV : (any CIViewProtocol)?
         var container : UIView?
-        let html : String?
+        var html : String?
         switch inappAObject.message?.type.rawValue {
             case CIMessageType.modal.rawValue:
                 container = viewModalContainer
@@ -228,9 +233,9 @@ extension CastledInAppDisplayViewController{
             default:
                 break
         }
-        container = viewFSContainer
-        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
-        html = getHTML()
+//        container = viewFSContainer
+//        inppV  = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
+//        html = getHTML()
         return (inppV,container,html)
     }
 }

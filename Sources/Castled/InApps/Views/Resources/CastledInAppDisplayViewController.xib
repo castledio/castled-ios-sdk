@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -12,6 +13,7 @@
             <connections>
                 <outlet property="constraintBannerBottom" destination="lZV-7W-PCN" id="dfR-kW-ZHO"/>
                 <outlet property="constraintBannerTop" destination="sS0-iQ-MXh" id="LZS-vC-g31"/>
+                <outlet property="dismissView" destination="qS0-8c-fUo" id="88h-I7-HgD"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Bog-n5-THq"/>
                 <outlet property="viewBannerContainer" destination="Okd-or-gr5" id="cjM-17-1aZ"/>
                 <outlet property="viewFSContainer" destination="Itt-nb-4mg" id="Bec-u7-KzV"/>
@@ -44,6 +46,14 @@ RlMDIENvbnRhaW5lcg
                         <constraint firstAttribute="height" constant="70" id="ydZ-As-t6q"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qS0-8c-fUo" customClass="CastledDismissButton" customModule="Castled" customModuleProvider="target">
+                    <rect key="frame" x="350" y="47" width="40" height="40"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="0dL-QQ-LlP"/>
+                        <constraint firstAttribute="width" secondItem="qS0-8c-fUo" secondAttribute="height" multiplier="1:1" id="Lqf-c7-kfZ"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -51,8 +61,10 @@ RlMDIENvbnRhaW5lcg
                 <constraint firstItem="Bdm-DS-X9u" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4RO-T7-ejx"/>
                 <constraint firstItem="Bdm-DS-X9u" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="7H9-1a-vZU"/>
                 <constraint firstItem="Okd-or-gr5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="E5N-Fy-Me2"/>
-                <constraint firstItem="Bdm-DS-X9u" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="MBe-P1-jfb"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qS0-8c-fUo" secondAttribute="trailing" priority="999" id="LCu-Ij-0o8"/>
+                <constraint firstItem="Bdm-DS-X9u" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="MBe-P1-jfb"/>
                 <constraint firstAttribute="trailing" secondItem="Itt-nb-4mg" secondAttribute="trailing" id="Voo-7T-rlt"/>
+                <constraint firstItem="qS0-8c-fUo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" priority="999" id="are-l3-3ed"/>
                 <constraint firstItem="Bdm-DS-X9u" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="fGT-iv-1FV"/>
                 <constraint firstItem="Itt-nb-4mg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hJH-B5-qaV"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Bdm-DS-X9u" secondAttribute="trailing" constant="20" id="iER-GZ-CLV"/>
@@ -65,4 +77,9 @@ RlMDIENvbnRhaW5lcg
             <point key="canvasLocation" x="226.15384615384613" y="86.729857819905206"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
