@@ -308,7 +308,9 @@ import UIKit
                 
                 DispatchQueue.main.async {
                     let castle = CastledCommonClass.instantiateFromNib(vc: CastledInAppDisplayViewController.self)
-                    castle.loadView()
+                    castle.view.isHidden = false // added this to call viewdidload. it was not getting called after initialising from xib https://stackoverflow.com/questions/913627/uiviewcontroller-viewdidload-not-being-called
+                    //  castle.loadView()
+
                     castle.showInAppViewControllerFromNotification(inAppObj: event,inAppDisplaySettings: inAppDisplaySettings)
                 }
 
