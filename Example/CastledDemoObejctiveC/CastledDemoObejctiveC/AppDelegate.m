@@ -7,7 +7,7 @@
 
 #import "AppDelegate.h"
 #import <UserNotifications/UserNotifications.h>
-#import <Castled_iOS_SDK/Castled_iOS_SDK-Swift.h>
+#import <Castled/Castled-Swift.h>
 
 @interface AppDelegate ()<UIApplicationDelegate,UNUserNotificationCenterDelegate,CastledNotificationDelegate>
 {
@@ -29,7 +29,6 @@
     config.location = CastledLocationUS;
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
     [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];
-
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *navBarAppearance = [[UINavigationBarAppearance alloc] init];
         [navBarAppearance configureWithOpaqueBackground];

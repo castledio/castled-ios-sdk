@@ -13,7 +13,7 @@ extension UIViewController {
         if !(String(describing: type(of: self)).hasPrefix("CastledInApp")) &&  CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil{
             //castledLog( "Tracked this screen:-\(type (of: self))")
 
-            Castled.sharedInstance?.logPageViewedEventIfAny(context: self,showLog: false)
+            Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
             _tracked_viewwDidAppear(animated)
             
         }

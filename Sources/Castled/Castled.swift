@@ -99,7 +99,7 @@ import UIKit
     /**
      InApps : Function that allows to display page view inapp
      */
-    public func logPageViewedEventIfAny(context : UIViewController,showLog : Bool? = false) {
+    @objc public func logPageViewedEventIfAny(context : UIViewController) {
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             return
@@ -108,18 +108,18 @@ import UIKit
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.userNotRegistered.rawValue)")
             return
         }
-        CastledInApps.sharedInstance.logAppEvent(context: context, eventName: CIEventType.page_viewed.rawValue, params: ["name" : String(describing: type(of: context))],showLog: showLog)
+        CastledInApps.sharedInstance.logAppEvent(context: context, eventName: CIEventType.page_viewed.rawValue, params: ["name" : String(describing: type(of: context))],showLog: false)
     }
     
     /**
      InApps : Function that allows to display custom inapp
      */
-    public func logCustomAppEvent(context : UIViewController,eventName : String,params : [String : Any],showLog : Bool? = true) {
+    @objc public func logCustomAppEvent(context : UIViewController,eventName : String,params : [String : Any]) {
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             return
         }
-        CastledInApps.sharedInstance.logAppEvent(context: context, eventName: eventName, params: params,showLog: showLog)
+        CastledInApps.sharedInstance.logAppEvent(context: context, eventName: eventName, params: params,showLog: false)
     }
     
     
@@ -306,20 +306,8 @@ import UIKit
         }
     }
     
-    func openAppForDefaultAction(userInfo: [AnyHashable: Any]) {
-        if let scheme = CastledCommonClass.getSchemeFromPlist() {
-            castledLog("The scheme is \(scheme)")
-            let url = URL(string: "\(scheme)://")!
-            if UIApplication.shared.canOpenURL(url) {
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                } else {
-                    UIApplication.shared.openURL(url)
-                }
-            }
-            processCastledPushEvents(userInfo: userInfo,isOpened: true)
-        }
-    }
+
+    
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didDismissNotification notification: UNNotification) {
         // Retrieve the notification ID from the notification content

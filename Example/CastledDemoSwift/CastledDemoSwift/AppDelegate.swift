@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
         let notificationCategories = getNotificationCategories();
         Castled.initialize(withConfig: config, delegate: self,andNotificationCategories: notificationCategories)
 
-        
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -179,6 +178,7 @@ extension AppDelegate: CastledNotificationDelegate {
 
     }
     func notificationClicked(withNotificationType type: CastledNotificationType,action: CastledClickActionType , kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any]){
+        
         print("type \(type.rawValue) action \(action.rawValue)")
         switch action {
             case .deepLink:

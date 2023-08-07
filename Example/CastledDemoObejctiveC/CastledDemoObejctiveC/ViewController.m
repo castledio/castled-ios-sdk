@@ -6,7 +6,7 @@
 //
 
 #import "ViewController.h"
-#import <Castled_iOS_SDK/Castled_iOS_SDK-Swift.h>
+#import <Castled/Castled-Swift.h>
 
 static NSString *userIdKey = @"userIdKey";
 @interface ViewController ()

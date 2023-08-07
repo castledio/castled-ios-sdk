@@ -26,5 +26,7 @@
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
+    <key>CastledSwizzlingDisabled</key>
+    <false/>
 </dict>
 </plist>

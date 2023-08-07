@@ -93,29 +93,7 @@ class CastledCommonClass{
         guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
-    static func getAppURLSchemes() -> [String]? {
-        guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] else {
-            return nil
-        }
-        
-        var schemes: [String] = []
-        
-        for urlType in urlTypes {
-            if let urlSchemes = urlType["CFBundleURLSchemes"] as? [String] {
-                schemes.append(contentsOf: urlSchemes)
-            }
-        }
-        return schemes.count > 0 ? schemes : nil
-    }
-    
-    static func getSchemeFromPlist() -> String? {
-        if let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]],
-           let urlSchemes = urlTypes.first?["CFBundleURLSchemes"] as? [String] {
-            return urlSchemes.first
-        }
-        return nil
-    }
-    
+   
     static func getImage(for url: URL, completion: @escaping (UIImage?) -> Void) {
         
         let cache = NSCache<NSURL, UIImage>()
