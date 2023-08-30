@@ -111,11 +111,54 @@ extension Castled {
             completion((response))
         })
     }
+    /**
+     Function to fetch all Inbox Items
+     */
+    internal static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItem]>) -> Void){
+
+        if Castled.sharedInstance == nil {
+            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
+            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+            return
+        }
+
+        Castled.sharedInstance?.api_fetch_inBox(model: [CastledInboxItem].self, completion: {response in
+             completion((response))
+        })
+    }
 }
 
 
 extension Castled{
-    
+
+
+    private func api_fetch_inBox<T: Codable>(model : T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void){
+
+        guard let instance_id = Castled.sharedInstance?.instanceId else{
+            castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.notInitialised.rawValue)")
+            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+            return
+        }
+
+        guard let userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) else{
+            castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.userNotRegistered.rawValue)")
+            completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
+            return
+        }
+
+        Task{
+            let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: instance_id)
+            let response = await  CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint: router.endpoint)
+            if  response.success == false {
+                castledLog("Fetch InApps Error:❌❌❌\(response.errorMessage)")
+            }
+            else{
+                // castledLog("Fetch InApps Success:✅✅✅ \(String(describing: response.result))")
+            }
+            completion(response)
+        }
+    }
+
     internal func api_RegisterUser(userId uid : String, apnsToken token : String,  completion: @escaping (_ response: CastledResponse<[String : String]>) -> Void){
         
         guard let instance_id = Castled.sharedInstance?.instanceId else{

@@ -68,7 +68,11 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
         if let html = items.2{
             let htmlView = inAppView as! CIHTMLView
-            htmlView.htmlString = html
+            if let decodedData = Data(base64Encoded: html) {
+                htmlView.htmlString = String(data: decodedData, encoding: .utf8) ?? html
+            }else{
+                htmlView.htmlString = html
+            }
             htmlView.loadHtmlString()
         }
 
@@ -190,6 +194,8 @@ extension CastledInAppDisplayViewController{
                         break
                     case CITemplateType.custom_html.rawValue:
                         inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        html = inappAObject.message?.modal?.html
+
                         break
                     default:
                         break
@@ -210,6 +216,7 @@ extension CastledInAppDisplayViewController{
                         break
                     case CITemplateType.custom_html.rawValue:
                         inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        html = inappAObject.message?.fs?.html
                         break
                     default:
                         break
@@ -225,6 +232,8 @@ extension CastledInAppDisplayViewController{
                         break
                     case CITemplateType.custom_html.rawValue:
                         inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        html = inappAObject.message?.banner?.html
+
                         break
                     default:
                         break

@@ -33,6 +33,12 @@ class ViewController: UIViewController {
 
             if  UserDefaults.standard.value(forKey: self?.userIdKey ?? "userIdKey") != nil {
                 self?.btnGotoSecondVC.isHidden = false
+                let largeConfig = UIImage.SymbolConfiguration(textStyle: .largeTitle)
+
+                self?.navigationItem.rightBarButtonItem = nil
+                let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self?.inboxTapped))
+                self?.navigationItem.rightBarButtonItem = inboxButton
+
             }
             else
             {
@@ -43,7 +49,7 @@ class ViewController: UIViewController {
             
         }
     }
-    
+
     @IBAction func registerUserAction(_ sender: Any) {
         registerUserAPI()
     }
@@ -63,7 +69,13 @@ class ViewController: UIViewController {
         
     }
 
-    
+    @objc func inboxTapped() {
+        // Handle the button tap here
+        let inboxViewController = Castled.sharedInstance?.getInboxViewController()
+        self.navigationController?.pushViewController(inboxViewController!, animated: true)
+
+    }
+
     //For testing purpose
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         print(#function)

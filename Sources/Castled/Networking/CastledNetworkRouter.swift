@@ -27,6 +27,7 @@ enum CastledNetworkRouter {
     case registerEvents(params: [[String: Any]], instanceId: String)
     case triggerCampaign
     case fetchInAppNotification(userID: String, instanceId: String)
+    case fetchInInboxItems(userID: String, instanceId: String)
     case registerInAppEvent(params: [[String: Any]], instanceId: String)
         
     var baseURL: String {
@@ -66,6 +67,12 @@ enum CastledNetworkRouter {
                                    path: "/inapp/\(instanceId)/ios/campaigns",
                                    method: .get,
                                    parameters: ["user": userID])
+        case .fetchInInboxItems(let userID, let instanceId):
+                return CastledEndpoint(baseURL: baseURL,
+                                       baseURLEndPoint: baseURLEndPoint,
+                                       path: "/app-inbox/\(instanceId)/ios/campaigns",
+                                       method: .get,
+                                       parameters: ["user": userID])
             
         case .registerInAppEvent(let params, let instanceId):
             return CastledEndpoint(baseURL: baseURL,

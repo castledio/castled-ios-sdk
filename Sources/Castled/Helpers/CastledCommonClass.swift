@@ -10,7 +10,7 @@ import Foundation
 
 class CastledCommonClass{
     static func showNotificationWIthTitle(title:String,body : String){
-    
+
         let center = UNUserNotificationCenter.current()
         let content = UNMutableNotificationContent()
         content.title = title
@@ -83,17 +83,17 @@ class CastledCommonClass{
            let selectedCategory = detailsArray[index!] as? [String : Any]{
 
             return selectedCategory
-         
+
         }
         return nil
 
 
     }
-   static func convertToArray(text: String) -> Any?  {
+    static func convertToArray(text: String) -> Any?  {
         guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
-   
+
     static func getImage(for url: URL, completion: @escaping (UIImage?) -> Void) {
         
         let cache = NSCache<NSURL, UIImage>()
@@ -219,9 +219,11 @@ extension Bundle {
         }
         // SPM
         var bundle: Bundle?
-        if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+        if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+            //cocoapod
             bundle = Bundle(path: bundlePath)
         }
+
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
@@ -231,15 +233,16 @@ extension Bundle {
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
+        else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
         else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
+
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }

@@ -215,7 +215,7 @@ import UIKit
      */
     
     private func findTriggeredInApps(inAppsArray: [CastledInAppObject]) -> CastledInAppObject? {
-     //   return inAppsArray.last
+//         return inAppsArray.last
 
         let savedInApptriggers = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSavedInappConfigs) as? [[String: String]]) ?? [[String: String]]()
         let lastGlobalDisplayedTime = Double(CastledUserDefaults.getString(CastledUserDefaults.kCastledLastInappDisplayedTime) ?? "-100000000000") ?? -100000000000

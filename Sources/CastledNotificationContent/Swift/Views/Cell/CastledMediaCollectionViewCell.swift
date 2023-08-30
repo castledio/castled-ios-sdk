@@ -268,11 +268,12 @@ extension Bundle {
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
             fatalError("Couldn't determine module name from class \(bundleClass)")
         }
-        // SPM
         var bundle: Bundle?
-        if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+        if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+            //cocoapod
             bundle = Bundle(path: bundlePath)
         }
+
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
@@ -282,15 +283,16 @@ extension Bundle {
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
+        else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
         else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
+
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }

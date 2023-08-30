@@ -32,7 +32,8 @@ let package = Package(
             path: "Sources/Castled",
             resources: [
                 .process("InApps/Views/CastledAssets.xcassets"),
-                .process("InApps/Views/Resources")
+                .process("InApps/Views/Resources"),
+                .process("Inbox/Views/Resources")
             ],
             linkerSettings: [
                 .linkedFramework("AVFoundation"),
