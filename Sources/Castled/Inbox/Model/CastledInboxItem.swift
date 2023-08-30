@@ -9,7 +9,7 @@ import UIKit
 
 @objc public class CastledInboxItem: NSObject, Codable {
     public let teamID, messageId: Int
-    public let sourceContext, imageUrl,title,body: String
+    public let sourceContext, imageUrl,title,body,type: String
     public let message: [String: Any]
     public let startTs: Int64
     public let aspectRatio: CGFloat
@@ -54,6 +54,8 @@ import UIKit
         (self.message["contents"] as? [[String: Any]] ?? []).first?["url"] as? String ?? ""
         self.title = (self.message["title"] as? String) ?? ""
         self.body = (self.message["body"] as? String) ?? ""
+        self.type = (self.message["type"] as? String) ?? ""
+
         self.titleTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["titleFontColor"] as? String) ?? "")  ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.bodyTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bodyFontColor"] as? String) ?? "")  ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.dateTextColor = self.bodyTextColor

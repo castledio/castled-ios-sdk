@@ -35,8 +35,8 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
             if(success){
                 self?.inboxItems.removeAll()
                 self?.inboxItems.append(contentsOf: items ?? [])
-                self?.inboxItems.append(contentsOf: items ?? [])
-                self?.inboxItems.append(contentsOf: items ?? [])
+//                self?.inboxItems.append(contentsOf: items ?? [])
+//                self?.inboxItems.append(contentsOf: items ?? [])
 
             }
             else
