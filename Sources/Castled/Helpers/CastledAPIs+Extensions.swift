@@ -58,7 +58,26 @@ extension Castled {
             completion(response)
         }
     }
-    
+
+
+    /**
+     Funtion which alllows to register the Events for InApp with Castled.
+     */
+    internal static func updateInboxEvents(params : [[String : String]],  completion: @escaping (_ response: CastledResponse<[String : String]>) -> Void){
+
+        if Castled.sharedInstance == nil {
+            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
+            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+            return
+        }
+
+        Castled.sharedInstance?.api_RegisterInboxEvents(params: params,type: [String : String].self) { response in
+            if response.success{
+                //handle
+            }
+            completion(response)
+        }
+    }
     /**
      Funtion which alllows to register Notifification events like OPENED,ACKNOWLEDGED etc.. with Castled.
      */
@@ -244,7 +263,32 @@ extension Castled{
             }
         }
     }
-    
+    private func api_RegisterInboxEvents<T: Any>(params : [[String : String]],type: T.Type,  completion: @escaping (_ response: CastledResponse<T>) -> Void){
+
+        guard let instance_id = Castled.sharedInstance?.instanceId else{
+            castledLog("Update Inbox Error:❌❌❌\(CastledExceptionMessages.notInitialised.rawValue)")
+            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+            return
+        }
+
+        Task{
+            let router: CastledNetworkRouter = .registerInboxEvent(params: params, instanceId: instance_id)
+            let response = await  CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint :router.endpoint)
+
+            switch response {
+                case .success(let responsJSON):
+                    // castledLog("Update InApp Events Success:✅✅✅ \(responsJSON)")
+                    var savedEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String:String]]) ?? [[String:String]]()
+                    savedEvents = savedEvents.filter { !params.contains($0) }
+                    CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInboxEvents, savedEvents)
+                    completion(CastledResponse(response: responsJSON as! T))
+
+                case .failure(let error):
+                    castledLog("Update Inbox Error:❌❌❌\(error.localizedDescription)")
+                    completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
+            }
+        }
+    }
     private func api_Trigger_Campaign<T: Any>(model : T.Type,completion: @escaping (_ response: CastledResponse<T>) -> Void){
         
         Task{

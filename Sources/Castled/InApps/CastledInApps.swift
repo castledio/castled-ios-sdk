@@ -69,8 +69,7 @@ import UIKit
             let sourceContext = inappObject.sourceContext
             
             var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents) as? [[String:String]]) ?? [[String:String]]()
-//            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents, [[String:String]]())
-//            return;
+
 
             let existingEvents = savedEventTypes.filter { $0["eventType"] == eventType &&
                 $0["sourceContext"] == sourceContext &&

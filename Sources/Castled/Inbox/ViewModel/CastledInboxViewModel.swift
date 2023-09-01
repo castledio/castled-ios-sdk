@@ -30,7 +30,7 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
     
     func didLoadNextPage() {
         showLoader = true
-        Castled.sharedInstance?.getInboxItems(completion: {[weak self] success, items, errorMessage in
+        Castled.sharedInstance?.getInboxItems(completion: {[weak self] success, items, errorMessage1 in
 
             if(success){
                 self?.inboxItems.removeAll()
@@ -41,7 +41,7 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
             }
             else
             {
-                self?.errorMessage = errorMessage
+                self?.errorMessage = errorMessage1
             }
             self?.showLoader = false
 

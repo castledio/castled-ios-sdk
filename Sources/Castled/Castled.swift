@@ -58,15 +58,7 @@ import UIKit
         
         
     }
-    @objc internal func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?,_ errorMessage: String?) -> Void){
-        Castled.fetchInboxItems {[weak self] response in
-            if(response.success){
-                self?.inboxItemsArray.removeAll()
-                self?.inboxItemsArray.append(contentsOf: response.result ?? [])
-            }
-            completion(response.success,response.result,response.errorMessage)
-        }
-    }
+
     private init(instanceId: String,delegate: CastledNotificationDelegate,categories: Set<UNNotificationCategory>){
         
         if instanceId.count == 0{
@@ -120,16 +112,7 @@ import UIKit
         }
         CastledInApps.sharedInstance.logAppEvent(context: context, eventName: CIEventType.page_viewed.rawValue, params: ["name" : String(describing: type(of: context))],showLog: false)
     }
-    /**
-     InApps : Function that will returns the Inbox ViewController
-     */
-    @objc public func getInboxViewController() -> CastledInboxViewController {
-
-        let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
-        castledInboxVC.inboxItems.append(contentsOf: inboxItemsArray)
-        return castledInboxVC
-
-    }
+   
     /**
      InApps : Function that allows to display custom inapp
      */

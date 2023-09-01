@@ -14,15 +14,15 @@ import Foundation
     
     internal var description: String {
         switch self {
-        case .US:
-            return "app"
-        case .AP:
-            return "in"
-        case .INDIA:
-            return "in"
-        case .TEST:
-            return "test"
-            
+            case .US:
+                return "app"
+            case .AP:
+                return "in"
+            case .INDIA:
+                return "in"
+            case .TEST:
+                return "test"
+
         }
     }
     
@@ -40,14 +40,17 @@ import Foundation
 @objc public enum CastledNotificationType: Int {
     case push
     case inapp
+    case inbox
     case other
 
     public func value() -> String {
         switch self {
             case .push: return "push"
             case .inapp: return "inapp"
+            case .inbox: return "inbox"
             case .other: return "other"
         }
     }
 }
+
 

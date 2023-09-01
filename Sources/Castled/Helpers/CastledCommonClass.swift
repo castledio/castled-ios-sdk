@@ -185,6 +185,17 @@ extension UIView {
         layer.shadowRadius = radius
         layer.masksToBounds = false
     }
+    func applyShadow(radius: CGFloat){
+        layer.cornerRadius = radius
+        layer.masksToBounds = false
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.3
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowOffset = CGSize(width: 1, height: 5)
+
+
+    }
+    
 }
 
 extension UIWindow {

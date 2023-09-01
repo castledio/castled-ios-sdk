@@ -18,6 +18,7 @@ import Foundation
     public static let kCastledInAppsList                    = "castled_inapps"
     public static var kCastledEnablePushNotificationKey     = "_castledEnablePushNotification_"
     internal static let kCastledSendingInAppsEvents         = "_castledSendingInAppEvents_"
+    internal static let kCastledSendingInboxEvents         = "_castledSendingInboxEvents_"
     internal static let kCastledSendingPushEvents           = "_castledSendingPushEvents_"
     internal static let kCastledSavedInappConfigs           = "_castledSavedInappConfigs_"
     internal static let kCastledLastInappDisplayedTime      = "_castledLastInappDisplayedTime_"

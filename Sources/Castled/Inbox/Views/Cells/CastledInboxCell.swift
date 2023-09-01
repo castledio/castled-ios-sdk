@@ -42,7 +42,10 @@ class CastledInboxCell: UITableViewCell {
         selectionStyle = .none
         viewIsRead.layer.cornerRadius = viewIsRead.frame.size.height/2
         imgBannerLogo.layer.cornerRadius = 5
-
+        viewContainer.layer.cornerRadius = 10
+        viewContainer.layer.masksToBounds = true
+        
+        self.applyShadow(radius: viewContainer.layer.cornerRadius)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -53,7 +56,7 @@ class CastledInboxCell: UITableViewCell {
 
     internal func configureCellWith(_ inboxObj: CastledInboxItem){
         inboxItem = inboxObj
-        viewLabelContainer?.backgroundColor = inboxObj.containerBGColor
+        viewContainer.backgroundColor = inboxObj.containerBGColor
         lblTitle.textColor = inboxObj.titleTextColor
         lblDescription.textColor = inboxObj.bodyTextColor
         lblTime.textColor = inboxObj.titleTextColor
@@ -70,23 +73,31 @@ class CastledInboxCell: UITableViewCell {
         var multiplier = inboxObj.aspectRatio
         var imageView : UIImageView?
 
-        //TODO: change the below implementation
-        if inboxObj.type.lowercased().contains("banner"){
-            multiplier = 0.0
-            imageView = imgBannerLogo
-            imgCover.isHidden = true
-            if urlImageString.count > 0{
-                imgBannerLogo.superview?.isHidden = false
-            }
-            else{
+        switch inboxObj.inboxType{
+            case .messageWithMedia:
+                imageView = imgCover
+                imgCover.isHidden = false
                 imgBannerLogo.superview?.isHidden = true
-            }
+                break
+            case .messageBanner:
+                multiplier = 0.0
+                imageView = imgBannerLogo
+                imgCover.isHidden = true
+                imgBannerLogo.superview?.isHidden = false
+                break
+
+            case .messageBannerNoIcon:
+                multiplier = 0.0
+                imageView = imgBannerLogo
+                imgCover.isHidden = true
+                imgBannerLogo.superview?.isHidden = true
+                break
+
+            case .other:
+                break
+
         }
-        else{
-            imageView = imgCover
-            imgCover.isHidden = false
-            imgBannerLogo.superview?.isHidden = true
-        }
+
         let newConstraint = actualCoverImageRatioConstraint!.constraintWithMultiplier(multiplier)
         imgCover.removeConstraint(constraintImageHeightRatio)
         imgCover.addConstraint(newConstraint)
@@ -127,7 +138,7 @@ class CastledInboxCell: UITableViewCell {
                 button.setTitle(inboxItem?.actionButtons[tg]["label"] as? String ?? "", for: .normal)
                 button.backgroundColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtons[tg]["buttonColor"] as? String ?? ""))  ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 let titleColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtons[tg]["fontColor"] as? String ?? ""))  ?? #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
-                button.setTitleColor(titleColor, for: .normal)
+                 button.setTitleColor(titleColor, for: .normal)
 
             }
         }
