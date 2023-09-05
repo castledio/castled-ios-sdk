@@ -22,7 +22,6 @@
 		0A1B4B922A7BD33C00D6430B /* CIHTMLView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1B4B912A7BD33C00D6430B /* CIHTMLView.xib */; };
 		0A1DE5F42A9DA24400DB2E29 /* CastledInboxImageAndTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A1DE5F12A9DA24400DB2E29 /* CastledInboxImageAndTitleCell.xib */; };
 		0A1DE5F52A9DA24400DB2E29 /* CastledInbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A1DE5F22A9DA24400DB2E29 /* CastledInbox.storyboard */; };
-		0A1DE5F62A9DA24400DB2E29 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE5F32A9DA24400DB2E29 /* ViewController.swift */; };
 		0A1DE5F82A9DA24B00DB2E29 /* CastledInboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE5F72A9DA24B00DB2E29 /* CastledInboxCell.swift */; };
 		0A1DE5FA2A9DA25200DB2E29 /* NSLayoutConstraint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE5F92A9DA25200DB2E29 /* NSLayoutConstraint+Extensions.swift */; };
 		0A1DE5FC2A9DA25B00DB2E29 /* CastledInboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE5FB2A9DA25B00DB2E29 /* CastledInboxViewModel.swift */; };
@@ -124,7 +123,6 @@
 		0A1B4B912A7BD33C00D6430B /* CIHTMLView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIHTMLView.xib; sourceTree = "<group>"; };
 		0A1DE5F12A9DA24400DB2E29 /* CastledInboxImageAndTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledInboxImageAndTitleCell.xib; sourceTree = "<group>"; };
 		0A1DE5F22A9DA24400DB2E29 /* CastledInbox.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CastledInbox.storyboard; sourceTree = "<group>"; };
-		0A1DE5F32A9DA24400DB2E29 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0A1DE5F72A9DA24B00DB2E29 /* CastledInboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxCell.swift; sourceTree = "<group>"; };
 		0A1DE5F92A9DA25200DB2E29 /* NSLayoutConstraint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Extensions.swift"; sourceTree = "<group>"; };
 		0A1DE5FB2A9DA25B00DB2E29 /* CastledInboxViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxViewModel.swift; sourceTree = "<group>"; };
@@ -268,7 +266,6 @@
 			children = (
 				0A1DE5F22A9DA24400DB2E29 /* CastledInbox.storyboard */,
 				0A1DE5F12A9DA24400DB2E29 /* CastledInboxImageAndTitleCell.xib */,
-				0A1DE5F32A9DA24400DB2E29 /* ViewController.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -808,7 +805,6 @@
 				0A1B4B7C2A7BB1F300D6430B /* CastledInAppJSBridge.swift in Sources */,
 				0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */,
 				0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */,
-				0A1DE5F62A9DA24400DB2E29 /* ViewController.swift in Sources */,
 				0A1DE5FC2A9DA25B00DB2E29 /* CastledInboxViewModel.swift in Sources */,
 				0A1B4B7E2A7BB1FB00D6430B /* CIViewProtocol.swift in Sources */,
 				12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */,
