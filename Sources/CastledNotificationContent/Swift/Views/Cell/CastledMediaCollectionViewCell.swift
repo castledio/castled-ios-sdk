@@ -268,6 +268,7 @@ extension Bundle {
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
             fatalError("Couldn't determine module name from class \(bundleClass)")
         }
+        // SPM
         var bundle: Bundle?
         if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
             //cocoapod
@@ -277,10 +278,11 @@ extension Bundle {
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
+
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
+        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
         else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
@@ -307,5 +309,6 @@ extension Bundle {
         }
         return bundle ?? sourceBundle
     }
+
 }
 

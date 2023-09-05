@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CastledDismissButton" customModule="Castled" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CastledDismissButton" customModule="Castled">
             <connections>
                 <outlet property="btnClose" destination="x75-Lb-95C" id="MRO-FG-WWb"/>
                 <outlet property="imgClose" destination="IAP-eK-NeP" id="ChL-G5-Qw0"/>

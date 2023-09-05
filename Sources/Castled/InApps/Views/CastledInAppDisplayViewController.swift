@@ -145,6 +145,7 @@ class CastledInAppDisplayViewController: UIViewController {
     }
     
     private func arrangeDismissButton(containerView: UIView){
+
         let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
         dismissView.initialiseActions(actions: action)
         if containerView == viewFSContainer{
@@ -175,6 +176,7 @@ extension CastledInAppDisplayViewController{
     }
     fileprivate func getInappViewFrom(inappAObject : CastledInAppObject) -> ((any CIViewProtocol)?,contanerV : UIView?,htmlString : String?) {
 
+        
         var inppV : (any CIViewProtocol)?
         var container : UIView?
         var html : String?
@@ -185,6 +187,7 @@ extension CastledInAppDisplayViewController{
                 switch inappAObject.message?.modal?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
                         inppV  = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
+
                         break
                     case CITemplateType.image_buttons.rawValue:
                         break

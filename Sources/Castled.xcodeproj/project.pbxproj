@@ -11,7 +11,6 @@
 		0A0E111C2A40EE29004F247F /* CastledNotificationServiceObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0E111A2A40EE29004F247F /* CastledNotificationServiceObjC.h */; };
 		0A0E11202A41F4C4004F247F /* CastledNotificationViewControllerObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */; };
 		0A0E11212A41F4C4004F247F /* CastledNotificationViewControllerObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */; };
-		0A1B4B712A7BB13D00D6430B /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1B4B6D2A7BB13D00D6430B /* CastledBridge.js */; };
 		0A1B4B782A7BB1E100D6430B /* CIFsDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */; };
 		0A1B4B792A7BB1E100D6430B /* CIHTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B762A7BB1E100D6430B /* CIHTMLView.swift */; };
 		0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B772A7BB1E100D6430B /* CIModalDefaultView.swift */; };
@@ -40,6 +39,7 @@
 		0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74E08C29E6D615004F2610 /* CastledInApps.swift */; };
 		0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */; };
 		0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */; };
+		0A77DAFE2AA7B84D00729521 /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A77DAFD2AA7B84D00729521 /* CastledBridge.js */; };
 		0A79E2292AA085980087C3AF /* Castled+Inbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E2282AA085980087C3AF /* Castled+Inbox.swift */; };
 		0A79E22D2AA0873C0087C3AF /* CastledInboxType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E22C2AA0873C0087C3AF /* CastledInboxType.swift */; };
 		0A79E22F2AA08E0B0087C3AF /* CastledInboxServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E22E2AA08E0B0087C3AF /* CastledInboxServices.swift */; };
@@ -112,7 +112,6 @@
 		0A0E111A2A40EE29004F247F /* CastledNotificationServiceObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledNotificationServiceObjC.h; sourceTree = "<group>"; };
 		0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledNotificationViewControllerObjC.h; sourceTree = "<group>"; };
 		0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CastledNotificationViewControllerObjC.m; sourceTree = "<group>"; };
-		0A1B4B6D2A7BB13D00D6430B /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CastledBridge.js; path = "../../../../../../../../../../../../Downloads/SB 2/SB/HTML/CastledBridge.js"; sourceTree = "<group>"; };
 		0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIFsDefaultView.swift; sourceTree = "<group>"; };
 		0A1B4B762A7BB1E100D6430B /* CIHTMLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIHTMLView.swift; sourceTree = "<group>"; };
 		0A1B4B772A7BB1E100D6430B /* CIModalDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIModalDefaultView.swift; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 		0A74E08C29E6D615004F2610 /* CastledInApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInApps.swift; sourceTree = "<group>"; };
 		0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppTriggerEvaluator.swift; sourceTree = "<group>"; };
 		0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasstledTriggerParamsConditionEvaluator.swift; sourceTree = "<group>"; };
+		0A77DAFD2AA7B84D00729521 /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CastledBridge.js; path = ../../../../../../../../../../../../Desktop/CastledBridge.js; sourceTree = "<group>"; };
 		0A79E2282AA085980087C3AF /* Castled+Inbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Castled+Inbox.swift"; sourceTree = "<group>"; };
 		0A79E22C2AA0873C0087C3AF /* CastledInboxType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxType.swift; sourceTree = "<group>"; };
 		0A79E22E2AA08E0B0087C3AF /* CastledInboxServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxServices.swift; sourceTree = "<group>"; };
@@ -517,7 +517,7 @@
 		12C72C4D2947951B00B6B3DC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0A1B4B6D2A7BB13D00D6430B /* CastledBridge.js */,
+				0A77DAFD2AA7B84D00729521 /* CastledBridge.js */,
 				0A1B4B872A7BB53300D6430B /* CIModalDefaultView.xib */,
 				0A1B4B862A7BB53200D6430B /* CIFsDefaultView.xib */,
 				0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */,
@@ -736,8 +736,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A1DE5F42A9DA24400DB2E29 /* CastledInboxImageAndTitleCell.xib in Resources */,
-				0A1B4B712A7BB13D00D6430B /* CastledBridge.js in Resources */,
 				0ABA759C2A7D742200CD0734 /* CastledDismissButton.xib in Resources */,
+				0A77DAFE2AA7B84D00729521 /* CastledBridge.js in Resources */,
 				0A1B4B892A7BB53300D6430B /* CIFsDefaultView.xib in Resources */,
 				0A1DE5F52A9DA24400DB2E29 /* CastledInbox.storyboard in Resources */,
 				0A4C76582A7C258A00F60D16 /* CIBannerDefaultView.xib in Resources */,
