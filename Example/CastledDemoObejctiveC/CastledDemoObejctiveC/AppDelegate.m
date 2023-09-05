@@ -205,7 +205,7 @@
             // TODO:
             break;
 
-        case CastledClickActionTypeOther:
+        case CastledClickActionTypeCustom:
             // TODO:
             break;
 

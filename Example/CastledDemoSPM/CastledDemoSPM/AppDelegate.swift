@@ -204,7 +204,7 @@ extension AppDelegate: CastledNotificationDelegate {
                 //TODO:
 
                 break
-            case .other:
+            case .custom:
                 //TODO:
 
                 break

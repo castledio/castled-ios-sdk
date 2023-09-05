@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "castled-ios-sdk",
+    name: "Castled",
     defaultLocalization: "en",
     platforms: [
         .iOS(.v13)

@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 @objc public protocol CastledInboxDelegate  {
-    @objc func didSelectedInboxWith(_ kvPairs: [AnyHashable : Any]?,_ inboxItem: CastledInboxItem)
+    @objc optional func didSelectedInboxWith(_ kvPairs: [AnyHashable : Any]?,_ inboxItem: CastledInboxItem)
 }
 
 @objc public class CastledInboxViewController: UIViewController {
@@ -235,7 +235,7 @@ extension CastledInboxViewController : UITableViewDelegate, UITableViewDataSourc
     public func didSelectedInboxWith(_ kvPairs: [AnyHashable : Any]?, _ inboxItem: CastledInboxItem) {
         let title = (kvPairs?["label"] as? String) ?? ""
         Castled.sharedInstance?.logInboxItemClicked(inboxItem, buttonTitle: title)
-        guard (delegate?.didSelectedInboxWith(kvPairs, inboxItem)) != nil else{
+        guard (delegate?.didSelectedInboxWith?(kvPairs, inboxItem)) != nil else{
             return
         }
     }

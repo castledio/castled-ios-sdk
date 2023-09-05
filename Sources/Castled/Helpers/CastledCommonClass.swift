@@ -160,7 +160,8 @@ class CastledCommonClass{
 
     
     static func loadView<T :UIView>(fromNib name: String, withType type: T.Type) -> T? {
-        let bundle  = Bundle.resourceBundle(for: T.self)
+        
+        let bundle  = Bundle.resourceBundle(for: Self.self)
 
 
         if let view = UINib(

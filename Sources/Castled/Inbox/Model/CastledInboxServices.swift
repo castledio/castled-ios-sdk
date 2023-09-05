@@ -74,13 +74,13 @@ internal class CastledInboxServices: NSObject {
 
         Castled.updateInboxEvents(params: savedEventTypes, completion:{ (response: CastledResponse<[String : String]>) in
 
-            if response.success {
-                castledLog(response.result as Any)
-            }
-            else
-            {
-                castledLog("Error in updating inbox event ")
-            }
+//            if response.success {
+//                castledLog(response.result as Any)
+//            }
+//            else
+//            {
+//                castledLog("Error in updating inbox event ")
+//            }
             completion(response.success,response.errorMessage)
         })
 

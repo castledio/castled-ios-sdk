@@ -8,8 +8,8 @@
 import UIKit
 import Castled
 
+class ViewController: UIViewController, CastledInboxDelegate {
 
-class ViewController: UIViewController {
     let userIdKey = "userIdKey"
     @IBOutlet weak var btnRegisterUser: UIButton!
     @IBOutlet weak var btnGotoSecondVC: UIButton!
@@ -20,6 +20,8 @@ class ViewController: UIViewController {
         self.navigationItem.title = "Castled"
 
         showRequiredViews()
+
+
         // Do any additional setup after loading the view.
     }
 
@@ -34,6 +36,12 @@ class ViewController: UIViewController {
 
             if  UserDefaults.standard.value(forKey: self?.userIdKey ?? "userIdKey") != nil {
                 self?.btnGotoSecondVC.isHidden = false
+                let largeConfig = UIImage.SymbolConfiguration(textStyle: .largeTitle)
+                self?.navigationItem.rightBarButtonItem = nil
+                let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self?.inboxTapped))
+                self?.navigationItem.rightBarButtonItem = inboxButton
+                self?.setUpInboxCallback()
+
             }
             else
             {
@@ -52,9 +60,9 @@ class ViewController: UIViewController {
     //Function for registering the user with Castled
     func registerUserAPI() {
 
+        //let userId    = "antony@castled.io"
         let userId    = "antony@castled.io"
-       //let userId    = "frank@castled.io"
-       // let userId    = "abhilash@castled.io"
+        // let userId    = "abhilash@castled.io"
 
         let token : String? = nil // Replace with valid token
         Castled.registerUser(userId: userId, apnsToken: token)
@@ -63,7 +71,37 @@ class ViewController: UIViewController {
         showRequiredViews()
 
     }
+    // MARK: - Inbox related
+    @objc func inboxTapped() {
+        // Handle the button tap here
+        let style = CastledInboxConfig()
+        style.backgroundColor = .white
+        style.navigationBarBackgroundColor = .link
+        style.title = "Castled Inbox"
+        style.navigationBarButtonTintColor = .white
+        style.loaderTintColor = .blue
+        style.hideCloseButton = false
 
+        let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style,andDelegate: self)
+        //inboxViewController?.modalPresentationStyle = .fullScreen
+        //self.present(inboxViewController!, animated: true)
+        self.navigationController?.pushViewController(inboxViewController!, animated: true)
+
+    }
+    func setUpInboxCallback(){
+        Castled.sharedInstance?.setInboxUnreadCount(callback: { unreadCount in
+            print("Inbox unread count is \(unreadCount)")
+            print("Inbox unread count is -> \( Castled.sharedInstance?.getUnreadMessageCount())")
+
+        })
+        //        Castled.sharedInstance?.getInboxItems(completion: { success, items, errorMessage in
+        //
+        //        })
+    }
+    // MARK: - Inbox delegate
+    func didSelectedInboxWith(_ kvPairs: [AnyHashable : Any]?, _ inboxItem: CastledInboxItem) {
+        print("didSelectedInboxWith kvPairs \(kvPairs) inboxItem\(inboxItem)")
+    }
 
     //For testing purpose
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -71,3 +109,4 @@ class ViewController: UIViewController {
     }
 
 }
+
