@@ -8,7 +8,8 @@
 import UIKit
 import Castled
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CastledInboxDelegate {
+
     let userIdKey = "userIdKey"
     @IBOutlet weak var btnRegisterUser: UIButton!
     @IBOutlet weak var btnGotoSecondVC: UIButton!
@@ -19,13 +20,19 @@ class ViewController: UIViewController {
         self.navigationItem.title = "Castled"
         
         showRequiredViews()
+
+        Castled.sharedInstance?.setInboxUnreadCount(callback: { unreadCount in
+            print("Inbox unread count is \(unreadCount)")
+            print("Inbox unread count is -> \( Castled.sharedInstance?.getUnreadMessageCount())")
+
+        })
         // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
-//        CastledConfigs.sharedInstance.enablePush = true
+        //        Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
+        //        CastledConfigs.sharedInstance.enablePush = true
     }
     
     func showRequiredViews(){
@@ -68,12 +75,27 @@ class ViewController: UIViewController {
         showRequiredViews()
         
     }
-
+    // MARK: - Inbox related
     @objc func inboxTapped() {
         // Handle the button tap here
-        let inboxViewController = Castled.sharedInstance?.getInboxViewController()
-        self.navigationController?.pushViewController(inboxViewController!, animated: true)
+        let style = CastledInboxConfig()
+        style.backgroundColor = .white
+        style.navigationBarBackgroundColor = .link
+        style.title = "Castled Inbox"
+        style.navigationBarButtonTintColor = .white
+        style.loaderTintColor = .blue
+        style.hideCloseButton = false
 
+        let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style,andDelegate: self)
+        //inboxViewController?.modalPresentationStyle = .fullScreen
+        //self.present(inboxViewController!, animated: true)
+         self.navigationController?.pushViewController(inboxViewController!, animated: true)
+
+    }
+
+    // MARK: - Inbox delegate
+    func didSelectedInboxWith(_ kvPairs: [AnyHashable : Any]?, _ inboxItem: CastledInboxItem) {
+        print("didSelectedInboxWith kvPairs \(kvPairs) inboxItem\(inboxItem)")
     }
 
     //For testing purpose

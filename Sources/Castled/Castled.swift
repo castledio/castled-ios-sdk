@@ -30,11 +30,21 @@ import UIKit
 @objc public class Castled : NSObject
 {
     @objc public static var sharedInstance: Castled?
+
+
+
     //private var appDelegate: UIApplicationDelegate
     //private var application: UIApplication
     private var shouldClearDeliveredNotifications = true
     internal var inboxItemsArray = [CastledInboxItem]()
-
+    internal var inboxUnreadCountCallback: ((Int) -> Void)?
+    internal var inboxUnreadCount: Int = 0 {
+        didSet {
+            // Call the callback when the unreadCount changes
+            inboxUnreadCountCallback?(inboxUnreadCount)
+        }
+    }
+    
     var instanceId: String
     let delegate: CastledNotificationDelegate
     var clientRootViewController: UIViewController?

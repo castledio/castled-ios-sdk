@@ -18,7 +18,7 @@ protocol CastledInboxViewModelInput {
 protocol CastledInboxViewModelOutput {
     var inboxItems: [CastledInboxItem] { get }
     var errorMessage: String? { get }
-    var showLoader: Bool? { get }
+    var showLoader: Bool { get }
     
 }
 protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxViewModelOutput {}
@@ -26,7 +26,7 @@ protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxV
 final class CastledInboxViewModel: DefaultCastledInboxViewModel {
     @Published var inboxItems =  [CastledInboxItem]()
     @Published var errorMessage: String?
-    @Published var showLoader: Bool?
+    @Published var showLoader: Bool = false
     
     func didLoadNextPage() {
         showLoader = true

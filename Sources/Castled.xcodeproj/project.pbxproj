@@ -49,6 +49,7 @@
 		0A9C26712A42413100ADB960 /* ContentAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A9C266C2A42413100ADB960 /* ContentAssets.xcassets */; };
 		0A9C26722A42413100ADB960 /* CastledNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9C266D2A42413100ADB960 /* CastledNotificationViewController.swift */; };
 		0A9C26742A42417D00ADB960 /* CastledNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9C26732A42417D00ADB960 /* CastledNotificationService.swift */; };
+		0A9E8BFB2AA61CC000BB654D /* CastledInboxConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9E8BFA2AA61CC000BB654D /* CastledInboxConfig.swift */; };
 		0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */; };
 		0AB5C554291C222C0027C36B /* Castled.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB5C553291C222C0027C36B /* Castled.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0AB5C599291C27840027C36B /* CastledExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58C291C27830027C36B /* CastledExceptions.swift */; };
@@ -150,6 +151,7 @@
 		0A9C266C2A42413100ADB960 /* ContentAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ContentAssets.xcassets; sourceTree = "<group>"; };
 		0A9C266D2A42413100ADB960 /* CastledNotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNotificationViewController.swift; sourceTree = "<group>"; };
 		0A9C26732A42417D00ADB960 /* CastledNotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNotificationService.swift; sourceTree = "<group>"; };
+		0A9E8BFA2AA61CC000BB654D /* CastledInboxConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxConfig.swift; sourceTree = "<group>"; };
 		0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledPublicEnums.swift; sourceTree = "<group>"; };
 		0AB5C550291C222C0027C36B /* Castled.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Castled.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB5C553291C222C0027C36B /* Castled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Castled.h; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				0A79E22C2AA0873C0087C3AF /* CastledInboxType.swift */,
 				0A79E22E2AA08E0B0087C3AF /* CastledInboxServices.swift */,
 				0A1DE5FF2A9DA27400DB2E29 /* CastledInboxItem.swift */,
+				0A9E8BFA2AA61CC000BB654D /* CastledInboxConfig.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -779,6 +782,7 @@
 				0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */,
 				0ABDE8B629FBFEB500D3EF79 /* CastledRetryHandler.swift in Sources */,
 				0A1DE60A2A9F488B00DB2E29 /* DecodingContainer+Extensions.swift in Sources */,
+				0A9E8BFB2AA61CC000BB654D /* CastledInboxConfig.swift in Sources */,
 				0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */,
 				0AB5C59B291C27840027C36B /* CastledNetworkRouter.swift in Sources */,
 				0AB5C59E291C27840027C36B /* CastledConstants.swift in Sources */,
