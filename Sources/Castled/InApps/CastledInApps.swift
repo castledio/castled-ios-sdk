@@ -16,8 +16,7 @@ import UIKit
     private  override init () {
         super.init()
     }
-    
-    
+
     internal func fetchInAppNotificationWithCompletion(completion: @escaping () -> Void){
         if CastledConfigs.sharedInstance.enableInApp == false{
             completion()
@@ -177,7 +176,6 @@ import UIKit
             clickAction = params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? ""
 
         }
-
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url ?? ""
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction
         

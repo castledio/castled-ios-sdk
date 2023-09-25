@@ -30,7 +30,6 @@ enum CastledNetworkRouter {
     case fetchInInboxItems(userID: String, instanceId: String)
     case registerInAppEvent(params: [[String: Any]], instanceId: String)
     case registerInboxEvent(params: [[String: Any]], instanceId: String)
-
     var baseURL: String {
         return "https://\(CastledConfigs.sharedInstance.location.description).castled.io/"
     }

@@ -20,9 +20,8 @@
             case "MESSAGE_BANNER_NO_ICON": self = .messageBannerNoIcon
             default: self = .other
         }
-
     }
-
+    
     public var rawValue: RawValue {
         switch self {
             case .messageWithMedia: return "MESSAGE_WITH_MEDIA"

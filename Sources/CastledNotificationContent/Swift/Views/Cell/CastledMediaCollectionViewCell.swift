@@ -274,11 +274,9 @@ extension Bundle {
             //cocoapod
             bundle = Bundle(path: bundlePath)
         }
-
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
@@ -302,7 +300,6 @@ extension Bundle {
         else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
             bundle = Bundle(path: staticBundlePath)
         }
-
         // CocoaPods (framework)
         else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
             bundle = Bundle(path: frameworkBundlePath)

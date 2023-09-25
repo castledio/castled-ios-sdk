@@ -33,7 +33,6 @@ extension CastledException: LocalizedError {
             
         }
     }
-    
 }
 
 func getError(from message : String) -> NSError{

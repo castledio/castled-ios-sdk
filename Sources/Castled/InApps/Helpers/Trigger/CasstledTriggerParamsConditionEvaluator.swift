@@ -27,9 +27,6 @@ internal class CIStringEvaluator: CIParamsConditionEvaluatable {
             return false
         }
     }
-    
-    
-    
 }
 
 internal class CINumberEvaluator: CIParamsConditionEvaluatable {
@@ -61,7 +58,6 @@ internal class CINumberEvaluator: CIParamsConditionEvaluatable {
                   let toValue = formatter.number(from: propertyOperation.value) else { return false }
             return fromValue.doubleValue < numberValue.doubleValue && toValue.doubleValue > numberValue.doubleValue
         default:
-            
             let message = String(format: "Operations type %@ not supported for numeric operand", propertyOperation.propertyType.rawValue)
             castledLog(message)
             
@@ -69,8 +65,6 @@ internal class CINumberEvaluator: CIParamsConditionEvaluatable {
         }
         return false
     }
-    
-    
 }
 
 internal class CIBoolEvaluator: CIParamsConditionEvaluatable {
@@ -80,9 +74,7 @@ internal class CIBoolEvaluator: CIParamsConditionEvaluatable {
             // Throw an error or return a default value if value is not of the expected type
             return false
         }
-        
         let conditionValue = Bool(propertyOperation.value) ?? false
-        
         switch propertyOperation.type {
         case .EQ:
             return aBool == conditionValue
@@ -91,14 +83,11 @@ internal class CIBoolEvaluator: CIParamsConditionEvaluatable {
             return false
         }
     }
-    
 }
 
 internal class CIDateEvaluator: CIParamsConditionEvaluatable {
-    
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         
         return false
     }
-    
 }

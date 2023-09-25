@@ -187,7 +187,6 @@ extension CastledInAppDisplayViewController{
                 switch inappAObject.message?.modal?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
                         inppV  = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
-
                         break
                     case CITemplateType.image_buttons.rawValue:
                         break
@@ -206,7 +205,6 @@ extension CastledInAppDisplayViewController{
                 break
             case CIMessageType.fs.rawValue:
                 container = viewFSContainer
-
                 switch inappAObject.message?.fs?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
                         inppV  = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
@@ -228,7 +226,6 @@ extension CastledInAppDisplayViewController{
             case CIMessageType.banner.rawValue:
                 container = viewBannerContainer
                 view.restorationIdentifier = "touchdisabled"
-
                 switch inappAObject.message?.banner?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
                         inppV  = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
@@ -245,9 +242,6 @@ extension CastledInAppDisplayViewController{
             default:
                 break
         }
-//        container = viewFSContainer
-//        inppV  = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
-//        html = getHTML()
         return (inppV,container,html)
     }
 }

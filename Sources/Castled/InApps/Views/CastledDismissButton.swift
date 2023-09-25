@@ -26,7 +26,6 @@ class CastledDismissButton: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
-
     }
 
     func commonInit() {
@@ -36,10 +35,12 @@ class CastledDismissButton: UIView {
         self.viewDismiss.backgroundColor = .clear
         setupViews()
     }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         viewDismiss.frame = bounds
     }
+
     private func setupViews(){
         self.backgroundColor = .clear
         let closeImage = imgClose.image?.withRenderingMode(.alwaysTemplate)
@@ -51,6 +52,7 @@ class CastledDismissButton: UIView {
 
 
     }
+    
     func initialiseActions(actions: DismissViewActions? = nil) {
         self.actions = actions
     }

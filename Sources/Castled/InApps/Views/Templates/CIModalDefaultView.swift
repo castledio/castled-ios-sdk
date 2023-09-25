@@ -13,8 +13,6 @@ class CIModalDefaultView : UIView,CIViewProtocol {
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
     var viewContainer: UIView?
-
-    
     @IBOutlet weak var viewMainContainer: UIView!
     @IBOutlet weak var viewImageContainer: UIView!
     @IBOutlet weak var imgViewMain: UIImageView!
@@ -37,13 +35,10 @@ class CIModalDefaultView : UIView,CIViewProtocol {
      */
 
     func configureTheViews() {
-
-
         lblMessageTitle?.font = inAppDisplaySettings?.titleFont.withSize(CGFloat(inAppDisplaySettings!.titleFontSize))
         lblMessageSubTitle?.font = inAppDisplaySettings?.bodyFont.withSize(CGFloat(inAppDisplaySettings!.bodyFontSize))
         btnLeftOfView?.titleLabel?.font = inAppDisplaySettings?.buttonFont.withSize(CGFloat(min(inAppDisplaySettings!.titleFontSize - 1, 16)))
         btnRightOfView?.titleLabel?.font = btnLeftOfView?.titleLabel?.font
-
         viewMainContainer?.layer.cornerRadius = 5
         lblMessageTitle?.textColor = inAppDisplaySettings?.titleFontColor
         lblMessageSubTitle?.textColor = inAppDisplaySettings?.bodyFontColor
@@ -55,28 +50,21 @@ class CIModalDefaultView : UIView,CIViewProtocol {
         viewDetailContainer?.backgroundColor = inAppDisplaySettings?.bodyBgColor
         viewActionButtonContainer?.backgroundColor = viewDetailContainer?.backgroundColor
         parentContainerVC?.view?.backgroundColor = inAppDisplaySettings?.screenOverlayColor
-
-
         imgViewMain?.loadImage(from: inAppDisplaySettings?.imageUrl)
-
-
         if let color = inAppDisplaySettings?.leftButtonBorderColor{
             btnLeftOfView?.layer.borderColor = color.cgColor
             btnLeftOfView?.layer.borderWidth = CGFloat(inAppDisplaySettings!.leftButtonBorderWidth)
             btnLeftOfView?.layer.cornerRadius = CGFloat(inAppDisplaySettings!.leftButtonCornerRadius)
 
         }
-
         if let color = inAppDisplaySettings?.rightButtonBorderColor{
             btnRightOfView?.layer.borderColor = color.cgColor
             btnRightOfView?.layer.borderWidth = CGFloat(inAppDisplaySettings!.rightButtonBorderWidth)
             btnRightOfView?.layer.cornerRadius = CGFloat(inAppDisplaySettings!.rightButtonCornerRadius)
 
         }
-
         lblMessageTitle?.text = inAppDisplaySettings?.title
         lblMessageSubTitle?.text = inAppDisplaySettings?.body
-
         btnLeftOfView?.setTitle(inAppDisplaySettings?.leftButtonTitle, for: .normal)
         btnRightOfView?.setTitle(inAppDisplaySettings?.rightButtonTitle, for: .normal)
 
@@ -84,28 +72,20 @@ class CIModalDefaultView : UIView,CIViewProtocol {
 
     @IBAction func hideInAppView(_ sender: Any) {
 
-
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
-
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
-
-
     }
 
     @IBAction func rightButtonClikdAction(_ sender: Any) {
-
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue,actionType: inAppDisplaySettings?.rightButtonClickAction, btnLabel:inAppDisplaySettings?.rightButtonTitle, actionUri: inAppDisplaySettings?.rightButtonUri)
         CastledInApps.sharedInstance.performButtonActionFor(buttonAction:selectedInAppObject?.message?.modal?.actionButtons.last)
-
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
-
 
     }
 
     @IBAction func leftButtonClikdAction(_ sender: Any) {
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue,actionType: inAppDisplaySettings?.leftButtonClickAction, btnLabel:inAppDisplaySettings?.leftButtonTitle, actionUri: inAppDisplaySettings?.leftButtonUri)
         CastledInApps.sharedInstance.performButtonActionFor(buttonAction:selectedInAppObject?.message?.modal?.actionButtons.first)
-
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
     }
 }

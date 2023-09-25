@@ -24,8 +24,7 @@ import Foundation
     internal static let kCastledLastInappDisplayedTime      = "_castledLastInappDisplayedTime_"
     internal static let kCastledClickedNotiContentIndx      = "_kCastledClickedNotiContentIndx_"
 
-    @objc public static func getString(_ key: String) -> String? {
-
+    @objc  static func getString(_ key: String) -> String? {
         // Fetch value from UserDefaults
         if let stringValue = userDefaults.string(forKey: key){
             return stringValue
@@ -33,42 +32,40 @@ import Foundation
         return nil
     }
     
-    internal class func setString(_ key: String, _ value: String?) {
+     static func setString(_ key: String, _ value: String?) {
         // Save the value in UserDefaults
         userDefaults.set(value, forKey: key)
         userDefaults.synchronize()
     }
     
-    class func getBoolean(_ key: String) -> Bool {
-        
+    static func getBoolean(_ key: String) -> Bool {
         // Fetch Bool value from UserDefaults
         return userDefaults.bool(forKey: key)
     }
-    
-    class func setBoolean(_ key: String, _ value: Bool?) {
+
+    static func setBoolean(_ key: String, _ value: Bool?) {
         // Store value in UserDefaults
         userDefaults.set(value, forKey: key)
         userDefaults.synchronize()
-        
     }
-    class func removeFor(_ key: String){
-        
+
+    static func removeFor(_ key: String){
         // Remove value from UserDefaults
         userDefaults.removeObject(forKey: key)
         userDefaults.synchronize()
-        
     }
+
     static func setObjectFor(_ key: String, _ data: Any) {
         // Save the value in UserDefaults
         userDefaults.set(data, forKey: key)
         userDefaults.synchronize()
     }
-    
+
     static func getDataFor(_ key: String) -> Data? {
         return userDefaults.data(forKey: key)
         
     }
-    
+
     static func getObjectFor(_ key: String) -> Any? {
         return userDefaults.object(forKey: key)
     }

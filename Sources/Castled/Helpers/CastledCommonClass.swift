@@ -10,7 +10,6 @@ import Foundation
 
 class CastledCommonClass{
     static func showNotificationWIthTitle(title:String,body : String){
-
         let center = UNUserNotificationCenter.current()
         let content = UNMutableNotificationContent()
         content.title = title
@@ -22,7 +21,7 @@ class CastledCommonClass{
         let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
         center.add(request) { (error) in
             if error != nil {
-                print("Error = \(error?.localizedDescription ?? "error local notification")")
+                castledLog("Error = \(error?.localizedDescription ?? "error local notification")")
             }
         }
     }
@@ -49,7 +48,6 @@ class CastledCommonClass{
     
     static func getActionDetails(dict: [AnyHashable: Any], actionType: String) -> [String: Any]? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? NSDictionary,
-              //              let notificationId = customDict[CastledConstants.PushNotification.CustomProperties.notificationId] as? String,
               let notification = dict[CastledConstants.PushNotification.apsKey] as? NSDictionary,
               let category = notification[CastledConstants.PushNotification.ApsProperties.category] as? String,
               let categoryJsonString = customDict[CastledConstants.PushNotification.CustomProperties.categoryActions] as? String,
@@ -81,9 +79,7 @@ class CastledCommonClass{
            let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? Array<Any>,
            detailsArray.count > index!,
            let selectedCategory = detailsArray[index!] as? [String : Any]{
-
             return selectedCategory
-
         }
         return nil
 
@@ -94,57 +90,16 @@ class CastledCommonClass{
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 
-    static func getImage(for url: URL, completion: @escaping (UIImage?) -> Void) {
-        
-        let cache = NSCache<NSURL, UIImage>()
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            if let cachedImage = cache.object(forKey: url as NSURL) {
-                DispatchQueue.main.async {
-                    completion(cachedImage)
-                }
-            } else {
-                URLSession.shared.dataTask(with: url) { (data, response, error) in
-                    if error != nil {
-                        
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
-                        return
-                    }
-                    
-                    guard let data = data, let image = UIImage(data: data) else {
-                        
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
-                        return
-                    }
-                    
-                    // Cache the downloaded image
-                    cache.setObject(image, forKey: url as NSURL)
-                    DispatchQueue.main.async {
-                        completion(image)
-                    }
-                }.resume()
-            }
-        }
-    }
-    
     static internal func hexStringToUIColor (hex:String) -> UIColor? {
         var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        
         if (cString.hasPrefix("#")) {
             cString.remove(at: cString.startIndex)
         }
-        
         if ((cString.count) != 6) {
             return nil
         }
-        
         var rgbValue:UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
-        
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
@@ -153,17 +108,11 @@ class CastledCommonClass{
         )
     }
     static internal func instantiateFromNib<T: UIViewController>(vc : T.Type) -> T {
-
-
         return T.init(nibName: String(describing: T.self), bundle:Bundle.resourceBundle(for: Self.self))
     }
 
-    
     static func loadView<T :UIView>(fromNib name: String, withType type: T.Type) -> T? {
-        
         let bundle  = Bundle.resourceBundle(for: Self.self)
-
-
         if let view = UINib(
             nibName: name,
             bundle: bundle
@@ -193,10 +142,7 @@ extension UIView {
         layer.shadowOpacity = 0.3
         layer.shadowColor = UIColor.gray.cgColor
         layer.shadowOffset = CGSize(width: 1, height: 5)
-
-
     }
-    
 }
 
 extension UIWindow {
@@ -221,9 +167,7 @@ extension UIWindow {
 
 extension Bundle {
 
-
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-
         let mainBundle = Bundle.main
         let sourceBundle = Bundle(for: bundleClass)
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
@@ -235,11 +179,9 @@ extension Bundle {
             //cocoapod
             bundle = Bundle(path: bundlePath)
         }
-
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
-
         else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }

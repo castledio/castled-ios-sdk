@@ -89,7 +89,7 @@ extension Castled{
 
                     }
                 } else if let inboxViewController = currentViewController as? CastledInboxViewController {
-                    // Dismiss the UserListingViewController if it's not embedded in a UINavigationController
+                    // Dismiss the CastledInboxViewController if it's not embedded in a UINavigationController
                     inboxViewController.dismiss(animated: true, completion: nil)
                 }
             }

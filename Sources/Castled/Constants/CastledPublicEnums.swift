@@ -11,7 +11,6 @@ import Foundation
     case AP
     case INDIA
     case TEST
-    
     internal var description: String {
         switch self {
             case .US:
@@ -22,11 +21,10 @@ import Foundation
                 return "in"
             case .TEST:
                 return "test"
-
         }
     }
-    
 }
+
 @objc public enum CastledClickActionType: Int {
     case deepLink
     case navigateToScreen
@@ -34,15 +32,13 @@ import Foundation
     case requestForPush //this is for inapp
     case dismiss
     case custom
-
-
 }
+
 @objc public enum CastledNotificationType: Int {
     case push
     case inapp
     case inbox
     case other
-
     public func value() -> String {
         switch self {
             case .push: return "push"

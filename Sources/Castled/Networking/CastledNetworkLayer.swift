@@ -187,13 +187,9 @@ import Foundation
                     return await  CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint : endpoint,retryAttempt: retryAttempt!+1)
                     
                 }
-                
-                // return .failure(error)
                 return CastledResponse<T>(error: CastledExceptionMessages.common.rawValue, statusCode: 0)
-                
             }
         }
-        
         return CastledResponse<T>(error: CastledExceptionMessages.iOS13Less.rawValue, statusCode: 0)
     }
 }

@@ -30,7 +30,7 @@ import UserNotificationsUI
         
         // Do any required interface initialization here.
     }
-    
+
     @available(iOSApplicationExtension 10.0, *)
     @objc open func didReceive(_ notification: UNNotification) {
 
@@ -74,7 +74,6 @@ import UserNotificationsUI
         guard let jsonData = text.data(using: .utf8) else {
             return nil
         }
-        
         let jsonDecoder = JSONDecoder()
         let convertedAttachments = try? jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
         return convertedAttachments

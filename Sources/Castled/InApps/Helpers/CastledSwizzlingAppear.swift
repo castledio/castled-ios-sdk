@@ -11,8 +11,6 @@ import UIKit
 extension UIViewController {
     @objc func _tracked_viewwDidAppear(_ animated: Bool) {
         if !(String(describing: type(of: self)).hasPrefix("CastledInApp")) &&  CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil{
-            //castledLog( "Tracked this screen:-\(type (of: self))")
-
             Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
             _tracked_viewwDidAppear(animated)
             
@@ -23,7 +21,6 @@ extension UIViewController {
         if swizzzlingDisabled == true {
             return
         }
-        
         let originalSelector = #selector (UIViewController.viewDidAppear)
         let swizzledSelector = #selector (UIViewController._tracked_viewwDidAppear)
         let originalMethod = class_getInstanceMethod (self, originalSelector)

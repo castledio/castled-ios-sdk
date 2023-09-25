@@ -32,7 +32,6 @@ class CIBannerDefaultView: UIView,CIViewProtocol {
     
     
     func configureTheViews() {
-        
         lblTitle?.font = inAppDisplaySettings?.slideUpFont.withSize(CGFloat(inAppDisplaySettings!.slideUpFontSize))
         lblTitle?.textColor = inAppDisplaySettings?.slideUpFontColor
         viewMainContainer?.backgroundColor = inAppDisplaySettings?.slideUpBgColor
@@ -43,23 +42,16 @@ class CIBannerDefaultView: UIView,CIViewProtocol {
         imgViewMain?.layer.cornerRadius = 5
         lblTitle?.text = inAppDisplaySettings?.slideUpTitle
         imgViewMain.loadImage(from: inAppDisplaySettings?.imageUrl)
-        
-        
     }
     
     @IBAction func hideInAppView(_ sender: Any) {
-        
-        
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
     }
     
     @IBAction func detailsButtonClikd(_ sender: Any) {
-        
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue,actionType: inAppDisplaySettings?.slideUpClickAction, btnLabel:inAppDisplaySettings?.slideUpTitle, actionUri: inAppDisplaySettings?.slideUpUri)
         CastledInApps.sharedInstance.performButtonActionFor(slide: (parentContainerVC?.selectedInAppObject)!.message?.banner)
         parentContainerVC?.hideInAppViewFromWindow()
     }
-    
-    
 }

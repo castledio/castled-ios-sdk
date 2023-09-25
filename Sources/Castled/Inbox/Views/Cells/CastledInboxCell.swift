@@ -60,9 +60,6 @@ class CastledInboxCell: UITableViewCell {
         lblTitle.textColor = inboxObj.titleTextColor
         lblDescription.textColor = inboxObj.bodyTextColor
         lblTime.textColor = inboxObj.titleTextColor
-
-        
-
         lblTitle.text = inboxObj.title
         lblDescription.text = inboxObj.body
         lblTime.text = inboxObj.addedDate.timeAgo()
@@ -123,11 +120,9 @@ class CastledInboxCell: UITableViewCell {
             constraintButtonContainerHeight.constant = 50
             viewButtonContainer.isHidden = false
         }
-
         btnLink1.isHidden = buttonCount < 1
         btnLink2.isHidden = buttonCount < 2
         btnLink3.isHidden = buttonCount < 3
-
         btnLink1.removeTarget(nil, action: nil, for: .allEvents)
         btnLink2.removeTarget(nil, action: nil, for: .allEvents)
         btnLink3.removeTarget(nil, action: nil, for: .allEvents)

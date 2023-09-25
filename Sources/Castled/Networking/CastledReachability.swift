@@ -20,7 +20,6 @@ internal class CastledReachability {
                 SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
             }
         }
-        
         var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
         if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
             return false
@@ -37,7 +36,6 @@ internal class CastledReachability {
         let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
         let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
         let ret = (isReachable && !needsConnection)
-        
         return ret
         
     }

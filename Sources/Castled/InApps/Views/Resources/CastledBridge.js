@@ -2,52 +2,52 @@ class CastledBridge {
 
     dismissMessage(optional_params) {
         const jsonObject = {
-            'clickAction'    : 'DISMISS_NOTIFICATION',
-            'custom_params'    : optional_params
+            'clickAction': 'DISMISS_NOTIFICATION',
+            'custom_params': optional_params
         };
-        window.webkit.messageHandlers.castled. postMessage(jsonObject);
+        window.webkit.messageHandlers.castled.postMessage(jsonObject);
     }
-    navigateToScreen(screen_name,optional_params){
+    navigateToScreen(screen_name, optional_params) {
 
         var jsonObject = {
-            'clickActionUrl' : screen_name,
-            'clickAction'    : 'NAVIGATE_TO_SCREEN',
-            'custom_params'          : optional_params
+            'clickActionUrl': screen_name,
+            'clickAction': 'NAVIGATE_TO_SCREEN',
+            'custom_params': optional_params
         };
-        window.webkit.messageHandlers.castled. postMessage(jsonObject);
+        window.webkit.messageHandlers.castled.postMessage(jsonObject);
     }
-    openDeepLink(deeplink_url,optional_params){
+    openDeepLink(deeplink_url, optional_params) {
 
         var jsonObject = {
-            'clickActionUrl' : deeplink_url,
-            'clickAction'    : 'DEEP_LINKING',
-            'custom_params'          : optional_params
+            'clickActionUrl': deeplink_url,
+            'clickAction': 'DEEP_LINKING',
+            'custom_params': optional_params
         };
-        window.webkit.messageHandlers.castled. postMessage(jsonObject);
+        window.webkit.messageHandlers.castled.postMessage(jsonObject);
     }
-    openRichLanding(richlanding_url,optional_params){
+    openRichLanding(richlanding_url, optional_params) {
 
         var jsonObject = {
-            'clickActionUrl' : richlanding_url,
-            'clickAction'    : 'RICH_LANDING',
-            'custom_params'          : optional_params
+            'clickActionUrl': richlanding_url,
+            'clickAction': 'RICH_LANDING',
+            'custom_params': optional_params
         };
-        window.webkit.messageHandlers.castled. postMessage(jsonObject);
+        window.webkit.messageHandlers.castled.postMessage(jsonObject);
     }
     requestPushPermission(optional_params) {
         const jsonObject = {
-            'clickAction'    : 'REQUEST_PUSH_PERMISSION',
-            'custom_params'    : optional_params
+            'clickAction': 'REQUEST_PUSH_PERMISSION',
+            'custom_params': optional_params
         };
-        window.webkit.messageHandlers.castled. postMessage(jsonObject);
+        window.webkit.messageHandlers.castled.postMessage(jsonObject);
     }
 
     customAction(optional_params) {
         const jsonObject = {
-            'clickAction'  : 'CUSTOM',
-            'custom_params'    : optional_params
+            'clickAction': 'CUSTOM',
+            'custom_params': optional_params
         };
-        window.webkit.messageHandlers.castled. postMessage(jsonObject);
+        window.webkit.messageHandlers.castled.postMessage(jsonObject);
     }
 
 }

@@ -31,20 +31,15 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
     func didLoadNextPage() {
         showLoader = true
         Castled.sharedInstance?.getInboxItems(completion: {[weak self] success, items, errorMessage1 in
-
             if(success){
                 self?.inboxItems.removeAll()
                 self?.inboxItems.append(contentsOf: items ?? [])
-//                self?.inboxItems.append(contentsOf: items ?? [])
-//                self?.inboxItems.append(contentsOf: items ?? [])
-
             }
             else
             {
                 self?.errorMessage = errorMessage1
             }
             self?.showLoader = false
-
         })
     }
     

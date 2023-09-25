@@ -34,10 +34,7 @@ internal struct CastledNotificationMediaObject: Codable {
         self.mediaType = (try? container.decodeIfPresent(CNMediaType.self, forKey: .mediaType)) ?? .image
         self.clickAction = (try? container.decodeIfPresent(String.self, forKey: .clickAction)) ?? ""
         self.body = (try? container.decodeIfPresent(String.self, forKey: .body)) ?? ""
-        
         self.keyVals = (try? container.decodeIfPresent([String:String].self, forKey: .keyVals)) ?? [String:String]()
-        
-        
     }
     
     internal enum  CNMediaType: String, Codable {

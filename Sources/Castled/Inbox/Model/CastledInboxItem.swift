@@ -8,25 +8,24 @@ import Foundation
 import UIKit
 
 @objc public class CastledInboxItem: NSObject, Codable {
-    public let teamID, messageId: Int
-    public let sourceContext, imageUrl,title,body: String
-    public let inboxType: CastledInboxType
-    public let message: [String: Any]
-    public let startTs: Int64
-    public let aspectRatio: CGFloat
-    public var isRead: Bool
-    public var addedDate : Date
-    public var titleTextColor: UIColor
-    public var bodyTextColor: UIColor
-    public var dateTextColor: UIColor
-    public var containerBGColor: UIColor
     public var actionButtons : [[String : Any]]
+    public var addedDate : Date
+    public let aspectRatio: CGFloat
+    public var bodyTextColor: UIColor
+    public var containerBGColor: UIColor
+    public var dateTextColor: UIColor
+    public let inboxType: CastledInboxType
+    public var isRead: Bool
+    public let message: [String: Any]
+    public let sourceContext, imageUrl,title,body: String
+    public let startTs: Int64
+    public let teamID, messageId: Int
+    public var titleTextColor: UIColor
     enum CodingKeys: String, CodingKey {
         case teamID = "teamId"
         case messageId = "messageId"
         case isRead = "read"
         case message = "message"
-
         case sourceContext, startTs, aspectRatio // Use messageData to decode the message
     }
     public func encode(to encoder: Encoder) throws {
@@ -42,7 +41,6 @@ import UIKit
         self.startTs = try container.decodeIfPresent(Int64.self, forKey: .startTs) ?? 0
         self.isRead = try container.decodeIfPresent(Bool.self, forKey: .isRead) ?? true
         self.message = try container.decode([String: Any].self, forKey: .message)
-
         self.addedDate = Date.from(epochTimestamp: TimeInterval(self.startTs/1000))
         self.actionButtons = (self.message["actionButtons"] as? [[String: Any]] ?? [])
         self.aspectRatio = CGFloat((self.message["aspectRatio"] as? Double) ?? Double((self.message["aspectRatio"] as? Int) ?? Int(0.0)))
@@ -52,7 +50,6 @@ import UIKit
         self.title = (self.message["title"] as? String) ?? ""
         self.body = (self.message["body"] as? String) ?? ""
         self.inboxType = CastledInboxType(rawValue: (self.message["type"] as? String) ?? "OTHER") ?? .other
-
         self.titleTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["titleFontColor"] as? String) ?? "")  ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.bodyTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bodyFontColor"] as? String) ?? "")  ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.dateTextColor = self.bodyTextColor

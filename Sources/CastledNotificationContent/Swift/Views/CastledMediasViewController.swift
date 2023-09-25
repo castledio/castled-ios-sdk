@@ -53,28 +53,24 @@ class CastledMediasViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.addSubview(collectionView)
         view.addSubview(pageControl)
-        
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45)
         ])
-        
         pageControl.numberOfPages = mediaObjects.count
     }
+
     func setUserdefaults(FromAppgroup appGroupId: String){
         userDefaults =  UserDefaults.init(suiteName: appGroupId)
         userDefaults?.removeObject(forKey: CastledMediasViewController.kCastledClickedNotiContentIndx)
         userDefaults?.synchronize()
     }
-    
 }
 
 extension CastledMediasViewController: UICollectionViewDataSource,UICollectionViewDelegate {

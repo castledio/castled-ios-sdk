@@ -14,7 +14,6 @@ extension Castled {
      Funtion which alllows to register the User & Token with Castled.
      */
     @objc public static func registerUser(userId uid : String, apnsToken token : String?){
-        
         var deviceToken = token
         if deviceToken == nil{
             deviceToken =  CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
@@ -24,8 +23,6 @@ extension Castled {
             CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, deviceToken)
         }
         CastledUserDefaults.setString(CastledUserDefaults.kCastledUserIdKey, uid)
-
-
         if deviceToken != nil && CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false
         {
             Castled.sharedInstance?.api_RegisterUser(userId: uid, apnsToken: deviceToken!) {response in
@@ -39,18 +36,15 @@ extension Castled {
             Castled.sharedInstance?.executeBGTaskWithDelay()
         }
     }
-    
     /**
      Funtion which alllows to register the Events for InApp with Castled.
      */
     internal static func updateInAppEvents(params : [[String : String]],  completion: @escaping (_ response: CastledResponse<[String : String]>) -> Void){
-        
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        
         Castled.sharedInstance?.api_RegisterInAppEvents(params: params,type: [String : String].self) { response in
             if response.success{
                 //handle
@@ -64,13 +58,11 @@ extension Castled {
      Funtion which alllows to register the Events for InApp with Castled.
      */
     internal static func updateInboxEvents(params : [[String : String]],  completion: @escaping (_ response: CastledResponse<[String : String]>) -> Void){
-
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-
         Castled.sharedInstance?.api_RegisterInboxEvents(params: params,type: [String : String].self) { response in
             if response.success{
                 //handle
@@ -88,7 +80,6 @@ extension Castled {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        
         Castled.sharedInstance?.api_RegisterEvents(params: params,type: [String : String].self) { response in
             if response.success{
                 //handle
@@ -106,7 +97,6 @@ extension Castled {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        
         Castled.sharedInstance?.api_Trigger_Campaign(model: [String : String].self, completion: { response in
             if response.success{
                 castledLog("Campaign triggered")
@@ -119,13 +109,11 @@ extension Castled {
      Function to fetch all App Notification
      */
     internal static func fetchInAppNotification(completion: @escaping (_ response: CastledResponse<[CastledInAppObject]>) -> Void){
-        
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        
         Castled.sharedInstance?.api_fetch_inApp(model: [CastledInAppObject].self, completion: { response in
             completion((response))
         })
@@ -134,37 +122,29 @@ extension Castled {
      Function to fetch all Inbox Items
      */
     internal static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItem]>) -> Void){
-
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-
         Castled.sharedInstance?.api_fetch_inBox(model: [CastledInboxItem].self, completion: {response in
              completion((response))
         })
     }
 }
 
-
 extension Castled{
-
-
     private func api_fetch_inBox<T: Codable>(model : T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void){
-
         guard let instance_id = Castled.sharedInstance?.instanceId else{
             castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-
         guard let userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) else{
             castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.userNotRegistered.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
             return
         }
-
         Task{
             let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: instance_id)
             let response = await  CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint: router.endpoint)
@@ -179,13 +159,11 @@ extension Castled{
     }
 
     internal func api_RegisterUser(userId uid : String, apnsToken token : String,  completion: @escaping (_ response: CastledResponse<[String : String]>) -> Void){
-        
         guard let instance_id = Castled.sharedInstance?.instanceId else{
             castledLog("Register User Error:❌❌❌\(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        
         if token.count == 0 {
             castledLog("Register User Error:❌❌❌\(CastledExceptionMessages.emptyToken.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.emptyToken.rawValue, statusCode: 999))
@@ -217,13 +195,11 @@ extension Castled{
         }
         
         Task{
-            
             let router: CastledNetworkRouter = .registerEvents(params: params, instanceId: instance_id)
             let response = await  CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint :router.endpoint)
-            
             switch response {
             case .success(let responsJSON):
-                castledLog("Register Push Events Success:✅✅✅ \(responsJSON) params\(params)")
+               // castledLog("Register Push Events Success:✅✅✅ \(responsJSON) params\(params)")
                 var savedEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingPushEvents) as? [[String:String]]) ?? [[String:String]]()
                 savedEvents = savedEvents.filter { !params.contains($0) }
                 CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingPushEvents, savedEvents)
@@ -238,17 +214,14 @@ extension Castled{
     }
     
     private func api_RegisterInAppEvents<T: Any>(params : [[String : String]],type: T.Type,  completion: @escaping (_ response: CastledResponse<T>) -> Void){
-        
         guard let instance_id = Castled.sharedInstance?.instanceId else{
             castledLog("Update InApp Error:❌❌❌\(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        
         Task{
             let router: CastledNetworkRouter = .registerInAppEvent(params: params, instanceId: instance_id)
             let response = await  CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint :router.endpoint)
-            
             switch response {
             case .success(let responsJSON):
                 // castledLog("Update InApp Events Success:✅✅✅ \(responsJSON)")
@@ -282,7 +255,6 @@ extension Castled{
                     savedEvents = savedEvents.filter { !params.contains($0) }
                     CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInboxEvents, savedEvents)
                     completion(CastledResponse(response: responsJSON as! T))
-
                 case .failure(let error):
                     castledLog("Update Inbox Error:❌❌❌\(error.localizedDescription)")
                     completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
@@ -294,14 +266,12 @@ extension Castled{
         Task{
             let router: CastledNetworkRouter = .triggerCampaign
             let response = await  CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint :router.endpoint)
-
             switch response {
             case .success(let responsJSON):
-                castledLog("Trigger Campaign Success:✅✅✅ \(responsJSON)")
+              //  castledLog("Trigger Campaign Success:✅✅✅ \(responsJSON)")
                 completion(CastledResponse(response: responsJSON as! T))
-                
             case .failure(let error):
-                castledLog("Trigger Campaign Error:❌❌❌\(error.localizedDescription)")
+              //  castledLog("Trigger Campaign Error:❌❌❌\(error.localizedDescription)")
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
                 
             }
@@ -309,19 +279,16 @@ extension Castled{
     }
     
     private func api_fetch_inApp<T: Codable>(model : T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void){
-        
         guard let instance_id = Castled.sharedInstance?.instanceId else{
             castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.notInitialised.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        
         guard let userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) else{
             castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.userNotRegistered.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
             return
         }
-        
         Task{
             let router: CastledNetworkRouter = .fetchInAppNotification(userID: userId, instanceId: instance_id)
             let response = await  CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint: router.endpoint)

@@ -22,7 +22,6 @@ class CastledBGManager {
         if isRegistered { return }
         if #available(iOS 13.0, *) {
             isRegistered = true
-            
             BGTaskScheduler.shared.register(forTaskWithIdentifier: castledConfig.permittedBGIdentifier, using: nil) { task in
                 self.handleBackgroundTask(task: task as! BGProcessingTask)
             }
@@ -33,14 +32,11 @@ class CastledBGManager {
     internal func executeBackgroundTask(completion: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         let dispatchSemaphore = DispatchSemaphore(value: 1)
-        
         dispatchGroup.enter()
         dispatchSemaphore.wait()
-        
         CastledInApps.sharedInstance.fetchInAppNotificationWithCompletion { [weak self] in
             self?.retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
         }
-        
         dispatchGroup.notify(queue: .main) {
             completion()
         }
@@ -64,9 +60,7 @@ class CastledBGManager {
             self.expirationHandler = nil
         }
         task.expirationHandler = expirationHandler
-        
         scheduleNextTask()
-        
         if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
             task.setTaskCompleted(success: false)
             
@@ -75,7 +69,6 @@ class CastledBGManager {
         {
             executeBackgroundTask {
                 task.setTaskCompleted(success: true)
-                
             }
         }
         
@@ -85,9 +78,7 @@ class CastledBGManager {
         let taskRequest = BGProcessingTaskRequest(identifier: castledConfig.permittedBGIdentifier)
         taskRequest.requiresExternalPower = true
         taskRequest.requiresNetworkConnectivity = true
-        
         taskRequest.earliestBeginDate = Date(timeIntervalSinceNow:TimeInterval(max(castledConfig.inAppFetchIntervalSec, 15*60)))
-        
         return taskRequest
     }
     
@@ -96,7 +87,6 @@ class CastledBGManager {
         if castledConfig.permittedBGIdentifier.count == 0{
             return;
         }
-        
         if checkBackgroundProcessingCapability() {
             stopBackgroundTask()
             let taskRequest = getNewTaskRequest()
@@ -115,7 +105,6 @@ class CastledBGManager {
         if (self.expirationHandler != nil){
             self.expirationHandler = nil
         }
-        
         if #available(iOS 13.0, *) {
             
             BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: castledConfig.permittedBGIdentifier)
@@ -129,9 +118,7 @@ class CastledBGManager {
         do {
             try BGTaskScheduler.shared.submit(taskRequest)
         } catch {
-            print("Could not schedule background task: \(error)")
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)")
-            
         }
     }
     

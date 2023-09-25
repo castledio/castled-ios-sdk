@@ -9,8 +9,7 @@ import UIKit
 
 internal class CastledInboxServices: NSObject {
     private let backgroundQueue = DispatchQueue(label: "CastledInboxQueue", qos: .background)
-
-    internal func reportInboxItemsRead(inboxItems : [CastledInboxItem]){
+    func reportInboxItemsRead(inboxItems : [CastledInboxItem]){
         if inboxItems.count == 0{
             return
         }
@@ -28,27 +27,21 @@ internal class CastledInboxServices: NSObject {
 
                 }
             }
-
         }
     }
 
     internal func reportInboxItemsClicked(inboxObject : CastledInboxItem, buttonTitle: String?){
-
         backgroundQueue.async { [self] in
             let eventType = "CLICKED"
             var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String:String]]) ?? [[String:String]]()
-
             if let json = self.getSendingParametersFrom(savedEventTypes, eventType, inboxObject, buttonTitle ?? ""){
                 savedEventTypes.append(json)
             }
-
             CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInboxEvents, savedEventTypes)
             if (savedEventTypes.count>0){
                 updateInBoxEvents(savedEventTypes: savedEventTypes) { _ , _ in
-
                 }
             }
-
         }
     }
     internal func reportInboxItemsDeleted(inboxObject : CastledInboxItem,completion: @escaping (_ success: Bool,_ errorMessage: String?) -> Void){
@@ -107,10 +100,8 @@ internal class CastledInboxServices: NSObject {
                         "sourceContext":sourceContext] as [String : String]
             json["btnLabel"] = title
             return json
-
         }
         return nil
-
     }
 
 }
