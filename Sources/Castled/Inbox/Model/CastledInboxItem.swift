@@ -20,9 +20,6 @@ import UIKit
     public var bodyTextColor: UIColor
     public var dateTextColor: UIColor
     public var containerBGColor: UIColor
-    public var titleTextFont: UIFont
-    public var bodyTextFont: UIFont
-    public var dateTextFont: UIFont
     public var actionButtons : [[String : Any]]
     enum CodingKeys: String, CodingKey {
         case teamID = "teamId"
@@ -60,10 +57,6 @@ import UIKit
         self.bodyTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bodyFontColor"] as? String) ?? "")  ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.dateTextColor = self.bodyTextColor
         self.containerBGColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bgColor"] as? String) ?? "")  ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        self.titleTextFont = UIFont.systemFont(ofSize: CGFloat((self.message["titleFontSize"] as? Int) ?? 18), weight: UIFont.Weight.semibold)
-        self.bodyTextFont = UIFont.systemFont(ofSize: CGFloat((self.message["bodyFontSize"] as? Int) ?? 16), weight: UIFont.Weight.regular)
-        self.dateTextFont = UIFont.systemFont(ofSize: CGFloat(min(self.bodyTextFont.pointSize - 2, 14)), weight: UIFont.Weight.light)
-
 
     }
     static func == (lhs: CastledInboxItem, rhs: CastledInboxItem) -> Bool {

@@ -60,9 +60,8 @@ class CastledInboxCell: UITableViewCell {
         lblTitle.textColor = inboxObj.titleTextColor
         lblDescription.textColor = inboxObj.bodyTextColor
         lblTime.textColor = inboxObj.titleTextColor
-        lblTitle.font = inboxObj.titleTextFont
-        lblDescription.font = inboxObj.bodyTextFont
-        lblTime.font = inboxObj.dateTextFont
+
+        
 
         lblTitle.text = inboxObj.title
         lblDescription.text = inboxObj.body

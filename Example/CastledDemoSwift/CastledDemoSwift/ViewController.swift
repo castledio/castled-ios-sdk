@@ -83,9 +83,9 @@ class ViewController: UIViewController, CastledInboxDelegate {
         style.hideCloseButton = false
 
         let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style,andDelegate: self)
-        //inboxViewController?.modalPresentationStyle = .fullScreen
-        //self.present(inboxViewController!, animated: true)
-         self.navigationController?.pushViewController(inboxViewController!, animated: true)
+        inboxViewController?.modalPresentationStyle = .fullScreen
+        self.present(inboxViewController!, animated: true)
+       //  self.navigationController?.pushViewController(inboxViewController!, animated: true)
 
     }
     func setUpInboxCallback(){
