@@ -7,16 +7,15 @@
 
 import Foundation
 @objc public class CastledConfigs: NSObject {
-    
+
     private static var sharedConfig: CastledConfigs?
     internal var instanceId: String = ""
 
     // MARK: - initialization method
-    @objc public static func initialize(withInstanceId instanceId: String) -> CastledConfigs{
+    @objc public static func initialize(withInstanceId instanceId: String) -> CastledConfigs {
         if let existingConfig = CastledConfigs.sharedConfig {
             existingConfig.instanceId = instanceId
-        }
-        else{
+        } else {
             CastledConfigs.sharedConfig =  CastledConfigs.init(instanceId: instanceId)
         }
         return CastledConfigs.sharedConfig!
@@ -38,7 +37,7 @@ import Foundation
 
     @objc public lazy var enablePush = false {
         didSet {
-            if enablePush == true{
+            if enablePush {
                 Castled.sharedInstance?.registerForPushNotifications()
             }
         }
@@ -56,13 +55,11 @@ import Foundation
         return ""
     }()
 
-
-
     // MARK: - Supporting private methods
-    private init(instanceId: String){
+    private init(instanceId: String) {
         self.instanceId = instanceId
         super.init()
-        if CastledConfigs.sharedConfig == nil{
+        if CastledConfigs.sharedConfig == nil {
             CastledConfigs.sharedConfig = self
         }
     }

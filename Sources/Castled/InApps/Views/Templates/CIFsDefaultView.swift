@@ -7,13 +7,13 @@
 
 import UIKit
 
-internal class CIFsDefaultView : UIView,CIViewProtocol {
-    
+internal class CIFsDefaultView: UIView, CIViewProtocol {
+
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
     var viewContainer: UIView?
-    
+
     /*
      // Only override draw() if you perform custom drawing.
      // An empty implementation adversely affects performance during animation.
@@ -22,23 +22,21 @@ internal class CIFsDefaultView : UIView,CIViewProtocol {
      }
      */
     @IBOutlet weak var viewMainContainer: UIView!
-    
+
     @IBOutlet weak var viewImageContainer: UIView!
     @IBOutlet weak var imgViewMain: UIImageView!
-    
+
     @IBOutlet weak var viewTitleContainer: UIView!
     @IBOutlet weak var lblMessageTitle: UILabel!
-    
+
     @IBOutlet weak var viewDetailContainer: UIView!
     @IBOutlet weak var lblMessageSubTitle: UILabel!
-    
+
     @IBOutlet weak var constraintActionButtonHeight: NSLayoutConstraint!
     @IBOutlet weak var viewActionButtonContainer: UIView!
     @IBOutlet weak var btnLeftOfView: UIButton!
     @IBOutlet weak var btnRightOfView: UIButton!
-    
-    
-    
+
     /*
      // Only override draw() if you perform custom drawing.
      // An empty implementation adversely affects performance during animation.
@@ -46,9 +44,7 @@ internal class CIFsDefaultView : UIView,CIViewProtocol {
      // Drawing code
      }
      */
-    
-    
-    
+
     func configureTheViews() {
         lblMessageTitle?.font = inAppDisplaySettings?.titleFont.withSize(CGFloat(inAppDisplaySettings!.titleFontSize))
         lblMessageSubTitle?.font = inAppDisplaySettings?.bodyFont.withSize(CGFloat(inAppDisplaySettings!.bodyFontSize))
@@ -67,40 +63,40 @@ internal class CIFsDefaultView : UIView,CIViewProtocol {
         self.backgroundColor =  viewActionButtonContainer?.backgroundColor
         viewContainer?.backgroundColor = self.backgroundColor
         imgViewMain.loadImage(from: inAppDisplaySettings?.imageUrl)
-        if let color = inAppDisplaySettings?.leftButtonBorderColor{
+        if let color = inAppDisplaySettings?.leftButtonBorderColor {
             btnLeftOfView?.layer.borderColor = color.cgColor
             btnLeftOfView?.layer.borderWidth = CGFloat(inAppDisplaySettings!.leftButtonBorderWidth)
             btnLeftOfView?.layer.cornerRadius = CGFloat(inAppDisplaySettings!.leftButtonCornerRadius)
         }
-        if let color = inAppDisplaySettings?.rightButtonBorderColor{
+        if let color = inAppDisplaySettings?.rightButtonBorderColor {
             btnRightOfView?.layer.borderColor = color.cgColor
             btnRightOfView?.layer.borderWidth = CGFloat(inAppDisplaySettings!.rightButtonBorderWidth)
             btnRightOfView?.layer.cornerRadius = CGFloat(inAppDisplaySettings!.rightButtonCornerRadius)
-            
+
         }
-        
+
         lblMessageTitle.text = inAppDisplaySettings?.title
         lblMessageSubTitle.text = inAppDisplaySettings?.body
         btnLeftOfView.setTitle(inAppDisplaySettings?.leftButtonTitle, for: .normal)
         btnRightOfView.setTitle(inAppDisplaySettings?.rightButtonTitle, for: .normal)
-        
+
     }
-    
+
     @IBAction func hideInAppView(_ sender: Any) {
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
         parentContainerVC?.hideInAppViewFromWindow()
     }
-    
+
     @IBAction func rightButtonClikdAction(_ sender: Any) {
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue,actionType: inAppDisplaySettings?.rightButtonClickAction, btnLabel:inAppDisplaySettings?.rightButtonTitle, actionUri: inAppDisplaySettings?.rightButtonUri)
-        CastledInApps.sharedInstance.performButtonActionFor(buttonAction:parentContainerVC?.selectedInAppObject?.message?.fs?.actionButtons.last)
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.rightButtonClickAction, btnLabel: inAppDisplaySettings?.rightButtonTitle, actionUri: inAppDisplaySettings?.rightButtonUri)
+        CastledInApps.sharedInstance.performButtonActionFor(buttonAction: parentContainerVC?.selectedInAppObject?.message?.fs?.actionButtons.last)
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
-        
+
     }
-    
+
     @IBAction func leftButtonClikdAction(_ sender: Any) {
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue,actionType: inAppDisplaySettings?.leftButtonClickAction, btnLabel:inAppDisplaySettings?.leftButtonTitle, actionUri: inAppDisplaySettings?.leftButtonUri)
-        CastledInApps.sharedInstance.performButtonActionFor(buttonAction:parentContainerVC?.selectedInAppObject?.message?.fs?.actionButtons.first)
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.leftButtonClickAction, btnLabel: inAppDisplaySettings?.leftButtonTitle, actionUri: inAppDisplaySettings?.leftButtonUri)
+        CastledInApps.sharedInstance.performButtonActionFor(buttonAction: parentContainerVC?.selectedInAppObject?.message?.fs?.actionButtons.first)
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
     }
 }

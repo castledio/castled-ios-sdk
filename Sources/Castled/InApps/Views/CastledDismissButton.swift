@@ -17,7 +17,7 @@ class CastledDismissButton: UIView {
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var imgClose: UIImageView!
     private weak var viewDismiss: UIView!
-    private var actions: DismissViewActions? = nil
+    private var actions: DismissViewActions?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,7 +41,7 @@ class CastledDismissButton: UIView {
         viewDismiss.frame = bounds
     }
 
-    private func setupViews(){
+    private func setupViews() {
         self.backgroundColor = .clear
         let closeImage = imgClose.image?.withRenderingMode(.alwaysTemplate)
         imgClose.image = closeImage
@@ -50,9 +50,8 @@ class CastledDismissButton: UIView {
         imgClose.layer.cornerRadius = imgClose.frame.size.height/2
         imgClose.addShadow(radius: 5, opacity: 0.6, offset: CGSize(width: 0, height: 2), color: UIColor.black)
 
-
     }
-    
+
     func initialiseActions(actions: DismissViewActions? = nil) {
         self.actions = actions
     }
@@ -76,4 +75,3 @@ extension UINib {
         return nib.instantiate(withOwner: owner, options: nil)[0] as! UIView
     }
 }
-

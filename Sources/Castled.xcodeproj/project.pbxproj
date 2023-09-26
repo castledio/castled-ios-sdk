@@ -28,6 +28,9 @@
 		0A1DE6002A9DA27400DB2E29 /* CastledInboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE5FF2A9DA27400DB2E29 /* CastledInboxItem.swift */; };
 		0A1DE6062A9F47BD00DB2E29 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE6052A9F47BD00DB2E29 /* Date+Extension.swift */; };
 		0A1DE60A2A9F488B00DB2E29 /* DecodingContainer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE6092A9F488B00DB2E29 /* DecodingContainer+Extensions.swift */; };
+		0A23BFFF2AC20CAD00F8772A /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A23BFFE2AC20CAD00F8772A /* CastledBridge.js */; };
+		0A23C0052AC20E1B00F8772A /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A23C0042AC20E1B00F8772A /* SDWebImage.framework */; };
+		0A23C0072AC20E9F00F8772A /* CastledInbox+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A23C0062AC20E9F00F8772A /* CastledInbox+Extensions.swift */; };
 		0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */; };
 		0A33BB8A29E6D80C0005ACED /* CastledPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8929E6D80C0005ACED /* CastledPrint.swift */; };
 		0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */; };
@@ -39,8 +42,6 @@
 		0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74E08C29E6D615004F2610 /* CastledInApps.swift */; };
 		0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */; };
 		0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */; };
-		0A77DAFE2AA7B84D00729521 /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A77DAFD2AA7B84D00729521 /* CastledBridge.js */; };
-		0A79E2292AA085980087C3AF /* Castled+Inbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E2282AA085980087C3AF /* Castled+Inbox.swift */; };
 		0A79E22D2AA0873C0087C3AF /* CastledInboxType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E22C2AA0873C0087C3AF /* CastledInboxType.swift */; };
 		0A79E22F2AA08E0B0087C3AF /* CastledInboxServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E22E2AA08E0B0087C3AF /* CastledInboxServices.swift */; };
 		0A8F25AA29E5AE4E00FBD9E0 /* CastledInAppObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */; };
@@ -63,7 +64,6 @@
 		0AB5C5A2291C27840027C36B /* Castled.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C598291C27830027C36B /* Castled.swift */; };
 		0ABA754B2A7CE0D600CD0734 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA754A2A7CE0D500CD0734 /* UIImageView+Extensions.swift */; };
 		0ABA75862A7CED8100CD0734 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABA75852A7CED8100CD0734 /* SDWebImage.framework */; };
-		0ABA75882A7CEDA500CD0734 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABA75872A7CEDA500CD0734 /* SDWebImage.framework */; };
 		0ABA759A2A7D634700CD0734 /* CastledDismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA75992A7D634700CD0734 /* CastledDismissButton.swift */; };
 		0ABA759C2A7D742200CD0734 /* CastledDismissButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0ABA759B2A7D742200CD0734 /* CastledDismissButton.xib */; };
 		0ABDE8B429FBF24B00D3EF79 /* CastledBGManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDE8B329FBF24B00D3EF79 /* CastledBGManager.swift */; };
@@ -129,6 +129,9 @@
 		0A1DE5FF2A9DA27400DB2E29 /* CastledInboxItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxItem.swift; sourceTree = "<group>"; };
 		0A1DE6052A9F47BD00DB2E29 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		0A1DE6092A9F488B00DB2E29 /* DecodingContainer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DecodingContainer+Extensions.swift"; sourceTree = "<group>"; };
+		0A23BFFE2AC20CAD00F8772A /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CastledBridge.js; path = ../../../../../../../../../../../../Desktop/CastledBridge.js; sourceTree = "<group>"; };
+		0A23C0042AC20E1B00F8772A /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
+		0A23C0062AC20E9F00F8772A /* CastledInbox+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CastledInbox+Extensions.swift"; path = "../../../../../../../../../../Desktop/CastledInbox+Extensions.swift"; sourceTree = "<group>"; };
 		0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CastledAssets.xcassets; sourceTree = "<group>"; };
 		0A33BB8929E6D80C0005ACED /* CastledPrint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledPrint.swift; sourceTree = "<group>"; };
 		0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzlingAppear.swift; sourceTree = "<group>"; };
@@ -140,8 +143,6 @@
 		0A74E08C29E6D615004F2610 /* CastledInApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInApps.swift; sourceTree = "<group>"; };
 		0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppTriggerEvaluator.swift; sourceTree = "<group>"; };
 		0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasstledTriggerParamsConditionEvaluator.swift; sourceTree = "<group>"; };
-		0A77DAFD2AA7B84D00729521 /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CastledBridge.js; path = ../../../../../../../../../../../../Desktop/CastledBridge.js; sourceTree = "<group>"; };
-		0A79E2282AA085980087C3AF /* Castled+Inbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Castled+Inbox.swift"; sourceTree = "<group>"; };
 		0A79E22C2AA0873C0087C3AF /* CastledInboxType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxType.swift; sourceTree = "<group>"; };
 		0A79E22E2AA08E0B0087C3AF /* CastledInboxServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxServices.swift; sourceTree = "<group>"; };
 		0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppObject.swift; sourceTree = "<group>"; };
@@ -165,7 +166,6 @@
 		0AB5C598291C27830027C36B /* Castled.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Castled.swift; sourceTree = "<group>"; };
 		0ABA754A2A7CE0D500CD0734 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		0ABA75852A7CED8100CD0734 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = SOURCE_ROOT; };
-		0ABA75872A7CEDA500CD0734 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = SOURCE_ROOT; };
 		0ABA75992A7D634700CD0734 /* CastledDismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledDismissButton.swift; sourceTree = "<group>"; };
 		0ABA759B2A7D742200CD0734 /* CastledDismissButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledDismissButton.xib; sourceTree = "<group>"; };
 		0ABDE8B329FBF24B00D3EF79 /* CastledBGManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledBGManager.swift; sourceTree = "<group>"; };
@@ -196,7 +196,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66D18AF22A057ACC0075AB43 /* UserNotificationsUI.framework in Frameworks */,
-				0ABA75882A7CEDA500CD0734 /* SDWebImage.framework in Frameworks */,
+				0A23C0052AC20E1B00F8772A /* SDWebImage.framework in Frameworks */,
 				66D18AEF2A057AC90075AB43 /* UserNotifications.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,6 +408,7 @@
 		0AB5C546291C222C0027C36B = {
 			isa = PBXGroup;
 			children = (
+				0A23C0042AC20E1B00F8772A /* SDWebImage.framework */,
 				0AB5C552291C222C0027C36B /* Castled */,
 				66D18B192A062B760075AB43 /* CastledNotificationService */,
 				66D18BB32A0D55950075AB43 /* CastledNotificationContent */,
@@ -429,10 +430,8 @@
 		0AB5C552291C222C0027C36B /* Castled */ = {
 			isa = PBXGroup;
 			children = (
-				0ABA75872A7CEDA500CD0734 /* SDWebImage.framework */,
 				0AB5C553291C222C0027C36B /* Castled.h */,
 				0AB5C598291C27830027C36B /* Castled.swift */,
-				0A79E2282AA085980087C3AF /* Castled+Inbox.swift */,
 				0AB5C595291C27830027C36B /* Helpers */,
 				0AB5C58B291C27830027C36B /* Networking */,
 				0AB5C590291C27830027C36B /* Constants */,
@@ -481,6 +480,7 @@
 				0A33BB8929E6D80C0005ACED /* CastledPrint.swift */,
 				12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */,
 				0AB5C596291C27830027C36B /* CastledAPIs+Extensions.swift */,
+				0A23C0062AC20E9F00F8772A /* CastledInbox+Extensions.swift */,
 				0AB5C597291C27830027C36B /* CastledNotifications+Extensions.swift */,
 				0ABA754A2A7CE0D500CD0734 /* UIImageView+Extensions.swift */,
 				0ABDE8BD29FC41F400D3EF79 /* CastledConfigs.swift */,
@@ -517,7 +517,7 @@
 		12C72C4D2947951B00B6B3DC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0A77DAFD2AA7B84D00729521 /* CastledBridge.js */,
+				0A23BFFE2AC20CAD00F8772A /* CastledBridge.js */,
 				0A1B4B872A7BB53300D6430B /* CIModalDefaultView.xib */,
 				0A1B4B862A7BB53200D6430B /* CIFsDefaultView.xib */,
 				0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */,
@@ -604,6 +604,7 @@
 				0AB5C54D291C222C0027C36B /* Frameworks */,
 				0AB5C54E291C222C0027C36B /* Resources */,
 				0ABA753A2A7CDF8800CD0734 /* Embed Frameworks */,
+				0A23BFFD2AC2085100F8772A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -737,7 +738,7 @@
 			files = (
 				0A1DE5F42A9DA24400DB2E29 /* CastledInboxImageAndTitleCell.xib in Resources */,
 				0ABA759C2A7D742200CD0734 /* CastledDismissButton.xib in Resources */,
-				0A77DAFE2AA7B84D00729521 /* CastledBridge.js in Resources */,
+				0A23BFFF2AC20CAD00F8772A /* CastledBridge.js in Resources */,
 				0A1B4B892A7BB53300D6430B /* CIFsDefaultView.xib in Resources */,
 				0A1DE5F52A9DA24400DB2E29 /* CastledInbox.storyboard in Resources */,
 				0A4C76582A7C258A00F60D16 /* CIBannerDefaultView.xib in Resources */,
@@ -765,6 +766,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0A23BFFD2AC2085100F8772A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0AB5C54C291C222C0027C36B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -781,6 +804,7 @@
 				0A1DE60A2A9F488B00DB2E29 /* DecodingContainer+Extensions.swift in Sources */,
 				0A9E8BFB2AA61CC000BB654D /* CastledInboxConfig.swift in Sources */,
 				0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */,
+				0A23C0072AC20E9F00F8772A /* CastledInbox+Extensions.swift in Sources */,
 				0AB5C59B291C27840027C36B /* CastledNetworkRouter.swift in Sources */,
 				0AB5C59E291C27840027C36B /* CastledConstants.swift in Sources */,
 				0AB5C59A291C27840027C36B /* CastledResponse.swift in Sources */,
@@ -809,7 +833,6 @@
 				0A1B4B7E2A7BB1FB00D6430B /* CIViewProtocol.swift in Sources */,
 				12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */,
 				0AB5C59F291C27840027C36B /* CastledSwizzler.swift in Sources */,
-				0A79E2292AA085980087C3AF /* Castled+Inbox.swift in Sources */,
 				0A33BB8A29E6D80C0005ACED /* CastledPrint.swift in Sources */,
 				0AB5C5A1291C27840027C36B /* CastledNotifications+Extensions.swift in Sources */,
 				0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */,

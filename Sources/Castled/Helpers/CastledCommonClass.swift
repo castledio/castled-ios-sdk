@@ -8,8 +8,8 @@ import UIKit
 
 import Foundation
 
-class CastledCommonClass{
-    static func showNotificationWIthTitle(title:String,body : String){
+class CastledCommonClass {
+    static func showNotificationWIthTitle(title: String, body: String) {
         let center = UNUserNotificationCenter.current()
         let content = UNMutableNotificationContent()
         content.title = title
@@ -25,7 +25,7 @@ class CastledCommonClass{
             }
         }
     }
-    
+
     static func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
             do {
@@ -36,16 +36,16 @@ class CastledCommonClass{
         }
         return nil
     }
-    
-    static func getCastledPushNotificationId(dict: [AnyHashable: Any])-> String?{
+
+    static func getCastledPushNotificationId(dict: [AnyHashable: Any]) -> String? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? NSDictionary,
               let notificationId = customDict[CastledConstants.PushNotification.CustomProperties.notificationId] as? String
-        else{
-            return nil;
+        else {
+            return nil
         }
         return notificationId
     }
-    
+
     static func getActionDetails(dict: [AnyHashable: Any], actionType: String) -> [String: Any]? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? NSDictionary,
               let notification = dict[CastledConstants.PushNotification.apsKey] as? NSDictionary,
@@ -55,7 +55,7 @@ class CastledCommonClass{
               let actionsArray = deserializedDict[CastledConstants.PushNotification.CustomProperties.Category.actionComponents] as? [[String: Any]] else {
             return nil
         }
-        
+
         for action in actionsArray {
             if let identifier = action[CastledConstants.PushNotification.CustomProperties.Category.Action.actionId] as? String, identifier == actionType {
                 return [
@@ -69,8 +69,8 @@ class CastledCommonClass{
         }
         return nil
     }
-    
-    static func getDefaultActionDetails(dict: [AnyHashable: Any], index : Int? = 0) -> [String: Any]? {
+
+    static func getDefaultActionDetails(dict: [AnyHashable: Any], index: Int? = 0) -> [String: Any]? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? [String: Any]
         else {
             return nil
@@ -78,27 +78,26 @@ class CastledCommonClass{
         if let msgFramesString = customDict["msg_frames"] as? String,
            let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? Array<Any>,
            detailsArray.count > index!,
-           let selectedCategory = detailsArray[index!] as? [String : Any]{
+           let selectedCategory = detailsArray[index!] as? [String: Any] {
             return selectedCategory
         }
         return nil
 
-
     }
-    static func convertToArray(text: String) -> Any?  {
+    static func convertToArray(text: String) -> Any? {
         guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 
-    static internal func hexStringToUIColor (hex:String) -> UIColor? {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        if (cString.hasPrefix("#")) {
+    static internal func hexStringToUIColor (hex: String) -> UIColor? {
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if cString.hasPrefix("#") {
             cString.remove(at: cString.startIndex)
         }
-        if ((cString.count) != 6) {
+        if (cString.count) != 6 {
             return nil
         }
-        var rgbValue:UInt64 = 0
+        var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
@@ -107,11 +106,11 @@ class CastledCommonClass{
             alpha: CGFloat(1.0)
         )
     }
-    static internal func instantiateFromNib<T: UIViewController>(vc : T.Type) -> T {
-        return T.init(nibName: String(describing: T.self), bundle:Bundle.resourceBundle(for: Self.self))
+    static internal func instantiateFromNib<T: UIViewController>(vc: T.Type) -> T {
+        return T.init(nibName: String(describing: T.self), bundle: Bundle.resourceBundle(for: Self.self))
     }
 
-    static func loadView<T :UIView>(fromNib name: String, withType type: T.Type) -> T? {
+    static func loadView<T: UIView>(fromNib name: String, withType type: T.Type) -> T? {
         let bundle  = Bundle.resourceBundle(for: Self.self)
         if let view = UINib(
             nibName: name,
@@ -135,7 +134,8 @@ extension UIView {
         layer.shadowRadius = radius
         layer.masksToBounds = false
     }
-    func applyShadow(radius: CGFloat){
+
+    func applyShadow(radius: CGFloat) {
         layer.cornerRadius = radius
         layer.masksToBounds = false
         layer.shadowRadius = 4
@@ -164,7 +164,6 @@ extension UIWindow {
     }
 }
 
-
 extension Bundle {
 
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
@@ -175,30 +174,22 @@ extension Bundle {
         }
         // SPM
         var bundle: Bundle?
-        if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
-            //cocoapod
+        if bundle == nil, let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+            // cocoapod
             bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled_Castled", ofType: "bundle") {
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
-        }
-        else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+        } else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+        } else if bundle == nil, let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
-        }
-
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         }
         // CocoaPods (static)
@@ -213,6 +204,3 @@ extension Bundle {
         return bundle ?? sourceBundle
     }
 }
-
-
-

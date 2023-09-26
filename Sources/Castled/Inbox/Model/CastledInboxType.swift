@@ -21,7 +21,7 @@
             default: self = .other
         }
     }
-    
+
     public var rawValue: RawValue {
         switch self {
             case .messageWithMedia: return "MESSAGE_WITH_MEDIA"

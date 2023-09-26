@@ -16,13 +16,13 @@ internal struct CastledInAppObject: Codable {
     internal let startTs: Int64
     internal let endTs: Int64
     internal let ttl: String
-    
+
     enum CodingKeys: String, CodingKey {
         case teamID = "teamId"
         case notificationID = "notificationId"
         case sourceContext, priority, message, displayConfig, trigger, startTs, endTs, ttl
     }
-    
+
     internal init(from decoder: Decoder) throws {
         let container       = try decoder.container(keyedBy: CodingKeys.self)
         self.teamID     = (try? container.decodeIfPresent(Int.self, forKey: .teamID)) ?? 0
@@ -47,9 +47,9 @@ internal struct CIDisplayConfig: Codable {
 internal struct CIMessage: Codable {
     internal let type: CIMessageType
     internal let modal: CIModalPresentation?
-    internal let fs   : CIFullScreenPresentation?
-    internal let banner   : CIBannerPresentation?
-    
+    internal let fs: CIFullScreenPresentation?
+    internal let banner: CIBannerPresentation?
+
 }
 
 internal enum  CIMessageType: String, Codable {
@@ -62,17 +62,17 @@ internal struct CIBannerPresentation: Codable {
     internal let type: CITemplateType
     internal let html: String?
     internal let imageURL: String
-    internal let clickAction : CastledConstants.PushNotification.ClickActionType
+    internal let clickAction: CastledConstants.PushNotification.ClickActionType
     internal let  url, body, bgColor: String
     internal let fontSize: Int
     internal let fontColor: String
-    internal let keyVals: [String : String]?
-    
+    internal let keyVals: [String: String]?
+
     internal enum CodingKeys: String, CodingKey {
         case type
         case keyVals
         case imageURL = "imageUrl"
-        case clickAction, url, body, bgColor, fontSize, fontColor,html
+        case clickAction, url, body, bgColor, fontSize, fontColor, html
     }
 }
 
@@ -90,13 +90,13 @@ internal struct CIModalPresentation: Codable {
     internal let bodyFontSize: Int
     internal let bodyBgColor, screenOverlayColor: String
     internal let actionButtons: [CIActionButton]
-    
+
     internal enum CodingKeys: String, CodingKey {
         case type
         case imageURL = "imageUrl"
-        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons,html
+        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons, html
     }
-    
+
     internal init(from decoder: Decoder) throws {
         let container       = try decoder.container(keyedBy: CodingKeys.self)
         self.type     = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
@@ -115,8 +115,7 @@ internal struct CIModalPresentation: Codable {
         self.bodyBgColor     = (try? container.decodeIfPresent(String.self, forKey: .bodyBgColor)) ?? ""
         self.screenOverlayColor     = (try? container.decodeIfPresent(String.self, forKey: .screenOverlayColor)) ?? ""
         self.actionButtons     = (try? container.decodeIfPresent([CIActionButton].self, forKey: .actionButtons)) ?? []
-        
-        
+
     }
 }
 
@@ -132,13 +131,13 @@ internal struct CIFullScreenPresentation: Codable {
     internal let bodyFontSize: Int
     internal let bodyBgColor, screenOverlayColor: String
     internal let actionButtons: [CIActionButton]
-    
+
     internal enum CodingKeys: String, CodingKey {
         case type
         case imageURL = "imageUrl"
-        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons,html
+        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons, html
     }
-    
+
     internal init(from decoder: Decoder) throws {
         let container       = try decoder.container(keyedBy: CodingKeys.self)
         self.type     = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
@@ -162,13 +161,13 @@ internal struct CIFullScreenPresentation: Codable {
 
 // MARK: - ActionButton
 internal struct CIActionButton: Codable {
-    internal let clickAction : CastledConstants.PushNotification.ClickActionType
+    internal let clickAction: CastledConstants.PushNotification.ClickActionType
     internal let label, url, buttonColor: String
     internal let fontColor, borderColor: String
-    internal let keyVals: [String : String]?
+    internal let keyVals: [String: String]?
 }
 
-//internal enum  CIButtonActionsType: CastledConstants.PushNotification.ClickActionType {
+// internal enum  CIButtonActionsType: CastledConstants.PushNotification.ClickActionType {
 //    case deep_linking        = "DEEP_LINKING"
 //    case navigate_to_Screen  = "NAVIGATE_TO_SCREEN"
 //    case rich_landing        = "RICH_LANDING"
@@ -177,7 +176,7 @@ internal struct CIActionButton: Codable {
 //    case none                = "NONE"
 //
 //
-//}
+// }
 // MARK: - KeyVals
 
 internal struct CIKeyVals: Codable {
@@ -186,10 +185,10 @@ internal struct CIKeyVals: Codable {
 
 // MARK: - Trigger
 internal struct CITrigger: Codable {
-    internal let type, eventID : String
-    internal let eventName : String
+    internal let type, eventID: String
+    internal let eventName: String
     internal let eventFilter: CIEventFilter?
-    
+
     internal enum CodingKeys: String, CodingKey {
         case type
         case eventID = "eventId"
@@ -200,8 +199,7 @@ internal struct CITrigger: Codable {
         self.type           = (try? container.decodeIfPresent(String.self, forKey: .type)) ?? ""
         self.eventID     = (try? container.decodeIfPresent(String.self, forKey: .eventID)) ?? ""
         self.eventName     = (try? container.decodeIfPresent(String.self, forKey: .eventName)) ?? ""
-        self.eventFilter     = (try? container.decodeIfPresent(CIEventFilter.self, forKey: .eventFilter)) 
-
+        self.eventFilter     = (try? container.decodeIfPresent(CIEventFilter.self, forKey: .eventFilter))
 
     }
 }
@@ -217,16 +215,15 @@ internal enum  CITemplateType: String, Codable {
 internal enum  CIEventType: String, Codable {
     case page_viewed = "page_viewed"
     case app_opened = "app_opened"
-    
-    
+
 }
 
 // MARK: - EventFilter
 internal struct CIEventFilter: Codable {
-    internal let type : String
-    let joinType : CITriggerJoinType
+    internal let type: String
+    let joinType: CITriggerJoinType
     let filters: [CIEventFilters]?
-    
+
 }
 
 // MARK: - CIEventTrigger
@@ -238,12 +235,12 @@ struct CIEventFilters: Codable {
 internal enum  CITriggerJoinType: String, Codable {
     case and  = "AND"
     case or  = "OR"
-    
+
 }
 // MARK: - Operation
 struct CITriggerOperation: Codable {
-    let type : CIOperationType
-    let propertyType : CITriggerPropertyType
+    let type: CIOperationType
+    let propertyType: CITriggerPropertyType
     let  value: String
 }
 
@@ -254,8 +251,7 @@ internal enum  CITriggerPropertyType: String, Codable {
     case timestamp    = "timestamp"
     case zoned_timestamp    = "zoned_timestamp"
     case bool    = "bool"
-    
-    
+
 }
 
 internal enum  CIOperationType: String, Codable {
@@ -272,20 +268,20 @@ internal enum  CIOperationType: String, Codable {
 // MARK: - Encode/decode helpers
 
 @objcMembers class JSONNull: NSObject, Codable {
-    
+
     internal static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
         return true
     }
-    
+
     override internal init() {}
-    
+
     internal required init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if !container.decodeNil() {
             throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
         }
     }
-    
+
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encodeNil()

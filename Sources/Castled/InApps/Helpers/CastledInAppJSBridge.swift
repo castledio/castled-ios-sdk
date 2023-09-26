@@ -37,17 +37,17 @@ class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
     private func getJSInterface() -> String {
 
         var js = ""
-        if let jsPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "CastledBridge", withExtension: "js"){
+        if let jsPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "CastledBridge", withExtension: "js") {
             do {
                 js = try String(contentsOf: jsPathURL, encoding: .utf8)
-            } catch  {
+            } catch {
                 print("Unable to get the file.")
             }
         }
         return js
     }
-    private func getClickActionFrom(_ action:String) -> CastledClickActionType{
-        var clickAction : CastledClickActionType = .custom
+    private func getClickActionFrom(_ action: String) -> CastledClickActionType {
+        var clickAction: CastledClickActionType = .custom
         switch action {
             case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                 clickAction = .deepLink

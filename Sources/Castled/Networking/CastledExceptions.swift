@@ -18,25 +18,24 @@ enum CastledExceptionMessages: String {
     case noDeviceToken      = "Register User needs a valid APNS token"
     case permittedIdentifiersNotInitialised      = "Kindly add 'BGTaskSchedulerPermittedIdentifiers' key to the Info.plist and pass the same value  as 'CastledConfigs permittedBGIdentifier'. Please note that In iOS 13 and later, adding a BGTaskSchedulerPermittedIdentifiers key to the Info.plist disables the application(_:performFetchWithCompletionHandler:) and setMinimumBackgroundFetchInterval(_:) methods."
     case backgroundProcessNotenabled = "Please enable background Processing capability in your app by making sure that the 'Background Modes' capability is enabled, and that the 'Background Processing' and 'Remote notifications' options are selected."
-    
+
 }
 
 enum CastledException: Error {
-    case Error(String)
+    case error(String)
 }
 
 extension CastledException: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .Error(let description):
+        case .error(let description):
             return description
-            
+
         }
     }
 }
 
-func getError(from message : String) -> NSError{
+func getError(from message: String) -> NSError {
     return NSError(domain: "com.castled.error", code: 0, userInfo: [NSLocalizedDescriptionKey: message])
-    
-}
 
+}

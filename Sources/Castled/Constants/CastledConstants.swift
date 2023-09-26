@@ -8,13 +8,13 @@
 import Foundation
 
  class CastledConstants {
-    
-    //Plist Key for enable/ Disable swizzling
+
+    // Plist Key for enable/ Disable swizzling
     static let kCastledSwzzlingDisableKey          = "CastledSwizzlingDisabled"
      struct PushNotification {
          static let customKey = "castled"
          static let apsKey = "aps"
-         struct ApsProperties{
+         struct ApsProperties {
             static let category = "category"
         }
          struct CustomProperties {
@@ -29,7 +29,7 @@ import Foundation
                  static let type = "type"
                  static let name = "name"
                  static let actionComponents = "actionComponents"
-                
+
                  struct Action {
                      static let actionId = "actionId"
                      static let clickAction = "clickAction"
@@ -39,20 +39,20 @@ import Foundation
                 }
             }
         }
-        
+
          enum ClickActionType: String, Codable {
             case navigateToScreen = "NAVIGATE_TO_SCREEN"
             case deepLink         = "DEEP_LINKING"
             case richLanding      = "RICH_LANDING"
             case defaultAction    = "DEFAULT"
             case discardNotification = "DISMISS_NOTIFICATION"
-            case requestPushPermission = "REQUEST_PUSH_PERMISSION"//this is for inapp
-            case custom = "CUSTOM"//this is for inapp
+            case requestPushPermission = "REQUEST_PUSH_PERMISSION"// this is for inapp
+            case custom = "CUSTOM"// this is for inapp
 
         }
 
     }
-    struct CastledPushNotificationCustomPropertyKeys{
+    struct CastledPushCustomPropertyKeys {
         static let castledNotificationId =  "castled_notification_id"
         static let teamId = "team_id"
         static let sourceContext = "source_context"
@@ -70,14 +70,14 @@ import Foundation
         case received        = "RECEIVED"
         case viewed          = "VIEWED"
     }
-     
+
      static let CastledSlugValueIdentifierKey    = "ceis"
      enum InAppsConfigKeys: String {
         case inAppNotificationId = "nid"
         case inAppCurrentDisplayCounter = "dc"
         case inAppLastDisplayedTime = "ldt"
     }
-    
+
      enum InDisplayPriority: String, Comparable {
         case urgent = "URGENT"
         case high = "HIGH"
@@ -98,12 +98,12 @@ import Foundation
                     return 0
             }
         }
-        
-        static func ==(lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
+
+        static func == (lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
             return lhs.sortOrder == rhs.sortOrder
         }
-        
-        static func <(lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
+
+        static func < (lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
             return lhs.sortOrder < rhs.sortOrder
         }
     }

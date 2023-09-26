@@ -8,8 +8,8 @@ import Foundation
 import UIKit
 
 @objc public class CastledInboxItem: NSObject, Codable {
-    public var actionButtons : [[String : Any]]
-    public var addedDate : Date
+    public var actionButtons: [[String: Any]]
+    public var addedDate: Date
     public let aspectRatio: CGFloat
     public var bodyTextColor: UIColor
     public var containerBGColor: UIColor
@@ -17,7 +17,7 @@ import UIKit
     public let inboxType: CastledInboxType
     public var isRead: Bool
     public let message: [String: Any]
-    public let sourceContext, imageUrl,title,body: String
+    public let sourceContext, imageUrl, title, body: String
     public let startTs: Int64
     public let teamID, messageId: Int
     public var titleTextColor: UIColor
@@ -29,7 +29,7 @@ import UIKit
         case sourceContext, startTs, aspectRatio // Use messageData to decode the message
     }
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+        var _ = encoder.container(keyedBy: CodingKeys.self)
 
         // Encode other fields if needed
     }
@@ -60,7 +60,3 @@ import UIKit
         return lhs.sourceContext == rhs.sourceContext
     }
 }
-
-
-
-

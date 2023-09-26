@@ -16,14 +16,14 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     private static let kNotificationId   = "castled_notification_id"
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
-    
+
     open override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        
+
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         if bestAttemptContent != nil {
-            if let customCasledDict = request.content.userInfo[CastledNotificationServiceExtension.kCustomKey] as? NSDictionary{
-                if customCasledDict[CastledNotificationServiceExtension.kNotificationId] is String{
+            if let customCasledDict = request.content.userInfo[CastledNotificationServiceExtension.kCustomKey] as? NSDictionary {
+                if customCasledDict[CastledNotificationServiceExtension.kNotificationId] is String {
                     defer {
                         contentHandler(bestAttemptContent ?? request.content)
                     }
@@ -38,14 +38,14 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                         print("Error in UNNotificationAttachment.saveImageToDisk()")
                         return
                     }
-                    
+
                     bestAttemptContent?.attachments = [attachment]
                 }
             }
             contentHandler(request.content)
         }
     }
-    
+
     open override func serviceExtensionTimeWillExpire() {
         if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
             contentHandler(bestAttemptContent)
@@ -53,12 +53,11 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     }
 }
 
-
 @available(iOSApplicationExtension 10.0, *)
 
 extension UNNotificationAttachment {
-    
-    static func saveImageToDisk(fileIdentifier: String, data: NSData, options: [NSObject : AnyObject]?) -> UNNotificationAttachment? {
+
+    static func saveImageToDisk(fileIdentifier: String, data: NSData, options: [NSObject: AnyObject]?) -> UNNotificationAttachment? {
         let fileManager = FileManager.default
         let folderName = ProcessInfo.processInfo.globallyUniqueString
         let folderURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(folderName, isDirectory: true)
@@ -68,14 +67,10 @@ extension UNNotificationAttachment {
             try data.write(to: fileURL!, options: [])
             let attachment = try UNNotificationAttachment(identifier: fileIdentifier, url: fileURL!, options: options)
             return attachment
-            
+
         } catch let error {
             print("error \(error)")
         }
         return nil
     }
 }
-
-
-
-

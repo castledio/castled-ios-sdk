@@ -13,10 +13,9 @@ extension UIImageView {
     func loadImage(from url: String?) {
 
         let placeholderImage = UIImage(named: "castled_placeholder", in: Bundle.resourceBundle(for: Castled.self), compatibleWith: nil)
-        if let imageUrl = URL(string: url ?? ""){
+        if let imageUrl = URL(string: url ?? "") {
             self.sd_setImage(with: imageUrl, placeholderImage: placeholderImage)
-        }
-        else{
+        } else {
             self.image = placeholderImage
         }
     }

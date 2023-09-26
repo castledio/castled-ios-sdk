@@ -8,8 +8,8 @@
 import UIKit
 import SDWebImage
 
-@objc public protocol CastledInboxCellDelegate  {
-    @objc func didSelectedInboxWith(_ kvPairs: [AnyHashable : Any]?,_ inboxItem: CastledInboxItem)
+@objc public protocol CastledInboxCellDelegate {
+    @objc func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
 }
 class CastledInboxCell: UITableViewCell {
     internal static let castledInboxImageAndTitleCell = "CastledInboxImageAndTitleCell"
@@ -29,22 +29,23 @@ class CastledInboxCell: UITableViewCell {
     @IBOutlet weak var imgBottomLine: UIImageView!
     @IBOutlet weak var constraintImageHeightRatio: NSLayoutConstraint!
     @IBOutlet weak var constraintButtonContainerHeight: NSLayoutConstraint!
-    private var inboxItem: CastledInboxItem? = nil
-    private var actualCoverImageRatioConstraint : NSLayoutConstraint?
-    
+    private var inboxItem: CastledInboxItem?
+    private var actualCoverImageRatioConstraint: NSLayoutConstraint?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         setupViews()
         // Initialization code
     }
-    func setupViews(){
+
+    func setupViews() {
         actualCoverImageRatioConstraint = constraintImageHeightRatio
         selectionStyle = .none
         viewIsRead.layer.cornerRadius = viewIsRead.frame.size.height/2
         imgBannerLogo.layer.cornerRadius = 5
         viewContainer.layer.cornerRadius = 10
         viewContainer.layer.masksToBounds = true
-        
+
         self.applyShadow(radius: viewContainer.layer.cornerRadius)
     }
 
@@ -54,7 +55,7 @@ class CastledInboxCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    internal func configureCellWith(_ inboxObj: CastledInboxItem){
+    internal func configureCellWith(_ inboxObj: CastledInboxItem) {
         inboxItem = inboxObj
         viewContainer.backgroundColor = inboxObj.containerBGColor
         lblTitle.textColor = inboxObj.titleTextColor
@@ -67,9 +68,9 @@ class CastledInboxCell: UITableViewCell {
 
         let urlImageString = inboxObj.imageUrl
         var multiplier = inboxObj.aspectRatio
-        var imageView : UIImageView?
+        var imageView: UIImageView?
 
-        switch inboxObj.inboxType{
+        switch inboxObj.inboxType {
             case .messageWithMedia:
                 imageView = imgCover
                 imgCover.isHidden = false
@@ -100,23 +101,21 @@ class CastledInboxCell: UITableViewCell {
         constraintImageHeightRatio = newConstraint
 
         let placeholderImage = UIImage(named: "castled_placeholder", in: Bundle.resourceBundle(for: CastledInboxCell.self), compatibleWith: nil)
-        if urlImageString.count > 0,let url = URL(string: urlImageString){
+        if !urlImageString.isEmpty, let url = URL(string: urlImageString) {
             imageView?.sd_setImage(with: url, placeholderImage: placeholderImage)
-        }
-        else{
+        } else {
             imageView?.image = placeholderImage
         }
 
         configureButtons()
     }
 
-    private func configureButtons(){
+    private func configureButtons() {
         let buttonCount = inboxItem?.actionButtons.count ?? 0
-        if buttonCount == 0{
+        if buttonCount == 0 {
             constraintButtonContainerHeight.constant = 0
             viewButtonContainer.isHidden = true
-        }
-        else{
+        } else {
             constraintButtonContainerHeight.constant = 50
             viewButtonContainer.isHidden = false
         }
@@ -127,8 +126,8 @@ class CastledInboxCell: UITableViewCell {
         btnLink2.removeTarget(nil, action: nil, for: .allEvents)
         btnLink3.removeTarget(nil, action: nil, for: .allEvents)
 
-        for tg in 0..<buttonCount{
-            if let button = btnLink1.superview?.viewWithTag(10+tg) as? UIButton{
+        for tg in 0..<buttonCount {
+            if let button = btnLink1.superview?.viewWithTag(10+tg) as? UIButton {
                 button.setTitle(inboxItem?.actionButtons[tg]["label"] as? String ?? "", for: .normal)
                 button.backgroundColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtons[tg]["buttonColor"] as? String ?? ""))  ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 let titleColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtons[tg]["fontColor"] as? String ?? ""))  ?? #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
@@ -136,16 +135,15 @@ class CastledInboxCell: UITableViewCell {
 
             }
         }
-        btnLink1.addTarget(self,action:#selector(actionButtonClicked),
-                           for:.touchUpInside)
-        btnLink2.addTarget(self,action:#selector(actionButtonClicked),
-                           for:.touchUpInside)
-        btnLink3.addTarget(self,action:#selector(actionButtonClicked),
-                           for:.touchUpInside)
+        btnLink1.addTarget(self, action: #selector(actionButtonClicked),
+                           for: .touchUpInside)
+        btnLink2.addTarget(self, action: #selector(actionButtonClicked),
+                           for: .touchUpInside)
+        btnLink3.addTarget(self, action: #selector(actionButtonClicked),
+                           for: .touchUpInside)
 
     }
-    @objc private func actionButtonClicked(sender:UIButton)
-    {
+    @objc private func actionButtonClicked(sender: UIButton) {
         delegate?.didSelectedInboxWith(inboxItem?.actionButtons[sender.tag - 10], inboxItem!)
     }
 

@@ -41,6 +41,4 @@ import UIKit
         return "Inbox"
     }()
 
-
-
 }

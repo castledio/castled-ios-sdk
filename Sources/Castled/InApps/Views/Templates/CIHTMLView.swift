@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class CIHTMLView: UIView,CIViewProtocol {
+class CIHTMLView: UIView, CIViewProtocol {
 
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
@@ -32,7 +32,7 @@ class CIHTMLView: UIView,CIViewProtocol {
         let configuration = webViewBridge.getWebViewConfiguration()
         self.webView = WKWebView(
             frame: self.bounds,
-            configuration:configuration
+            configuration: configuration
         )
         addSubview(self.webView)
         self.webView.clipsToBounds = true
@@ -46,7 +46,7 @@ class CIHTMLView: UIView,CIViewProtocol {
 
     }
 
-    func loadHtmlString(){
+    func loadHtmlString() {
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
     /*
@@ -58,14 +58,14 @@ class CIHTMLView: UIView,CIViewProtocol {
     */
 
 }
-extension CIHTMLView : CastledInAppJSBridgeDelegate{
+extension CIHTMLView: CastledInAppJSBridgeDelegate {
     func castledInAppDidRecevedClickActionWith(_ params: NSDictionary) {
         var btnLabel = ""
         if let optional_params = params["custom_params"] as? [String: Any] {
             btnLabel = optional_params["button_title"] as? String ?? ""
         }
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "", btnLabel: btnLabel, actionUri: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? "")
-        CastledInApps.sharedInstance.performButtonActionFor(webParams: params as? [String : Any])
+        CastledInApps.sharedInstance.performButtonActionFor(webParams: params as? [String: Any])
         webViewBridge.delegate = nil
         webViewBridge.delegate = nil
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)

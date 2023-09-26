@@ -29,7 +29,7 @@ import Foundation
     case deepLink
     case navigateToScreen
     case richLanding
-    case requestForPush //this is for inapp
+    case requestForPush // this is for inapp
     case dismiss
     case custom
 }
@@ -48,5 +48,3 @@ import Foundation
         }
     }
 }
-
-

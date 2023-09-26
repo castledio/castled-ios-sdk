@@ -8,7 +8,7 @@
 import UIKit
 
 class CastledInAppDisplayViewController: UIViewController {
-    
+
     @IBOutlet weak var viewModalContainer: UIView!
     @IBOutlet weak var viewFSContainer: UIView!
     @IBOutlet weak var viewBannerContainer: UIView!
@@ -17,17 +17,16 @@ class CastledInAppDisplayViewController: UIViewController {
 
     @IBOutlet weak var dismissView: CastledDismissButton!
     private var inAppWindow: CastledTouchThroughWindow?
-    internal var selectedInAppObject : CastledInAppObject?
+    internal var selectedInAppObject: CastledInAppObject?
     private var isSlideUpInApp = false
     private var autoDismissalWorkItem: DispatchWorkItem?
-    var inAppView : (any CIViewProtocol)?
+    var inAppView: (any CIViewProtocol)?
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
     }
 
-  func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject,inAppDisplaySettings : InAppDisplayConfig) {
+  func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject, inAppDisplaySettings: InAppDisplayConfig) {
 
         if #available(iOS 13, tvOS 13.0, *) {
             let connectedScenes = UIApplication.shared.connectedScenes
@@ -43,7 +42,7 @@ class CastledInAppDisplayViewController: UIViewController {
             inAppWindow = CastledTouchThroughWindow(
                 frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
         }
-        guard let window = inAppWindow else{
+        guard let window = inAppWindow else {
             return
         }
         selectedInAppObject = inAppObj
@@ -51,26 +50,26 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppView =  items.0
         let containerView = items.1
 
-        if inAppView == nil || containerView == nil{
+        if inAppView == nil || containerView == nil {
             return
         }
 
         containerView?.isHidden = false
         arrangeDismissButton(containerView: containerView!)
         isSlideUpInApp = containerView == viewBannerContainer
-        inAppWindow?.shouldPassThrough = isSlideUpInApp //for enabling touch only for banner
+        inAppWindow?.shouldPassThrough = isSlideUpInApp // for enabling touch only for banner
 
-        //required properties for population
+        // required properties for population
         inAppView?.parentContainerVC = self
         inAppView?.viewContainer = containerView
         inAppView?.inAppDisplaySettings = inAppDisplaySettings
         inAppView?.selectedInAppObject = selectedInAppObject
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
-        if let html = items.2{
+        if let html = items.2 {
             let htmlView = inAppView as! CIHTMLView
             if let decodedData = Data(base64Encoded: html) {
                 htmlView.htmlString = String(data: decodedData, encoding: .utf8) ?? html
-            }else{
+            } else {
                 htmlView.htmlString = html
             }
             htmlView.loadHtmlString()
@@ -88,12 +87,11 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppParentView.alpha = 0
         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
             inAppParentView.alpha = 1
-            
+
         }) {[weak self] _ in
             self?.view.layoutSubviews()
             CastledInApps.sharedInstance.updateInappEvent(inappObject: inAppObj, eventType: CastledConstants.CastledEventTypes.viewed.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
-            if inAppObj.displayConfig?.autoDismissInterval ?? 0 > 0
-            {
+            if inAppObj.displayConfig?.autoDismissInterval ?? 0 > 0 {
                 self?.autoDismissalWorkItem?.cancel()
                 let requestWorkItem = DispatchWorkItem { [weak self] in
                     self?.hideInAppViewFromWindow(withAnimation: true)
@@ -104,13 +102,13 @@ class CastledInAppDisplayViewController: UIViewController {
             }
         }
     }
-    
-    func hideInAppViewFromWindow(withAnimation : Bool? = true) {
+
+    func hideInAppViewFromWindow(withAnimation: Bool? = true) {
         self.autoDismissalWorkItem?.cancel()
         guard let interstitialView = self.view else {
             return
         }
-        if withAnimation == true{
+        if withAnimation == true {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
                 interstitialView.alpha = 0
             }) { [weak self] _ in
@@ -118,68 +116,63 @@ class CastledInAppDisplayViewController: UIViewController {
                 self?.removeAllViews()
                 // Notify the delegate that it should dismiss the interstitial view controller
             }
-        }
-        else
-        {
+        } else {
             removeAllViews()
         }
-        
-        
     }
-    func removeAllViews(){
+
+    func removeAllViews() {
 
         inAppWindow?.rootViewController = nil
        // inAppView?.viewContainer?.removeFromSuperview()
         willMove(toParent: nil)
         view.removeFromSuperview()
         removeFromParent()
-        
+
         inAppWindow?.removeFromSuperview()
         inAppWindow = nil
-        
+
     }
 
     private func dismissButtonClicked(_ sender: Any) {
         CastledInApps.sharedInstance.updateInappEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
         hideInAppViewFromWindow(withAnimation: true)
     }
-    
-    private func arrangeDismissButton(containerView: UIView){
+
+    private func arrangeDismissButton(containerView: UIView) {
 
         let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
         dismissView.initialiseActions(actions: action)
-        if containerView == viewFSContainer{
+        if containerView == viewFSContainer {
             let safeArea = view.safeAreaLayoutGuide
             dismissView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10).isActive = true
             dismissView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 0).isActive = true
 
-        }else
-        {
+        } else {
             dismissView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: dismissView.frame.size.width/2).isActive = true
             dismissView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: -dismissView.frame.size.width/2).isActive = true
         }
     }
-    
+
 }
-extension CastledInAppDisplayViewController{
+extension CastledInAppDisplayViewController {
     private func getHTML() -> String {
         var html = ""
-         if let htmlPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "index1", withExtension: "html"){
+         if let htmlPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "index1", withExtension: "html") {
             do {
                 html = try String(contentsOf: htmlPathURL, encoding: .utf8)
-            } catch  {
+            } catch {
                 print("Unable to get the file.")
             }
         }
 
         return html
     }
-    fileprivate func getInappViewFrom(inappAObject : CastledInAppObject) -> ((any CIViewProtocol)?,contanerV : UIView?,htmlString : String?) {
+    fileprivate func getInappViewFrom(inappAObject: CastledInAppObject) -> ((any CIViewProtocol)?, contanerV: UIView?, htmlString: String?) {
 
-        
-        var inppV : (any CIViewProtocol)?
-        var container : UIView?
-        var html : String?
+        var inppV: (any CIViewProtocol)?
+        var container: UIView?
+        var html: String?
         switch inappAObject.message?.type.rawValue {
             case CIMessageType.modal.rawValue:
                 container = viewModalContainer
@@ -242,8 +235,6 @@ extension CastledInAppDisplayViewController{
             default:
                 break
         }
-        return (inppV,container,html)
+        return (inppV, container, html)
     }
 }
-
-

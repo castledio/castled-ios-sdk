@@ -10,7 +10,7 @@ import Foundation
 
     static let userDefaults = UserDefaults.init(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
 
-    //Userdefault keys
+    // Userdefault keys
     internal static var kCastledIsTokenRegisteredKey        = "_castledIsTokenRegistered_"
     internal static var kCastledAnonymousIdKey              = "_castledAnonymousId_"
     @objc public static var kCastledUserIdKey               = "_castledUserId_"
@@ -26,18 +26,18 @@ import Foundation
 
     @objc  static func getString(_ key: String) -> String? {
         // Fetch value from UserDefaults
-        if let stringValue = userDefaults.string(forKey: key){
+        if let stringValue = userDefaults.string(forKey: key) {
             return stringValue
         }
         return nil
     }
-    
+
      static func setString(_ key: String, _ value: String?) {
         // Save the value in UserDefaults
         userDefaults.set(value, forKey: key)
         userDefaults.synchronize()
     }
-    
+
     static func getBoolean(_ key: String) -> Bool {
         // Fetch Bool value from UserDefaults
         return userDefaults.bool(forKey: key)
@@ -49,7 +49,7 @@ import Foundation
         userDefaults.synchronize()
     }
 
-    static func removeFor(_ key: String){
+    static func removeFor(_ key: String) {
         // Remove value from UserDefaults
         userDefaults.removeObject(forKey: key)
         userDefaults.synchronize()
@@ -63,7 +63,6 @@ import Foundation
 
     static func getDataFor(_ key: String) -> Data? {
         return userDefaults.data(forKey: key)
-        
     }
 
     static func getObjectFor(_ key: String) -> Any? {
