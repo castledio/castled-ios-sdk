@@ -6,26 +6,27 @@
 //
 
 import Foundation
-// MARK: - CastledNotificationMediaObject
-internal struct CastledNotificationMediaObject: Codable {
 
-    internal var mediaUrl, title, subTitle, thumbUrl, clickAction, body: String
-    internal var keyVals: [String: String]?
-    internal let mediaType: CNMediaType?
+// MARK: - CastledNotificationMediaObject
+
+struct CastledNotificationMediaObject: Codable {
+    var mediaUrl, title, subTitle, thumbUrl, clickAction, body: String
+    var keyVals: [String: String]?
+    let mediaType: CNMediaType?
 
     enum CodingKeys: String, CodingKey {
-        case title = "title"
-        case body = "body"
+        case title
+        case body
 
         case subTitle = "subtitle"
-        case mediaUrl = "mediaUrl"
-        case thumbUrl = "thumbUrl"
+        case mediaUrl
+        case thumbUrl
         case mediaType = "richMediaType"
-        case clickAction = "clickAction"
-        case keyVals     = "keyVals"
+        case clickAction
+        case keyVals
     }
 
-    internal init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.title = (try? container.decodeIfPresent(String.self, forKey: .title)) ?? ""
         self.subTitle = (try? container.decodeIfPresent(String.self, forKey: .subTitle)) ?? ""
@@ -37,10 +38,9 @@ internal struct CastledNotificationMediaObject: Codable {
         self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals)) ?? [String: String]()
     }
 
-    internal enum  CNMediaType: String, Codable {
-        case image   = "IMAGE"
-        case video   = "VIDEO"
-        case audio   = "AUDIO"
-
+    enum CNMediaType: String, Codable {
+        case image = "IMAGE"
+        case video = "VIDEO"
+        case audio = "AUDIO"
     }
 }

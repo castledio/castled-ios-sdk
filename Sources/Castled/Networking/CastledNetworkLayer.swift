@@ -6,15 +6,14 @@
 //
 // Reference : https://medium.com/nerd-for-tech/using-url-sessions-with-swift-5-5-aysnc-await-codable-8935fe55fbfc
 
-import Foundation
 import Contacts
+import Foundation
 
 @objc class CastledNetworkLayer: NSObject {
-
     let retryLimit = 5
     static var shared = CastledNetworkLayer()
     private var request: URLRequest?
-    private override init () {}
+    override private init() {}
 
     private func createGetRequestWithURLComponents(url: URL, endpoint: CastledEndpoint) -> URLRequest? {
         var components = URLComponents(string: url.absoluteString)!
@@ -102,32 +101,28 @@ import Contacts
                         }
 
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-
                             if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                                 return .success(json)
                             } else {
                                 if let error_message = json["message"] {
-
-                                    let err =  CastledException.error(error_message as! String)
+                                    let err = CastledException.error(error_message as! String)
                                     return .failure(err)
                                 } else {
-                                    let err =  CastledException.error(CastledExceptionMessages.common.rawValue)
+                                    let err = CastledException.error(CastledExceptionMessages.common.rawValue)
                                     return .failure(err)
                                 }
                             }
                         }
                     } catch let error as NSError {
                         return .failure(error)
-
                     }
                 } else {
                     // Fallback on earlier versions
                 }
 
             } catch {
-
                 if retryAttempt! < retryLimit {
-                    return await CastledNetworkLayer.shared.sendRequest(model: model, endpoint: endpoint, retryAttempt: retryAttempt!+1)
+                    return await CastledNetworkLayer.shared.sendRequest(model: model, endpoint: endpoint, retryAttempt: retryAttempt! + 1)
                 }
                 return .failure(CastledException.error(CastledExceptionMessages.common.rawValue))
             }
@@ -150,7 +145,6 @@ import Contacts
 
                     if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                         do {
-
                             let decoder = JSONDecoder()
                             decoder.keyDecodingStrategy = .convertFromSnakeCase
                             let result = try decoder.decode(T.self, from: data)
@@ -159,15 +153,11 @@ import Contacts
                         } catch {
                             // Inspect any thrown errors here.
                             return CastledResponse<T>(error: error.localizedDescription, statusCode: 0)
-
                         }
                     } else {
-
                         if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-
                             if let error_message = json["message"] {
                                 return CastledResponse<T>(error: error_message as! String, statusCode: 0)
-
                             }
                         }
                         return CastledResponse<T>(error: CastledExceptionMessages.common.rawValue, statusCode: 0)
@@ -176,10 +166,8 @@ import Contacts
                     // Fallback on earlier versions
                 }
             } catch {
-
                 if retryAttempt! < retryLimit {
-                    return await  CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint: endpoint, retryAttempt: retryAttempt!+1)
-
+                    return await CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint: endpoint, retryAttempt: retryAttempt! + 1)
                 }
                 return CastledResponse<T>(error: CastledExceptionMessages.common.rawValue, statusCode: 0)
             }

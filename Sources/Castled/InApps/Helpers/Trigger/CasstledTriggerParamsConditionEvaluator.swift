@@ -6,12 +6,13 @@
 //
 
 import Foundation
+
 protocol CIParamsConditionEvaluatable {
     //    associatedtype T
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool
 }
-internal class CIStringEvaluator: CIParamsConditionEvaluatable {
 
+class CIStringEvaluator: CIParamsConditionEvaluatable {
     public func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let textValue = value as? String else {
             return false // value is not a String, return false
@@ -29,8 +30,7 @@ internal class CIStringEvaluator: CIParamsConditionEvaluatable {
     }
 }
 
-internal class CINumberEvaluator: CIParamsConditionEvaluatable {
-
+class CINumberEvaluator: CIParamsConditionEvaluatable {
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let numberValue = value as? NSNumber else { return false }
         let formatter = NumberFormatter()
@@ -60,14 +60,12 @@ internal class CINumberEvaluator: CIParamsConditionEvaluatable {
         default:
             let message = String(format: "Operations type %@ not supported for numeric operand", propertyOperation.propertyType.rawValue)
             castledLog(message)
-
         }
         return false
     }
 }
 
-internal class CIBoolEvaluator: CIParamsConditionEvaluatable {
-
+class CIBoolEvaluator: CIParamsConditionEvaluatable {
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let aBool = value as? Bool else {
             // Throw an error or return a default value if value is not of the expected type
@@ -84,9 +82,8 @@ internal class CIBoolEvaluator: CIParamsConditionEvaluatable {
     }
 }
 
-internal class CIDateEvaluator: CIParamsConditionEvaluatable {
+class CIDateEvaluator: CIParamsConditionEvaluatable {
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
-
         return false
     }
 }

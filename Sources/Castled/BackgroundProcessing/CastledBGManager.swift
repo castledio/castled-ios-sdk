@@ -5,11 +5,10 @@
 //  Created by antony on 28/04/2023.
 //
 
-import Foundation
 import BackgroundTasks
+import Foundation
 
 class CastledBGManager {
-
     static let sharedInstance = CastledBGManager()
     private let castledConfig = CastledConfigs.sharedInstance
     private var isRegistered = false
@@ -17,7 +16,7 @@ class CastledBGManager {
 
     private init() {}
 
-    internal func registerBackgroundTasks() {
+    func registerBackgroundTasks() {
         if isRegistered { return }
         if #available(iOS 13.0, *) {
             isRegistered = true
@@ -28,7 +27,7 @@ class CastledBGManager {
         }
     }
 
-    internal func executeBackgroundTask(completion: @escaping () -> Void) {
+    func executeBackgroundTask(completion: @escaping () -> Void) {
         let dispatchGroup = DispatchGroup()
         let dispatchSemaphore = DispatchSemaphore(value: 1)
         dispatchGroup.enter()
@@ -54,7 +53,6 @@ class CastledBGManager {
             return
         }
         expirationHandler = {
-
             task.setTaskCompleted(success: false)
             self.expirationHandler = nil
         }
@@ -68,19 +66,17 @@ class CastledBGManager {
                 task.setTaskCompleted(success: true)
             }
         }
-
     }
 
     private func getNewTaskRequest() -> BGProcessingTaskRequest {
         let taskRequest = BGProcessingTaskRequest(identifier: castledConfig.permittedBGIdentifier)
         taskRequest.requiresExternalPower = true
         taskRequest.requiresNetworkConnectivity = true
-        taskRequest.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(max(castledConfig.inAppFetchIntervalSec, 15*60)))
+        taskRequest.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(max(castledConfig.inAppFetchIntervalSec, 15 * 60)))
         return taskRequest
     }
 
     private func startBackgroundTask() {
-
         if castledConfig.permittedBGIdentifier.isEmpty {
             return
         }
@@ -99,17 +95,15 @@ class CastledBGManager {
     }
 
     private func stopBackgroundTask() {
-        if self.expirationHandler != nil {
-            self.expirationHandler = nil
+        if expirationHandler != nil {
+            expirationHandler = nil
         }
         if #available(iOS 13.0, *) {
-
             BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: castledConfig.permittedBGIdentifier)
         }
-
     }
-    private func scheduleNextTask() {
 
+    private func scheduleNextTask() {
         let taskRequest = getNewTaskRequest()
         do {
             try BGTaskScheduler.shared.submit(taskRequest)

@@ -23,16 +23,18 @@ import UIKit
     public var titleTextColor: UIColor
     enum CodingKeys: String, CodingKey {
         case teamID = "teamId"
-        case messageId = "messageId"
+        case messageId
         case isRead = "read"
-        case message = "message"
+        case message
         case sourceContext, startTs, aspectRatio // Use messageData to decode the message
     }
+
     public func encode(to encoder: Encoder) throws {
         var _ = encoder.container(keyedBy: CodingKeys.self)
 
         // Encode other fields if needed
     }
+
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.teamID = try container.decode(Int.self, forKey: .teamID)
@@ -41,21 +43,21 @@ import UIKit
         self.startTs = try container.decodeIfPresent(Int64.self, forKey: .startTs) ?? 0
         self.isRead = try container.decodeIfPresent(Bool.self, forKey: .isRead) ?? true
         self.message = try container.decode([String: Any].self, forKey: .message)
-        self.addedDate = Date.from(epochTimestamp: TimeInterval(self.startTs/1000))
+        self.addedDate = Date.from(epochTimestamp: TimeInterval(self.startTs / 1000))
         self.actionButtons = (self.message["actionButtons"] as? [[String: Any]] ?? [])
         self.aspectRatio = CGFloat((self.message["aspectRatio"] as? Double) ?? Double((self.message["aspectRatio"] as? Int) ?? Int(0.0)))
         self.imageUrl = (self.message["thumbnailUrl"] as? String) ??
-        (self.message["contents"] as? [[String: Any]] ?? []).first?["thumbnailUrl"] as? String ??
-        (self.message["contents"] as? [[String: Any]] ?? []).first?["url"] as? String ?? ""
+            (self.message["contents"] as? [[String: Any]] ?? []).first?["thumbnailUrl"] as? String ??
+            (self.message["contents"] as? [[String: Any]] ?? []).first?["url"] as? String ?? ""
         self.title = (self.message["title"] as? String) ?? ""
         self.body = (self.message["body"] as? String) ?? ""
         self.inboxType = CastledInboxType(rawValue: (self.message["type"] as? String) ?? "OTHER") ?? .other
-        self.titleTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["titleFontColor"] as? String) ?? "")  ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        self.bodyTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bodyFontColor"] as? String) ?? "")  ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        self.titleTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["titleFontColor"] as? String) ?? "") ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        self.bodyTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bodyFontColor"] as? String) ?? "") ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.dateTextColor = self.bodyTextColor
-        self.containerBGColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bgColor"] as? String) ?? "")  ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-
+        self.containerBGColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bgColor"] as? String) ?? "") ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
+
     static func == (lhs: CastledInboxItem, rhs: CastledInboxItem) -> Bool {
         return lhs.sourceContext == rhs.sourceContext
     }

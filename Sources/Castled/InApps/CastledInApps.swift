@@ -7,22 +7,22 @@
 
 import Foundation
 import UIKit
-@objc internal class CastledInApps: NSObject {
 
-    internal static var sharedInstance = CastledInApps()
-    internal var savedInApps = [CastledInAppObject]()
+@objc class CastledInApps: NSObject {
+    static var sharedInstance = CastledInApps()
+    var savedInApps = [CastledInAppObject]()
     private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", qos: .background)
 
-    private  override init () {
+    override private init() {
         super.init()
     }
 
-    internal func fetchInAppNotificationWithCompletion(completion: @escaping () -> Void) {
+    func fetchInAppNotificationWithCompletion(completion: @escaping () -> Void) {
         if CastledConfigs.sharedInstance.enableInApp == false {
             completion()
             return
         }
-        Castled.fetchInAppNotification {[weak self] response in
+        Castled.fetchInAppNotification { [weak self] response in
             if response.success {
                 DispatchQueue.global().async {
                     do {
@@ -50,13 +50,11 @@ import UIKit
             if let loadedInApps = try? decoder.decode([CastledInAppObject].self, from: savedItems) {
                 self.savedInApps.removeAll()
                 self.savedInApps.append(contentsOf: loadedInApps)
-
             }
         }
     }
 
-    internal func updateInappEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
-
+    func updateInappEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
         DispatchQueue.global().async {
             let teamId = "\(inappObject.teamID)"
             let sourceContext = inappObject.sourceContext
@@ -114,7 +112,7 @@ import UIKit
         if let params = parameters {
             // Convert the query parameters to a query string
             queryString = params.map { key, value in
-                return "\(key)=\(value)"
+                "\(key)=\(value)"
             }.joined(separator: "&")
         }
         // Construct the final deep link URL with query parameters
@@ -134,7 +132,7 @@ import UIKit
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 
-    internal func performButtonActionFor(buttonAction: CIActionButton? = nil, slide: CIBannerPresentation? = nil, webParams: [String: Any]? = nil) {
+    func performButtonActionFor(buttonAction: CIActionButton? = nil, slide: CIBannerPresentation? = nil, webParams: [String: Any]? = nil) {
         var clickAction = CastledConstants.PushNotification.ClickActionType.custom.rawValue
         var params: [String: Any]?
         var url: String?
@@ -151,32 +149,24 @@ import UIKit
             params = webP
             url = params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? ""
             clickAction = params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? ""
-
         }
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url ?? ""
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction
         switch clickAction {
             case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .deepLink, kvPairs: params, userInfo: params ?? [String: String]())
-                break
             case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .richLanding, kvPairs: params, userInfo: params ?? [String: String]())
-                break
             case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .navigateToScreen, kvPairs: params, userInfo: params ?? [String: String]())
-                break
             case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .requestForPush, kvPairs: params, userInfo: params ?? [String: String]())
-                break
             case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .dismiss, kvPairs: params, userInfo: params ?? [String: String]())
-                break
             case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
-                break
             default:
                 Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
-                break
         }
     }
 
@@ -201,16 +191,15 @@ import UIKit
                       let lastDiplayTime = Double(savedValues[CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue]!)
                 else { return false }
                 return currentCounter < inAppObj.displayConfig?.displayLimit ?? 0 &&
-                (currentTime - lastDiplayTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplays ?? 0) &&
-                (currentTime - lastGlobalDisplayedTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplaysGlobal ?? 0)
+                    (currentTime - lastDiplayTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplays ?? 0) &&
+                    (currentTime - lastGlobalDisplayedTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplaysGlobal ?? 0)
             } else {
                 return true
             }
         }
 
         if !filteredArray.isEmpty {
-
-            let event = filteredArray.sorted { (lhs, rhs) -> Bool in
+            let event = filteredArray.sorted { lhs, rhs -> Bool in
                 let lhsPriority = CastledConstants.InDisplayPriority(rawValue: lhs.priority)
                 let rhsPriority = CastledConstants.InDisplayPriority(rawValue: rhs.priority)
                 return lhsPriority?.sortOrder ?? 0 > rhsPriority?.sortOrder ?? 0
@@ -227,14 +216,13 @@ import UIKit
             var newValues = savedInApptriggers[index]
             var counter = Int(newValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue] ?? "0") ?? 0
             counter += 1
-            newValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue] =  "\(counter)"
-            newValues[CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue] =  "\(currentTime)"
+            newValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue] = "\(counter)"
+            newValues[CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue] = "\(currentTime)"
             savedInApptriggers[index] = newValues
         } else {
             savedInApptriggers.append([CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue: "\(currentTime)",
                                        CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue: "1",
                                        CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue: String(event.notificationID)])
-
         }
         CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSavedInappConfigs, savedInApptriggers)
         CastledUserDefaults.setString(CastledUserDefaults.kCastledLastInappDisplayedTime, "\(currentTime)")
@@ -244,13 +232,13 @@ import UIKit
         if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) == nil {
             return
         }
-        castledInAppsQueue.async { [self] in
-            if savedInApps.isEmpty {
-                prefetchInApps()
+        self.castledInAppsQueue.async { [self] in
+            if self.savedInApps.isEmpty {
+                self.prefetchInApps()
             }
             var satisfiedEvents = [CastledInAppObject]()
-            let filteredInApps = savedInApps.filter { $0.trigger?.eventName == eventName }
-            if filteredInApps.isEmpty {
+            let filteredInApps = self.savedInApps.filter { $0.trigger?.eventName == eventName }
+            if !filteredInApps.isEmpty {
                 let evaluator = CastledInAppTriggerEvaluator()
                 for event in filteredInApps {
                     if evaluator.shouldTriggerEvent(filter: event.trigger?.eventFilter, params: params, showLog: showLog) {
@@ -269,7 +257,7 @@ import UIKit
                     castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings)
                 }
 
-                saveInappDisplayStatus(event: event)
+                self.saveInappDisplayStatus(event: event)
             }
         }
     }

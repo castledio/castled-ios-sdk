@@ -8,7 +8,6 @@
 import UIKit
 
 class CIBannerDefaultView: UIView, CIViewProtocol {
-
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?

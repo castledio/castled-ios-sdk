@@ -8,7 +8,6 @@
 import UIKit
 
 class CastledInAppDisplayViewController: UIViewController {
-
     @IBOutlet weak var viewModalContainer: UIView!
     @IBOutlet weak var viewFSContainer: UIView!
     @IBOutlet weak var viewBannerContainer: UIView!
@@ -17,17 +16,15 @@ class CastledInAppDisplayViewController: UIViewController {
 
     @IBOutlet weak var dismissView: CastledDismissButton!
     private var inAppWindow: CastledTouchThroughWindow?
-    internal var selectedInAppObject: CastledInAppObject?
+    var selectedInAppObject: CastledInAppObject?
     private var isSlideUpInApp = false
     private var autoDismissalWorkItem: DispatchWorkItem?
     var inAppView: (any CIViewProtocol)?
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
-  func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject, inAppDisplaySettings: InAppDisplayConfig) {
-
+    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject, inAppDisplaySettings: InAppDisplayConfig) {
         if #available(iOS 13, tvOS 13.0, *) {
             let connectedScenes = UIApplication.shared.connectedScenes
             for scene in connectedScenes {
@@ -47,7 +44,7 @@ class CastledInAppDisplayViewController: UIViewController {
         }
         selectedInAppObject = inAppObj
         let items = getInappViewFrom(inappAObject: inAppObj)
-        inAppView =  items.0
+        inAppView = items.0
         let containerView = items.1
 
         if inAppView == nil || containerView == nil {
@@ -75,7 +72,7 @@ class CastledInAppDisplayViewController: UIViewController {
             htmlView.loadHtmlString()
         }
 
-        let inAppParentView = self.view!
+        let inAppParentView = view!
         inAppParentView.frame = window.bounds
         window.backgroundColor = .clear
         window.windowLevel = .normal
@@ -88,7 +85,7 @@ class CastledInAppDisplayViewController: UIViewController {
         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
             inAppParentView.alpha = 1
 
-        }) {[weak self] _ in
+        }) { [weak self] _ in
             self?.view.layoutSubviews()
             CastledInApps.sharedInstance.updateInappEvent(inappObject: inAppObj, eventType: CastledConstants.CastledEventTypes.viewed.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
             if inAppObj.displayConfig?.autoDismissInterval ?? 0 > 0 {
@@ -104,8 +101,8 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     func hideInAppViewFromWindow(withAnimation: Bool? = true) {
-        self.autoDismissalWorkItem?.cancel()
-        guard let interstitialView = self.view else {
+        autoDismissalWorkItem?.cancel()
+        guard let interstitialView = view else {
             return
         }
         if withAnimation == true {
@@ -122,16 +119,13 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     func removeAllViews() {
-
         inAppWindow?.rootViewController = nil
-       // inAppView?.viewContainer?.removeFromSuperview()
+        // inAppView?.viewContainer?.removeFromSuperview()
         willMove(toParent: nil)
         view.removeFromSuperview()
         removeFromParent()
-
         inAppWindow?.removeFromSuperview()
         inAppWindow = nil
-
     }
 
     private func dismissButtonClicked(_ sender: Any) {
@@ -140,7 +134,6 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     private func arrangeDismissButton(containerView: UIView) {
-
         let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
         dismissView.initialiseActions(actions: action)
         if containerView == viewFSContainer {
@@ -153,12 +146,12 @@ class CastledInAppDisplayViewController: UIViewController {
             dismissView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: -dismissView.frame.size.width/2).isActive = true
         }
     }
-
 }
+
 extension CastledInAppDisplayViewController {
     private func getHTML() -> String {
         var html = ""
-         if let htmlPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "index1", withExtension: "html") {
+        if let htmlPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "index1", withExtension: "html") {
             do {
                 html = try String(contentsOf: htmlPathURL, encoding: .utf8)
             } catch {
@@ -168,8 +161,8 @@ extension CastledInAppDisplayViewController {
 
         return html
     }
-    fileprivate func getInappViewFrom(inappAObject: CastledInAppObject) -> ((any CIViewProtocol)?, contanerV: UIView?, htmlString: String?) {
 
+    fileprivate func getInappViewFrom(inappAObject: CastledInAppObject) -> ((any CIViewProtocol)?, contanerV: UIView?, htmlString: String?) {
         var inppV: (any CIViewProtocol)?
         var container: UIView?
         var html: String?
@@ -179,8 +172,7 @@ extension CastledInAppDisplayViewController {
 
                 switch inappAObject.message?.modal?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
-                        inppV  = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
-                        break
+                        inppV = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
                     case CITemplateType.image_buttons.rawValue:
                         break
                     case CITemplateType.text_buttons.rawValue:
@@ -188,20 +180,17 @@ extension CastledInAppDisplayViewController {
                     case CITemplateType.image_only.rawValue:
                         break
                     case CITemplateType.custom_html.rawValue:
-                        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        inppV = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
                         html = inappAObject.message?.modal?.html
 
-                        break
                     default:
                         break
                 }
-                break
             case CIMessageType.fs.rawValue:
                 container = viewFSContainer
                 switch inappAObject.message?.fs?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
-                        inppV  = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
-                        break
+                        inppV = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
                     case CITemplateType.image_buttons.rawValue:
                         break
                     case CITemplateType.text_buttons.rawValue:
@@ -209,29 +198,24 @@ extension CastledInAppDisplayViewController {
                     case CITemplateType.image_only.rawValue:
                         break
                     case CITemplateType.custom_html.rawValue:
-                        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        inppV = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
                         html = inappAObject.message?.fs?.html
-                        break
                     default:
                         break
                 }
-                break
             case CIMessageType.banner.rawValue:
                 container = viewBannerContainer
                 view.restorationIdentifier = "touchdisabled"
                 switch inappAObject.message?.banner?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
-                        inppV  = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
-                        break
+                        inppV = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
                     case CITemplateType.custom_html.rawValue:
-                        inppV  = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        inppV = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
                         html = inappAObject.message?.banner?.html
 
-                        break
                     default:
                         break
                 }
-                break
             default:
                 break
         }

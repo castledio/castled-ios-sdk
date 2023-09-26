@@ -436,7 +436,6 @@
 				0AB5C58B291C27830027C36B /* Networking */,
 				0AB5C590291C27830027C36B /* Constants */,
 				0AB5C593291C27830027C36B /* Swizzling */,
-				12C051AD29657DFA004BE89D /* Data */,
 				12C72C482947865B00B6B3DC /* InApps */,
 				0A1DE5EC2A9DA1E800DB2E29 /* Inbox */,
 				0ABDE8B229FBF23400D3EF79 /* BackgroundProcessing */,
@@ -495,13 +494,6 @@
 				0ABDE8B529FBFEB500D3EF79 /* CastledRetryHandler.swift */,
 			);
 			path = BackgroundProcessing;
-			sourceTree = "<group>";
-		};
-		12C051AD29657DFA004BE89D /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
 			sourceTree = "<group>";
 		};
 		12C72C482947865B00B6B3DC /* InApps */ = {

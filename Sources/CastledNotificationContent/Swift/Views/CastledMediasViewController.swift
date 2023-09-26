@@ -8,10 +8,9 @@
 import UIKit
 
 class CastledMediasViewController: UIViewController {
-
     private var userDefaults: UserDefaults?
     private var mediaObjects: [CastledNotificationMediaObject]
-    private static let kCastledClickedNotiContentIndx      = "_kCastledClickedNotiContentIndx_"
+    private static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
 
     private let pageControl: UIPageControl = {
         let control = UIPageControl()
@@ -67,14 +66,13 @@ class CastledMediasViewController: UIViewController {
     }
 
     func setUserdefaults(FromAppgroup appGroupId: String) {
-        userDefaults =  UserDefaults.init(suiteName: appGroupId)
+        userDefaults = UserDefaults(suiteName: appGroupId)
         userDefaults?.removeObject(forKey: CastledMediasViewController.kCastledClickedNotiContentIndx)
         userDefaults?.synchronize()
     }
 }
 
 extension CastledMediasViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return mediaObjects.count
     }
@@ -87,34 +85,30 @@ extension CastledMediasViewController: UICollectionViewDataSource, UICollectionV
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
         let mediaObject = mediaObjects[indexPath.row]
         if mediaObject.mediaType == .image {
             userDefaults?.setValue(indexPath.item, forKey: CastledMediasViewController.kCastledClickedNotiContentIndx)
             userDefaults?.synchronize()
-            self.extensionContext?.performNotificationDefaultAction()
-
+            extensionContext?.performNotificationDefaultAction()
         }
-
     }
-    internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let mediaObject = mediaObjects[indexPath.row]
 
         if let videoCell = cell as? CastledMediaCollectionViewCell, mediaObject.mediaType == .video || mediaObject.mediaType == .audio {
             videoCell.playVideo()
         }
     }
-    internal func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let videoCell = cell as? CastledMediaCollectionViewCell {
             videoCell.pauseVideo()
         }
-
     }
-
 }
 
 extension CastledMediasViewController: UICollectionViewDelegateFlowLayout {
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.bounds.size
     }

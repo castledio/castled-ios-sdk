@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 class CastledSwizzler {
-
     static func enableSwizzlingForNotifications() {
         // Checking if swizzling has been disabled in plist by the developer
         let swizzzlingDisabled = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledSwzzlingDisableKey) as? Bool ?? false
@@ -27,12 +26,11 @@ class CastledSwizzler {
     }
 
     private class func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {
-
         // Name of the method
         // We are not changing the method name
         let defaultSelector = Selector(methodSelector)
 
-        let swizzledSelector = Selector("swizzled_"+methodSelector)
+        let swizzledSelector = Selector("swizzled_" + methodSelector)
         guard let defaultMethod = class_getInstanceMethod(className, defaultSelector), let swizzleMethod = class_getInstanceMethod(Castled.self, swizzledSelector) else {
             castledLog("failed to swizzle \(methodSelector)")
             return
@@ -48,5 +46,4 @@ class CastledSwizzler {
             //   class_replaceMethod(className, selector, method_getImplementation(defaultMethod!), method_getTypeEncoding(defaultMethod!));
         }
     }
-
 }

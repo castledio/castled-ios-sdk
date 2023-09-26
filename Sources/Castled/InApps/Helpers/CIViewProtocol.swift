@@ -9,16 +9,15 @@ import Foundation
 import UIKit
 
 protocol CIViewProtocol {
-
-    var parentContainerVC: CastledInAppDisplayViewController? {get set}
+    var parentContainerVC: CastledInAppDisplayViewController? { get set }
     var viewContainer: UIView? { get set }
-    var selectedInAppObject: CastledInAppObject? {get set}
+    var selectedInAppObject: CastledInAppObject? { get set }
     var inAppDisplaySettings: InAppDisplayConfig? { get set }
     func configureTheViews()
     func addTheInappViewInContainer(inappView view: UIView)
 }
-extension CIViewProtocol {
 
+extension CIViewProtocol {
     func addTheInappViewInContainer(inappView view: UIView) {
         guard let contianer = viewContainer else {
             return

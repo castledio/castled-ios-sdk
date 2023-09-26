@@ -7,8 +7,7 @@
 
 import UIKit
 
-internal class CIFsDefaultView: UIView, CIViewProtocol {
-
+class CIFsDefaultView: UIView, CIViewProtocol {
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
@@ -60,8 +59,8 @@ internal class CIFsDefaultView: UIView, CIViewProtocol {
         viewDetailContainer?.backgroundColor = inAppDisplaySettings?.bodyBgColor
         viewActionButtonContainer?.backgroundColor = viewDetailContainer?.backgroundColor
         viewImageContainer?.backgroundColor = viewTitleContainer?.backgroundColor
-        self.backgroundColor =  viewActionButtonContainer?.backgroundColor
-        viewContainer?.backgroundColor = self.backgroundColor
+        backgroundColor = viewActionButtonContainer?.backgroundColor
+        viewContainer?.backgroundColor = backgroundColor
         imgViewMain.loadImage(from: inAppDisplaySettings?.imageUrl)
         if let color = inAppDisplaySettings?.leftButtonBorderColor {
             btnLeftOfView?.layer.borderColor = color.cgColor
@@ -72,14 +71,12 @@ internal class CIFsDefaultView: UIView, CIViewProtocol {
             btnRightOfView?.layer.borderColor = color.cgColor
             btnRightOfView?.layer.borderWidth = CGFloat(inAppDisplaySettings!.rightButtonBorderWidth)
             btnRightOfView?.layer.cornerRadius = CGFloat(inAppDisplaySettings!.rightButtonCornerRadius)
-
         }
 
         lblMessageTitle.text = inAppDisplaySettings?.title
         lblMessageSubTitle.text = inAppDisplaySettings?.body
         btnLeftOfView.setTitle(inAppDisplaySettings?.leftButtonTitle, for: .normal)
         btnRightOfView.setTitle(inAppDisplaySettings?.rightButtonTitle, for: .normal)
-
     }
 
     @IBAction func hideInAppView(_ sender: Any) {
@@ -91,7 +88,6 @@ internal class CIFsDefaultView: UIView, CIViewProtocol {
         CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.rightButtonClickAction, btnLabel: inAppDisplaySettings?.rightButtonTitle, actionUri: inAppDisplaySettings?.rightButtonUri)
         CastledInApps.sharedInstance.performButtonActionFor(buttonAction: parentContainerVC?.selectedInAppObject?.message?.fs?.actionButtons.last)
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
-
     }
 
     @IBAction func leftButtonClikdAction(_ sender: Any) {

@@ -4,9 +4,8 @@
 //
 //  Created by Castled Data on 01/12/2022.
 //
-import UIKit
-
 import Foundation
+import UIKit
 
 class CastledCommonClass {
     static func showNotificationWIthTitle(title: String, body: String) {
@@ -19,7 +18,7 @@ class CastledCommonClass {
         let fireDate = Calendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second], from: Date().addingTimeInterval(2))
         let trigger = UNCalendarNotificationTrigger(dateMatching: fireDate, repeats: false)
         let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
-        center.add(request) { (error) in
+        center.add(request) { error in
             if error != nil {
                 castledLog("Error = \(error?.localizedDescription ?? "error local notification")")
             }
@@ -52,7 +51,8 @@ class CastledCommonClass {
               let category = notification[CastledConstants.PushNotification.ApsProperties.category] as? String,
               let categoryJsonString = customDict[CastledConstants.PushNotification.CustomProperties.categoryActions] as? String,
               let deserializedDict = CastledCommonClass.convertToDictionary(text: categoryJsonString),
-              let actionsArray = deserializedDict[CastledConstants.PushNotification.CustomProperties.Category.actionComponents] as? [[String: Any]] else {
+              let actionsArray = deserializedDict[CastledConstants.PushNotification.CustomProperties.Category.actionComponents] as? [[String: Any]]
+        else {
             return nil
         }
 
@@ -76,20 +76,21 @@ class CastledCommonClass {
             return nil
         }
         if let msgFramesString = customDict["msg_frames"] as? String,
-           let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? Array<Any>,
+           let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? [Any],
            detailsArray.count > index!,
-           let selectedCategory = detailsArray[index!] as? [String: Any] {
+           let selectedCategory = detailsArray[index!] as? [String: Any]
+        {
             return selectedCategory
         }
         return nil
-
     }
+
     static func convertToArray(text: String) -> Any? {
         guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 
-    static internal func hexStringToUIColor (hex: String) -> UIColor? {
+    static func hexStringToUIColor(hex: String) -> UIColor? {
         var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         if cString.hasPrefix("#") {
             cString.remove(at: cString.startIndex)
@@ -106,12 +107,13 @@ class CastledCommonClass {
             alpha: CGFloat(1.0)
         )
     }
-    static internal func instantiateFromNib<T: UIViewController>(vc: T.Type) -> T {
-        return T.init(nibName: String(describing: T.self), bundle: Bundle.resourceBundle(for: Self.self))
+
+    static func instantiateFromNib<T: UIViewController>(vc: T.Type) -> T {
+        return T(nibName: String(describing: T.self), bundle: Bundle.resourceBundle(for: Self.self))
     }
 
     static func loadView<T: UIView>(fromNib name: String, withType type: T.Type) -> T? {
-        let bundle  = Bundle.resourceBundle(for: Self.self)
+        let bundle = Bundle.resourceBundle(for: Self.self)
         if let view = UINib(
             nibName: name,
             bundle: bundle
@@ -122,7 +124,6 @@ class CastledCommonClass {
             return view
         }
         return nil
-
     }
 }
 
@@ -165,7 +166,6 @@ extension UIWindow {
 }
 
 extension Bundle {
-
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
         let mainBundle = Bundle.main
         let sourceBundle = Bundle(for: bundleClass)

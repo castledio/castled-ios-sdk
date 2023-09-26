@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal class CastledRetryHandler {
+class CastledRetryHandler {
     static let shared = CastledRetryHandler()
     private let castledDispatchQueue = DispatchQueue(label: "com.castled.retryhandler", qos: .background)
     private let castledSemaphore = DispatchSemaphore(value: 1)
@@ -16,7 +16,7 @@ internal class CastledRetryHandler {
     private init() {}
 
     func retrySendingAllFailedEvents(completion: (() -> Void)? = nil) {
-        castledDispatchQueue.async {[weak self] in
+        castledDispatchQueue.async { [weak self] in
 
             let savedInAppEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents) as? [[String: String]]) ?? [[String: String]]()
             let savedInBoxEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String: String]]) ?? [[String: String]]()
@@ -31,7 +31,6 @@ internal class CastledRetryHandler {
                 return
             }
             if !savedInAppEvents.isEmpty {
-
                 self?.castledSemaphore.wait()
                 self?.castledGroup.enter()
 
@@ -82,7 +81,7 @@ internal class CastledRetryHandler {
             if shouldCallRegister == true {
                 self?.castledSemaphore.wait()
                 self?.castledGroup.enter()
-                Castled.sharedInstance?.api_RegisterUser(userId: CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) ?? "", apnsToken: pushToken ?? "") {_ in
+                Castled.sharedInstance?.api_RegisterUser(userId: CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) ?? "", apnsToken: pushToken ?? "") { _ in
                     self?.castledSemaphore.signal()
                     self?.castledGroup.leave()
                 }

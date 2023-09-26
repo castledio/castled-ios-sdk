@@ -13,7 +13,6 @@ protocol CastledInAppJSBridgeDelegate: AnyObject {
 }
 
 class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
-
     weak var webView: WKWebView?
     weak var delegate: CastledInAppJSBridgeDelegate?
     private let messageHandler = "castled"
@@ -35,7 +34,6 @@ class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
     }
 
     private func getJSInterface() -> String {
-
         var js = ""
         if let jsPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "CastledBridge", withExtension: "js") {
             do {
@@ -46,40 +44,35 @@ class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
         }
         return js
     }
+
     private func getClickActionFrom(_ action: String) -> CastledClickActionType {
         var clickAction: CastledClickActionType = .custom
         switch action {
             case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                 clickAction = .deepLink
-                break
             case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
                 clickAction = .richLanding
-                break
             case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
                 clickAction = .navigateToScreen
 
-                break
             case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
                 clickAction = .requestForPush
-                break
             case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
                 clickAction = .dismiss
-                break
             case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
                 clickAction = .custom
-                break
             default:
                 clickAction = .custom
-                break
-
         }
         return clickAction
     }
+
     // MARK: - Delegate method to handle the script message from JavaScript
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
 //        print("Received event from JavaScript: \(message.body)")
 
-        if message.name == messageHandler, let messageBody = message.body as? Dictionary<String, Any> {
+        if message.name == messageHandler, let messageBody = message.body as? [String: Any] {
             // Here you can handle the JavaScript event data
 //            if   let clickAction = messageBody["clickAction"]  as? String{
 //                let optional_params : [String: Any]?
@@ -88,7 +81,6 @@ class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
 //                }
 //            }
             delegate?.castledInAppDidRecevedClickActionWith(messageBody as NSDictionary)
-
         }
     }
 }

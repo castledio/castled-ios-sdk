@@ -5,8 +5,8 @@
 //  Created by antony on 28/08/2023.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 @objc public protocol CastledInboxDelegate {
     @objc optional func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
@@ -14,10 +14,10 @@ import Combine
 
 @objc public class CastledInboxViewController: UIViewController {
     @objc public var delegate: CastledInboxDelegate?
-    @objc internal var inboxItems = [CastledInboxItem]()
+    @objc var inboxItems = [CastledInboxItem]()
     @IBOutlet weak var lblTitle: UILabel!
-    internal var inboxConfig: CastledInboxConfig?
-    @IBOutlet weak private var tblView: UITableView!
+    var inboxConfig: CastledInboxConfig?
+    @IBOutlet private weak var tblView: UITableView!
     @IBOutlet weak var lblNoUpdates: UILabel!
     @IBOutlet weak var viewTopBar: UIView!
     @IBOutlet weak var constraintTopBarHeight: NSLayoutConstraint!
@@ -27,7 +27,7 @@ import Combine
     private var viewModel = CastledInboxViewModel()
     private var readItems = [CastledInboxItem]()
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         if Castled.sharedInstance == nil {
             fatalError(CastledExceptionMessages.notInitialised.rawValue)
@@ -39,15 +39,17 @@ import Combine
 
         // Do any additional setup after loading the view.
     }
-    public override func viewWillDisappear(_ animated: Bool) {
+
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         updateReadStatus()
     }
+
     private func setupViews() {
         view.backgroundColor = inboxConfig!.backgroundColor
         indicatorView.color = inboxConfig!.loaderTintColor
-        if self.navigationController?.isNavigationBarHidden == false {
-            self.navigationItem.title = inboxConfig!.title
+        if navigationController?.isNavigationBarHidden == false {
+            navigationItem.title = inboxConfig!.title
             viewTopBar.isHidden = true
             constraintTopBarHeight.constant = 0
             let appearance = UINavigationBarAppearance()
@@ -66,15 +68,14 @@ import Combine
             viewTopBar.backgroundColor = inboxConfig!.navigationBarBackgroundColor
             let window = UIApplication.shared.windows.first
             let topPadding = window?.safeAreaInsets.top
-            if self.modalPresentationStyle == .fullScreen {
+            if modalPresentationStyle == .fullScreen {
                 constraintTopBarHeight.constant = (topPadding ?? 0) + 44.0
 
             } else {
                 constraintTopBarHeight.constant = 44.0
-
             }
             lblTitle.text = inboxConfig!.title
-            btnClose.tintColor =  inboxConfig!.navigationBarButtonTintColor
+            btnClose.tintColor = inboxConfig!.navigationBarButtonTintColor
             lblTitle.textColor = inboxConfig!.navigationBarButtonTintColor
             btnClose.isHidden = inboxConfig!.hideCloseButton
         }
@@ -108,7 +109,6 @@ import Combine
                 } else if (self?.indicatorView.isAnimating) != nil {
                     self?.indicatorView.stopAnimating()
                 }
-
             }
             .store(in: &cancellables)
         viewModel.$errorMessage
@@ -120,7 +120,6 @@ import Combine
                     self?.lblNoUpdates.text = errorMessage
                     self?.showRequiredViews()
                 }
-
             }
             .store(in: &cancellables)
 
@@ -128,8 +127,8 @@ import Combine
     }
 
     private func showRequiredViews() {
-        self.tblView.isHidden = viewModel.inboxItems.isEmpty
-        self.lblNoUpdates.isHidden = !self.tblView.isHidden
+        tblView.isHidden = viewModel.inboxItems.isEmpty
+        lblNoUpdates.isHidden = !tblView.isHidden
     }
 
     private func updateReadStatus() {
@@ -138,14 +137,12 @@ import Combine
 
     @IBAction func closeButtonTapped(_ sender: Any) {
         Castled.sharedInstance?.dismissInboxViewController()
-
     }
 
     deinit {
         // This is called when the view controller is deallocated
         cancellables.forEach { $0.cancel() } // Cancel all subscriptions
     }
-
 }
 
 extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource, CastledInboxCellDelegate {
@@ -157,7 +154,7 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
         if indexPath.row < viewModel.inboxItems.count && viewModel.inboxItems[indexPath.row].inboxType == .other {
             return 0
         }
-        return  UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -169,18 +166,15 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
         let item = viewModel.inboxItems[indexPath.row]
 
         if !item.isRead, !readItems.contains(item) {
             readItems.append(item)
         }
-
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         didSelectedInboxWith(nil, inboxItems[indexPath.row])
-
     }
 
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -194,16 +188,14 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
                     DispatchQueue.main.async {
                         self?.viewModel.inboxItems.removeAll { $0.messageId == item.messageId }
                         self?.tblView.reloadData()
-
                     }
                 }
             })
-
         }
     }
 
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .normal, title: "", handler: {[weak self]_, _, _ in
+        let deleteAction = UIContextualAction(style: .normal, title: "", handler: { [weak self] _, _, _ in
             if let item = self?.viewModel.inboxItems[indexPath.row] {
                 Castled.sharedInstance?.deleteInboxItem(item, completion: { [weak self] success, _ in
                     if success {
@@ -211,7 +203,6 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
                             self?.viewModel.inboxItems.removeAll { $0.messageId == item.messageId }
                             self?.tblView.deleteRows(at: [indexPath], with: .fade)
                             //                            self?.tblView.reloadData()
-
                         }
                     }
                 })

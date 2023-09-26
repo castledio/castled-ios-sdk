@@ -67,11 +67,11 @@ enum CastledNetworkRouter {
                                    method: .get,
                                    parameters: ["user": userID])
         case .fetchInInboxItems(let userID, let instanceId):
-                return CastledEndpoint(baseURL: baseURL,
-                                       baseURLEndPoint: baseURLEndPoint,
-                                       path: "/app-inbox/\(instanceId)/ios/campaigns",
-                                       method: .get,
-                                       parameters: ["user": userID])
+            return CastledEndpoint(baseURL: baseURL,
+                                   baseURLEndPoint: baseURLEndPoint,
+                                   path: "/app-inbox/\(instanceId)/ios/campaigns",
+                                   method: .get,
+                                   parameters: ["user": userID])
 
         case .registerInAppEvent(let params, let instanceId):
             return CastledEndpoint(baseURL: baseURL,
@@ -81,10 +81,10 @@ enum CastledNetworkRouter {
                                    parameters: ["events": params])
         case .registerInboxEvent(let params, let instanceId):
             return CastledEndpoint(baseURL: baseURL,
-                                       baseURLEndPoint: baseURLEndPoint,
-                                       path: "/app-inbox/\(instanceId)/ios/event",
-                                       method: .post,
-                                       parameters: ["events": params])
+                                   baseURLEndPoint: baseURLEndPoint,
+                                   path: "/app-inbox/\(instanceId)/ios/event",
+                                   method: .post,
+                                   parameters: ["events": params])
         }
     }
 }

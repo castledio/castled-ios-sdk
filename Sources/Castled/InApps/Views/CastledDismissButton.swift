@@ -9,11 +9,9 @@ import UIKit
 
 struct DismissViewActions {
     let dismissBtnClickedAction: (_ sender: Any) -> Void
-
 }
 
 class CastledDismissButton: UIView {
-
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var imgClose: UIImageView!
     private weak var viewDismiss: UIView!
@@ -23,6 +21,7 @@ class CastledDismissButton: UIView {
         super.init(frame: frame)
         commonInit()
     }
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
@@ -31,8 +30,8 @@ class CastledDismissButton: UIView {
     func commonInit() {
         let dismissView = UINib.loadView(String(describing: Self.self), owner: self)
         addSubview(dismissView)
-        self.viewDismiss = dismissView
-        self.viewDismiss.backgroundColor = .clear
+        viewDismiss = dismissView
+        viewDismiss.backgroundColor = .clear
         setupViews()
     }
 
@@ -42,14 +41,13 @@ class CastledDismissButton: UIView {
     }
 
     private func setupViews() {
-        self.backgroundColor = .clear
+        backgroundColor = .clear
         let closeImage = imgClose.image?.withRenderingMode(.alwaysTemplate)
         imgClose.image = closeImage
         imgClose.tintColor = .white
         imgClose.backgroundColor = UIColor.gray.withAlphaComponent(0.9)
-        imgClose.layer.cornerRadius = imgClose.frame.size.height/2
+        imgClose.layer.cornerRadius = imgClose.frame.size.height / 2
         imgClose.addShadow(radius: 5, opacity: 0.6, offset: CGSize(width: 0, height: 2), color: UIColor.black)
-
     }
 
     func initialiseActions(actions: DismissViewActions? = nil) {
@@ -66,11 +64,10 @@ class CastledDismissButton: UIView {
      // Drawing code
      }
      */
-
 }
+
 extension UINib {
     static func loadView<T>(_ nibName: String, owner: T) -> UIView {
-
         let nib = UINib(nibName: nibName, bundle: Bundle.resourceBundle(for: CastledDismissButton.self))
         return nib.instantiate(withOwner: owner, options: nil)[0] as! UIView
     }

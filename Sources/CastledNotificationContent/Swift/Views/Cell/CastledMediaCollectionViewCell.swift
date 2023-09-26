@@ -4,12 +4,11 @@
 //
 //  Created by antony on 18/05/2023.
 //
-import UIKit
 import AVFoundation
 import SDWebImage
+import UIKit
 
-internal class CastledMediaCollectionViewCell: UICollectionViewCell {
-
+class CastledMediaCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "MediaCell"
 
     private let imageView: UIImageView = {
@@ -106,10 +105,9 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         player?.pause()
         removePlayerItems()
-
     }
 
-    internal func configure(with mediaViewModel: CastledNotificationMediaObject) {
+    func configure(with mediaViewModel: CastledNotificationMediaObject) {
         titleLabel.text = mediaViewModel.title
         subtitleLabel.text = mediaViewModel.subTitle
 
@@ -118,7 +116,6 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
         let urlImageString = mediaViewModel.thumbUrl
         let placeholderImage = UIImage(named: "media_placeholder", in: Bundle.resourceBundle(for: CastledMediaCollectionViewCell.self), compatibleWith: nil)
         if !urlImageString.isEmpty, let url = URL(string: urlImageString) {
-
             imageView.sd_setImage(with: url, placeholderImage: placeholderImage)
 
         } else {
@@ -143,7 +140,8 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
             // Create AVPlayerItem with video URL
             guard let videoUrl = URL(string: mediaViewModel.mediaUrl) else {
                 imageView.isHidden = false
-                return }
+                return
+            }
             let playerItem = AVPlayerItem(url: videoUrl)
             // Create AVPlayer with player item
             player = AVPlayer(playerItem: playerItem)
@@ -159,7 +157,6 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
 
             } else {
                 imageView.isHidden = false
-
             }
 
             NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
@@ -187,22 +184,23 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey: Any]?,
-                               context: UnsafeMutableRawPointer?) {
+                               context: UnsafeMutableRawPointer?)
+    {
         if keyPath == #keyPath(AVPlayerItem.status),
            let statusNumber = change?[.newKey] as? NSNumber,
-           let status = AVPlayerItem.Status(rawValue: statusNumber.intValue) {
+           let status = AVPlayerItem.Status(rawValue: statusNumber.intValue)
+        {
             switch status {
             case .readyToPlay:
                 // Player item is ready to play
                 imageView.isHidden = true
 
-                //  player?.play()
+            //  player?.play()
             case .failed:
                 // Player item failed to load or play
                 // Handle error if needed
                 imageView.isHidden = false
 
-                break
             case .unknown:
                 // Player item is in an unknown state
                 break
@@ -220,17 +218,17 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    internal func playVideo() {
+    func playVideo() {
         player?.play()
         playPauseButton.setImage(pauseImage, for: .normal)
     }
 
-    internal func pauseVideo() {
+    func pauseVideo() {
         player?.pause()
         playPauseButton.setImage(playImage, for: .normal)
     }
 
-    internal func removePlayerItems() {
+    func removePlayerItems() {
         if player == nil {
             return
         }
@@ -253,10 +251,9 @@ internal class CastledMediaCollectionViewCell: UICollectionViewCell {
         removePlayerItems()
     }
 }
+
 extension Bundle {
-
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-
         let mainBundle = Bundle.main
         let sourceBundle = Bundle(for: bundleClass)
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
@@ -292,5 +289,4 @@ extension Bundle {
         }
         return bundle ?? sourceBundle
     }
-
 }

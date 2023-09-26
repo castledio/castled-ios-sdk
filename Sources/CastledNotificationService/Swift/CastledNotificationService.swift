@@ -9,16 +9,15 @@ import Foundation
 import UserNotifications
 
 open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
-    private static let kCustomKey        = "castled"
-    private static let kApsKey           = "aps"
-    private static let kThumbnailURL     = "thumbnail_url"
-    private static let kMediaType        = "media_type"
-    private static let kNotificationId   = "castled_notification_id"
+    private static let kCustomKey = "castled"
+    private static let kApsKey = "aps"
+    private static let kThumbnailURL = "thumbnail_url"
+    private static let kMediaType = "media_type"
+    private static let kNotificationId = "castled_notification_id"
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
 
-    open override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-
+    override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         if bestAttemptContent != nil {
@@ -28,13 +27,15 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                         contentHandler(bestAttemptContent ?? request.content)
                     }
                     guard let urlString = customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] as? String,
-                          let fileUrl = URL(string: urlString) else {
+                          let fileUrl = URL(string: urlString)
+                    else {
                         return
                     }
                     let fileExtension = fileUrl.pathExtension
                     let imageFileIdentifier = UUID().uuidString + "." + fileExtension
                     guard let imageData = NSData(contentsOf: fileUrl),
-                          let attachment = UNNotificationAttachment.saveImageToDisk(fileIdentifier: imageFileIdentifier, data: imageData, options: nil) else {
+                          let attachment = UNNotificationAttachment.saveImageToDisk(fileIdentifier: imageFileIdentifier, data: imageData, options: nil)
+                    else {
                         print("Error in UNNotificationAttachment.saveImageToDisk()")
                         return
                     }
@@ -46,8 +47,8 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
         }
     }
 
-    open override func serviceExtensionTimeWillExpire() {
-        if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
+    override open func serviceExtensionTimeWillExpire() {
+        if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
             contentHandler(bestAttemptContent)
         }
     }
@@ -56,7 +57,6 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
 @available(iOSApplicationExtension 10.0, *)
 
 extension UNNotificationAttachment {
-
     static func saveImageToDisk(fileIdentifier: String, data: NSData, options: [NSObject: AnyObject]?) -> UNNotificationAttachment? {
         let fileManager = FileManager.default
         let folderName = ProcessInfo.processInfo.globallyUniqueString
@@ -68,7 +68,7 @@ extension UNNotificationAttachment {
             let attachment = try UNNotificationAttachment(identifier: fileIdentifier, url: fileURL!, options: options)
             return attachment
 
-        } catch let error {
+        } catch {
             print("error \(error)")
         }
         return nil

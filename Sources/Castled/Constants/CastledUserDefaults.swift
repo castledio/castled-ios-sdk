@@ -6,25 +6,25 @@
 //
 
 import Foundation
-@objc internal class CastledUserDefaults: NSObject {
 
-    static let userDefaults = UserDefaults.init(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
+@objc class CastledUserDefaults: NSObject {
+    static let userDefaults = UserDefaults(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
 
     // Userdefault keys
-    internal static var kCastledIsTokenRegisteredKey        = "_castledIsTokenRegistered_"
-    internal static var kCastledAnonymousIdKey              = "_castledAnonymousId_"
-    @objc public static var kCastledUserIdKey               = "_castledUserId_"
-    @objc public static let kCastledAPNsTokenKey            = "_castledApnsToken_"
-    public static let kCastledInAppsList                    = "castled_inapps"
-    public static var kCastledEnablePushNotificationKey     = "_castledEnablePushNotification_"
-    internal static let kCastledSendingInAppsEvents         = "_castledSendingInAppEvents_"
-    internal static let kCastledSendingInboxEvents         = "_castledSendingInboxEvents_"
-    internal static let kCastledSendingPushEvents           = "_castledSendingPushEvents_"
-    internal static let kCastledSavedInappConfigs           = "_castledSavedInappConfigs_"
-    internal static let kCastledLastInappDisplayedTime      = "_castledLastInappDisplayedTime_"
-    internal static let kCastledClickedNotiContentIndx      = "_kCastledClickedNotiContentIndx_"
+    static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
+    static var kCastledAnonymousIdKey = "_castledAnonymousId_"
+    @objc public static var kCastledUserIdKey = "_castledUserId_"
+    @objc public static let kCastledAPNsTokenKey = "_castledApnsToken_"
+    public static let kCastledInAppsList = "castled_inapps"
+    public static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
+    static let kCastledSendingInAppsEvents = "_castledSendingInAppEvents_"
+    static let kCastledSendingInboxEvents = "_castledSendingInboxEvents_"
+    static let kCastledSendingPushEvents = "_castledSendingPushEvents_"
+    static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
+    static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
+    static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
 
-    @objc  static func getString(_ key: String) -> String? {
+    @objc static func getString(_ key: String) -> String? {
         // Fetch value from UserDefaults
         if let stringValue = userDefaults.string(forKey: key) {
             return stringValue
@@ -32,7 +32,7 @@ import Foundation
         return nil
     }
 
-     static func setString(_ key: String, _ value: String?) {
+    static func setString(_ key: String, _ value: String?) {
         // Save the value in UserDefaults
         userDefaults.set(value, forKey: key)
         userDefaults.synchronize()

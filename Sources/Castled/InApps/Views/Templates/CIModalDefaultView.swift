@@ -8,7 +8,6 @@
 import UIKit
 
 class CIModalDefaultView: UIView, CIViewProtocol {
-
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
@@ -54,36 +53,31 @@ class CIModalDefaultView: UIView, CIViewProtocol {
             btnLeftOfView?.layer.borderColor = color.cgColor
             btnLeftOfView?.layer.borderWidth = CGFloat(inAppDisplaySettings!.leftButtonBorderWidth)
             btnLeftOfView?.layer.cornerRadius = CGFloat(inAppDisplaySettings!.leftButtonCornerRadius)
-
         }
         if let color = inAppDisplaySettings?.rightButtonBorderColor {
             btnRightOfView?.layer.borderColor = color.cgColor
             btnRightOfView?.layer.borderWidth = CGFloat(inAppDisplaySettings!.rightButtonBorderWidth)
             btnRightOfView?.layer.cornerRadius = CGFloat(inAppDisplaySettings!.rightButtonCornerRadius)
-
         }
         lblMessageTitle?.text = inAppDisplaySettings?.title
         lblMessageSubTitle?.text = inAppDisplaySettings?.body
         btnLeftOfView?.setTitle(inAppDisplaySettings?.leftButtonTitle, for: .normal)
         btnRightOfView?.setTitle(inAppDisplaySettings?.rightButtonTitle, for: .normal)
-
     }
 
     @IBAction func hideInAppView(_ sender: Any) {
-
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
     }
 
     @IBAction func rightButtonClikdAction(_ sender: Any) {
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.rightButtonClickAction, btnLabel: inAppDisplaySettings?.rightButtonTitle, actionUri: inAppDisplaySettings?.rightButtonUri)
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.rightButtonClickAction, btnLabel: inAppDisplaySettings?.rightButtonTitle, actionUri: inAppDisplaySettings?.rightButtonUri)
         CastledInApps.sharedInstance.performButtonActionFor(buttonAction: selectedInAppObject?.message?.modal?.actionButtons.last)
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
-
     }
 
     @IBAction func leftButtonClikdAction(_ sender: Any) {
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.leftButtonClickAction, btnLabel: inAppDisplaySettings?.leftButtonTitle, actionUri: inAppDisplaySettings?.leftButtonUri)
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.leftButtonClickAction, btnLabel: inAppDisplaySettings?.leftButtonTitle, actionUri: inAppDisplaySettings?.leftButtonUri)
         CastledInApps.sharedInstance.performButtonActionFor(buttonAction: selectedInAppObject?.message?.modal?.actionButtons.first)
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
     }

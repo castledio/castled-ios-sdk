@@ -9,7 +9,6 @@ import UIKit
 import WebKit
 
 class CIHTMLView: UIView, CIViewProtocol {
-
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
@@ -30,34 +29,33 @@ class CIHTMLView: UIView, CIViewProtocol {
         webViewBridge.delegate = self // Set the delegate
 
         let configuration = webViewBridge.getWebViewConfiguration()
-        self.webView = WKWebView(
-            frame: self.bounds,
+        webView = WKWebView(
+            frame: bounds,
             configuration: configuration
         )
-        addSubview(self.webView)
-        self.webView.clipsToBounds = true
-        self.webView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(webView)
+        webView.clipsToBounds = true
+        webView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.webView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.webView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.webView.topAnchor.constraint(equalTo: self.topAnchor),
-            self.webView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            webView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            webView.topAnchor.constraint(equalTo: topAnchor),
+            webView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-
     }
 
     func loadHtmlString() {
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
     /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+         // Drawing code
+     }
+     */
 }
+
 extension CIHTMLView: CastledInAppJSBridgeDelegate {
     func castledInAppDidRecevedClickActionWith(_ params: NSDictionary) {
         var btnLabel = ""
@@ -69,7 +67,5 @@ extension CIHTMLView: CastledInAppJSBridgeDelegate {
         webViewBridge.delegate = nil
         webViewBridge.delegate = nil
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
-
     }
-
 }

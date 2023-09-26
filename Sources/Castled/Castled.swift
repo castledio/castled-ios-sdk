@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import UserNotifications
 import UIKit
+import UserNotifications
 
 @objc public protocol CastledNotificationDelegate {
-
     @objc optional func registerForPush()
     @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void)
@@ -23,29 +22,30 @@ import UIKit
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance: Castled?
     private var shouldClearDeliveredNotifications = true
-    internal var inboxItemsArray = [CastledInboxItem]()
-    internal var inboxUnreadCountCallback: ((Int) -> Void)?
-    internal var inboxUnreadCount: Int = 0 {
+    var inboxItemsArray = [CastledInboxItem]()
+    var inboxUnreadCountCallback: ((Int) -> Void)?
+    var inboxUnreadCount: Int = 0 {
         didSet {
             // Call the callback when the unreadCount changes
             inboxUnreadCountCallback?(inboxUnreadCount)
         }
     }
+
     var instanceId: String
     let delegate: CastledNotificationDelegate
     var clientRootViewController: UIViewController?
     // Create a dispatch queue
     private let castledDispatchQueue = DispatchQueue(label: "CastledQueue", qos: .background)
-    internal let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
+    let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)
 
     /**
      Static method for conguring the Castled framework.
      */
-    @objc static public func initialize(withConfig config: CastledConfigs, delegate: CastledNotificationDelegate, andNotificationCategories categories: Set<UNNotificationCategory>? = Set<UNNotificationCategory>()) {
+    @objc public static func initialize(withConfig config: CastledConfigs, delegate: CastledNotificationDelegate, andNotificationCategories categories: Set<UNNotificationCategory>? = Set<UNNotificationCategory>()) {
         if Castled.sharedInstance == nil {
-            Castled.sharedInstance = Castled.init(instanceId: config.instanceId, delegate: delegate, categories: categories ?? Set<UNNotificationCategory>())
+            Castled.sharedInstance = Castled(instanceId: config.instanceId, delegate: delegate, categories: categories ?? Set<UNNotificationCategory>())
         }
     }
 
@@ -53,8 +53,8 @@ import UIKit
         if instanceId.isEmpty {
             fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
         }
-        self.instanceId  = instanceId
-        self.delegate    = delegate
+        self.instanceId = instanceId
+        self.delegate = delegate
         super.init()
         if Castled.sharedInstance == nil {
             Castled.sharedInstance = self
@@ -67,18 +67,21 @@ import UIKit
         }
         initialSetup()
     }
+
     private func initialSetup() {
         UIViewController.swizzleViewDidAppear()
         CastledBGManager.sharedInstance.registerBackgroundTasks()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
+
     /**
      Function that allows users to set the badge on the app icon manually.
      */
     public func setBadge(to count: Int) {
         UIApplication.shared.applicationIconBadgeNumber = count
     }
+
     /**
      InApps : Function that allows to display page view inapp
      */
@@ -92,6 +95,7 @@ import UIKit
         }
         CastledInApps.sharedInstance.logAppEvent(context: context, eventName: CIEventType.page_viewed.rawValue, params: ["name": String(describing: type(of: context))], showLog: false)
     }
+
     /**
      InApps : Function that allows to display custom inapp
      */
@@ -102,19 +106,22 @@ import UIKit
         }
         CastledInApps.sharedInstance.logAppEvent(context: context, eventName: eventName, params: params, showLog: false)
     }
-    @objc internal func executeBGTaskWithDelay() {
+
+    @objc func executeBGTaskWithDelay() {
         CastledBGManager.sharedInstance.executeBackgroundTask {
             Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
             })
         }
     }
-    @objc internal func appBecomeActive() {
+
+    @objc func appBecomeActive() {
         Castled.sharedInstance?.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
             Castled.sharedInstance?.logAppOpenedEventIfAny()
             perform(#selector(executeBGTaskWithDelay), with: nil, afterDelay: 2.0)
         }
     }
+
     private func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if CastledConfigs.sharedInstance.enableInApp == false {
             return

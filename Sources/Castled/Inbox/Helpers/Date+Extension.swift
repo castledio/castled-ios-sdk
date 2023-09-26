@@ -17,13 +17,13 @@ extension Date {
         let now = Date()
         let components = calendar.dateComponents([.year, .month, .weekOfMonth, .day, .hour, .minute], from: self, to: now)
 
-       /* if let years = components.year, years > 0 {
-            return "\(years) year\(years > 1 ? "s" : "") ago"
-        } else if let months = components.month, months > 0 {
-            return "\(months) month\(months > 1 ? "s" : "") ago"
-        } else if let weeks = components.weekOfMonth, weeks > 0 {
-            return "\(weeks) week\(weeks > 1 ? "s" : "") ago"
-        } else*/
+        /* if let years = components.year, years > 0 {
+             return "\(years) year\(years > 1 ? "s" : "") ago"
+         } else if let months = components.month, months > 0 {
+             return "\(months) month\(months > 1 ? "s" : "") ago"
+         } else if let weeks = components.weekOfMonth, weeks > 0 {
+             return "\(weeks) week\(weeks > 1 ? "s" : "") ago"
+         } else*/
         if let days = components.day, days > 0 {
             if days >= 7 {
                 let dateFormatter = DateFormatter()
