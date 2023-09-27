@@ -71,6 +71,7 @@ import UserNotifications
     private func initialSetup() {
         UIViewController.swizzleViewDidAppear()
         CastledBGManager.sharedInstance.registerBackgroundTasks()
+        CastledNetworkMonitor.shared.startMonitoring()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
@@ -107,10 +108,12 @@ import UserNotifications
         CastledInApps.sharedInstance.logAppEvent(context: context, eventName: eventName, params: params, showLog: false)
     }
 
-    @objc func executeBGTaskWithDelay() {
+    @objc func executeBGTasks() {
         CastledBGManager.sharedInstance.executeBackgroundTask {
-            Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
-            })
+            if CastledConfigs.sharedInstance.enableInApp {
+                Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
+                })
+            }
         }
     }
 
@@ -118,7 +121,7 @@ import UserNotifications
         Castled.sharedInstance?.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
             Castled.sharedInstance?.logAppOpenedEventIfAny()
-            perform(#selector(executeBGTaskWithDelay), with: nil, afterDelay: 2.0)
+            Castled.sharedInstance?.executeBGTasks()
         }
     }
 

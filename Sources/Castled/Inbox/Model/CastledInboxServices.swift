@@ -15,15 +15,12 @@ class CastledInboxServices: NSObject {
         }
         backgroundQueue.async { [self] in
             let eventType = "READ"
-            var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String: String]]) ?? [[String: String]]()
+            var savedEventTypes = [[String: String]]()
             for inboxObject in inboxItems {
-                if let json = self.getSendingParametersFrom(savedEventTypes, eventType, inboxObject, "") {
-                    savedEventTypes.append(json)
-                }
+                savedEventTypes.append(self.getSendingParametersFrom(eventType, inboxObject, ""))
             }
-            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInboxEvents, savedEventTypes)
             if !savedEventTypes.isEmpty {
-                updateInBoxEvents(savedEventTypes: savedEventTypes) { _, _ in
+                self.updateInBoxEvents(savedEventTypes: savedEventTypes) { _, _ in
                 }
             }
         }
@@ -32,14 +29,7 @@ class CastledInboxServices: NSObject {
     func reportInboxItemsClicked(inboxObject: CastledInboxItem, buttonTitle: String?) {
         backgroundQueue.async { [self] in
             let eventType = "CLICKED"
-            var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String: String]]) ?? [[String: String]]()
-            if let json = self.getSendingParametersFrom(savedEventTypes, eventType, inboxObject, buttonTitle ?? "") {
-                savedEventTypes.append(json)
-            }
-            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInboxEvents, savedEventTypes)
-            if !savedEventTypes.isEmpty {
-                updateInBoxEvents(savedEventTypes: savedEventTypes) { _, _ in
-                }
+            self.updateInBoxEvents(savedEventTypes: [self.getSendingParametersFrom(eventType, inboxObject, buttonTitle ?? "")]) { _, _ in
             }
         }
     }
@@ -47,13 +37,8 @@ class CastledInboxServices: NSObject {
     func reportInboxItemsDeleted(inboxObject: CastledInboxItem, completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
         backgroundQueue.async { [self] in
             let eventType = "DELETED"
-            var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String: String]]) ?? [[String: String]]()
-
-            if let json = self.getSendingParametersFrom(savedEventTypes, eventType, inboxObject, "") {
-                savedEventTypes.append(json)
-            }
-
-            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInboxEvents, savedEventTypes)
+            var savedEventTypes = [[String: String]]()
+            savedEventTypes.append(self.getSendingParametersFrom(eventType, inboxObject, ""))
             if !savedEventTypes.isEmpty {
                 updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
                     completion(success, error)
@@ -66,7 +51,7 @@ class CastledInboxServices: NSObject {
         Castled.updateInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
 
 //            if response.success {
-//                castledLog(response.result as Any)
+//                castledLog("updateInBoxEvents succe")
 //            }
 //            else
 //            {
@@ -76,28 +61,19 @@ class CastledInboxServices: NSObject {
         })
     }
 
-    private func getSendingParametersFrom(_ savedEventTypes: [[String: String]], _ eventType: String, _ inboxObject: CastledInboxItem, _ title: String) -> [String: String]? {
+    private func getSendingParametersFrom(_ eventType: String, _ inboxObject: CastledInboxItem, _ title: String) -> [String: String] {
         let teamId = "\(inboxObject.teamID)"
         let sourceContext = inboxObject.sourceContext
-        let existingEvents = savedEventTypes.filter { $0["eventType"] == eventType &&
-            $0["btnLabel"] == title &&
-            $0["sourceContext"] == sourceContext &&
-            $0[CastledConstants.CastledSlugValueIdentifierKey] == CastledNotificationType.inbox.value()
-        }
-
-        if existingEvents.isEmpty {
-            let timezone = TimeZone.current
-            let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
-            let epochTime = "\(Int(Date().timeIntervalSince1970))"
-
-            var json = ["ts": "\(epochTime)",
-                        "tz": "\(abbreviation)",
-                        "teamId": teamId,
-                        "eventType": eventType,
-                        "sourceContext": sourceContext] as [String: String]
-            json["btnLabel"] = title
-            return json
-        }
-        return nil
+        let timezone = TimeZone.current
+        let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
+        let epochTime = "\(Int(Date().timeIntervalSince1970))"
+        var json = ["ts": "\(epochTime)",
+                    "tz": "\(abbreviation)",
+                    "teamId": teamId,
+                    "eventType": eventType,
+                    "sourceContext": sourceContext] as [String: String]
+        json[CastledConstants.CastledNetworkRequestTypeKey] = CastledNotificationType.inbox.value()
+        json["btnLabel"] = title
+        return json
     }
 }

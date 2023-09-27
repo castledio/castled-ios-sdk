@@ -25,8 +25,7 @@ public extension Castled {
 
     @objc func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                willPresentNotification notification: UNNotification,
-                                               withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
-    {
+                                               withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         Castled.sharedInstance?.userNotificationCenter(center, willPresent: notification)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, willPresent: notification, withCompletionHandler: { options in
             completionHandler(options)
@@ -50,8 +49,7 @@ public extension Castled {
 
     @objc func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                didReceiveNotificationResponse response: UNNotificationResponse,
-                                               withCompletionHandler completionHandler: @escaping () -> Void)
-    {
+                                               withCompletionHandler completionHandler: @escaping () -> Void) {
         Castled.sharedInstance?.handleNotificationAction(response: response)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, didReceive: response, withCompletionHandler: {
             completionHandler()
@@ -82,10 +80,7 @@ public extension Castled {
                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
                 let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
                 let params = getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
-                var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingPushEvents) as? [[String: String]]) ?? [[String: String]]()
-                savedEventTypes.append(params)
-                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingPushEvents, savedEventTypes)
-                Castled.registerEvents(params: savedEventTypes) { _ in
+                Castled.registerEvents(params: [params]) { _ in
                     completionHandler(.newData)
                 }
             } else {
@@ -113,8 +108,7 @@ public extension Castled {
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
             if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaults.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
-               let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
-            {
+               let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String {
                 switch defaultAction {
                     case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                         pushActionType = CastledClickActionType.deepLink
@@ -139,8 +133,7 @@ public extension Castled {
             processCastledPushEvents(userInfo: userInfo, isDismissed: true)
         } else {
             if let actionDetails: [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
-               let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
-            {
+               let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String {
                 switch clickAction {
                     case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                         pushActionType = CastledClickActionType.deepLink
@@ -167,8 +160,7 @@ public extension Castled {
     internal func checkAppIsLaunchedViaPush(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         let notificationOption = launchOptions?[.remoteNotification]
         if let notification = notificationOption as? [String: AnyObject],
-           notification["aps"] as? [String: AnyObject] != nil
-        {
+           notification["aps"] as? [String: AnyObject] != nil {
             processCastledPushEvents(userInfo: notification, isOpened: true)
         }
     }
@@ -196,16 +188,7 @@ public extension Castled {
                     }
 
                     let params = self.getPushPayload(event: event, teamID: teamID ?? "", sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType)
-                    var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingPushEvents) as? [[String: String]]) ?? [[String: String]]()
-                    let existingEvents = savedEventTypes.filter { $0["eventType"] == event &&
-                        $0["sourceContext"] == sourceContext
-                    }
-
-                    if existingEvents.isEmpty {
-                        savedEventTypes.append(params)
-                    }
-                    CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingPushEvents, savedEventTypes)
-                    Castled.registerEvents(params: savedEventTypes) { _ in
+                    Castled.registerEvents(params: [params]) { _ in
                     }
                 }
             }
@@ -233,10 +216,7 @@ public extension Castled {
                         }
                     }
                     if !castledPushEvents.isEmpty {
-                        var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingPushEvents) as? [[String: String]]) ?? [[String: String]]()
-                        savedEventTypes.append(contentsOf: castledPushEvents)
-                        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingPushEvents, savedEventTypes)
-                        Castled.registerEvents(params: savedEventTypes) { _ in
+                        Castled.registerEvents(params: castledPushEvents) { _ in
                         }
                     }
                     if shouldClear == true {
@@ -259,6 +239,7 @@ public extension Castled {
         if actionType?.count ?? 0 > 0 {
             params["actionType"] = actionType
         }
+        params[CastledConstants.CastledNetworkRequestTypeKey] = CastledNotificationType.push.value()
         return params
     }
 

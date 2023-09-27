@@ -78,8 +78,7 @@ class CastledCommonClass {
         if let msgFramesString = customDict["msg_frames"] as? String,
            let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? [Any],
            detailsArray.count > index!,
-           let selectedCategory = detailsArray[index!] as? [String: Any]
-        {
+           let selectedCategory = detailsArray[index!] as? [String: Any] {
             return selectedCategory
         }
         return nil

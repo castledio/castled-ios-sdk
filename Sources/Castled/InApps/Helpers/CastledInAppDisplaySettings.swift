@@ -176,8 +176,7 @@ class InAppDisplayConfig {
 
     func populateConfigurationsFrom(inAppObject: CastledInAppObject) {
         if inAppObject.message?.type.rawValue ==
-            CIMessageType.modal.rawValue
-        {
+            CIMessageType.modal.rawValue {
             // title
             if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.titleFontColor ?? "") {
                 titleFontColor = color

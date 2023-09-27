@@ -32,8 +32,12 @@ import Foundation
         false
     }()
 
-    @objc public lazy var enableInApp: Bool = {
+    @objc public lazy var enableAppInbox: Bool = {
         false
+    }()
+
+    @objc public lazy var enableInApp: Bool = {
+        true
     }()
 
     @objc public lazy var enablePush = false {

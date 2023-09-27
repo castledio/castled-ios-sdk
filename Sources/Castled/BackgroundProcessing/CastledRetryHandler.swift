@@ -9,74 +9,86 @@ import Foundation
 
 class CastledRetryHandler {
     static let shared = CastledRetryHandler()
-    private let castledDispatchQueue = DispatchQueue(label: "com.castled.retryhandler", qos: .background)
     private let castledSemaphore = DispatchSemaphore(value: 1)
     private let castledGroup = DispatchGroup()
-
+    private var isResending = false
     private init() {}
 
     func retrySendingAllFailedEvents(completion: (() -> Void)? = nil) {
-        castledDispatchQueue.async { [weak self] in
-
-            let savedInAppEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents) as? [[String: String]]) ?? [[String: String]]()
-            let savedInBoxEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String: String]]) ?? [[String: String]]()
-            let savedPushEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingPushEvents) as? [[String: String]]) ?? [[String: String]]()
+        if isResending {
+            return
+        }
+        isResending = true
+        CastledStore.castledStoreQueue.async { [weak self] in
+            let failedItems = CastledStore.getAllFailedItemss()
             var shouldCallRegister = false
             let pushToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
             if pushToken != nil && !CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) {
                 shouldCallRegister = true
             }
-            guard !savedInAppEvents.isEmpty || !savedPushEvents.isEmpty || !savedInBoxEvents.isEmpty || shouldCallRegister else {
+            guard !failedItems.isEmpty || shouldCallRegister else {
                 completion?()
+                self?.isResending = false
                 return
             }
-            if !savedInAppEvents.isEmpty {
-                self?.castledSemaphore.wait()
-                self?.castledGroup.enter()
+            let requestHandlerRegistry = Dictionary(grouping: failedItems, by: { dictionary in
+                dictionary[CastledConstants.CastledNetworkRequestTypeKey] as? String ?? ""
+            })
+            for (key, value) in requestHandlerRegistry {
+                switch key {
+                    case CastledNotificationType.push.value():
+                        if let savedEvents = value as? [[String: String]] {
+                            self?.castledSemaphore.wait()
+                            self?.castledGroup.enter()
+                            Castled.registerEvents(params: savedEvents, completion: { [weak self] response in
+                                defer {
+                                    self?.castledSemaphore.signal()
+                                    self?.castledGroup.leave()
+                                }
+                                if response.success {
+                                    //  castledLog("push upload success in \(#function) response\(response.result as Any)")
+                                } else {
+                                    // castledLog("Error in updating inapp event \(#function)")
+                                }
+                            })
+                        }
+                    case CastledNotificationType.inapp.value():
+                        if let savedEvents = value as? [[String: String]] {
+                            self?.castledSemaphore.wait()
+                            self?.castledGroup.enter()
+                            Castled.updateInAppEvents(params: savedEvents, completion: { [weak self] (response: CastledResponse<[String: String]>) in
+                                defer {
+                                    self?.castledSemaphore.signal()
+                                    self?.castledGroup.leave()
+                                }
 
-                Castled.updateInAppEvents(params: savedInAppEvents, completion: { [weak self] (response: CastledResponse<[String: String]>) in
-                    defer {
-                        self?.castledSemaphore.signal()
-                        self?.castledGroup.leave()
-                    }
+                                if response.success {
+                                    //    castledLog("inApp upload success in \(#function) response\(response.result as Any)")
+                                } else {
+                                    // castledLog("Error in updating inapp event \(#function)")
+                                }
+                            })
+                        }
+                    case CastledNotificationType.inbox.value():
+                        if let savedEvents = value as? [[String: String]] {
+                            self?.castledSemaphore.wait()
+                            self?.castledGroup.enter()
+                            Castled.updateInboxEvents(params: savedEvents, completion: { [weak self] (response: CastledResponse<[String: String]>) in
+                                defer {
+                                    self?.castledSemaphore.signal()
+                                    self?.castledGroup.leave()
+                                }
 
-                    if response.success {
-                        // castledLog("inApp upload success in \(#function) response\(response.result as Any)")
-                    } else {
-                        // castledLog("Error in updating inapp event \(#function)")
-                    }
-                })
-            }
-            if !savedInBoxEvents.isEmpty {
-                self?.castledSemaphore.wait()
-                self?.castledGroup.enter()
-                Castled.updateInboxEvents(params: savedInBoxEvents, completion: { [weak self] (response: CastledResponse<[String: String]>) in
-                    defer {
-                        self?.castledSemaphore.signal()
-                        self?.castledGroup.leave()
-                    }
-
-                    if response.success {
-                        // castledLog("inApp upload success in \(#function) response\(response.result as Any)")
-                    } else {
-                        // castledLog("Error in updating inapp event \(#function)")
-                    }
-                })
-            }
-            if !savedPushEvents.isEmpty {
-                self?.castledSemaphore.wait()
-                self?.castledGroup.enter()
-                Castled.registerEvents(params: savedPushEvents, completion: { [weak self] response in
-                    defer {
-                        self?.castledSemaphore.signal()
-                        self?.castledGroup.leave()
-                    }
-                    if response.success {
-                        // castledLog("inApp upload success in \(#function) response\(response.result as Any)")
-                    } else {
-                        // castledLog("Error in updating inapp event \(#function)")
-                    }
-                })
+                                if response.success {
+                                    //   castledLog("inbox upload success in \(#function) response\(response.result as Any)")
+                                } else {
+                                    // castledLog("Error in updating inapp event \(#function)")
+                                }
+                            })
+                        }
+                    default:
+                        break
+                }
             }
             if shouldCallRegister == true {
                 self?.castledSemaphore.wait()
@@ -87,6 +99,7 @@ class CastledRetryHandler {
                 }
             }
             self?.castledGroup.notify(queue: .main) {
+                self?.isResending = false
                 completion?()
             }
         }

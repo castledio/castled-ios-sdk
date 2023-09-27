@@ -184,12 +184,10 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey: Any]?,
-                               context: UnsafeMutableRawPointer?)
-    {
+                               context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(AVPlayerItem.status),
            let statusNumber = change?[.newKey] as? NSNumber,
-           let status = AVPlayerItem.Status(rawValue: statusNumber.intValue)
-        {
+           let status = AVPlayerItem.Status(rawValue: statusNumber.intValue) {
             switch status {
             case .readyToPlay:
                 // Player item is ready to play

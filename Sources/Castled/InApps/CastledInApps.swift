@@ -58,36 +58,25 @@ import UIKit
         DispatchQueue.global().async {
             let teamId = "\(inappObject.teamID)"
             let sourceContext = inappObject.sourceContext
-
-            var savedEventTypes = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents) as? [[String: String]]) ?? [[String: String]]()
-            let existingEvents = savedEventTypes.filter { $0["eventType"] == eventType &&
-                $0["sourceContext"] == sourceContext &&
-                $0[CastledConstants.CastledSlugValueIdentifierKey] == CastledNotificationType.inapp.value()
+            let timezone = TimeZone.current
+            let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
+            let epochTime = "\(Int(Date().timeIntervalSince1970))"
+            var json = ["ts": "\(epochTime)",
+                        "tz": "\(abbreviation)",
+                        "teamId": teamId,
+                        "eventType": eventType,
+                        "sourceContext": sourceContext] as [String: String]
+            if let value = btnLabel {
+                json["btnLabel"] = value
             }
-            if existingEvents.isEmpty {
-                let timezone = TimeZone.current
-                let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
-                let epochTime = "\(Int(Date().timeIntervalSince1970))"
-
-                var json = ["ts": "\(epochTime)",
-                            "tz": "\(abbreviation)",
-                            "teamId": teamId,
-                            "eventType": eventType,
-                            "sourceContext": sourceContext] as [String: String]
-                if let value = btnLabel {
-                    json["btnLabel"] = value
-                }
-                if let value = actionType {
-                    json["actionType"] = value
-                }
-                if let value = actionUri {
-                    json["actionUri"] = value
-                }
-                savedEventTypes.append(json)
-                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents, savedEventTypes)
+            if let value = actionType {
+                json["actionType"] = value
             }
-
-            Castled.updateInAppEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
+            if let value = actionUri {
+                json["actionUri"] = value
+            }
+            json[CastledConstants.CastledNetworkRequestTypeKey] = CastledNotificationType.inapp.value()
+            Castled.updateInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
                 if response.success {
                     // castledLog(response.result as Any)
                 } else {

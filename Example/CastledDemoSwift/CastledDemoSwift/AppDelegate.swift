@@ -5,27 +5,26 @@
 //  Created by Antony Joe Mathew.
 //
 
-import UIKit
 import Castled
+import UIKit
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate  {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let config = CastledConfigs.initialize(withInstanceId: "718c38e2e359d94367a2e0d35e1fd4df")
-        //config.permittedBGIdentifier = "com.castled.backgroundtask"
+        // config.permittedBGIdentifier = "com.castled.backgroundtask"
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
-        config.enablePush  = true
+        config.enablePush = true
         config.enableInApp = true
-        config.location    = CastledLocation.US
-        //config.disableLog = true
+        config.enableAppInbox = true
+        config.location = CastledLocation.US
+        // config.disableLog = true
 
         // Register the custom category
-        let notificationCategories = getNotificationCategories();
-        Castled.initialize(withConfig: config, delegate: self,andNotificationCategories: notificationCategories)
-
+        let notificationCategories = self.getNotificationCategories()
+        Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: notificationCategories)
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -34,53 +33,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
             navBarAppearance.backgroundColor = .link
             UINavigationBar.appearance().tintColor = UIColor.white
-            
+
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).standardAppearance = navBarAppearance
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).scrollEdgeAppearance = navBarAppearance
-            
         }
-        
+
         return true
     }
-    func getNotificationCategories() -> Set<UNNotificationCategory>{
+
+    func getNotificationCategories() -> Set<UNNotificationCategory> {
         // Create the custom actions
         let action1 = UNNotificationAction(identifier: "ACCEPT", title: "Accept", options: UNNotificationActionOptions.foreground)
         let action2 = UNNotificationAction(identifier: "DECLINE", title: "Decline", options: [])
-        
+
         // Create the category with the custom actions
         let customCategory1 = UNNotificationCategory(identifier: "ACCEPT_DECLINE", actions: [action1, action2], intentIdentifiers: [], options: [])
-        
+
         let action3 = UNNotificationAction(identifier: "YES", title: "Yes", options: [UNNotificationActionOptions.foreground])
         let action4 = UNNotificationAction(identifier: "NO", title: "No", options: [])
-        
+
         // Create the category with the custom actions
         let customCategory2 = UNNotificationCategory(identifier: "YES_NO", actions: [action3, action4], intentIdentifiers: [], options: [])
-        
-        let categoriesSet = Set.init([customCategory1,customCategory2])
-        
-        return categoriesSet;
+
+        let categoriesSet = Set([customCategory1, customCategory2])
+
+        return categoriesSet
     }
-    
+
     // MARK: UISceneSession Lifecycle
-    
+
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-    
+
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // code to handle the URL
-        
-        if url.scheme == "com.castled"{
+
+        if url.scheme == "com.castled" {
             let host = url.host
-            //let pathComponents = url.pathComponents
+            // let pathComponents = url.pathComponents
             var parameters: [String: String] = [:]
             URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.forEach {
                 parameters[$0.name] = $0.value
@@ -90,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
             print("parameters  -- > \(parameters)")
             let queryString = queryString(from: parameters)
             print("queryString  -- > \(queryString)")
-            
+
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController {
                 guard let rootViewController = window?.rootViewController else {
@@ -104,14 +103,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
                     // If the root view controller is not a navigation controller, present the view controller modally
                     rootViewController.present(vc, animated: true, completion: nil)
                 }
-                
             }
-            
         }
-        
-        return true;
+
+        return true
     }
-    
+
     func queryString(from parameters: [String: String]) -> String {
         var components = URLComponents()
         components.queryItems = parameters.map { key, value in
@@ -119,27 +116,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate  {
         }
         return components.percentEncodedQuery ?? ""
     }
-    
-    func topController() -> UIViewController  {
+
+    func topController() -> UIViewController {
         if let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow }), var topController = keyWindow.rootViewController {
             while let presentedViewController = topController.presentedViewController {
-                
                 topController = presentedViewController
             }
             return topController
         }
         return (UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController)!
     }
-    
-    
 }
 
 // MARK: - CastledNotification Delegate Methods
+
 extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
-        
         UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: {granted, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { granted, _ in
             if granted {
                 DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
@@ -147,38 +141,33 @@ extension AppDelegate: CastledNotificationDelegate {
             }
         })
     }
-    
+
     func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("willPresent \(self.description) \(#function)")
         print(notification.request.content.userInfo)
-        completionHandler( [[.alert, .badge, .sound]])
-        
+        completionHandler([[.alert, .badge, .sound]])
     }
-    
+
     func castled_userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("didReceive \(self.description) \(#function)")
-        
+
         completionHandler()
-        
     }
-    
+
     func castled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("didFailToRegisterForRemoteNotificationsWithError \(self.description) \(#function) \(error.localizedDescription)")
-        
     }
-    
+
     func castled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("didRegisterForRemoteNotificationsWithDeviceToken \(self.description) \(#function)")
-        
     }
-    func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
+    func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         print("\(self.description) \(#function)")
         completionHandler(.newData)
-
     }
-    func notificationClicked(withNotificationType type: CastledNotificationType,action: CastledClickActionType , kvPairs: [AnyHashable : Any]?,userInfo: [AnyHashable : Any]){
-        
+
+    func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
         print("type \(type.rawValue) action \(action.rawValue)")
         switch action {
             case .deepLink:
@@ -186,74 +175,62 @@ extension AppDelegate: CastledNotificationDelegate {
                     handleDeepLink(url: url)
                 }
 
-                break
             case .navigateToScreen:
                 if let details = kvPairs, let screenName = details["clickActionUrl"] as? String {
                     handleNavigateToScreen(screenName: screenName)
                 }
-                break
             case .richLanding:
-                //TODO:
+                // TODO:
 
                 break
             case .requestForPush:
-                //TODO:
+                // TODO:
 
                 break
             case .dismiss:
-                //TODO:
+                // TODO:
 
                 break
             case .custom:
-                //TODO:
+                // TODO:
 
                 break
             default:
                 break
         }
-
     }
-    
-    
-    
 }
 
 // MARK: - Push Notification Delegate Methods
-extension AppDelegate : UNUserNotificationCenterDelegate{
-    
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
     /*************************************************************IMPPORTANT*************************************************************/
-    //If you disabled the swizzling in plist you should call the required functions in the delegate methods
-    func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
+    // If you disabled the swizzling in plist you should call the required functions in the delegate methods
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Castled.sharedInstance?.setDeviceToken(deviceToken: deviceToken)
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         print("APNs token \(deviceTokenString) \(self.description)")
-        
-    }
-    
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        
-        print("Failed to register for remote notifications \(error.localizedDescription)")
-        
     }
 
-   
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications \(error.localizedDescription)")
+    }
+
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
         print("didReceive \(self.description)")
-        //Handle the click events
+        // Handle the click events
         Castled.sharedInstance?.userNotificationCenter(center, didReceive: response)
         completionHandler()
     }
+
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("willPresent \(self.description)")
         Castled.sharedInstance?.userNotificationCenter(center, willPresent: notification)
-        completionHandler( [.alert, .badge, .sound])
+        completionHandler([.alert, .badge, .sound])
     }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 
-        Castled.sharedInstance?.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { result in
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        Castled.sharedInstance?.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { _ in
             print("didReceiveRemoteNotification \(self.description)")
             completionHandler(.newData)
 
@@ -261,12 +238,10 @@ extension AppDelegate : UNUserNotificationCenterDelegate{
     }
 }
 
-
-
 // MARK: - Supporting Methods for CastledPusherExample
 
-extension AppDelegate{
-    fileprivate func handleDeepLink(url: URL?) {
+private extension AppDelegate {
+    func handleDeepLink(url: URL?) {
         guard let url = url else { return }
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         let scheme = components?.scheme // "com.castled"
@@ -279,33 +254,32 @@ extension AppDelegate{
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController else { return }
 
-        presentViewController(vc)
+        self.presentViewController(vc)
     }
 
-    fileprivate  func handleNavigateToScreen(screenName: String?){
+    func handleNavigateToScreen(screenName: String?) {
         guard let screenName = screenName else { return }
         guard let vc = instantiateViewController(screenName: screenName) else {
             return
         }
-        presentViewController(vc)
-    }
-    fileprivate func handleRichLanding(screenName: String?){
-
+        self.presentViewController(vc)
     }
 
-    fileprivate func getVisibleViewController(from viewController: UIViewController) -> UIViewController {
+    func handleRichLanding(screenName: String?) {}
+
+    func getVisibleViewController(from viewController: UIViewController) -> UIViewController {
         if let navigationController = viewController as? UINavigationController {
-            return getVisibleViewController(from: navigationController.visibleViewController ?? navigationController)
+            return self.getVisibleViewController(from: navigationController.visibleViewController ?? navigationController)
         } else if let tabBarController = viewController as? UITabBarController {
-            return getVisibleViewController(from: tabBarController.selectedViewController ?? tabBarController)
+            return self.getVisibleViewController(from: tabBarController.selectedViewController ?? tabBarController)
         } else if let presentedViewController = viewController.presentedViewController {
-            return getVisibleViewController(from: presentedViewController)
+            return self.getVisibleViewController(from: presentedViewController)
         } else {
             return viewController
         }
     }
-    
-    fileprivate func presentViewController(_ viewController: UIViewController) {
+
+    func presentViewController(_ viewController: UIViewController) {
         guard let rootViewController = getRootViewController() else { return }
         if let navigationController = rootViewController as? UINavigationController {
             navigationController.pushViewController(viewController, animated: true)
@@ -313,12 +287,13 @@ extension AppDelegate{
             rootViewController.present(viewController, animated: true, completion: nil)
         }
     }
-    
-    fileprivate func getRootViewController() -> UIViewController? {
+
+    func getRootViewController() -> UIViewController? {
         if #available(iOS 13, *) {
             guard let scene = UIApplication.shared.connectedScenes.first,
                   let sceneDelegate = scene.delegate as? SceneDelegate,
-                  let window = sceneDelegate.window else {
+                  let window = sceneDelegate.window
+            else {
                 return nil
             }
             return window.rootViewController
@@ -326,9 +301,8 @@ extension AppDelegate{
             return UIApplication.shared.keyWindow?.rootViewController
         }
     }
-    
-    
-    fileprivate func instantiateViewController(screenName: String) -> UIViewController? {
+
+    func instantiateViewController(screenName: String) -> UIViewController? {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         switch screenName {
             case "DeeplinkViewController":
@@ -345,5 +319,4 @@ extension AppDelegate{
                 return nil
         }
     }
-    
 }

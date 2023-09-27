@@ -70,7 +70,7 @@ class CastledConstants {
         case viewed = "VIEWED"
     }
 
-    static let CastledSlugValueIdentifierKey = "ceis"
+    static let CastledNetworkRequestTypeKey = "castled_request_type"
     enum InAppsConfigKeys: String {
         case inAppNotificationId = "nid"
         case inAppCurrentDisplayCounter = "dc"

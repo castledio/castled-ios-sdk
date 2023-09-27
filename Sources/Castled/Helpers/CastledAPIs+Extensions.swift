@@ -24,11 +24,11 @@ extension Castled {
         if deviceToken != nil, CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false {
             Castled.sharedInstance?.api_RegisterUser(userId: uid, apnsToken: deviceToken!) { response in
                 if response.success {
-                    Castled.sharedInstance?.executeBGTaskWithDelay()
+                    Castled.sharedInstance?.executeBGTasks()
                 }
             }
         } else {
-            Castled.sharedInstance?.executeBGTaskWithDelay()
+            Castled.sharedInstance?.executeBGTasks()
         }
     }
 
@@ -123,6 +123,10 @@ extension Castled {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
+        if !CastledConfigs.sharedInstance.enableAppInbox {
+            completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
+            return
+        }
         Castled.sharedInstance?.api_fetch_inBox(model: [CastledInboxItem].self, completion: { response in
             completion(response)
         })
@@ -193,14 +197,12 @@ extension Castled {
             let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint: router.endpoint)
             switch response {
             case .success(let responsJSON):
-                // castledLog("Register Push Events Success:✅✅✅ \(responsJSON) params\(params)")
-                var savedEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingPushEvents) as? [[String: String]]) ?? [[String: String]]()
-                savedEvents = savedEvents.filter { !params.contains($0) }
-                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingPushEvents, savedEvents)
+                CastledStore.deleteAllFromStore(params)
                 completion(CastledResponse(response: responsJSON as! T))
 
             case .failure(let error):
                 castledLog("Register Push Events Error:❌❌❌\(error.localizedDescription)")
+                CastledStore.insertAllIntoStore(params)
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }
@@ -218,13 +220,12 @@ extension Castled {
             switch response {
             case .success(let responsJSON):
                 // castledLog("Update InApp Events Success:✅✅✅ \(responsJSON)")
-                var savedEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents) as? [[String: String]]) ?? [[String: String]]()
-                savedEvents = savedEvents.filter { !params.contains($0) }
-                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInAppsEvents, savedEvents)
+                CastledStore.deleteAllFromStore(params)
                 completion(CastledResponse(response: responsJSON as! T))
 
             case .failure(let error):
                 castledLog("Update InApp Error:❌❌❌\(error.localizedDescription)")
+                CastledStore.insertAllIntoStore(params)
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }
@@ -243,13 +244,11 @@ extension Castled {
 
             switch response {
             case .success(let responsJSON):
-                // castledLog("Update InApp Events Success:✅✅✅ \(responsJSON)")
-                var savedEvents = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSendingInboxEvents) as? [[String: String]]) ?? [[String: String]]()
-                savedEvents = savedEvents.filter { !params.contains($0) }
-                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSendingInboxEvents, savedEvents)
+                CastledStore.deleteAllFromStore(params)
                 completion(CastledResponse(response: responsJSON as! T))
             case .failure(let error):
                 castledLog("Update Inbox Error:❌❌❌\(error.localizedDescription)")
+                CastledStore.insertAllIntoStore(params)
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }
