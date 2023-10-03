@@ -16,6 +16,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = "13.0"
   spec.swift_version = "5.7"
   spec.ios.dependency 'SDWebImage', '~> 5.11'
+  spec.ios.dependency 'RealmSwift', '~> 10.42.4'
 
   spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
   # spec.source_files  = "Castled/**/*.{h,m,swift}"

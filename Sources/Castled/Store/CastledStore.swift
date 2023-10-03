@@ -8,7 +8,8 @@
 import Foundation
 
 @objc class CastledStore: NSObject {
-    static let castledStoreQueue = DispatchQueue(label: "com.castled.retryhandler", qos: .background)
+    static let castledStoreQueue = DispatchQueue(label: "com.castled.dbHandler", qos: .background)
+    static var isInserting = false
     static func insertAllIntoStore(_ items: [[String: String]]) {
         CastledStore.castledStoreQueue.async {
             var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: String]]) ?? [[String: String]]()

@@ -10,16 +10,16 @@ import UIKit
 @objc public class CastledInboxItem: NSObject, Codable {
     public var actionButtons: [[String: Any]]
     public var addedDate: Date
-    public let aspectRatio: CGFloat
+    public var aspectRatio: CGFloat
     public var bodyTextColor: UIColor
     public var containerBGColor: UIColor
     public var dateTextColor: UIColor
-    public let inboxType: CastledInboxType
+    public var inboxType: CastledInboxType
     public var isRead: Bool
-    public let message: [String: Any]
-    public let sourceContext, imageUrl, title, body: String
-    public let startTs: Int64
-    public let teamID, messageId: Int
+    public var message: [String: Any]
+    public var sourceContext, imageUrl, title, body: String
+    public var startTs: Int64
+    public var teamID, messageId: Int
     public var titleTextColor: UIColor
     enum CodingKeys: String, CodingKey {
         case teamID = "teamId"
@@ -34,6 +34,7 @@ import UIKit
 
         // Encode other fields if needed
     }
+
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -60,5 +61,26 @@ import UIKit
 
     static func == (lhs: CastledInboxItem, rhs: CastledInboxItem) -> Bool {
         return lhs.sourceContext == rhs.sourceContext
+    }
+    // Initialize your properties here
+    internal override init() {
+        self.actionButtons = []
+        self.addedDate = Date()
+        self.aspectRatio = 0.0
+        self.bodyTextColor = .black
+        self.containerBGColor = .white
+        self.dateTextColor = .black
+        self.inboxType = .other
+        self.isRead = false
+        self.message = [:]
+        self.sourceContext = ""
+        self.imageUrl = ""
+        self.title = ""
+        self.body = ""
+        self.startTs = 0
+        self.teamID = 0
+        self.messageId = 0
+        self.titleTextColor = .black
+        super.init()
     }
 }

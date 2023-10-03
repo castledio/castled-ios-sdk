@@ -30,7 +30,7 @@ class CastledInboxCell: UITableViewCell {
     @IBOutlet weak var imgBottomLine: UIImageView!
     @IBOutlet weak var constraintImageHeightRatio: NSLayoutConstraint!
     @IBOutlet weak var constraintButtonContainerHeight: NSLayoutConstraint!
-    private var inboxItem: CastledInboxItem?
+    private var inboxItem: CAppInbox?
     private var actualCoverImageRatioConstraint: NSLayoutConstraint?
 
     override func awakeFromNib() {
@@ -56,12 +56,12 @@ class CastledInboxCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func configureCellWith(_ inboxObj: CastledInboxItem) {
+    func configureCellWith(_ inboxObj: CAppInbox) {
         inboxItem = inboxObj
-        viewContainer.backgroundColor = inboxObj.containerBGColor
-        lblTitle.textColor = inboxObj.titleTextColor
-        lblDescription.textColor = inboxObj.bodyTextColor
-        lblTime.textColor = inboxObj.titleTextColor
+        viewContainer.backgroundColor = inboxObj.colorContainer
+        lblTitle.textColor = inboxObj.colorTitle
+        lblDescription.textColor = inboxObj.colorBody
+        lblTime.textColor = lblDescription.textColor
         lblTitle.text = inboxObj.title
         lblDescription.text = inboxObj.body
         lblTime.text = inboxObj.addedDate.timeAgo()
@@ -92,7 +92,7 @@ class CastledInboxCell: UITableViewCell {
                 break
         }
 
-        let newConstraint = actualCoverImageRatioConstraint!.constraintWithMultiplier(multiplier)
+        let newConstraint = actualCoverImageRatioConstraint!.constraintWithMultiplier(CGFloat(multiplier))
         imgCover.removeConstraint(constraintImageHeightRatio)
         imgCover.addConstraint(newConstraint)
         constraintImageHeightRatio = newConstraint
@@ -108,7 +108,7 @@ class CastledInboxCell: UITableViewCell {
     }
 
     private func configureButtons() {
-        let buttonCount = inboxItem?.actionButtons.count ?? 0
+        let buttonCount = inboxItem?.actionButtonsArray.count ?? 0
         if buttonCount == 0 {
             constraintButtonContainerHeight.constant = 0
             viewButtonContainer.isHidden = true
@@ -125,9 +125,9 @@ class CastledInboxCell: UITableViewCell {
 
         for tg in 0 ..< buttonCount {
             if let button = btnLink1.superview?.viewWithTag(10 + tg) as? UIButton {
-                button.setTitle(inboxItem?.actionButtons[tg]["label"] as? String ?? "", for: .normal)
-                button.backgroundColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtons[tg]["buttonColor"] as? String ?? "")) ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                let titleColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtons[tg]["fontColor"] as? String ?? "")) ?? #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+                button.setTitle(inboxItem?.actionButtonsArray[tg]["label"] as? String ?? "", for: .normal)
+                button.backgroundColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtonsArray[tg]["buttonColor"] as? String ?? "")) ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                let titleColor = CastledCommonClass.hexStringToUIColor(hex: (inboxItem?.actionButtonsArray[tg]["fontColor"] as? String ?? "")) ?? #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
                 button.setTitleColor(titleColor, for: .normal)
             }
         }
@@ -140,6 +140,8 @@ class CastledInboxCell: UITableViewCell {
     }
 
     @objc private func actionButtonClicked(sender: UIButton) {
-        delegate?.didSelectedInboxWith(inboxItem?.actionButtons[sender.tag - 10], inboxItem!)
+        // TODO: fixme
+        /*
+         delegate?.didSelectedInboxWith(inboxItem?.actionButtonsArray[sender.tag - 10], inboxItem!)*/
     }
 }

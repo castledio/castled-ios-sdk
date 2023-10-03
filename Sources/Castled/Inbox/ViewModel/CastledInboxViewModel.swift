@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import RealmSwift
 
 struct CastledInboxViewModelActions {}
 
@@ -16,7 +17,6 @@ protocol CastledInboxViewModelInput {
 }
 
 protocol CastledInboxViewModelOutput {
-    var inboxItems: [CastledInboxItem] { get }
     var errorMessage: String? { get }
     var showLoader: Bool { get }
 }
@@ -24,18 +24,23 @@ protocol CastledInboxViewModelOutput {
 protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxViewModelOutput {}
 
 final class CastledInboxViewModel: DefaultCastledInboxViewModel {
-    @Published var inboxItems = [CastledInboxItem]()
+    let realm = try! Realm()
+    lazy var inboxItems: Results<CAppInbox> = { realm.objects(CAppInbox.self) }()
+
     @Published var errorMessage: String?
     @Published var showLoader: Bool = false
 
     func didLoadNextPage() {
-        showLoader = true
-        Castled.sharedInstance?.getInboxItems(completion: { [weak self] success, items, errorMessage1 in
-            if success {
-                self?.inboxItems.removeAll()
-                self?.inboxItems.append(contentsOf: items ?? [])
-            } else {
-                self?.errorMessage = errorMessage1
+        if inboxItems.isEmpty {
+            showLoader = true
+        }
+        Castled.sharedInstance?.getInboxItems(completion: { [weak self] success, _, errorMessage1 in
+            if !success {
+                DispatchQueue.main.async {
+
+                        self?.errorMessage = errorMessage1
+           
+                }
             }
             self?.showLoader = false
         })

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 import UIKit
 
 public extension Castled {
@@ -27,7 +28,6 @@ public extension Castled {
         let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
         castledInboxVC.inboxConfig = config ?? CastledInboxConfig()
         castledInboxVC.delegate = delegate
-        castledInboxVC.inboxItems.append(contentsOf: inboxItemsArray)
         return castledInboxVC
     }
 
@@ -35,12 +35,14 @@ public extension Castled {
      Inbox : Function to get inbox items array
      */
     @objc func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?, _ errorMessage: String?) -> Void) {
-
         Castled.fetchInboxItems { [weak self] response in
             if response.success {
                 self?.inboxItemsArray.removeAll()
                 self?.inboxItemsArray.append(contentsOf: response.result ?? [])
                 self?.inboxUnreadCount = self?.inboxItemsArray.filter({ $0.isRead == true }).count ?? 0
+                if let inboxItms = self?.inboxItemsArray {
+                    self?.refreshInboxItems(liveInboxResponse: inboxItms)
+                }
             }
             completion(response.success, response.result, response.errorMessage)
         }
@@ -74,7 +76,8 @@ public extension Castled {
      */
     @objc func dismissInboxViewController() {
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = scene.windows.first(where: { $0.isKeyWindow }) {
+           let window = scene.windows.first(where: { $0.isKeyWindow })
+        {
             if let topViewController = window.rootViewController {
                 var currentViewController = topViewController
                 while let presentedViewController = currentViewController.presentedViewController {
@@ -86,12 +89,39 @@ public extension Castled {
                     // Check if the top view controller of the navigation stack is a CastledInboxViewController
                     if let inboxViewController = navigationController.topViewController as? CastledInboxViewController {
                         // Pop to the root view controller of the navigation stack
+                        inboxViewController.removeObservers()
                         inboxViewController.navigationController?.popViewController(animated: true)
                     }
                 } else if let inboxViewController = currentViewController as? CastledInboxViewController {
                     // Dismiss the CastledInboxViewController if it's not embedded in a UINavigationController
+                    inboxViewController.removeObservers()
                     inboxViewController.dismiss(animated: true, completion: nil)
                 }
+            }
+        }
+    }
+
+    private func refreshInboxItems(liveInboxResponse: [CastledInboxItem]) {
+        if CastledStore.isInserting {
+            return
+        }
+        CastledStore.isInserting = true
+        CastledStore.castledStoreQueue.async {
+            guard let backgroundRealm = try? Realm() else { return }
+            try! backgroundRealm.write {
+                // Map live inbox response to Realm objects and add them to the Realm
+                let liveInboxItems = liveInboxResponse.map { responseItem -> CAppInbox in
+                    let inboxItem = CastledInboxResponseConverter.convertToInbox(inboxItem: responseItem)
+                    return inboxItem
+                }
+                backgroundRealm.add(liveInboxItems, update: .modified) // Insert or update as necessary
+                // Find and delete expired inbox items
+                let cachedInboxItems = backgroundRealm.objects(CAppInbox.self)
+                let liveInboxItemIds = Set(liveInboxItems.map { $0.messageId })
+                let expiredInboxItems = cachedInboxItems.filter { !liveInboxItemIds.contains($0.messageId) }
+                backgroundRealm.delete(expiredInboxItems)
+                print(Realm.Configuration.defaultConfiguration.fileURL!)
+                CastledStore.isInserting = false
             }
         }
     }
