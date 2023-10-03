@@ -10,13 +10,20 @@ import Network
 
 class CastledNetworkMonitor {
     static let shared = CastledNetworkMonitor()
+    private var shouldCallApis = false
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "CastledNetworkMonitor")
     func startMonitoring() {
         monitor.pathUpdateHandler = { path in
 //            print(path.status == .satisfied ? "Connected" : "Disconnected")
             if path.status == .satisfied {
-                Castled.sharedInstance?.executeBGTasks()
+                if self.shouldCallApis {
+                    self.shouldCallApis = false
+                    Castled.sharedInstance?.executeBGTasks()
+                }
+            }
+            else {
+                self.shouldCallApis = true
             }
         }
         monitor.start(queue: queue)
