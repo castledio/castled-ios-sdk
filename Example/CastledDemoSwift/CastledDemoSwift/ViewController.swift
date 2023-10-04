@@ -88,15 +88,9 @@ class ViewController: UIViewController, CastledInboxDelegate {
 //            print("Inbox unread count is -> \(Castled.sharedInstance?.getUnreadMessageCount())")
 
         })
-        Castled.sharedInstance?.getInboxItems(completion: { _, items, _ in
-
-            var inboxItems = [CastledInboxItem]()
-            inboxItems.append(contentsOf: items!)
-            inboxItems.removeFirst()
-            inboxItems.removeLast()
-            Castled.sharedInstance?.logInboxItemsRead(inboxItems)
-
-        })
+//        Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
+//
+//        })
 //        Castled.sharedInstance?.dismissInboxViewController()
     }
 
