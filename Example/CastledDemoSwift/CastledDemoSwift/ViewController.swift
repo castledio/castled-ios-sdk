@@ -83,15 +83,20 @@ class ViewController: UIViewController, CastledInboxDelegate {
     }
 
     func setUpInboxCallback() {
-        Castled.sharedInstance?.getInboxUnreadCount(callback: { unreadCount in
-            print("Inbox unread count is \(unreadCount)")
+        Castled.sharedInstance?.getInboxUnreadCount(callback: { _ in
+            //   print("Inbox unread count is \(unreadCount)")
 //            print("Inbox unread count is -> \(Castled.sharedInstance?.getUnreadMessageCount())")
 
         })
-//        Castled.sharedInstance?.getInboxItems(completion: { success, items, error in
-//
-//
-//        })
+        Castled.sharedInstance?.getInboxItems(completion: { _, items, _ in
+
+            var inboxItems = [CastledInboxItem]()
+            inboxItems.append(contentsOf: items!)
+            inboxItems.removeFirst()
+            inboxItems.removeLast()
+            Castled.sharedInstance?.logInboxItemsRead(inboxItems)
+
+        })
 //        Castled.sharedInstance?.dismissInboxViewController()
     }
 

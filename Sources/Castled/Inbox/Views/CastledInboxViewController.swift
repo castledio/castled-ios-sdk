@@ -146,7 +146,9 @@ import UIKit
     }
 
     private func updateReadStatus() {
-        Castled.sharedInstance?.logInboxObjectsRead(readItemsObjects: readItems)
+        if !readItems.isEmpty {
+            CastledStore.saveInboxObjectsRead(readItemsObjects: readItems, shouldCallApi: true)
+        }
     }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
@@ -214,12 +216,7 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
 
             Castled.sharedInstance?.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item), completion: { [weak self] success, _ in
                 DispatchQueue.main.async {
-                    if success {
-                        try? self?.viewModel.realm.write {
-                            self?.viewModel.realm.delete(item)
-                        }
-
-                    } else {
+                    if !success {
                         try? self?.viewModel.realm.write {
                             item.isDeleted = false
                         }

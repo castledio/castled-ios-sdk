@@ -198,12 +198,12 @@ extension Castled {
             let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint: router.endpoint)
             switch response {
             case .success(let responsJSON):
-                CastledStore.deleteAllFromStore(params)
+                CastledStore.deleteAllFailedItemsFromStore(params)
                 completion(CastledResponse(response: responsJSON as! T))
 
             case .failure(let error):
                 castledLog("Register Push Events Error:❌❌❌\(error.localizedDescription)")
-                CastledStore.insertAllIntoStore(params)
+                CastledStore.insertAllFailedItemsToStore(params)
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }
@@ -221,12 +221,12 @@ extension Castled {
             switch response {
             case .success(let responsJSON):
                 // castledLog("Update InApp Events Success:✅✅✅ \(responsJSON)")
-                CastledStore.deleteAllFromStore(params)
+                CastledStore.deleteAllFailedItemsFromStore(params)
                 completion(CastledResponse(response: responsJSON as! T))
 
             case .failure(let error):
                 castledLog("Update InApp Error:❌❌❌\(error.localizedDescription)")
-                CastledStore.insertAllIntoStore(params)
+                CastledStore.insertAllFailedItemsToStore(params)
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }
@@ -245,11 +245,11 @@ extension Castled {
 
             switch response {
             case .success(let responsJSON):
-                CastledStore.deleteAllFromStore(params)
+                CastledStore.deleteAllFailedItemsFromStore(params)
                 completion(CastledResponse(response: responsJSON as! T))
             case .failure(let error):
                 castledLog("Update Inbox Error:❌❌❌\(error.localizedDescription)")
-                CastledStore.insertAllIntoStore(params)
+                CastledStore.insertAllFailedItemsToStore(params)
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }

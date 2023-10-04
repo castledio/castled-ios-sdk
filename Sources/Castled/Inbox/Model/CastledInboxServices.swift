@@ -13,6 +13,7 @@ class CastledInboxServices: NSObject {
         if inboxItems.isEmpty {
             return
         }
+        CastledStore.saveInboxItemsRead(readItems: inboxItems)
         backgroundQueue.async { [self] in
             let eventType = "READ"
             var savedEventTypes = [[String: String]]()
@@ -42,7 +43,8 @@ class CastledInboxServices: NSObject {
             if !savedEventTypes.isEmpty {
                 updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
                     if success {
-                        castledLog("Delete inboxItem  success")
+                        CastledStore.deleteInboxItem(inboxItem: inboxObject)
+                        // castledLog("Delete inboxItem  success")
                     }
                     else {
                         castledLog("Error: ❌❌❌  in Delete inboxItem \(String(describing: error))")
@@ -55,7 +57,6 @@ class CastledInboxServices: NSObject {
 
     private func updateInBoxEvents(savedEventTypes: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
         Castled.updateInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
-
             completion(response.success, response.errorMessage)
         })
     }
