@@ -77,30 +77,35 @@ class ViewController: UIViewController, CastledInboxDelegate {
         style.hideCloseButton = false
 
         let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style, andDelegate: self)
-        inboxViewController?.modalPresentationStyle = .fullScreen
+        // inboxViewController?.modalPresentationStyle = .fullScreen
         present(inboxViewController!, animated: true)
         //  self.navigationController?.pushViewController(inboxViewController!, animated: true)
     }
 
     func setUpInboxCallback() {
-        Castled.sharedInstance?.setInboxUnreadCount(callback: { _ in
-//            print("Inbox unread count is \(unreadCount)")
-//            print("Inbox unread count is -> \( Castled.sharedInstance?.getUnreadMessageCount())")
+        Castled.sharedInstance?.getInboxUnreadCount(callback: { unreadCount in
+            print("Inbox unread count is \(unreadCount)")
+//            print("Inbox unread count is -> \(Castled.sharedInstance?.getUnreadMessageCount())")
 
         })
-//        Castled.sharedInstance?.getInboxItems(completion: { success, items, errorMessage in
+//        Castled.sharedInstance?.getInboxItems(completion: { success, items, error in
+//
 //
 //        })
+//        Castled.sharedInstance?.dismissInboxViewController()
     }
 
     // MARK: - Inbox delegate
 
-    func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
-        print("didSelectedInboxWith kvPairs \(kvPairs) inboxItem\(inboxItem)")
-    }
-
-    // For testing purpose
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print(#function)
+    func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
+        /*
+         case deepLink
+         case navigateToScreen
+         case richLanding
+         case requestForPush
+         case dismiss
+         case custom
+         */
+        print("didSelectedInboxWith kvPairs \(action) \(kvPairs) inboxItem\(inboxItem)")
     }
 }

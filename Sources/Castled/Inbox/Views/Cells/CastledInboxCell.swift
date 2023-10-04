@@ -25,6 +25,7 @@ class CastledInboxCell: UITableViewCell {
     @IBOutlet weak var viewIsRead: UIView!
     @IBOutlet weak var viewButtonContainer: UIView!
     @IBOutlet weak var btnLink1: UIButton!
+    @IBOutlet weak var imgLinkSeperator: UIImageView!
     @IBOutlet weak var btnLink2: UIButton!
     @IBOutlet weak var btnLink3: UIButton!
     @IBOutlet weak var imgBottomLine: UIImageView!
@@ -140,8 +141,6 @@ class CastledInboxCell: UITableViewCell {
     }
 
     @objc private func actionButtonClicked(sender: UIButton) {
-        // TODO: fixme
-        /*
-         delegate?.didSelectedInboxWith(inboxItem?.actionButtonsArray[sender.tag - 10], inboxItem!)*/
+        delegate?.didSelectedInboxWith(inboxItem?.actionButtonsArray[sender.tag - 10], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItem!))
     }
 }

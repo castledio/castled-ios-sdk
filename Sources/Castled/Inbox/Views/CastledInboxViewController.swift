@@ -10,7 +10,7 @@ import RealmSwift
 import UIKit
 
 @objc public protocol CastledInboxDelegate {
-    @objc optional func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
+    @objc optional func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
 }
 
 @objc public class CastledInboxViewController: UIViewController {
@@ -90,9 +90,25 @@ import UIKit
     }
 
     private func bindViewModel() {
-        notificationToken = viewModel.inboxItems.observe { [weak self] _ in
+        notificationToken = viewModel.inboxItems.observe { [weak self] changes in
+
+            switch changes {
+                case .initial:
+                    // Initial data is loaded
+                    self?.tblView.reloadData()
+                case .update(_, let deletions, let insertions, let modifications):
+                    // Data has been updated, handle deletions, insertions, and modifications
+                    self?.tblView.beginUpdates()
+                    self?.tblView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+                    self?.tblView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+                    self?.tblView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+                    self?.tblView.endUpdates()
+                case .error(let error):
+                    // Handle error
+                    castledLog("Error: \(error)")
+            }
+
             DispatchQueue.main.async {
-                self?.tblView.reloadData()
                 self?.showRequiredViews()
             }
         }
@@ -130,8 +146,7 @@ import UIKit
     }
 
     private func updateReadStatus() {
-        // TODO: fixme
-        // Castled.sharedInstance?.logInboxItemsRead(readItems)
+        Castled.sharedInstance?.logInboxObjectsRead(readItemsObjects: readItems)
     }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
@@ -177,44 +192,42 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //   didSelectedInboxWith(nil, inboxItems[indexPath.row])
-    }
-
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Remove the item from your data source (e.g., array)
-            // Update the table view
-            //            tableView.deleteRows(at: [indexPath], with: .fade)
-            let item = viewModel.inboxItems[indexPath.row]
-            // TODO: fixme
-
-            /*   Castled.sharedInstance?.deleteInboxItem(viewModel.inboxItems[indexPath.row], completion: { [weak self] success, _ in
-                 if success {
-                     DispatchQueue.main.async {
-                         self?.viewModel.inboxItems.removeAll { $0.messageId == item.messageId }
-                         self?.tblView.reloadData()
-                     }
-                 }
-             })*/
+        let item = viewModel.inboxItems[indexPath.row].messageDictionary
+        if let defaultClickAction = item["defaultClickAction"] as? String {
+            didSelectedInboxWith(["clickAction": defaultClickAction,
+                                  "url": (item["url"] as? String) ?? "",
+                                  "keyVals": item["keyVals"] ?? [String: Any]()], CastledInboxResponseConverter.convertToInboxItem(appInbox: viewModel.inboxItems[indexPath.row]))
         }
     }
 
-    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .normal, title: "", handler: { [weak self] _, _, _ in
-            if let item = self?.viewModel.inboxItems[indexPath.row] {
-                // TODO: fixme
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {}
+    }
 
-                /*
-                 Castled.sharedInstance?.deleteInboxItem(item, completion: { [weak self] success, _ in
-                     if success {
-                         DispatchQueue.main.async {
-                             self?.viewModel.inboxItems.removeAll { $0.messageId == item.messageId }
-                             self?.tblView.deleteRows(at: [indexPath], with: .fade)
-                             //                            self?.tblView.reloadData()
-                         }
-                     }
-                 })*/
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .normal, title: "", handler: { _, _, _ in
+            let item = self.viewModel.inboxItems[indexPath.row]
+            self.viewModel.showLoader = true
+            try? self.viewModel.realm.write {
+                item.isDeleted = true
             }
+
+            Castled.sharedInstance?.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item), completion: { [weak self] success, _ in
+                DispatchQueue.main.async {
+                    if success {
+                        try? self?.viewModel.realm.write {
+                            self?.viewModel.realm.delete(item)
+                        }
+
+                    } else {
+                        try? self?.viewModel.realm.write {
+                            item.isDeleted = false
+                        }
+                    }
+                    self?.viewModel.showLoader = false
+                }
+
+            })
 
         })
         let trashImage = UIImage(named: "castled_swipe_delete_filled", in: Bundle.resourceBundle(for: CastledInboxViewController.self), compatibleWith: nil)
@@ -229,7 +242,7 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
     public func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
         let title = (kvPairs?["label"] as? String) ?? ""
         Castled.sharedInstance?.logInboxItemClicked(inboxItem, buttonTitle: title)
-        guard (delegate?.didSelectedInboxWith?(kvPairs, inboxItem)) != nil else {
+        guard (delegate?.didSelectedInboxWith?(CastledConstants.PushNotification.ClickActionType(stringValue: (kvPairs?["clickAction"] as? String) ?? "").getCastledClickActionType(), kvPairs, inboxItem)) != nil else {
             return
         }
     }

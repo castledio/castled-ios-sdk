@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A05BC962ACDB702003D9961 /* CastledDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A05BC952ACDB702003D9961 /* CastledDBManager.swift */; };
 		0A0E111B2A40EE29004F247F /* CastledNotificationServiceObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A0E11192A40EE29004F247F /* CastledNotificationServiceObjC.m */; };
 		0A0E111C2A40EE29004F247F /* CastledNotificationServiceObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0E111A2A40EE29004F247F /* CastledNotificationServiceObjC.h */; };
 		0A0E11202A41F4C4004F247F /* CastledNotificationViewControllerObjC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */; };
@@ -115,6 +116,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A05BC952ACDB702003D9961 /* CastledDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDBManager.swift; sourceTree = "<group>"; };
 		0A0E11192A40EE29004F247F /* CastledNotificationServiceObjC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastledNotificationServiceObjC.m; sourceTree = "<group>"; };
 		0A0E111A2A40EE29004F247F /* CastledNotificationServiceObjC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledNotificationServiceObjC.h; sourceTree = "<group>"; };
 		0A0E111E2A41F4C4004F247F /* CastledNotificationViewControllerObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledNotificationViewControllerObjC.h; sourceTree = "<group>"; };
@@ -523,6 +525,7 @@
 				0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */,
 				0AB5C591291C27830027C36B /* CastledUserDefaults.swift */,
 				0A0F97EE2ACC362D00BA05D0 /* CAppInbox.swift */,
+				0A05BC952ACDB702003D9961 /* CastledDBManager.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -828,6 +831,7 @@
 				0A1DE60A2A9F488B00DB2E29 /* DecodingContainer+Extensions.swift in Sources */,
 				0A9E8BFB2AA61CC000BB654D /* CastledInboxConfig.swift in Sources */,
 				0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */,
+				0A05BC962ACDB702003D9961 /* CastledDBManager.swift in Sources */,
 				0A23C0072AC20E9F00F8772A /* CastledInbox+Extensions.swift in Sources */,
 				0AB5C59B291C27840027C36B /* CastledNetworkRouter.swift in Sources */,
 				0AB5C59E291C27840027C36B /* CastledConstants.swift in Sources */,

@@ -48,6 +48,31 @@ class CastledConstants {
             case discardNotification = "DISMISS_NOTIFICATION"
             case requestPushPermission = "REQUEST_PUSH_PERMISSION" // this is for inapp
             case custom = "CUSTOM" // this is for inapp
+
+            init(stringValue: String) {
+                if let actionType = ClickActionType(rawValue: stringValue) {
+                    self = actionType
+                } else {
+                    self = .custom
+                }
+            }
+
+            func getCastledClickActionType() -> CastledClickActionType {
+                switch self {
+                    case .navigateToScreen:
+                        return CastledClickActionType.navigateToScreen
+                    case .deepLink:
+                        return CastledClickActionType.deepLink
+                    case .richLanding:
+                        return CastledClickActionType.navigateToScreen
+                    case .discardNotification:
+                        return CastledClickActionType.dismiss
+                    case .requestPushPermission:
+                        return CastledClickActionType.requestForPush
+                    default:
+                        return CastledClickActionType.custom
+                }
+            }
         }
     }
 

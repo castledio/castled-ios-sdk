@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 import UIKit
 import UserNotifications
 
@@ -22,11 +23,14 @@ import UserNotifications
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance: Castled?
     private var shouldClearDeliveredNotifications = true
-    var inboxItemsArray = [CastledInboxItem]()
     var inboxUnreadCountCallback: ((Int) -> Void)?
-    var inboxUnreadCount: Int = 0 {
+    private let realm = CastledDBManager.shared.getRealm()
+    lazy var inboxUnreadCount: Int = {
+        realm.objects(CAppInbox.self)
+            .filter("isRead == false")
+            .count
+    }() {
         didSet {
-            // Call the callback when the unreadCount changes
             inboxUnreadCountCallback?(inboxUnreadCount)
         }
     }
@@ -111,8 +115,8 @@ import UserNotifications
     @objc func executeBGTasks() {
         CastledBGManager.sharedInstance.executeBackgroundTask {
             if CastledConfigs.sharedInstance.enableInApp {
-                Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
-                })
+                Castled.fetchInboxItems { _ in
+                }
             }
         }
     }

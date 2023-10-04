@@ -41,6 +41,12 @@ class CastledInboxServices: NSObject {
             savedEventTypes.append(self.getSendingParametersFrom(eventType, inboxObject, ""))
             if !savedEventTypes.isEmpty {
                 updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
+                    if success {
+                        castledLog("Delete inboxItem  success")
+                    }
+                    else {
+                        castledLog("Error: ❌❌❌  in Delete inboxItem \(String(describing: error))")
+                    }
                     completion(success, error)
                 }
             }
@@ -50,13 +56,6 @@ class CastledInboxServices: NSObject {
     private func updateInBoxEvents(savedEventTypes: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
         Castled.updateInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
 
-//            if response.success {
-//                castledLog("updateInBoxEvents succe")
-//            }
-//            else
-//            {
-//                castledLog("Error in updating inbox event ")
-//            }
             completion(response.success, response.errorMessage)
         })
     }

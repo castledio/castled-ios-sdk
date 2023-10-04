@@ -25,7 +25,8 @@ public extension Castled {
 
     @objc func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                willPresentNotification notification: UNNotification,
-                                               withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+                                               withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
         Castled.sharedInstance?.userNotificationCenter(center, willPresent: notification)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, willPresent: notification, withCompletionHandler: { options in
             completionHandler(options)
@@ -49,7 +50,8 @@ public extension Castled {
 
     @objc func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
                                                didReceiveNotificationResponse response: UNNotificationResponse,
-                                               withCompletionHandler completionHandler: @escaping () -> Void) {
+                                               withCompletionHandler completionHandler: @escaping () -> Void)
+    {
         Castled.sharedInstance?.handleNotificationAction(response: response)
         guard (Castled.sharedInstance?.delegate.castled_userNotificationCenter?(center, didReceive: response, withCompletionHandler: {
             completionHandler()
@@ -108,7 +110,8 @@ public extension Castled {
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
             if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaults.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
-               let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String {
+               let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
+            {
                 switch defaultAction {
                     case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                         pushActionType = CastledClickActionType.deepLink
@@ -133,7 +136,8 @@ public extension Castled {
             processCastledPushEvents(userInfo: userInfo, isDismissed: true)
         } else {
             if let actionDetails: [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
-               let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String {
+               let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
+            {
                 switch clickAction {
                     case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                         pushActionType = CastledClickActionType.deepLink
@@ -160,7 +164,8 @@ public extension Castled {
     internal func checkAppIsLaunchedViaPush(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         let notificationOption = launchOptions?[.remoteNotification]
         if let notification = notificationOption as? [String: AnyObject],
-           notification["aps"] as? [String: AnyObject] != nil {
+           notification["aps"] as? [String: AnyObject] != nil
+        {
             processCastledPushEvents(userInfo: notification, isOpened: true)
         }
     }

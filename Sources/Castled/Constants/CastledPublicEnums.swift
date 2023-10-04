@@ -30,7 +30,7 @@ import Foundation
     case deepLink
     case navigateToScreen
     case richLanding
-    case requestForPush // this is for inapp
+    case requestForPush
     case dismiss
     case custom
 }

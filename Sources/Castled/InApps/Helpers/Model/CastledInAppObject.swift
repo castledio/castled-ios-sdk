@@ -171,17 +171,6 @@ struct CIActionButton: Codable {
     let keyVals: [String: String]?
 }
 
-// internal enum  CIButtonActionsType: CastledConstants.PushNotification.ClickActionType {
-//    case deep_linking        = "DEEP_LINKING"
-//    case navigate_to_Screen  = "NAVIGATE_TO_SCREEN"
-//    case rich_landing        = "RICH_LANDING"
-//    case dismiss             = "DISMISS_NOTIFICATION"
-//    case request_push_permission    = "REQUEST_PUSH_PERMISSION"
-//    case none                = "NONE"
-//
-//
-// }
-
 // MARK: - KeyVals
 
 struct CIKeyVals: Codable {

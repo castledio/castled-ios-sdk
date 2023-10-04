@@ -8,7 +8,7 @@
 import Foundation
 
 @objc class CastledStore: NSObject {
-    static let castledStoreQueue = DispatchQueue(label: "com.castled.dbHandler", qos: .background)
+    static let castledStoreQueue = DispatchQueue(label: "com.castled.dbHandler")
     static var isInserting = false
     static func insertAllIntoStore(_ items: [[String: String]]) {
         CastledStore.castledStoreQueue.async {

@@ -151,6 +151,7 @@ extension Castled {
             if !response.success {
                 castledLog("Fetch InApps Error:❌❌❌\(response.errorMessage)")
             } else {
+                Castled.sharedInstance?.refreshInboxItems(liveInboxResponse: response.result as? [CastledInboxItem] ?? [])
                 // castledLog("Fetch InApps Success:✅✅✅ \(String(describing: response.result))")
             }
             completion(response)

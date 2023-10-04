@@ -6,11 +6,16 @@
 //
 
 import Foundation
+import RealmSwift
 
 enum CastledInboxResponseConverter {
-    static func convertToInbox(inboxItem: CastledInboxItem) -> CAppInbox {
-        let appinbox = CAppInbox()
-        appinbox.messageId = inboxItem.messageId
+    static func convertToInbox(inboxItem: CastledInboxItem, realm: Realm? = nil) -> CAppInbox {
+        let appinbox = realm?.object(ofType: CAppInbox.self, forPrimaryKey: inboxItem.messageId) ?? CAppInbox()
+        if !(appinbox.messageId != 0) {
+            appinbox.messageId = inboxItem.messageId
+            appinbox.isPinned = false
+
+        }
         appinbox.teamID = inboxItem.teamID
         appinbox.startTs = inboxItem.startTs
         appinbox.sourceContext = inboxItem.sourceContext
@@ -18,7 +23,6 @@ enum CastledInboxResponseConverter {
         appinbox.title = inboxItem.title
         appinbox.body = inboxItem.body
         appinbox.isRead = inboxItem.isRead
-        appinbox.isPinned = false
         appinbox.addedDate = inboxItem.addedDate
         appinbox.aspectRatio = Float(inboxItem.aspectRatio)
         appinbox.inboxType = inboxItem.inboxType

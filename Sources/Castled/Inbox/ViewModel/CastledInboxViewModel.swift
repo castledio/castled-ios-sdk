@@ -24,8 +24,12 @@ protocol CastledInboxViewModelOutput {
 protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxViewModelOutput {}
 
 final class CastledInboxViewModel: DefaultCastledInboxViewModel {
-    let realm = try! Realm()
-    lazy var inboxItems: Results<CAppInbox> = { realm.objects(CAppInbox.self) }()
+    let realm = CastledDBManager.shared.getRealm()
+    lazy var inboxItems: Results<CAppInbox> = { realm.objects(CAppInbox.self)
+        .filter("isDeleted == false")
+        .sorted(byKeyPath: "isPinned", ascending: false)
+        .sorted(byKeyPath: "addedDate", ascending: false)
+    }()
 
     @Published var errorMessage: String?
     @Published var showLoader: Bool = false
@@ -34,16 +38,14 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
         if inboxItems.isEmpty {
             showLoader = true
         }
-        Castled.sharedInstance?.getInboxItems(completion: { [weak self] success, _, errorMessage1 in
-            if !success {
+        Castled.fetchInboxItems { response in
+            if !response.success {
                 DispatchQueue.main.async {
-
-                        self?.errorMessage = errorMessage1
-           
+                    self.errorMessage = response.errorMessage
                 }
             }
-            self?.showLoader = false
-        })
+            self.showLoader = false
+        }
     }
 
     func didSelectItem(at index: Int) {}

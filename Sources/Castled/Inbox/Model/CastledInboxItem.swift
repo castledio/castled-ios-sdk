@@ -35,7 +35,6 @@ import UIKit
         // Encode other fields if needed
     }
 
-
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.teamID = try container.decode(Int.self, forKey: .teamID)
@@ -62,8 +61,9 @@ import UIKit
     static func == (lhs: CastledInboxItem, rhs: CastledInboxItem) -> Bool {
         return lhs.sourceContext == rhs.sourceContext
     }
+
     // Initialize your properties here
-    internal override init() {
+    override init() {
         self.actionButtons = []
         self.addedDate = Date()
         self.aspectRatio = 0.0
