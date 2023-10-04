@@ -58,7 +58,7 @@ import RealmSwift
     }
 
     static func saveInboxObjectsRead(readItemsObjects: [CAppInbox], shouldCallApi: Bool? = false) {
-        guard let realm = try? Realm() else { return }
+        let realm = CastledDBManager.shared.getRealm()
         var readItems = [CastledInboxItem]()
         realm.writeAsync {
             for item in readItemsObjects {
