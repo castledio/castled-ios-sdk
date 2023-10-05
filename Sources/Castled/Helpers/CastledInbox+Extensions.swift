@@ -41,7 +41,7 @@ public extension Castled {
                 completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
                 return
             }
-            guard let userId = CastledUserDefaults.shared.userId else {
+            guard let _ = CastledUserDefaults.shared.userId else {
                 completion(false, [], CastledExceptionMessages.userNotRegistered.rawValue)
                 return
             }

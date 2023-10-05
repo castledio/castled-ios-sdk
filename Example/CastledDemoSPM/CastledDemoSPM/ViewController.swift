@@ -1,15 +1,14 @@
 //
 //  ViewController.swift
-//  CastledPusher
+//  CastledDemo
 //
 //  Created by Antony Joe Mathew.
 //
 
-import UIKit
 import Castled
+import UIKit
 
 class ViewController: UIViewController, CastledInboxDelegate {
-
     let userIdKey = "userIdKey"
     @IBOutlet weak var btnRegisterUser: UIButton!
     @IBOutlet weak var btnGotoSecondVC: UIButton!
@@ -17,10 +16,9 @@ class ViewController: UIViewController, CastledInboxDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Castled"
+        navigationItem.title = "Castled"
 
         showRequiredViews()
-
 
         // Do any additional setup after loading the view.
     }
@@ -31,25 +29,21 @@ class ViewController: UIViewController, CastledInboxDelegate {
         //        CastledConfigs.sharedInstance.enablePush = true
     }
 
-    func showRequiredViews(){
+    func showRequiredViews() {
         DispatchQueue.main.async { [weak self] in
 
-            if  UserDefaults.standard.value(forKey: self?.userIdKey ?? "userIdKey") != nil {
+            if UserDefaults.standard.value(forKey: self?.userIdKey ?? "userIdKey") != nil {
                 self?.btnGotoSecondVC.isHidden = false
                 let largeConfig = UIImage.SymbolConfiguration(textStyle: .largeTitle)
                 self?.navigationItem.rightBarButtonItem = nil
                 let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self?.inboxTapped))
                 self?.navigationItem.rightBarButtonItem = inboxButton
                 self?.setUpInboxCallback()
-
             }
-            else
-            {
+            else {
                 self?.btnGotoSecondVC.isHidden = true
-
             }
             self?.btnRegisterUser.isHidden = !(self?.btnGotoSecondVC.isHidden)!
-
         }
     }
 
@@ -57,21 +51,20 @@ class ViewController: UIViewController, CastledInboxDelegate {
         registerUserAPI()
     }
 
-    //Function for registering the user with Castled
+    // Function for registering the user with Castled
     func registerUserAPI() {
-
-        //let userId    = "antony@castled.io"
-        let userId    = "antony@castled.io"
+        // let userId    = "antony@castled.io"
+        let userId = "antony@castled.io"
         // let userId    = "abhilash@castled.io"
 
-        let token : String? = nil // Replace with valid token
-        Castled.registerUser(userId: userId, apnsToken: token)
+        Castled.sharedInstance?.setUserId(userId)
         UserDefaults.standard.setValue(userId, forKey: userIdKey)
         UserDefaults.standard.synchronize()
         showRequiredViews()
-
     }
+
     // MARK: - Inbox related
+
     @objc func inboxTapped() {
         // Handle the button tap here
         let style = CastledInboxConfig()
@@ -82,31 +75,36 @@ class ViewController: UIViewController, CastledInboxDelegate {
         style.loaderTintColor = .blue
         style.hideCloseButton = false
 
-        let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style,andDelegate: self)
-        //inboxViewController?.modalPresentationStyle = .fullScreen
-        //self.present(inboxViewController!, animated: true)
-        self.navigationController?.pushViewController(inboxViewController!, animated: true)
-
+        let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style, andDelegate: self)
+        // inboxViewController?.modalPresentationStyle = .fullScreen
+        // present(inboxViewController!, animated: true)
+        navigationController?.pushViewController(inboxViewController!, animated: true)
     }
-    func setUpInboxCallback(){
-        Castled.sharedInstance?.setInboxUnreadCount(callback: { unreadCount in
-            print("Inbox unread count is \(unreadCount)")
-            print("Inbox unread count is -> \( Castled.sharedInstance?.getUnreadMessageCount())")
 
-        })
-        //        Castled.sharedInstance?.getInboxItems(completion: { success, items, errorMessage in
+    func setUpInboxCallback() {
+        //        Castled.sharedInstance?.getInboxUnreadCount(callback: { unreadCount in
+        //           print("Inbox unread count is \(unreadCount)")
+        //            print("Inbox unread count is -> \(Castled.sharedInstance?.getUnreadMessageCount())")
         //
         //        })
+        //        Castled.sharedInstance?.getInboxItems(completion: { _, result, errormessage in
+        //
+        //            print("getInboxItems \(result) \(errormessage)")
+        //        })
+        Castled.sharedInstance?.dismissInboxViewController()
     }
+
     // MARK: - Inbox delegate
-    func didSelectedInboxWith(_ kvPairs: [AnyHashable : Any]?, _ inboxItem: CastledInboxItem) {
-        print("didSelectedInboxWith kvPairs \(kvPairs) inboxItem\(inboxItem)")
-    }
 
-    //For testing purpose
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print(#function)
+    func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
+        /*
+         case deepLink
+         case navigateToScreen
+         case richLanding
+         case requestForPush
+         case dismiss
+         case custom
+         */
+        print("didSelectedInboxWith kvPairs \(action) \(kvPairs) inboxItem\(inboxItem)")
     }
-
 }
-

@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  CastledPusher
+//  CastledDemo
 //
 //  Created by Antony Joe Mathew.
 //
@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // config.permittedBGIdentifier = "com.castled.backgroundtask"
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         config.enablePush = true
-        config.enableInApp = false
+        config.enableInApp = true
         config.enableAppInbox = true
         config.location = CastledLocation.US
         // config.disableLog = true
