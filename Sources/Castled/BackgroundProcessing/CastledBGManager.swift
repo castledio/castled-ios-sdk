@@ -12,6 +12,8 @@ class CastledBGManager {
     static let sharedInstance = CastledBGManager()
     private let castledConfig = CastledConfigs.sharedInstance
     private var isRegistered = false
+    private var isExecuting = false
+
     private var expirationHandler: (() -> Void)?
 
     private init() {}
@@ -28,14 +30,21 @@ class CastledBGManager {
     }
 
     func executeBackgroundTask(completion: @escaping () -> Void) {
+        if isExecuting {
+            return
+        }
+        isExecuting = true
         let dispatchGroup = DispatchGroup()
         let dispatchSemaphore = DispatchSemaphore(value: 1)
         dispatchGroup.enter()
         dispatchSemaphore.wait()
-        CastledInApps.sharedInstance.fetchInAppNotificationWithCompletion { [weak self] in
-            self?.retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
+        Castled.fetchInAppNotifications { [weak self] in
+            Castled.fetchInboxItems { _ in
+                self?.retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
+            }
         }
-        dispatchGroup.notify(queue: .main) {
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.isExecuting = false
             completion()
         }
     }
@@ -58,7 +67,7 @@ class CastledBGManager {
         }
         task.expirationHandler = expirationHandler
         scheduleNextTask()
-        if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
+        if CastledUserDefaults.shared.userId != nil {
             task.setTaskCompleted(success: false)
 
         } else {

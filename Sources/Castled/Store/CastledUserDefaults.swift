@@ -7,20 +7,30 @@
 
 import Foundation
 
-@objc class CastledUserDefaults: NSObject {
+class CastledUserDefaults: NSObject {
     static let userDefaults = UserDefaults(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
 
     // Userdefault keys
     static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
-    static var kCastledAnonymousIdKey = "_castledAnonymousId_"
-    @objc public static var kCastledUserIdKey = "_castledUserId_"
-    @objc public static let kCastledAPNsTokenKey = "_castledApnsToken_"
-    public static let kCastledInAppsList = "castled_inapps"
-    public static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
+    static var kCastledUserIdKey = "_castledUserId_"
+    static var kCastledUserTokenKey = "_castleduserToken_"
+    static let kCastledAPNsTokenKey = "_castledApnsToken_"
+    static let kCastledInAppsList = "castled_inapps"
+    static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
     static let kCastledFailedItems = "_castledFailedItems_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
     static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
+    static let shared = CastledUserDefaults()
+    var userId: String?
+    var userToken: String?
+    var apnsToken: String?
+
+    override private init() {
+        userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
+        userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)
+        apnsToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
+    }
 
     @objc static func getString(_ key: String) -> String? {
         // Fetch value from UserDefaults

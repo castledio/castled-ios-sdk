@@ -9,26 +9,13 @@ import Foundation
 import UIKit
 
 extension Castled {
-    /**
-     Funtion which alllows to register the User & Token with Castled.
-     */
-    @objc public static func registerUser(userId uid: String, apnsToken token: String?) {
-        var deviceToken = token
-        if deviceToken == nil {
-            deviceToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
-        } else if CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey) == nil {
-            // Saving this in ud for retry mechanism, in the case of failure in the below api
-            CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, deviceToken)
+    static func fetchInAppNotifications(completion: @escaping () -> Void) {
+        if !CastledConfigs.sharedInstance.enableInApp {
+            completion()
+            return
         }
-        CastledUserDefaults.setString(CastledUserDefaults.kCastledUserIdKey, uid)
-        if deviceToken != nil, CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false {
-            Castled.sharedInstance?.api_RegisterUser(userId: uid, apnsToken: deviceToken!) { response in
-                if response.success {
-                    Castled.sharedInstance?.executeBGTasks()
-                }
-            }
-        } else {
-            Castled.sharedInstance?.executeBGTasks()
+        CastledInApps.sharedInstance.fetchInAppNotificationWithCompletion {
+            completion()
         }
     }
 
@@ -140,7 +127,7 @@ extension Castled {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        guard let userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) else {
+        guard let userId = CastledUserDefaults.shared.userId else {
             castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.userNotRegistered.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
             return
@@ -276,7 +263,7 @@ extension Castled {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
-        guard let userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) else {
+        guard let userId = CastledUserDefaults.shared.userId else {
             castledLog("Fetch InApps Error:❌❌❌\(CastledExceptionMessages.userNotRegistered.rawValue)")
             completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
             return

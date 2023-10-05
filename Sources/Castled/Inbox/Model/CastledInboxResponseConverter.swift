@@ -15,7 +15,9 @@ enum CastledInboxResponseConverter {
         }
         let appinbox = CAppInbox()
         appinbox.messageId = inboxItem.messageId
-        appinbox.isPinned = false
+        appinbox.isPinned = inboxItem.isPinned
+        appinbox.tag = inboxItem.tag
+        appinbox.updatedTime = inboxItem.updatedTime
         appinbox.teamID = inboxItem.teamID
         appinbox.startTs = inboxItem.startTs
         appinbox.sourceContext = inboxItem.sourceContext
@@ -40,6 +42,9 @@ enum CastledInboxResponseConverter {
         inboxItem.messageId = appInbox.messageId
         inboxItem.teamID = appInbox.teamID
         inboxItem.startTs = appInbox.startTs
+        inboxItem.updatedTime = appInbox.updatedTime
+        inboxItem.tag = appInbox.tag
+        inboxItem.isPinned = appInbox.isPinned
         inboxItem.sourceContext = appInbox.sourceContext
         inboxItem.imageUrl = appInbox.imageUrl
         inboxItem.title = appInbox.title

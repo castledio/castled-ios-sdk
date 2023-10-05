@@ -57,8 +57,7 @@ class ViewController: UIViewController, CastledInboxDelegate {
         let userId = "antony@castled.io"
         // let userId    = "abhilash@castled.io"
 
-        let token: String? = nil // Replace with valid token
-        Castled.registerUser(userId: userId, apnsToken: token)
+        Castled.sharedInstance?.setUserId(userId)
         UserDefaults.standard.setValue(userId, forKey: userIdKey)
         UserDefaults.standard.synchronize()
         showRequiredViews()
@@ -78,20 +77,21 @@ class ViewController: UIViewController, CastledInboxDelegate {
 
         let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style, andDelegate: self)
         // inboxViewController?.modalPresentationStyle = .fullScreen
-        present(inboxViewController!, animated: true)
-        //  self.navigationController?.pushViewController(inboxViewController!, animated: true)
+        // present(inboxViewController!, animated: true)
+        navigationController?.pushViewController(inboxViewController!, animated: true)
     }
 
     func setUpInboxCallback() {
-        Castled.sharedInstance?.getInboxUnreadCount(callback: { _ in
-            //   print("Inbox unread count is \(unreadCount)")
+//        Castled.sharedInstance?.getInboxUnreadCount(callback: { unreadCount in
+//           print("Inbox unread count is \(unreadCount)")
 //            print("Inbox unread count is -> \(Castled.sharedInstance?.getUnreadMessageCount())")
-
-        })
-//        Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
 //
 //        })
-//        Castled.sharedInstance?.dismissInboxViewController()
+//        Castled.sharedInstance?.getInboxItems(completion: { _, result, errormessage in
+//
+//            print("getInboxItems \(result) \(errormessage)")
+//        })
+         Castled.sharedInstance?.dismissInboxViewController()
     }
 
     // MARK: - Inbox delegate

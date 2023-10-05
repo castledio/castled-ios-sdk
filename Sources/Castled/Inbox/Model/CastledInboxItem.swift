@@ -11,22 +11,32 @@ import UIKit
     public var actionButtons: [[String: Any]]
     public var addedDate: Date
     public var aspectRatio: CGFloat
+    public var body: String
     public var bodyTextColor: UIColor
     public var containerBGColor: UIColor
     public var dateTextColor: UIColor
+    public var imageUrl: String
     public var inboxType: CastledInboxType
     public var isRead: Bool
+    public var isPinned: Bool
     public var message: [String: Any]
-    public var sourceContext, imageUrl, title, body: String
+    public var messageId: Int
     public var startTs: Int64
-    public var teamID, messageId: Int
+    public var sourceContext: String
+    public var tag: String
+    public var teamID: Int
+    public var title: String
     public var titleTextColor: UIColor
+    public var updatedTime: Int64
+
     enum CodingKeys: String, CodingKey {
         case teamID = "teamId"
         case messageId
         case isRead = "read"
+        case updatedTime = "updatedTs"
+        case isPinned = "pinningEnabled"
         case message
-        case sourceContext, startTs, aspectRatio // Use messageData to decode the message
+        case sourceContext, startTs, aspectRatio, tag // Use messageData to decode the message
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -41,7 +51,10 @@ import UIKit
         self.messageId = try container.decode(Int.self, forKey: .messageId)
         self.sourceContext = try container.decode(String.self, forKey: .sourceContext)
         self.startTs = try container.decodeIfPresent(Int64.self, forKey: .startTs) ?? 0
+        self.updatedTime = try container.decodeIfPresent(Int64.self, forKey: .updatedTime) ?? 0
         self.isRead = try container.decodeIfPresent(Bool.self, forKey: .isRead) ?? true
+        self.isPinned = try container.decodeIfPresent(Bool.self, forKey: .isPinned) ?? false
+        self.tag = try container.decodeIfPresent(String.self, forKey: .tag) ?? ""
         self.message = try container.decode([String: Any].self, forKey: .message)
         self.addedDate = Date.from(epochTimestamp: TimeInterval(self.startTs / 1000))
         self.actionButtons = (self.message["actionButtons"] as? [[String: Any]] ?? [])
@@ -81,6 +94,9 @@ import UIKit
         self.teamID = 0
         self.messageId = 0
         self.titleTextColor = .black
+        self.isPinned = false
+        self.tag = ""
+        self.updatedTime = 0
         super.init()
     }
 }

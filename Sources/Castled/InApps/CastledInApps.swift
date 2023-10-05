@@ -18,10 +18,6 @@ import UIKit
     }
 
     func fetchInAppNotificationWithCompletion(completion: @escaping () -> Void) {
-        if CastledConfigs.sharedInstance.enableInApp == false {
-            completion()
-            return
-        }
         Castled.fetchInAppNotification { [weak self] response in
             if response.success {
                 DispatchQueue.global().async {
@@ -218,7 +214,7 @@ import UIKit
     }
 
     func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
-        if CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) == nil {
+        guard let _ = CastledUserDefaults.shared.userId else {
             return
         }
         self.castledInAppsQueue.async { [self] in

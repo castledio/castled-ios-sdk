@@ -22,7 +22,7 @@ class CastledRetryHandler {
         CastledStore.castledStoreQueue.async { [weak self] in
             let failedItems = CastledStore.getAllFailedItemss()
             var shouldCallRegister = false
-            let pushToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
+            let pushToken = CastledUserDefaults.shared.apnsToken
             if pushToken != nil && !CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) {
                 shouldCallRegister = true
             }
@@ -93,7 +93,7 @@ class CastledRetryHandler {
             if shouldCallRegister == true {
                 self?.castledSemaphore.wait()
                 self?.castledGroup.enter()
-                Castled.sharedInstance?.api_RegisterUser(userId: CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) ?? "", apnsToken: pushToken ?? "") { _ in
+                Castled.sharedInstance?.api_RegisterUser(userId: CastledUserDefaults.shared.userId ?? "", apnsToken: pushToken ?? "") { _ in
                     self?.castledSemaphore.signal()
                     self?.castledGroup.leave()
                 }

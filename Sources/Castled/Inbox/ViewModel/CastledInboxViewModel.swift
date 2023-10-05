@@ -27,8 +27,10 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
     let realm = CastledDBManager.shared.getRealm()
     lazy var inboxItems: Results<CAppInbox> = { realm.objects(CAppInbox.self)
         .filter("isDeleted == false")
-        .sorted(byKeyPath: "isPinned", ascending: false)
-        .sorted(byKeyPath: "addedDate", ascending: false)
+        .sorted(by: [
+            SortDescriptor(keyPath: "isPinned", ascending: false),
+            SortDescriptor(keyPath: "addedDate", ascending: false)
+        ])
     }()
 
     @Published var errorMessage: String?

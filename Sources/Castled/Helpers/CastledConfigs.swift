@@ -37,7 +37,7 @@ import Foundation
     }()
 
     @objc public lazy var enableInApp: Bool = {
-        true
+        false
     }()
 
     @objc public lazy var enablePush = false {

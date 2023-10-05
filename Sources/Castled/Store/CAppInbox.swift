@@ -20,6 +20,8 @@ class CAppInbox: Object {
     @Persisted var isRead: Bool
     @Persisted var isDeleted: Bool
     @Persisted var isPinned: Bool
+    @Persisted var updatedTime: Int64
+    @Persisted var tag: String
     @Persisted var addedDate: Date
     @Persisted var aspectRatio: Float
     @Persisted var inboxType: CastledInboxType

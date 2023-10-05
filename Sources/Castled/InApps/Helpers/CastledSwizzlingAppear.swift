@@ -10,8 +10,8 @@ import UIKit
 
 extension UIViewController {
     @objc func _tracked_viewwDidAppear(_ animated: Bool) {
-        if !(String(describing: type(of: self)).hasPrefix("CastledInApp")), CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) != nil {
-            Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
+        if !(String(describing: type(of: self)).hasPrefix("CastledInApp")), CastledUserDefaults.shared.userId != nil {
+            Castled.sharedInstance?.logAppPageViewedEvent(context: self)
             _tracked_viewwDidAppear(animated)
         }
     }

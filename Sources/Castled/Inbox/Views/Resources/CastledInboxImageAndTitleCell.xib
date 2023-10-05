@@ -192,9 +192,18 @@
                                     <constraint firstAttribute="height" id="p8J-CE-G10"/>
                                 </constraints>
                             </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="castled_pin_light" translatesAutoresizingMaskIntoConstraints="NO" id="H9Z-z1-h2V">
+                                <rect key="frame" x="259" y="0.0" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="0hf-Up-mXw"/>
+                                    <constraint firstAttribute="width" secondItem="H9Z-z1-h2V" secondAttribute="height" multiplier="1:1" id="rKi-Ks-C5o"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="H9Z-z1-h2V" firstAttribute="top" secondItem="zog-dP-BzP" secondAttribute="top" id="3jb-3t-kuJ"/>
+                            <constraint firstAttribute="trailing" secondItem="H9Z-z1-h2V" secondAttribute="trailing" id="6QL-01-TBa"/>
                             <constraint firstItem="4vE-qk-SVg" firstAttribute="top" secondItem="zog-dP-BzP" secondAttribute="top" id="BmA-Xx-uQS"/>
                             <constraint firstAttribute="trailing" secondItem="4vE-qk-SVg" secondAttribute="trailing" id="Ea5-Td-Vvh"/>
                             <constraint firstItem="eAK-Cu-P1w" firstAttribute="top" secondItem="Vxh-0c-8fw" secondAttribute="bottom" id="Jhu-Va-zjD"/>
@@ -230,6 +239,7 @@
                 <outlet property="imgBottomLine" destination="eAK-Cu-P1w" id="CNY-NY-RO5"/>
                 <outlet property="imgCover" destination="4vE-qk-SVg" id="8XU-rR-ol7"/>
                 <outlet property="imgLinkSeperator" destination="uYW-eJ-IKN" id="A8Z-LA-NBJ"/>
+                <outlet property="imgPin" destination="H9Z-z1-h2V" id="tYM-nM-wkq"/>
                 <outlet property="lblDescription" destination="2KL-5E-ERi" id="oOU-NE-fb4"/>
                 <outlet property="lblTime" destination="sfG-YH-pSB" id="OUZ-EN-MrJ"/>
                 <outlet property="lblTitle" destination="r7T-di-9vR" id="bfN-5n-50c"/>
@@ -242,6 +252,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="castled_pin_light" width="100" height="100"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // config.permittedBGIdentifier = "com.castled.backgroundtask"
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         config.enablePush = true
-        config.enableInApp = true
+        config.enableInApp = false
         config.enableAppInbox = true
         config.location = CastledLocation.US
         // config.disableLog = true
@@ -207,8 +207,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     /*************************************************************IMPPORTANT*************************************************************/
     // If you disabled the swizzling in plist you should call the required functions in the delegate methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Castled.sharedInstance?.setDeviceToken(deviceToken: deviceToken)
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        Castled.sharedInstance?.setPushToken(deviceTokenString)
         print("APNs token \(deviceTokenString) \(self.description)")
     }
 

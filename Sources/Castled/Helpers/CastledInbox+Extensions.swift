@@ -37,6 +37,14 @@ public extension Castled {
      */
     @objc func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?, _ errorMessage: String?) -> Void) {
         CastledStore.castledStoreQueue.async {
+            if !CastledConfigs.sharedInstance.enableAppInbox {
+                completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
+                return
+            }
+            guard let userId = CastledUserDefaults.shared.userId else {
+                completion(false, [], CastledExceptionMessages.userNotRegistered.rawValue)
+                return
+            }
             do {
                 let backgroundRealm = CastledDBManager.shared.getRealm()
                 try backgroundRealm.write {

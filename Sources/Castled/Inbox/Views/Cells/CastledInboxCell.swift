@@ -14,6 +14,7 @@ import UIKit
 
 class CastledInboxCell: UITableViewCell {
     static let castledInboxImageAndTitleCell = "CastledInboxImageAndTitleCell"
+    @IBOutlet weak var imgPin: UIImageView!
     var delegate: CastledInboxCellDelegate?
     @IBOutlet weak var viewContainer: UIView!
     @IBOutlet weak var imgCover: UIImageView!
@@ -67,7 +68,7 @@ class CastledInboxCell: UITableViewCell {
         lblDescription.text = inboxObj.body
         lblTime.text = inboxObj.addedDate.timeAgo()
         viewIsRead.superview?.isHidden = inboxObj.isRead
-
+        imgPin.isHidden = !inboxObj.isPinned
         let urlImageString = inboxObj.imageUrl
         var multiplier = inboxObj.aspectRatio
         var imageView: UIImageView?

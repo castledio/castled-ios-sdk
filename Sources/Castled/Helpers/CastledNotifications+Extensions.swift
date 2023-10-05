@@ -63,17 +63,10 @@ public extension Castled {
         }
     }
 
-    @objc func setDeviceToken(deviceToken: Data) {
+    @objc internal func setDeviceToken(deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         castledLog("deviceTokenString  \(deviceTokenString)")
-        let oldToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey) ?? ""
-        if oldToken != deviceTokenString || CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false {
-            CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
-            CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, deviceTokenString)
-            if let uid = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey) {
-                Castled.registerUser(userId: uid, apnsToken: deviceTokenString)
-            }
-        }
+        Castled.sharedInstance?.setPushToken(deviceTokenString)
     }
 
     @objc func didReceiveRemoteNotification(inApplication application: UIApplication, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
