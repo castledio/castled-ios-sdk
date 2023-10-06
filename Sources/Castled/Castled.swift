@@ -22,8 +22,16 @@ import UserNotifications
 
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance: Castled?
-    private var shouldClearDeliveredNotifications = true
     var inboxUnreadCountCallback: ((Int) -> Void)?
+    var instanceId: String
+    let delegate: CastledNotificationDelegate
+    var clientRootViewController: UIViewController?
+    // Create a dispatch queue
+    private let castledDispatchQueue = DispatchQueue(label: "CastledQueue", qos: .background)
+    let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
+    // Create a semaphore
+    private let castledSemaphore = DispatchSemaphore(value: 1)
+
     private let realm = CastledDBManager.shared.getRealm()
     lazy var inboxUnreadCount: Int = {
         realm.objects(CAppInbox.self)
@@ -34,15 +42,6 @@ import UserNotifications
             inboxUnreadCountCallback?(inboxUnreadCount)
         }
     }
-
-    var instanceId: String
-    let delegate: CastledNotificationDelegate
-    var clientRootViewController: UIViewController?
-    // Create a dispatch queue
-    private let castledDispatchQueue = DispatchQueue(label: "CastledQueue", qos: .background)
-    let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
-    // Create a semaphore
-    private let castledSemaphore = DispatchSemaphore(value: 1)
 
     /**
      Static method for conguring the Castled framework.
@@ -69,7 +68,7 @@ import UserNotifications
     /**
      Function that allows users to set the userId and  userToken.
      */
-    @objc public func setUserId(_ userId: String, _ userToken: String? = nil) {
+    @objc public func setUserId(_ userId: String, userToken: String? = nil) {
         Castled.sharedInstance?.saveUserId(userId, userToken)
     }
 
@@ -93,7 +92,7 @@ import UserNotifications
     /**
      InApps : Function that allows to display page view inapp
      */
-    @objc public func logAppPageViewedEvent(context: UIViewController) {
+    @objc public func logAppPageViewedEvent(_ viewContoller: UIViewController) {
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             return
@@ -102,18 +101,18 @@ import UserNotifications
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.userNotRegistered.rawValue)")
             return
         }
-        CastledInApps.sharedInstance.logAppEvent(context: context, eventName: CIEventType.page_viewed.rawValue, params: ["name": String(describing: type(of: context))], showLog: false)
+        CastledInApps.sharedInstance.logAppEvent(context: viewContoller, eventName: CIEventType.page_viewed.rawValue, params: ["name": String(describing: type(of: viewContoller))], showLog: false)
     }
 
     /**
      InApps : Function that allows to display custom inapp
      */
-    @objc public func logCustomAppEvent(context: UIViewController, eventName: String, params: [String: Any]) {
+    @objc public func logCustomAppEvent(_ viewController: UIViewController, eventName: String, params: [String: Any]) {
         if Castled.sharedInstance == nil {
             castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
             return
         }
-        CastledInApps.sharedInstance.logAppEvent(context: context, eventName: eventName, params: params, showLog: false)
+        CastledInApps.sharedInstance.logAppEvent(context: viewController, eventName: eventName, params: params, showLog: false)
     }
 
     private func initialSetup(categories: Set<UNNotificationCategory>?) {

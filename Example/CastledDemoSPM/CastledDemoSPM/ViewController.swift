@@ -53,7 +53,6 @@ class ViewController: UIViewController, CastledInboxDelegate {
 
     // Function for registering the user with Castled
     func registerUserAPI() {
-        // let userId    = "antony@castled.io"
         let userId = "antony@castled.io"
         // let userId    = "abhilash@castled.io"
 
@@ -82,29 +81,37 @@ class ViewController: UIViewController, CastledInboxDelegate {
     }
 
     func setUpInboxCallback() {
-        //        Castled.sharedInstance?.getInboxUnreadCount(callback: { unreadCount in
-        //           print("Inbox unread count is \(unreadCount)")
-        //            print("Inbox unread count is -> \(Castled.sharedInstance?.getUnreadMessageCount())")
-        //
-        //        })
+//        Castled.sharedInstance?.inboxUnreadCount(listener: {unreadCount in
+//                print("Inbox unread count is \(unreadCount)")
+//            print("Inbox unread count is -> \(Castled.sharedInstance?.getInboxUnreadCount())")
+//
+//        })
         //        Castled.sharedInstance?.getInboxItems(completion: { _, result, errormessage in
         //
         //            print("getInboxItems \(result) \(errormessage)")
         //        })
-        Castled.sharedInstance?.dismissInboxViewController()
+        //       Castled.sharedInstance?.dismissInboxViewController()
     }
 
     // MARK: - Inbox delegate
 
     func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
-        /*
-         case deepLink
-         case navigateToScreen
-         case richLanding
-         case requestForPush
-         case dismiss
-         case custom
-         */
+        switch action {
+            case .deepLink:
+                break
+            case .navigateToScreen:
+                break
+            case .richLanding:
+                break
+            case .requestForPush:
+                break
+            case .dismiss:
+                break
+            case .custom:
+                break
+            default:
+                break
+        }
         print("didSelectedInboxWith kvPairs \(action) \(kvPairs) inboxItem\(inboxItem)")
     }
 }

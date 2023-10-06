@@ -58,23 +58,23 @@ static NSString *userIdKey = @"userIdKey";
 
 - (void)registerUserAPI {
     NSString *userId = @"antony@castled.io"; // user-101
-    NSString *token = nil;// Replace with valid token
-    [Castled registerUserWithUserId:userId apnsToken:token];
+    [[Castled sharedInstance] setUserId:@"antony@castled.io" userToken:nil];
     [[NSUserDefaults standardUserDefaults] setValue:userId forKey:userIdKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self showRequiredViews];
 }
 
 -(void)inboxCallBack{
-    //    [[Castled sharedInstance] getInboxItemsWithCompletion:^(BOOL succes, NSArray<CastledInboxItem *> * _Nullable inboxItems, NSString * _Nullable errorMessage) {
-    //        NSLog(@"Inbox items are %@", inboxItems);
-    //
-    //    }];
-    [[Castled sharedInstance] setInboxUnreadCountWithCallback:^(NSInteger unreadCount) {
+     /*   [[Castled sharedInstance] getInboxItemsWithCompletion:^(BOOL succes, NSArray<CastledInboxItem *> * _Nullable inboxItems, NSString * _Nullable errorMessage) {
+            NSLog(@"Inbox items are %@", inboxItems);
+    
+        }];
+    [[Castled sharedInstance] inboxUnreadCountWithListener:^(NSInteger unreadCount) {
         NSLog(@"Inbox unread count is %ld", (long)unreadCount);
-        NSLog(@"Inbox unread count is -- %ld", [[Castled sharedInstance] getUnreadMessageCount]);
+        NSLog(@"Inbox unread count is -- %ld", [[Castled sharedInstance] getInboxUnreadCount]);
 
-    }];
+    }];*/
+
 
 }
 - (void)inboxTapped {
@@ -93,8 +93,30 @@ static NSString *userIdKey = @"userIdKey";
     [self.navigationController pushViewController:inboxViewController animated:YES];
 }
 
-- (void)didSelectedInboxWith:(NSDictionary * _Nullable)kvPairs :(CastledInboxItem * _Nonnull)inboxItem {
+- (void)didSelectedInboxWith:(CastledClickActionType)action :(NSDictionary * _Nullable)kvPairs :(CastledInboxItem * _Nonnull)inboxItem {
     NSLog(@"didSelectedInboxWith ----kvPairs  %@ item %@",kvPairs,inboxItem);
+    switch (action) {
+        case CastledClickActionTypeDeepLink:
+
+            break;
+        case CastledClickActionTypeNavigateToScreen:
+
+            break;
+        case CastledClickActionTypeRichLanding:
+
+            break;
+        case CastledClickActionTypeRequestForPush:
+
+            break;
+        case CastledClickActionTypeDismiss:
+
+            break;
+        case CastledClickActionTypeCustom:
+
+            break;
+        default:
+            break;
+    }
 
 }
 
@@ -105,14 +127,6 @@ static NSString *userIdKey = @"userIdKey";
 - (void)triggerCampaign {
     // Implementation for triggering campaign
 }
-
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
-}
-
-
-
-
 
 
 

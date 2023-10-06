@@ -23,6 +23,7 @@
     CastledConfigs *config = [CastledConfigs initializeWithInstanceId:@"718c38e2e359d94367a2e0d35e1fd4df"];
 //    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
+    
     config.enableInApp = TRUE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
 //    config.disableLog = FALSE;
@@ -105,7 +106,7 @@
 
 -(void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@", self.description, deviceToken.debugDescription);
-    [[Castled sharedInstance] setDeviceTokenWithDeviceToken:deviceToken];
+    [[Castled sharedInstance] setPushToken:deviceToken.debugDescription];
 }
 
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{

@@ -13,12 +13,12 @@ public extension Castled {
     /**
      Inbox : Function that will returns the unread message count
      */
-    @objc func getInboxUnreadCount(callback: @escaping (Int) -> Void) {
-        inboxUnreadCountCallback = callback
+    @objc func inboxUnreadCount(listener: @escaping (Int) -> Void) {
+        inboxUnreadCountCallback = listener
         inboxUnreadCountCallback?(inboxUnreadCount)
     }
 
-    @objc func getUnreadMessageCount() -> Int {
+    @objc func getInboxUnreadCount() -> Int {
         return inboxUnreadCount
     }
 
