@@ -7,11 +7,7 @@
 
 import UIKit
 
-@objc public class CastledInboxConfig: NSObject {
-    @objc public lazy var backgroundColor: UIColor = {
-        .white
-    }()
-
+@objc public class CastledInboxDisplayConfig: NSObject {
     @objc public lazy var emptyMessageViewText: String = {
         "We have no updates. Please check again later."
     }()
@@ -22,6 +18,10 @@ import UIKit
 
     @objc public lazy var hideCloseButton: Bool = {
         false
+    }()
+
+    @objc public lazy var inboxViewBackgroundColor: UIColor = {
+        .white
     }()
 
     @objc public lazy var loaderTintColor: UIColor = {
@@ -36,7 +36,7 @@ import UIKit
         .black
     }()
 
-    @objc public lazy var title: String = {
-        "Inbox"
+    @objc public lazy var navigationBarTitle: String = {
+        "App Inbox"
     }()
 }

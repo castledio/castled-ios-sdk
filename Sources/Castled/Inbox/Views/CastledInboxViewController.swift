@@ -16,7 +16,7 @@ import UIKit
 @objc public class CastledInboxViewController: UIViewController {
     @objc public var delegate: CastledInboxDelegate?
     @IBOutlet weak var lblTitle: UILabel!
-    var inboxConfig: CastledInboxConfig?
+    var inboxConfig: CastledInboxDisplayConfig?
     @IBOutlet private weak var tblView: UITableView!
     @IBOutlet weak var lblNoUpdates: UILabel!
     @IBOutlet weak var viewTopBar: UIView!
@@ -46,10 +46,10 @@ import UIKit
     }
 
     private func setupViews() {
-        view.backgroundColor = inboxConfig!.backgroundColor
+        view.backgroundColor = inboxConfig!.inboxViewBackgroundColor
         indicatorView.color = inboxConfig!.loaderTintColor
         if navigationController?.isNavigationBarHidden == false {
-            navigationItem.title = inboxConfig!.title
+            navigationItem.title = inboxConfig!.navigationBarTitle
             viewTopBar.isHidden = true
             constraintTopBarHeight.constant = 0
             let appearance = UINavigationBarAppearance()
@@ -74,7 +74,7 @@ import UIKit
             } else {
                 constraintTopBarHeight.constant = 44.0
             }
-            lblTitle.text = inboxConfig!.title
+            lblTitle.text = inboxConfig!.navigationBarTitle
             btnClose.tintColor = inboxConfig!.navigationBarButtonTintColor
             lblTitle.textColor = inboxConfig!.navigationBarButtonTintColor
             btnClose.isHidden = inboxConfig!.hideCloseButton

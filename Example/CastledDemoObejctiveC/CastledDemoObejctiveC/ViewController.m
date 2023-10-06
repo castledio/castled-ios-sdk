@@ -79,13 +79,13 @@ static NSString *userIdKey = @"userIdKey";
 }
 - (void)inboxTapped {
     // Handle the button tap here
-    CastledInboxConfig *style = [[CastledInboxConfig alloc] init];
-    style.backgroundColor = [UIColor whiteColor];
+    CastledInboxDisplayConfig *style = [[CastledInboxDisplayConfig alloc] init];
+    style.inboxViewBackgroundColor = [UIColor whiteColor];
     style.navigationBarBackgroundColor = [UIColor linkColor];
-    style.title = @"Castled Inbox";
+    style.navigationBarTitle = @"Castled Inbox";
     style.navigationBarButtonTintColor = [UIColor whiteColor];
     style.loaderTintColor = [UIColor blueColor];
-    style.hideCloseButton = NO;
+    style.hideCloseButton = YES;
 
     UIViewController *inboxViewController = [[Castled sharedInstance] getInboxViewControllerWith:style andDelegate:self];
     // inboxViewController.modalPresentationStyle = UIModalPresentationFullScreen;

@@ -25,9 +25,9 @@ public extension Castled {
     /**
      Inbox : Function that will returns the Inbox ViewController
      */
-    @objc func getInboxViewController(with config: CastledInboxConfig?, andDelegate delegate: CastledInboxDelegate) -> CastledInboxViewController {
+    @objc func getInboxViewController(with config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxDelegate) -> CastledInboxViewController {
         let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
-        castledInboxVC.inboxConfig = config ?? CastledInboxConfig()
+        castledInboxVC.inboxConfig = config ?? CastledInboxDisplayConfig()
         castledInboxVC.delegate = delegate
         return castledInboxVC
     }

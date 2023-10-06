@@ -53,7 +53,7 @@ import Foundation
     }()
 
     @objc public lazy var location: CastledLocation = {
-        CastledLocation.TEST
+        CastledLocation.US
     }()
 
     @objc public lazy var permittedBGIdentifier: String = {

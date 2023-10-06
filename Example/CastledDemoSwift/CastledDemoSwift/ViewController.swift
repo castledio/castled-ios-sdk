@@ -66,13 +66,13 @@ class ViewController: UIViewController, CastledInboxDelegate {
 
     @objc func inboxTapped() {
         // Handle the button tap here
-        let style = CastledInboxConfig()
-        style.backgroundColor = .white
+        let style = CastledInboxDisplayConfig()
+        style.inboxViewBackgroundColor = .white
         style.navigationBarBackgroundColor = .link
-        style.title = "Castled Inbox"
+        style.navigationBarTitle = "Castled Inbox"
         style.navigationBarButtonTintColor = .white
         style.loaderTintColor = .blue
-        style.hideCloseButton = false
+        style.hideCloseButton = true
 
         let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style, andDelegate: self)
         // inboxViewController?.modalPresentationStyle = .fullScreen
