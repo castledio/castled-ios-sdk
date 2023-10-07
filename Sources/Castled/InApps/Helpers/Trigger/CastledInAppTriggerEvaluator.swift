@@ -6,86 +6,74 @@
 //
 
 import Foundation
-@objc public class CastledInAppTriggerEvaluator : NSObject {
-    
-    internal override init () {
+
+@objc public class CastledInAppTriggerEvaluator: NSObject {
+    override init() {
         super.init()
-        
-        
     }
-   internal func shouldTriggerEvent(filter : CIEventFilter?,params : [String:Any]?,showLog : Bool? = true) -> Bool{
-        guard let eventFilter = filter else{
-            return false
-        }
-        
-        let filters = eventFilter.filters
-        if filters == nil || filters?.count == 0{
+
+    func shouldTriggerEvent(filter: CIEventFilter?, params: [String: Any]?, showLog: Bool? = true) -> Bool {
+        guard let eventFilter = filter else {
             return true
         }
-        
-        if eventFilter.joinType.rawValue == CITriggerJoinType.and.rawValue{
-            return evaluateAnd(propertyFilters: filters!, params: params,showLog: showLog)
+
+        let filters = eventFilter.filters
+        if filters == nil || ((filters?.isEmpty) != nil) {
+            return true
         }
-        else
-        {
-            return evaluateOr(propertyFilters: filters!, params: params,showLog: showLog)
-            
+
+        if eventFilter.joinType.rawValue == CITriggerJoinType.and.rawValue {
+            return evaluateAnd(propertyFilters: filters!, params: params, showLog: showLog)
+        } else {
+            return evaluateOr(propertyFilters: filters!, params: params, showLog: showLog)
         }
     }
-    
-    private func evaluateAnd(propertyFilters : [CIEventFilters], params : [String:Any]?,showLog : Bool? = true) -> Bool {
+
+    private func evaluateAnd(propertyFilters: [CIEventFilters], params: [String: Any]?, showLog: Bool? = true) -> Bool {
         for filter in propertyFilters {
-            if let evaluator = getParamEvaluator(triggerType: filter.operation.propertyType.rawValue){
-                
-                if evaluator.evaluateCondition(value: params?[filter.name], propertyOperation: filter.operation) == false{
-                    if showLog == true{
-                        castledLog("Error:❌❌❌ Unable to satisfy the trigger condition: \(filter.name) for \(String(describing: params?[filter.name]))")
+            if let evaluator = getParamEvaluator(triggerType: filter.operation.propertyType.rawValue) {
+                if evaluator.evaluateCondition(value: params?[filter.name], propertyOperation: filter.operation) == false {
+                    if showLog == true {
+                        CastledLog.castledLog("Error:❌❌❌ Unable to satisfy the trigger condition: \(filter.name) for \(String(describing: params?[filter.name]))", logLevel: CastledLogLevel.error)
                     }
                     return false
                 }
-            }
-            else
-            {
-                if showLog == true{
-                    castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.operation.type)")
+            } else {
+                if showLog == true {
+                    CastledLog.castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.operation.type)", logLevel: CastledLogLevel.error)
                 }
                 return false
-                
             }
         }
         return true
     }
-    private func evaluateOr(propertyFilters : [CIEventFilters], params : [String:Any]?,showLog : Bool? = true) -> Bool {
+
+    private func evaluateOr(propertyFilters: [CIEventFilters], params: [String: Any]?, showLog: Bool? = true) -> Bool {
         for filter in propertyFilters {
-            if let evaluator = getParamEvaluator(triggerType: filter.operation.propertyType.rawValue){
-                
-                if evaluator.evaluateCondition(value:params?[filter.name] , propertyOperation: filter.operation) == true{
+            if let evaluator = getParamEvaluator(triggerType: filter.operation.propertyType.rawValue) {
+                if evaluator.evaluateCondition(value: params?[filter.name], propertyOperation: filter.operation) == true {
                     return true
                 }
-            }
-            else
-            {
-                if showLog == true{
-                    castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.name)")
+            } else {
+                if showLog == true {
+                    CastledLog.castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.name)", logLevel: CastledLogLevel.error)
                 }
-                
             }
         }
         return false
     }
-    private func getParamEvaluator(triggerType : String) -> (any CTParamsConditionEvaluatable)? {
-        
+
+    private func getParamEvaluator(triggerType: String) -> (any CIParamsConditionEvaluatable)? {
         switch triggerType {
-        case CITriggerPropertyType.string.rawValue:
-            return CTStringEvaluator()
-        case CITriggerPropertyType.number.rawValue:
-            return CTNumberEvaluator()
-        case CITriggerPropertyType.bool.rawValue:
-            return CTBoolEvaluator()
-        case CITriggerPropertyType.date.rawValue:
-            return CTDateEvaluator()
-        default: break
-            
+            case CITriggerPropertyType.string.rawValue:
+                return CIStringEvaluator()
+            case CITriggerPropertyType.number.rawValue:
+                return CINumberEvaluator()
+            case CITriggerPropertyType.bool.rawValue:
+                return CIBoolEvaluator()
+            case CITriggerPropertyType.date.rawValue:
+                return CIDateEvaluator()
+            default: break
         }
         return nil
     }

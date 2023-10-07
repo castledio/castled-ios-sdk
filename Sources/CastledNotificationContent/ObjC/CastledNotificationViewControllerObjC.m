@@ -19,14 +19,14 @@
 @end
 
 @implementation CastledNotificationViewControllerObjC
-
+@synthesize appGroupId;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Initialize the Swift view controller
     self.contentViewController = [[CastledNotificationViewController alloc] init];
     self.contentViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
-
+    self.contentViewController.appGroupId = appGroupId;
     [self addChildViewController:self.contentViewController];
     [self.view addSubview:self.contentViewController.view];
 
@@ -36,7 +36,13 @@
     [self.contentViewController.view.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = YES;
     [self.contentViewController.view.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
 
-    [self.contentViewController didMoveToParentViewController:self];}
+    [self.contentViewController didMoveToParentViewController:self];
+
+}
+- (void)setAppGroupId:(NSString *)appGroupId{
+    self.contentViewController.appGroupId = appGroupId;
+
+}
 
 
 - (void)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(void (^)(UNNotificationContentExtensionResponseOption))completion {
@@ -49,7 +55,12 @@
 -(void)preferredContentSizeDidChangeForChildContentContainer:(id<UIContentContainer>)container {
     [super preferredContentSizeDidChangeForChildContentContainer:container];
 
-//    self.preferredContentSize = self.contentViewController.preferredContentSize;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.view.frame = self.contentViewController.view.frame;
+        self.preferredContentSize = self.contentViewController.preferredContentSize;
+
+    });
+    
 }
 /*
 #pragma mark - Navigation

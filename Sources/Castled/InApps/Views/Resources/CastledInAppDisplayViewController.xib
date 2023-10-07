@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CastledInAppDisplayViewController" customModule="Castled" customModuleProvider="target">
+            <connections>
+                <outlet property="constraintBannerBottom" destination="lZV-7W-PCN" id="dfR-kW-ZHO"/>
+                <outlet property="constraintBannerTop" destination="sS0-iQ-MXh" id="LZS-vC-g31"/>
+                <outlet property="dismissView" destination="qS0-8c-fUo" id="88h-I7-HgD"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Bog-n5-THq"/>
+                <outlet property="viewBannerContainer" destination="Okd-or-gr5" id="cjM-17-1aZ"/>
+                <outlet property="viewFSContainer" destination="Itt-nb-4mg" id="Bec-u7-KzV"/>
+                <outlet property="viewModalContainer" destination="Bdm-DS-X9u" id="f0z-7r-tFm"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bdm-DS-X9u" userLabel="Modal Container">
+                    <rect key="frame" x="20" y="107" width="350" height="630"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" secondItem="Bdm-DS-X9u" secondAttribute="width" multiplier="1.8" priority="999" id="U8P-cd-TXo"/>
+                    </constraints>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Itt-nb-4mg">
+                    <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <string key="userLabel" base64-UTF8="YES">
+RlMDIENvbnRhaW5lcg
+</string>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Okd-or-gr5" userLabel="Banner Container">
+                    <rect key="frame" x="20" y="730" width="350" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="ydZ-As-t6q"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qS0-8c-fUo" customClass="CastledDismissButton" customModule="Castled">
+                    <rect key="frame" x="350" y="47" width="40" height="40"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="0dL-QQ-LlP"/>
+                        <constraint firstAttribute="width" secondItem="qS0-8c-fUo" secondAttribute="height" multiplier="1:1" id="Lqf-c7-kfZ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Bdm-DS-X9u" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4RO-T7-ejx"/>
+                <constraint firstItem="Bdm-DS-X9u" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="7H9-1a-vZU"/>
+                <constraint firstItem="Okd-or-gr5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="E5N-Fy-Me2"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qS0-8c-fUo" secondAttribute="trailing" priority="999" id="LCu-Ij-0o8"/>
+                <constraint firstItem="Bdm-DS-X9u" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="MBe-P1-jfb"/>
+                <constraint firstAttribute="trailing" secondItem="Itt-nb-4mg" secondAttribute="trailing" id="Voo-7T-rlt"/>
+                <constraint firstItem="qS0-8c-fUo" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" priority="999" id="are-l3-3ed"/>
+                <constraint firstItem="Bdm-DS-X9u" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="fGT-iv-1FV"/>
+                <constraint firstItem="Itt-nb-4mg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hJH-B5-qaV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Bdm-DS-X9u" secondAttribute="trailing" constant="20" id="iER-GZ-CLV"/>
+                <constraint firstAttribute="bottom" secondItem="Itt-nb-4mg" secondAttribute="bottom" id="kMj-yL-imh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Okd-or-gr5" secondAttribute="bottom" constant="10" id="lZV-7W-PCN"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Okd-or-gr5" secondAttribute="trailing" constant="20" id="mWL-50-1st"/>
+                <constraint firstItem="Okd-or-gr5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="sS0-iQ-MXh"/>
+                <constraint firstItem="Itt-nb-4mg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="z3Z-bd-Oo0"/>
+            </constraints>
+            <point key="canvasLocation" x="226.15384615384613" y="86.729857819905206"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

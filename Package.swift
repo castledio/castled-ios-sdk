@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "castled-ios-sdk",
+    name: "Castled",
     defaultLocalization: "en",
     platforms: [
         .iOS(.v13)
@@ -21,15 +21,22 @@ let package = Package(
             targets: ["CastledNotificationService"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1")
+        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1"),
+        .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.0.0")
+
     ],
     targets: [
         .target(
             name: "Castled",
+             dependencies: [
+                "SDWebImage",
+                .product(name: "RealmSwift", package: "realm-cocoa")
+            ],
             path: "Sources/Castled",
             resources: [
                 .process("InApps/Views/CastledAssets.xcassets"),
-                .process("InApps/Views/Resources")
+                .process("InApps/Views/Resources"),
+                .process("Inbox/Views/Resources")
             ],
             linkerSettings: [
                 .linkedFramework("AVFoundation"),

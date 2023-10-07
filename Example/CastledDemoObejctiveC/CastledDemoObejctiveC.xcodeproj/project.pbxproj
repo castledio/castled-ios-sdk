@@ -113,6 +113,7 @@
 		0A0E11072A40BF03004F247F /* DeeplinkViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeeplinkViewController.m; sourceTree = "<group>"; };
 		0A0E11092A40BF12004F247F /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		0A0E110A2A40BF12004F247F /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		0A392ECA2A55968A00D1F4DD /* CNotificationContentDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CNotificationContentDemo.entitlements; sourceTree = "<group>"; };
 		0E7EC004193084AE180EFA08 /* Pods_CNotificationServiceDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CNotificationServiceDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		193F47D8CBEA93E255481E81 /* Pods-CastledDemoObejctiveC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoObejctiveC.debug.xcconfig"; path = "Target Support Files/Pods-CastledDemoObejctiveC/Pods-CastledDemoObejctiveC.debug.xcconfig"; sourceTree = "<group>"; };
 		325474A318ACB51CC0C05242 /* Pods-CastledDemoObejctiveCTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoObejctiveCTests.release.xcconfig"; path = "Target Support Files/Pods-CastledDemoObejctiveCTests/Pods-CastledDemoObejctiveCTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -269,6 +270,7 @@
 		0A01A9F42A3B8B1B0023F0C2 /* CNotificationContentDemo */ = {
 			isa = PBXGroup;
 			children = (
+				0A392ECA2A55968A00D1F4DD /* CNotificationContentDemo.entitlements */,
 				0A01A9F52A3B8B1B0023F0C2 /* NotificationViewController.h */,
 				0A01A9F62A3B8B1B0023F0C2 /* NotificationViewController.m */,
 				0A01A9F82A3B8B1B0023F0C2 /* MainInterface.storyboard */,
@@ -775,7 +777,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -827,7 +829,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1023,6 +1025,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9C9CE13F14AC0F87892F4DB6 /* Pods-CNotificationContentDemo.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CNotificationContentDemo/CNotificationContentDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
@@ -1049,6 +1052,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6AEFE7349E5E74B3D3F0992 /* Pods-CNotificationContentDemo.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CNotificationContentDemo/CNotificationContentDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;

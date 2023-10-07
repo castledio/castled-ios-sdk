@@ -7,7 +7,7 @@
 
 #import "AppDelegate.h"
 #import <UserNotifications/UserNotifications.h>
-#import <Castled_iOS_SDK/Castled_iOS_SDK-Swift.h>
+#import <Castled/Castled-Swift.h>
 
 @interface AppDelegate ()<UIApplicationDelegate,UNUserNotificationCenterDelegate,CastledNotificationDelegate>
 {
@@ -20,20 +20,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    CastledConfigs *config = [CastledConfigs sharedInstance];
-    config.permittedBGIdentifier = @"";
+
+    CastledConfigs *config = [CastledConfigs initializeWithApiKey:@"718c38e2e359d94367a2e0d35e1fd4df"];
+//    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
+    
     config.enableInApp = TRUE;
-    config.disableLog = FALSE;
+    config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
+    config.logLevel = CastledLogLevelNone;
     config.location = CastledLocationUS;
-
-
-    [Castled configureWithRegisterIn:application launchOptions:launchOptions instanceId:@"829c38e2e359d94372a2e0d35e1f74df" delegate:(id)self];
-
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
-    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:notificationCategories];
-
-
+    [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *navBarAppearance = [[UINavigationBarAppearance alloc] init];
         [navBarAppearance configureWithOpaqueBackground];
@@ -110,27 +107,31 @@
 
 -(void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@", self.description, deviceToken.debugDescription);
-    [[Castled sharedInstance] setDeviceTokenWithDeviceToken:deviceToken];
+    [[Castled sharedInstance] setPushToken:deviceToken.debugDescription];
 }
 
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-
-    NSLog(@"didReceiveNotificationResponse: %@ %@", self.description, response.notification.request.content.userInfo);
-    [[Castled sharedInstance] handleNotificationActionWithResponse:response];
+    //response.notification.request.content.userInfo
+    NSLog(@"didReceiveNotificationResponse: %@", self.description);
+    [[Castled sharedInstance] userNotificationCenter:center didReceive:response];
 
     completionHandler();
 }
 
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
-    NSLog(@"willPresentNotification: %@ %@", self.description, notification.request.content.userInfo);
-    [[Castled sharedInstance] handleNotificationInForegroundWithNotification:notification];
+    //notification.request.content.userInfo
+    NSLog(@"willPresentNotification: %@", self.description);
+    [[Castled sharedInstance] userNotificationCenter:center willPresent:notification];
 
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
     NSLog(@"didReceiveRemoteNotification with completionHandler: %@ %@", self.description, userInfo);
-    completionHandler(UIBackgroundFetchResultNewData);
+    [[Castled sharedInstance] didReceiveRemoteNotificationInApplication:application withInfo:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult) {
+        completionHandler(UIBackgroundFetchResultNewData);
+
+    }];
 }
 
 
@@ -138,8 +139,8 @@
 
 
 - (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center willPresent:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
-
-    NSLog(@"will present notification: %@ %@ %@", self.description,NSStringFromSelector(_cmd),notification.request.content.userInfo);
+    ///notification.request.content.userInfo
+    NSLog(@"will present notification: %@ %@", self.description,NSStringFromSelector(_cmd));
 
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
 
@@ -150,6 +151,11 @@
     NSLog(@"didReceive: %@ %@", self.description,NSStringFromSelector(_cmd));
 
     completionHandler();
+
+}
+- (void)castled_application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    NSLog(@"didReceiveRemoteNotification: %@ %@", self.description,NSStringFromSelector(_cmd));
+    completionHandler(UIBackgroundFetchResultNewData);
 
 }
 
@@ -164,28 +170,80 @@
 
 }
 
-- (void)navigateToScreenWithScheme:(NSString *)scheme viewControllerName:(NSString *)viewControllerName{
-    NSLog(@"navigateToScreenWithScheme: %@ %@ %@", self.description,NSStringFromSelector(_cmd),viewControllerName);
 
+- (void)notificationClickedWithNotificationType:(CastledNotificationType)type
+                                         action:(CastledClickActionType)action
+                                        kvPairs:(NSDictionary<id, id> * _Nullable)kvPairs
+                                       userInfo:(NSDictionary<id, id> *)userInfo {
+    NSLog(@"type %ld action %ld", (long)type, (long)action);
 
+    switch (action) {
+        case CastledClickActionTypeDeepLink:
+            if (kvPairs) {
+                NSString *value = kvPairs[@"clickActionUrl"];
+                NSURL *url = [NSURL URLWithString:value];
+                if (url) {
+                    [self handleDeepLinkWithURL:url];
+                }
+            }
+            break;
+
+        case CastledClickActionTypeNavigateToScreen:
+            if (kvPairs) {
+                NSString *screenName = kvPairs[@"clickActionUrl"];
+                [self handleNavigateToScreenWithScreenName:screenName];
+            }
+            break;
+
+        case CastledClickActionTypeRichLanding:
+            // TODO:
+            break;
+
+        case CastledClickActionTypeRequestForPush:
+            // TODO:
+            break;
+
+        case CastledClickActionTypeDismiss:
+            // TODO:
+            break;
+
+        case CastledClickActionTypeCustom:
+            // TODO:
+            break;
+
+        default:
+            break;
+    }
 }
 
-- (void)handleDeepLinkWithURL:(NSURL *)url useWebview:(BOOL)useWebview additionalData:(NSDictionary<NSString *, id> *)additionalData{
-    NSLog(@"handleDeepLinkWithURL: %@ %@ %@", self.description,NSStringFromSelector(_cmd),additionalData);
+- (void)handleDeepLinkWithURL:(NSURL *)url {
+    if (!url) {
+        return;
+    }
 
+    NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+    NSString *scheme = components.scheme;
+    NSString *path = components.path;
+    NSString *host = components.host;
+    NSLog(@"Path %@", path);
 
+    if ([scheme isEqualToString:@"com.castled"] && ([path isEqualToString:@"/deeplinkvc"] || [host isEqualToString:@"deeplinkvc"])) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DeeplinkViewController"];
+        if (vc) {
+            // implement presentation logic using vc
+        }
+    }
 }
 
-- (void)handleNavigateToScreenWithScreenName:(NSString *)screenName useWebview:(BOOL)useWebview additionalData:(NSDictionary<NSString *, id> *)additionalData{
-    NSLog(@"handleNavigateToScreenWithScreenName: %@ %@ %@", self.description,NSStringFromSelector(_cmd),additionalData);
+- (void)handleNavigateToScreenWithScreenName:(NSString *)screenName {
+    if (!screenName) {
+        return;
+    }
 
+    // implement presentation logic with screen name
 }
 
-- (void)handleRichLandingWithScreenName:(NSString *)screenName useWebview:(BOOL)useWebview additionalData:(NSDictionary<NSString *, id> *)additionalData{
-    NSLog(@"handleRichLandingWithScreenName: %@ %@ %@", self.description,NSStringFromSelector(_cmd),additionalData);
-
-
-}
 
 
 @end

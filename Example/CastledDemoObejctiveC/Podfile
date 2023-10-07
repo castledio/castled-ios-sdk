@@ -4,7 +4,7 @@
 target 'CastledDemoObejctiveC' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  pod 'Castled-iOS-SDK', :path => '../../'
+  pod 'Castled', :path => '../../'
 
   # Pods for CastledDemoObejctiveC
 

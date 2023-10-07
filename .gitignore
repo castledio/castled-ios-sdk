@@ -99,6 +99,14 @@ Pods/
 Frameworks/SDWebImage.framework
 Sources/CastledNotificationContent/SDWebImage.framework
 
+Frameworks/RealmSwift.framework
+Sources/RealmSwift.framework
+
+Frameworks/Realm.framework
+Sources/Realm.framework
+
+Package.resolved
+
 # CocoaPods
 Pods/
 Podfile.lock

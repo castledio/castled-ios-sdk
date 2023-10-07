@@ -4,13 +4,11 @@
 //
 //  Created by Castled Data on 01/12/2022.
 //
+import Foundation
 import UIKit
 
-import Foundation
-
-class CastledCommonClass{
-    static func showNotificationWIthTitle(title:String,body : String){
-    
+class CastledCommonClass {
+    static func showNotificationWIthTitle(title: String, body: String) {
         let center = UNUserNotificationCenter.current()
         let content = UNMutableNotificationContent()
         content.title = title
@@ -20,149 +18,112 @@ class CastledCommonClass{
         let fireDate = Calendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second], from: Date().addingTimeInterval(2))
         let trigger = UNCalendarNotificationTrigger(dateMatching: fireDate, repeats: false)
         let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
-        center.add(request) { (error) in
+        center.add(request) { error in
             if error != nil {
-                print("Error = \(error?.localizedDescription ?? "error local notification")")
+                CastledLog.castledLog("Error = \(error?.localizedDescription ?? "error local notification")", logLevel: CastledLogLevel.error)
             }
         }
     }
-    
+
     static func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
             do {
                 return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             } catch {
-                castledLog(error.localizedDescription)
+                CastledLog.castledLog(error.localizedDescription, logLevel: CastledLogLevel.error)
             }
         }
         return nil
     }
-    
-    static func getCastledPushNotificationId(dict: [AnyHashable: Any])-> String?{
+
+    static func getCastledPushNotificationId(dict: [AnyHashable: Any]) -> String? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? NSDictionary,
               let notificationId = customDict[CastledConstants.PushNotification.CustomProperties.notificationId] as? String
-        else{
-            return nil;
+        else {
+            return nil
         }
         return notificationId
     }
-    
+
     static func getActionDetails(dict: [AnyHashable: Any], actionType: String) -> [String: Any]? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? NSDictionary,
-              //              let notificationId = customDict[CastledConstants.PushNotification.CustomProperties.notificationId] as? String,
               let notification = dict[CastledConstants.PushNotification.apsKey] as? NSDictionary,
               let category = notification[CastledConstants.PushNotification.ApsProperties.category] as? String,
               let categoryJsonString = customDict[CastledConstants.PushNotification.CustomProperties.categoryActions] as? String,
               let deserializedDict = CastledCommonClass.convertToDictionary(text: categoryJsonString),
-              let actionsArray = deserializedDict[CastledConstants.PushNotification.CustomProperties.Category.actionComponents] as? [[String: Any]] else {
+              let actionsArray = deserializedDict[CastledConstants.PushNotification.CustomProperties.Category.actionComponents] as? [[String: Any]]
+        else {
             return nil
         }
-        
+
         for action in actionsArray {
             if let identifier = action[CastledConstants.PushNotification.CustomProperties.Category.Action.actionId] as? String, identifier == actionType {
                 return [
-                    "category" :category,
-                    "actionId": identifier,
-                    "clickAction": action[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "",
-                    "url": action[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String ?? "",
-                    "useWebview": action[CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView] as? Bool ?? false
+                    CastledConstants.PushNotification.ApsProperties.category: category,
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.actionId: identifier,
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction: action[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "",
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl: action[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String ?? "",
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView: action[CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView] as? Bool ?? false
                 ]
             }
         }
         return nil
     }
-    
-    static func getDefaultActionDetails(dict: [AnyHashable: Any]) -> [String: Any]? {
+
+    static func getDefaultActionDetails(dict: [AnyHashable: Any], index: Int? = 0) -> [String: Any]? {
         guard let customDict = dict[CastledConstants.PushNotification.customKey] as? [String: Any]
         else {
             return nil
         }
-        
-        return ["default_action" : customDict[CastledConstants.PushNotification.CustomProperties.defaultAction] as? String ?? "",
-                "default_action_url" : customDict[CastledConstants.PushNotification.CustomProperties.defaultActionURL] as? String ?? ""]
-    }
-    
-    
-    static func getAppURLSchemes() -> [String]? {
-        guard let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]] else {
-            return nil
-        }
-        
-        var schemes: [String] = []
-        
-        for urlType in urlTypes {
-            if let urlSchemes = urlType["CFBundleURLSchemes"] as? [String] {
-                schemes.append(contentsOf: urlSchemes)
-            }
-        }
-        return schemes.count > 0 ? schemes : nil
-    }
-    
-    static func getSchemeFromPlist() -> String? {
-        if let urlTypes = Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]],
-           let urlSchemes = urlTypes.first?["CFBundleURLSchemes"] as? [String] {
-            return urlSchemes.first
+        if let msgFramesString = customDict["msg_frames"] as? String,
+           let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? [Any],
+           detailsArray.count > index!,
+           let selectedCategory = detailsArray[index!] as? [String: Any]
+        {
+            return selectedCategory
         }
         return nil
     }
-    
-    static func getImage(for url: URL, completion: @escaping (UIImage?) -> Void) {
-        
-        let cache = NSCache<NSURL, UIImage>()
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            if let cachedImage = cache.object(forKey: url as NSURL) {
-                DispatchQueue.main.async {
-                    completion(cachedImage)
-                }
-            } else {
-                URLSession.shared.dataTask(with: url) { (data, response, error) in
-                    if error != nil {
-                        
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
-                        return
-                    }
-                    
-                    guard let data = data, let image = UIImage(data: data) else {
-                        
-                        DispatchQueue.main.async {
-                            completion(nil)
-                        }
-                        return
-                    }
-                    
-                    // Cache the downloaded image
-                    cache.setObject(image, forKey: url as NSURL)
-                    DispatchQueue.main.async {
-                        completion(image)
-                    }
-                }.resume()
-            }
-        }
+
+    static func convertToArray(text: String) -> Any? {
+        guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
+        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
-    
-    static internal func hexStringToUIColor (hex:String) -> UIColor? {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        
-        if (cString.hasPrefix("#")) {
+
+    static func hexStringToUIColor(hex: String) -> UIColor? {
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if cString.hasPrefix("#") {
             cString.remove(at: cString.startIndex)
         }
-        
-        if ((cString.count) != 6) {
+        if (cString.count) != 6 {
             return nil
         }
-        
-        var rgbValue:UInt64 = 0
+        var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
-        
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
             alpha: CGFloat(1.0)
         )
+    }
+
+    static func instantiateFromNib<T: UIViewController>(vc: T.Type) -> T {
+        return T(nibName: String(describing: T.self), bundle: Bundle.resourceBundle(for: Self.self))
+    }
+
+    static func loadView<T: UIView>(fromNib name: String, withType type: T.Type) -> T? {
+        let bundle = Bundle.resourceBundle(for: Self.self)
+        if let view = UINib(
+            nibName: name,
+            bundle: bundle
+        ).instantiate(withOwner: nil, options: nil)[0] as? T {
+            return view
+        }
+        if let view = bundle.loadNibNamed(name, owner: nil, options: nil)?.first as? T {
+            return view
+        }
+        return nil
     }
 }
 
@@ -173,6 +134,15 @@ extension UIView {
         layer.shadowOffset = offset
         layer.shadowRadius = radius
         layer.masksToBounds = false
+    }
+
+    func applyShadow(radius: CGFloat) {
+        layer.cornerRadius = radius
+        layer.masksToBounds = false
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.3
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowOffset = CGSize(width: 1, height: 5)
     }
 }
 
@@ -195,37 +165,42 @@ extension UIWindow {
     }
 }
 
-extension UIImageView {
-    func loadImage(from url: URL) {
-        let cache = URLCache.shared
-        let request = URLRequest(url: url)
-        
-        // Try to load the image from the cache
-        if let data = cache.cachedResponse(for: request)?.data,
-           let image = UIImage(data: data) {
-            self.image = image
-            return
+extension Bundle {
+    static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
+        let mainBundle = Bundle.main
+        let sourceBundle = Bundle(for: bundleClass)
+        guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
+            fatalError("Couldn't determine module name from class \(bundleClass)")
         }
-        
-        // If the image isn't in the cache, download it
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                print("Error loading image: \(error.localizedDescription)")
-                return
-            }
-            
-            if let data = data, let response = response,
-               let image = UIImage(data: data) {
-                // Cache the image
-                let cachedData = CachedURLResponse(response: response, data: data)
-                cache.storeCachedResponse(cachedData, for: request)
-                
-                // Display the image
-                DispatchQueue.main.async {
-                    self.image = image
-                }
-            }
+        // SPM
+        var bundle: Bundle?
+        if bundle == nil, let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
+            // cocoapod
+            bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        } else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
         }
-        task.resume()
+        // CocoaPods (static)
+        else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
+            bundle = Bundle(path: staticBundlePath)
+        }
+
+        // CocoaPods (framework)
+        else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
+            bundle = Bundle(path: frameworkBundlePath)
+        }
+        return bundle ?? sourceBundle
     }
 }

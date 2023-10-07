@@ -6,12 +6,13 @@
 //
 
 import Foundation
-protocol CTParamsConditionEvaluatable {
+
+protocol CIParamsConditionEvaluatable {
     //    associatedtype T
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool
 }
-internal class CTStringEvaluator: CTParamsConditionEvaluatable {
-    
+
+class CIStringEvaluator: CIParamsConditionEvaluatable {
     public func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let textValue = value as? String else {
             return false // value is not a String, return false
@@ -21,19 +22,15 @@ internal class CTStringEvaluator: CTParamsConditionEvaluatable {
             return propertyOperation.value == textValue
         case .NEQ:
             return propertyOperation.value != textValue
-            
+
         default:
-            castledLog("Operations type \(propertyOperation.type.rawValue) not supported for string operand")
+            CastledLog.castledLog("Operations type \(propertyOperation.type.rawValue) not supported for string operand", logLevel: CastledLogLevel.error)
             return false
         }
     }
-    
-    
-    
 }
 
-internal class CTNumberEvaluator: CTParamsConditionEvaluatable {
-    
+class CINumberEvaluator: CIParamsConditionEvaluatable {
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let numberValue = value as? NSNumber else { return false }
         let formatter = NumberFormatter()
@@ -61,28 +58,20 @@ internal class CTNumberEvaluator: CTParamsConditionEvaluatable {
                   let toValue = formatter.number(from: propertyOperation.value) else { return false }
             return fromValue.doubleValue < numberValue.doubleValue && toValue.doubleValue > numberValue.doubleValue
         default:
-            
             let message = String(format: "Operations type %@ not supported for numeric operand", propertyOperation.propertyType.rawValue)
-            castledLog(message)
-            
-            break
+            CastledLog.castledLog(message, logLevel: CastledLogLevel.error)
         }
         return false
     }
-    
-    
 }
 
-internal class CTBoolEvaluator: CTParamsConditionEvaluatable {
-    
+class CIBoolEvaluator: CIParamsConditionEvaluatable {
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
         guard let aBool = value as? Bool else {
             // Throw an error or return a default value if value is not of the expected type
             return false
         }
-        
         let conditionValue = Bool(propertyOperation.value) ?? false
-        
         switch propertyOperation.type {
         case .EQ:
             return aBool == conditionValue
@@ -91,14 +80,10 @@ internal class CTBoolEvaluator: CTParamsConditionEvaluatable {
             return false
         }
     }
-    
 }
 
-internal class CTDateEvaluator: CTParamsConditionEvaluatable {
-    
+class CIDateEvaluator: CIParamsConditionEvaluatable {
     func evaluateCondition(value: Any?, propertyOperation: CITriggerOperation) -> Bool {
-        
         return false
     }
-    
 }

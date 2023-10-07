@@ -6,9 +6,10 @@
 //
 
 #import "ViewController.h"
-#import <Castled_iOS_SDK/Castled_iOS_SDK-Swift.h>
+#import <Castled/Castled-Swift.h>
 
-@interface ViewController ()
+static NSString *userIdKey = @"userIdKey";
+@interface ViewController () <CastledInboxDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnRegisterUser;
 @property (weak, nonatomic) IBOutlet UIButton *btnGotoSecondVC;
 
@@ -22,6 +23,9 @@
     self.navigationItem.title = @"Castled";
     [self showRequiredViews];
 
+
+
+
 }
 
 - (void)showRequiredViews {
@@ -30,8 +34,15 @@
     dispatch_async(dispatch_get_main_queue(), ^{
 
 
-        if ([CastledUserDefaults getString:CastledUserDefaults.kCastledUserIdKey] != nil) {
+        if ([[NSUserDefaults standardUserDefaults] valueForKey:userIdKey] != nil) {
             weakSelf.btnGotoSecondVC.hidden = NO;
+
+            UIImageSymbolConfiguration *largeConfig = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleLargeTitle];
+            [self.navigationItem setRightBarButtonItem:nil];
+            UIBarButtonItem *inboxButton = [[UIBarButtonItem alloc] initWithImage:[UIImage systemImageNamed:@"bell" withConfiguration:largeConfig] style:UIBarButtonItemStylePlain target:self action:@selector(inboxTapped)];
+            [self.navigationItem setRightBarButtonItem:inboxButton];
+            [self inboxCallBack];
+
         } else {
             weakSelf.btnGotoSecondVC.hidden = YES;
         }
@@ -47,9 +58,66 @@
 
 - (void)registerUserAPI {
     NSString *userId = @"antony@castled.io"; // user-101
-    NSString *token = [CastledUserDefaults getString:CastledUserDefaults.kCastledAPNsTokenKey];
-    [Castled registerUserWithUserId:userId apnsToken:token];
+    [[Castled sharedInstance] setUserId:@"antony@castled.io" userToken:nil];
+    [[NSUserDefaults standardUserDefaults] setValue:userId forKey:userIdKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self showRequiredViews];
+}
+
+-(void)inboxCallBack{
+     /*   [[Castled sharedInstance] getInboxItemsWithCompletion:^(BOOL succes, NSArray<CastledInboxItem *> * _Nullable inboxItems, NSString * _Nullable errorMessage) {
+            NSLog(@"Inbox items are %@", inboxItems);
+    
+        }];
+    [[Castled sharedInstance] inboxUnreadCountWithListener:^(NSInteger unreadCount) {
+        NSLog(@"Inbox unread count is %ld", (long)unreadCount);
+        NSLog(@"Inbox unread count is -- %ld", [[Castled sharedInstance] getInboxUnreadCount]);
+
+    }];*/
+
+
+}
+- (void)inboxTapped {
+    // Handle the button tap here
+    CastledInboxDisplayConfig *style = [[CastledInboxDisplayConfig alloc] init];
+    style.inboxViewBackgroundColor = [UIColor whiteColor];
+    style.navigationBarBackgroundColor = [UIColor linkColor];
+    style.navigationBarTitle = @"Castled Inbox";
+    style.navigationBarButtonTintColor = [UIColor whiteColor];
+    style.loaderTintColor = [UIColor blueColor];
+    style.hideCloseButton = YES;
+
+    UIViewController *inboxViewController = [[Castled sharedInstance] getInboxViewControllerWith:style andDelegate:self];
+    // inboxViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    // [self presentViewController:inboxViewController animated:YES completion:nil];
+    [self.navigationController pushViewController:inboxViewController animated:YES];
+}
+
+- (void)didSelectedInboxWith:(CastledClickActionType)action :(NSDictionary * _Nullable)kvPairs :(CastledInboxItem * _Nonnull)inboxItem {
+    NSLog(@"didSelectedInboxWith ----kvPairs  %@ item %@",kvPairs,inboxItem);
+    switch (action) {
+        case CastledClickActionTypeDeepLink:
+
+            break;
+        case CastledClickActionTypeNavigateToScreen:
+
+            break;
+        case CastledClickActionTypeRichLanding:
+
+            break;
+        case CastledClickActionTypeRequestForPush:
+
+            break;
+        case CastledClickActionTypeDismiss:
+
+            break;
+        case CastledClickActionTypeCustom:
+
+            break;
+        default:
+            break;
+    }
+
 }
 
 - (void)registerEvents {
@@ -60,9 +128,6 @@
     // Implementation for triggering campaign
 }
 
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
-}
 
 
 @end

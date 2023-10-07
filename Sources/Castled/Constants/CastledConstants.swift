@@ -7,71 +7,77 @@
 
 import Foundation
 
-public class CastledConstants {
-    
-    //Plist Key for enable/ Disable swizzling
-    static let kCastledSwzzlingDisableKey          = "CastledSwizzlingDisabled"
-    
-    
-    public static let kCastledPushActionTypeNavigate       = "NAVIGATE_TO_SCREEN"
-    public static let kCastledPushActionTypeDeeplink       = "DEEP_LINKING"
-    public static let kCastledPushActionTypeDiscardNotifications      = "DISMISS_NOTIFICATION"
-    public static let kCastledPushActionTypeRichLanding      = "RICH_LANDING"
-    
-    public struct PushNotification {
-        
-        public static let customKey = "castled"
-        public static let apsKey = "aps"
-        
-        public struct ApsProperties{
+class CastledConstants {
+    // Plist Key for enable/ Disable swizzling
+    static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
+    enum PushNotification {
+        static let customKey = "castled"
+        static let apsKey = "aps"
+        enum ApsProperties {
             static let category = "category"
         }
-        
-        public struct CustomProperties {
-            public static let notificationId = "castled_notification_id"
-            public static let teamId = "team_id"
-            public static let sourceContext = "source_context"
-            public static let mediaType = "media_type"
-            public static let mediaURL = "media_url"
-            public static let categoryActions = "category_actions"
-            public static let defaultActionURL = "default_action_url"
-            public static let defaultAction = "default_action"
-            public static let keyValuePair = "key_vals"
-            public struct Category {
-                public static let type = "type"
-                public static let name = "name"
-                public static let actionComponents = "actionComponents"
-                
-                public struct Action {
-                    public static let actionId = "actionId"
-                    public static let clickAction = "clickAction"
-                    public static let url = "url"
-                    public static let useWebView = "useWebview"
+
+        enum CustomProperties {
+            static let notificationId = "castled_notification_id"
+            static let teamId = "team_id"
+            static let sourceContext = "source_context"
+            static let mediaType = "media_type"
+            static let mediaURL = "media_url"
+            static let categoryActions = "category_actions"
+            static let keyValuePair = "key_vals"
+            enum Category {
+                static let type = "type"
+                static let name = "name"
+                static let actionComponents = "actionComponents"
+
+                enum Action {
+                    static let actionId = "actionId"
+                    static let clickAction = "clickAction"
+                    static let clickActionUrl = "clickActionUrl"
+                    static let url = "url"
+                    static let useWebView = "useWebview"
                 }
             }
         }
-        
-        enum ActionType: String {
+
+        enum ClickActionType: String, Codable {
             case navigateToScreen = "NAVIGATE_TO_SCREEN"
             case deepLink = "DEEP_LINKING"
-            case discardNotification = "DISMISS_NOTIFICATION"
             case richLanding = "RICH_LANDING"
             case defaultAction = "DEFAULT"
-        }
-        
-        enum EventTypes: String {
-            case send = "SEND"
-            case clicked = "CLICKED"
-            case discarded = "DISCARDED"
-            case received = "RECEIVED"
-            case foreground = "FOREGROUND"
-            case viewed = "VIEWED"
+            case discardNotification = "DISMISS_NOTIFICATION"
+            case requestPushPermission = "REQUEST_PUSH_PERMISSION" // this is for inapp
+            case custom = "CUSTOM" // this is for inapp
+
+            init(stringValue: String) {
+                if let actionType = ClickActionType(rawValue: stringValue) {
+                    self = actionType
+                } else {
+                    self = .custom
+                }
+            }
+
+            func getCastledClickActionType() -> CastledClickActionType {
+                switch self {
+                    case .navigateToScreen:
+                        return CastledClickActionType.navigateToScreen
+                    case .deepLink:
+                        return CastledClickActionType.deepLink
+                    case .richLanding:
+                        return CastledClickActionType.navigateToScreen
+                    case .discardNotification:
+                        return CastledClickActionType.dismiss
+                    case .requestPushPermission:
+                        return CastledClickActionType.requestForPush
+                    default:
+                        return CastledClickActionType.custom
+                }
+            }
         }
     }
-    
-    
-    struct CastledPushNotificationCustomPropertyKeys{
-        static let castledNotificationId =  "castled_notification_id"
+
+    enum CastledPushCustomPropertyKeys {
+        static let castledNotificationId = "castled_notification_id"
         static let teamId = "team_id"
         static let sourceContext = "source_context"
         static let mediaType = "media_type"
@@ -79,73 +85,49 @@ public class CastledConstants {
         static let categoryActions = "category_actions"
         static let defaultActionURL = "default_action_url"
         static let defaultAction = "default_action"
-        static let keyValuePair =  "key_vals"
+        static let keyValuePair = "key_vals"
     }
-    
-    enum PushNotificationActionType : String{
-        case navigateToScreen = "NAVIGATE_TO_SCREEN"
-        case deepLink = "DEEP_LINKING"
-        case discardNotification = "DISMISS_NOTIFICATION"
-        case richLanding = "RICH_LANDING"
-        case defaultAction = "DEFAULT"
+
+    enum CastledEventTypes: String {
+        case cliked = "CLICKED"
+        case discarded = "DISCARDED"
+        case received = "RECEIVED"
+        case viewed = "VIEWED"
     }
-    
-    
-    
-    internal enum  CastledEventTypes: String {
-        case send            = "SEND"
-        case cliked          = "CLICKED"
-        case discarded       = "DISCARDED"
-        case received        = "RECEIVED"
-        case foreground      = "FOREGROUND"
-        case viewed          = "VIEWED"
-        
-        
-    }
-    
-    internal static let CastledSlugValueIdentifierKey    = "ceis"
-    
-    internal enum  CastledSlugValueEventIdentifier: String {
-        case push            = "push"
-        case inapp           = "inapp"
-    }
-    
-    internal enum InAppsConfigKeys: String {
+
+    static let CastledNetworkRequestTypeKey = "castled_request_type"
+    enum InAppsConfigKeys: String {
         case inAppNotificationId = "nid"
         case inAppCurrentDisplayCounter = "dc"
         case inAppLastDisplayedTime = "ldt"
     }
-    
-    internal enum InDisplayPriority: String, Comparable {
+
+    enum InDisplayPriority: String, Comparable {
         case urgent = "URGENT"
         case high = "HIGH"
         case moderate = "MODERATE"
         case low = "LOW"
         case minimum = "MINIMUM"
-        
-        
-        internal var sortOrder: Int {
+        var sortOrder: Int {
             switch self {
-            case .urgent:
-                return 4
-            case .high:
-                return 3
-            case .moderate:
-                return 2
-            case .low:
-                return 1
-            case .minimum:
-                return 0
-                
-                
+                case .urgent:
+                    return 4
+                case .high:
+                    return 3
+                case .moderate:
+                    return 2
+                case .low:
+                    return 1
+                case .minimum:
+                    return 0
             }
         }
-        
-        static func ==(lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
+
+        static func == (lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
             return lhs.sortOrder == rhs.sortOrder
         }
-        
-        static func <(lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
+
+        static func < (lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
             return lhs.sortOrder < rhs.sortOrder
         }
     }

@@ -1,6 +1,3 @@
-
-reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)
-
 excluded: # paths to ignore during linting. Takes precedence over `included`.
     - Carthage
     - Pods
@@ -13,129 +10,90 @@ disabled_rules: # rule identifiers to exclude from running
     - empty_enum_arguments
     - overridden_super_call
     - sorted_imports
-#    - colon # Default configuration: warning, flexible_right_spacing: false, apply_to_dictionaries: true
-#    - comma # Default configuration: warning
-#    - opening_brace
-#    - todo
-#    - empty_parentheses_with_trailing_closure
-#    - empty_string
-#    - unused_closure_parameter
-#    - unused_setter_value
-#    - unused_optional_binding
-#    - redundant_void_return
-#    - void_return
-#    - redundant_string_enum_value
-#    - redundant_objc_attribute
-#    - closure_parameter_position
-#    - control_statement
-#    - notification_center_detachment
-#    - legacy_constructor
-#    - for_where
-#    - unneeded_break_in_switch
-#    - implicit_getter
-#    - duplicate_imports
-#    - trailing_newline
-
-opt_in_rules: # some rules are only opt-in
-#    - missing_docs
-    - yoda_condition            # Default configuration: warning
-    - empty_count               # Default configuration: error, only_after_dot: false
-    - empty_string              # Default configuration: warning
-    - closure_end_indentation   # Default configuration: warning
-    - closure_spacing           # Default configuration: warning
+    - cyclomatic_complexity
     - explicit_init             # Default configuration: warning
     - first_where               # Default configuration: warning
-    - number_separator          # Default configuration: warning, minimum_length: 0
+#    - number_separator          # Default configuration: warning, minimum_length: 0
     - explicit_failure_calls
     - fatal_error_message
-#    - extension_access_modifier
-#    - implicitly_unwrapped_optional
-#    - operator_usage_whitespace
     - vertical_parameter_alignment_on_call
     - multiline_parameters
 #    - multiple_empty_lines # Defined into custom roles
     - nesting
-
     - private_outlet
     - prohibited_super_call
     - protocol_property_accessors_order
     - redundant_nil_coalescing
     - syntactic_sugar
-    - comments_space
-    - comments_capitalized_ignore_possible_code
-    - comments_capitalized_find_possible_code
+#    - comments_capitalized_ignore_possible_code
+#    - already_bool
+    - switch_case_alignment
+    - unneeded_break_in_switch
+    - for_where
+    - redundant_string_enum_value
+    - multiple_closures_with_trailing_closure
+    - nsobject_prefer_isequal
 
+opt_in_rules: # some rules are only opt-in
+  - empty_count
+  - empty_string              # Default configuration: warning
+#  - number_separator
+  - closure_end_indentation   # Default configuration: warning
+  - closure_spacing           # Default configuration: warning
 
-line_length:
-    warning: 200
-    error: 250
-    ignores_function_declarations: true
-    ignores_comments: true
-    ignores_urls: true
+  # Find all the available rules by running:
+  # swiftlint rules
+included: # paths to include during linting. `--path` is ignored if present.
+  - Castled
+  - CastledNotificationContent
+  - CastledNotificationService
 
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Carthage
+  - Pods
+  - "*.framework"
+  
+
+# configurable rules can be customized from this configuration file
+# binary rules can set their severity level
+#force_try:
+#  severity: warning # explicitly
+# rules that have both warning and error levels, can set just the warning level
+# implicitly
+line_length: 500
+# they can set both implicitly with an array
 function_body_length:
-    warning: 80
-    error: 150
-
-function_parameter_count:
-    warning: 4
-    error: 6
-
-type_name: # class name
-    min_length: 3
-    max_length:
-        warning: 60
-        error: 80
-
-type_body_length:
-    warning: 300
-    error: 500
+  - 500 # warning
+  - 600 # error
+# or they can set both explicitly
 
 file_length:
-    warning: 500
-    error: 800
-    ignore_comment_only_lines: true
-
-identifier_name: # Variable name
-    allowed_symbols: "_"
-    min_length: 1
-    max_length:
-        warning: 60
-        error: 80
-    excluded:
-        - id
-        - URL
-        - GlobalAPIKey
-
+  warning: 500
+  error: 1200
+# naming rules can set warnings/errors for min_length and max_length
+# additionally they can set excluded names
+type_name:
+  min_length: 4 # only warning
+  max_length: # warning and error
+    warning: 40
+    error: 50
+  excluded: iPhone # excluded via string
+identifier_name:
+  allowed_symbols: "_"
+  min_length: # only min_length
+    error: 2 # only error
+    warning: 2
+  excluded: # excluded via string array
+    - id
+    - URL
+    - GlobalAPIKey
 vertical_whitespace: # warning, max_empty_lines: 1
-    max_empty_lines: 3
-
+    max_empty_lines: 1
+#number_separator:
+#    minimum_length: 8
 large_tuple:
     warning: 4
     error: 5
-
-private_outlet:
-    allow_private_set: true
-
-#nesting:
-#    type_level:
-#      warning: 3
-#      error: 6
-#    statement_level:
-#      warning: 5
-#      error: 10
-
-number_separator:
-    minimum_length: 8
-
-#cyclomatic complexity below 4 is considered good;
-#cyclomatic complexity between 5 and 7 is considered medium complexity,
-#between 8 and 10 is high complexity,
-#and above that is extreme complexity.
-cyclomatic_complexity:
-    ignores_case_statements: true
-    warning: 7
-    error: 11
 
 custom_rules:
     comments_space: # From https://github.com/brandenr/swiftlintconfig
@@ -149,11 +107,12 @@ custom_rules:
                 name: "Single line space between functions"
                 message: "Single line space violation: Expected single whitespace between functions"
                 severity: warning
-    comments_capitalized_ignore_possible_code:
-        name: "Capitalize First Word In Comment"
-        regex: "(^ +// +(?!swiftlint)[a-z]+)"
-        message: "The first word of a comment should be capitalized"
-        severity: warning
+                
+#    comments_capitalized_ignore_possible_code:
+#        name: "Capitalize First Word In Comment"
+#        regex: "(^ +// +(?!swiftlint)[a-z]+)"
+#        message: "The first word of a comment should be capitalized"
+#        severity: warning
 
     explicit_failure_calls:
         name: “Avoid asserting ‘false’”
@@ -161,11 +120,12 @@ custom_rules:
         message: “Use assertionFailure() or preconditionFailure() instead.”
         severity: warning
 
-    multiple_empty_lines:
-        name: "Multiple Empty Lines"
-        regex: '((?:\s*\n){3,})'
-        message: "There are too many line breaks"
-        severity: error
+#    multiple_empty_lines:
+#        name: "Multiple Empty Lines"
+#          regex: '((?<!//.*)\n\s*\n)+'
+#
+#        message: "There are too many line breaks"
+#        severity: error
 
     force_https: # From https://github.com/Twigz/Game
         name: "Force HTTPS over HTTP"
@@ -174,12 +134,11 @@ custom_rules:
         message: "HTTPS should be favored over HTTP"
         severity: warning
 
-    already_true:
-        regex: "== true"
-        message: "Don't compare to true, just use the bool value."
-
-    already_bool:
-        regex: "== false"
-        message: "Don't compare to false, just use !value."
-
-view raw.swiftlint.yml hosted with ❤ by GitHub
+#    already_true:
+#        regex: "== true"
+#        message: "Don't compare to true, just use the bool value."
+#
+#    already_bool:
+#        regex: "== false"
+#        message: "Don't compare to false, just use !value."
+reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji)

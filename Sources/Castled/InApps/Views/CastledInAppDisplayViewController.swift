@@ -8,65 +8,23 @@
 import UIKit
 
 class CastledInAppDisplayViewController: UIViewController {
-    
+    @IBOutlet weak var viewModalContainer: UIView!
+    @IBOutlet weak var viewFSContainer: UIView!
+    @IBOutlet weak var viewBannerContainer: UIView!
+    @IBOutlet weak var constraintBannerBottom: NSLayoutConstraint!
+    @IBOutlet weak var constraintBannerTop: NSLayoutConstraint!
+
+    @IBOutlet weak var dismissView: CastledDismissButton!
     private var inAppWindow: CastledTouchThroughWindow?
-    internal var selectedInAppObject : CastledInAppObject?
-    private var childViewFrame : CGRect?
-    private weak var castledChildViewController : UIViewController?
+    var selectedInAppObject: CastledInAppObject?
     private var isSlideUpInApp = false
     private var autoDismissalWorkItem: DispatchWorkItem?
-    
+    var inAppView: (any CIViewProtocol)?
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    func instantiateFromNib<T: UIViewController>(vc : T.Type) -> T {
-        //        return T.init(nibName: String(describing: T.self), bundle:Bundle(identifier:"com.castled.pusherswift.Castled"))
-        
-        return T.init(nibName: String(describing: T.self), bundle:Bundle.resourceBundle(for: Self.self))
-    }
-    
-    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject,inAppDisplaySettings : InAppDisplayConfig,image : UIImage) {
-        selectedInAppObject = inAppObj
-        var childVC : UIViewController?
-        
-        if selectedInAppObject?.message?.type.rawValue == CIMessageType.modal.rawValue {
-            
-            let vc = instantiateFromNib(vc: CastledInAppModalViewController.self)
-            vc.parentContainerVC = self
-            vc.inAppDisplaySettings = inAppDisplaySettings
-            vc.mainImage = image
-            
-            childVC = vc
-            
-            childViewFrame = CGRect(x: 20, y: 20, width: 200, height: 200)
-        }
-        else if selectedInAppObject?.message?.type.rawValue == CIMessageType.fs.rawValue {
-            let vc = instantiateFromNib(vc: CastledInAppFullScreenViewController.self)
-            vc.parentContainerVC = self
-            vc.inAppDisplaySettings = inAppDisplaySettings
-            vc.mainImage = image
-            
-            childVC = vc
-            
-            
-            
-        } else if selectedInAppObject?.message?.type.rawValue == CIMessageType.banner.rawValue {
-            let vc = instantiateFromNib(vc: CastledInAppFooterViewController.self)
-            vc.parentContainerVC = self
-            vc.inAppDisplaySettings = inAppDisplaySettings
-            vc.mainImage = image
-            childVC = vc
-            isSlideUpInApp = true
-        }
-        
-        guard let castledChildVC = childVC else{
-            
-            return
-        }
-        
-        castledChildViewController = castledChildVC
-        
+
+    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject, inAppDisplaySettings: InAppDisplayConfig) {
         if #available(iOS 13, tvOS 13.0, *) {
             let connectedScenes = UIApplication.shared.connectedScenes
             for scene in connectedScenes {
@@ -81,51 +39,56 @@ class CastledInAppDisplayViewController: UIViewController {
             inAppWindow = CastledTouchThroughWindow(
                 frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
         }
-        
-        
-        guard let window = inAppWindow else{
-            castledChildViewController = nil
+        guard let window = inAppWindow else {
             return
         }
-        inAppWindow?.shouldPassThrough = isSlideUpInApp
-        
-        /* if isSlideUpInApp == true{
-         
-         if #available(iOS 13.0, *) {
-         let height = 120
-         let  bottomPadding = Int(inAppWindow?.safeAreaInsets.bottom ?? 0)
-         let calculatedYpos = CGFloat(Int((inAppWindow?.bounds.height ?? 0)) - Int(bottomPadding) - height)
-         inAppWindow?.frame = CGRect(x: (inAppWindow?.bounds.origin.x)!, y: calculatedYpos , width: (inAppWindow?.bounds.size.width)!, height: CGFloat(height))
-         
-         }
-         
-         }*/
-        let inAppParentView = self.view!
-        inAppParentView.backgroundColor = .clear
+        selectedInAppObject = inAppObj
+        let items = getInappViewFrom(inappAObject: inAppObj)
+        inAppView = items.0
+        let containerView = items.1
+
+        if inAppView == nil || containerView == nil {
+            return
+        }
+
+        containerView?.isHidden = false
+        arrangeDismissButton(containerView: containerView!)
+        isSlideUpInApp = containerView == viewBannerContainer
+        inAppWindow?.shouldPassThrough = isSlideUpInApp // for enabling touch only for banner
+
+        // required properties for population
+        inAppView?.parentContainerVC = self
+        inAppView?.viewContainer = containerView
+        inAppView?.inAppDisplaySettings = inAppDisplaySettings
+        inAppView?.selectedInAppObject = selectedInAppObject
+        inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
+        if let html = items.2 {
+            let htmlView = inAppView as! CIHTMLView
+            if let decodedData = Data(base64Encoded: html) {
+                htmlView.htmlString = String(data: decodedData, encoding: .utf8) ?? html
+            } else {
+                htmlView.htmlString = html
+            }
+            htmlView.loadHtmlString()
+        }
+
+        let inAppParentView = view!
         inAppParentView.frame = window.bounds
-        
-        addChild(castledChildViewController!)
-        castledChildViewController!.view.frame = window.bounds
-        view.addSubview(castledChildViewController!.view)
-        castledChildViewController!.didMove(toParent: self)
-        
         window.backgroundColor = .clear
-        window.windowLevel = .alert
+        window.windowLevel = .normal
         window.isHidden = false
         window.makeKeyAndVisible()
         window.rootViewController = self
         window.makeKeyAndVisible()
-        
+
         inAppParentView.alpha = 0
-        
         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
             inAppParentView.alpha = 1
-            
-        }) {[weak self] _ in
-            self?.castledChildViewController?.view.layoutSubviews()
+
+        }) { [weak self] _ in
+            self?.view.layoutSubviews()
             CastledInApps.sharedInstance.updateInappEvent(inappObject: inAppObj, eventType: CastledConstants.CastledEventTypes.viewed.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
-            if inAppObj.displayConfig?.autoDismissInterval ?? 0 > 0
-            {
+            if inAppObj.displayConfig?.autoDismissInterval ?? 0 > 0 {
                 self?.autoDismissalWorkItem?.cancel()
                 let requestWorkItem = DispatchWorkItem { [weak self] in
                     self?.hideInAppViewFromWindow(withAnimation: true)
@@ -136,13 +99,13 @@ class CastledInAppDisplayViewController: UIViewController {
             }
         }
     }
-    
-    func hideInAppViewFromWindow(withAnimation : Bool? = true) {
-        self.autoDismissalWorkItem?.cancel()
-        guard let interstitialView = self.view else {
+
+    func hideInAppViewFromWindow(withAnimation: Bool? = true) {
+        autoDismissalWorkItem?.cancel()
+        guard let interstitialView = view else {
             return
         }
-        if withAnimation == true{
+        if withAnimation == true {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: {
                 interstitialView.alpha = 0
             }) { [weak self] _ in
@@ -150,90 +113,112 @@ class CastledInAppDisplayViewController: UIViewController {
                 self?.removeAllViews()
                 // Notify the delegate that it should dismiss the interstitial view controller
             }
-        }
-        else
-        {
+        } else {
             removeAllViews()
         }
-        
-        
     }
-    func removeAllViews(){
-        
-        castledChildViewController?.removeFromParent()
-        castledChildViewController?.view.removeFromSuperview()
-        castledChildViewController?.willMove(toParent: nil)
-        castledChildViewController = nil
-        
+
+    func removeAllViews() {
         inAppWindow?.rootViewController = nil
-        
-        
+        // inAppView?.viewContainer?.removeFromSuperview()
         willMove(toParent: nil)
         view.removeFromSuperview()
         removeFromParent()
-        
         inAppWindow?.removeFromSuperview()
         inAppWindow = nil
-        
     }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //        if isSlideUpInApp == true{
-        //
-        //            CastledInApps.sharedInstance.updateInappEvent(inappObject: (selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
-        //
-        //            hideInAppViewFromWindow()
-        //        }
-    }
-    
-}
 
-extension Bundle {
-    
-    static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-        
-        let mainBundle = Bundle.main
-        let sourceBundle = Bundle(for: bundleClass)
-        guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
-            fatalError("Couldn't determine module name from class \(bundleClass)")
+    private func dismissButtonClicked(_ sender: Any) {
+        CastledInApps.sharedInstance.updateInappEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
+        hideInAppViewFromWindow(withAnimation: true)
+    }
+
+    private func arrangeDismissButton(containerView: UIView) {
+        let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
+        dismissView.initialiseActions(actions: action)
+        if containerView == viewFSContainer {
+            let safeArea = view.safeAreaLayoutGuide
+            dismissView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10).isActive = true
+            dismissView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 0).isActive = true
+
+        } else {
+            dismissView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: dismissView.frame.size.width/2).isActive = true
+            dismissView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: -dismissView.frame.size.width/2).isActive = true
         }
-        // SPM
-        var bundle: Bundle?
-        if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "castled-ios-sdk_CastledNotificationContent", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        else if bundle == nil,let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        // CocoaPods (static)
-        else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: staticBundlePath)
-        }
-        
-        // CocoaPods (framework)
-        else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: frameworkBundlePath)
-        }
-        return bundle ?? sourceBundle
     }
 }
 
+extension CastledInAppDisplayViewController {
+    private func getHTML() -> String {
+        var html = ""
+        if let htmlPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "index1", withExtension: "html") {
+            do {
+                html = try String(contentsOf: htmlPathURL, encoding: .utf8)
+            } catch {
+                print("Unable to get the file.")
+            }
+        }
 
+        return html
+    }
+
+    fileprivate func getInappViewFrom(inappAObject: CastledInAppObject) -> ((any CIViewProtocol)?, contanerV: UIView?, htmlString: String?) {
+        var inppV: (any CIViewProtocol)?
+        var container: UIView?
+        var html: String?
+        switch inappAObject.message?.type.rawValue {
+            case CIMessageType.modal.rawValue:
+                container = viewModalContainer
+
+                switch inappAObject.message?.modal?.type.rawValue {
+                    case CITemplateType.default_template.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
+                    case CITemplateType.image_buttons.rawValue:
+                        break
+                    case CITemplateType.text_buttons.rawValue:
+                        break
+                    case CITemplateType.image_only.rawValue:
+                        break
+                    case CITemplateType.custom_html.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        html = inappAObject.message?.modal?.html
+
+                    default:
+                        break
+                }
+            case CIMessageType.fs.rawValue:
+                container = viewFSContainer
+                switch inappAObject.message?.fs?.type.rawValue {
+                    case CITemplateType.default_template.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
+                    case CITemplateType.image_buttons.rawValue:
+                        break
+                    case CITemplateType.text_buttons.rawValue:
+                        break
+                    case CITemplateType.image_only.rawValue:
+                        break
+                    case CITemplateType.custom_html.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        html = inappAObject.message?.fs?.html
+                    default:
+                        break
+                }
+            case CIMessageType.banner.rawValue:
+                container = viewBannerContainer
+                view.restorationIdentifier = "touchdisabled"
+                switch inappAObject.message?.banner?.type.rawValue {
+                    case CITemplateType.default_template.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIBannerDefaultView", withType: CIBannerDefaultView.self)
+                    case CITemplateType.custom_html.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIHTMLView", withType: CIHTMLView.self)
+                        html = inappAObject.message?.banner?.html
+
+                    default:
+                        break
+                }
+            default:
+                break
+        }
+        return (inppV, container, html)
+    }
+}

@@ -8,325 +8,299 @@
 import Foundation
 import UIKit
 
-internal class InAppDisplayConfig {
-    
+class InAppDisplayConfig {
     /**
      Settings for modal and full screen
      */
-    internal lazy var imageUrl: String = {
-        return ""
+    lazy var imageUrl: String = {
+        ""
     }()
-    
-    internal lazy var title: String = {
-        return ""
+
+    lazy var title: String = {
+        ""
     }()
-    
-    internal lazy var titleFontColor: UIColor = {
-        return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
+
+    lazy var titleFontColor: UIColor = {
+        #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+
     }()
-    
-    internal lazy var titleBgColor: UIColor = {
-        return #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
-        
+
+    lazy var titleBgColor: UIColor = {
+        #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
+
     }()
-    
-    internal lazy var titleFontSize: Int = {
-        return 18
+
+    lazy var titleFontSize: Int = {
+        18
     }()
-    
-    internal lazy var titleFont: UIFont = {
-        return UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.medium)
-        
+
+    lazy var titleFont: UIFont = {
+        UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.medium)
+
     }()
-    
-    internal lazy var body: String = {
-        return ""
+
+    lazy var body: String = {
+        ""
     }()
-    
-    internal lazy var bodyFontColor: UIColor = {
-        return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
+
+    lazy var bodyFontColor: UIColor = {
+        #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+
     }()
-    
-    internal lazy var bodyBgColor: UIColor = {
-        return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+
+    lazy var bodyBgColor: UIColor = {
+        #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
     }()
-    
-    internal lazy var bodyFontSize: Int = {
-        return 14
+
+    lazy var bodyFontSize: Int = {
+        14
     }()
-    
-    internal lazy var bodyFont: UIFont = {
-        return UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
-        
+
+    lazy var bodyFont: UIFont = {
+        UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
+
     }()
-    
-    internal lazy var screenOverlayColor: UIColor = {
-        return #colorLiteral(red: 1, green: 0.9098039216, blue: 0.9098039216, alpha: 1)
+
+    lazy var screenOverlayColor: UIColor = {
+        #colorLiteral(red: 1, green: 0.9098039216, blue: 0.9098039216, alpha: 1)
     }()
-    
-    internal lazy var buttonFont: UIFont = {
-        return UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
-        
+
+    lazy var buttonFont: UIFont = {
+        UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold)
+
     }()
+
     /**
      Left Button
      */
-    internal lazy var leftButtonTitle: String = {
-        return ""
+    lazy var leftButtonTitle: String = {
+        ""
     }()
-    
-    internal lazy var leftButtonClickAction: String = {
-        return ""
+
+    lazy var leftButtonClickAction: String = {
+        ""
     }()
-    
-    internal lazy var leftButtonUri: String = {
-        return ""
+
+    lazy var leftButtonUri: String = {
+        ""
     }()
-    
-    internal lazy var leftButtonColor: UIColor = {
-        return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+
+    lazy var leftButtonColor: UIColor = {
+        #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
     }()
-    
-    internal lazy var leftButtonFontColor: UIColor = {
-        return #colorLiteral(red: 0.4862745098, green: 0.4862745098, blue: 0.4862745098, alpha: 1)
-        
+
+    lazy var leftButtonFontColor: UIColor = {
+        #colorLiteral(red: 0.4862745098, green: 0.4862745098, blue: 0.4862745098, alpha: 1)
+
     }()
-    
-    internal var leftButtonBorderColor: UIColor?
-    
-    internal lazy var leftButtonBorderWidth: Double = {
-        return 1
+
+    var leftButtonBorderColor: UIColor?
+
+    lazy var leftButtonBorderWidth: Double = {
+        1
     }()
-    
-    internal lazy var leftButtonCornerRadius: Int = {
-        return 5
+
+    lazy var leftButtonCornerRadius: Int = {
+        5
     }()
+
     /**
      Right Button
      */
-    internal lazy var rightButtonTitle: String = {
-        return ""
+    lazy var rightButtonTitle: String = {
+        ""
     }()
-    
-    internal lazy var rightButtonClickAction: String = {
-        return ""
+
+    lazy var rightButtonClickAction: String = {
+        ""
     }()
-    
-    internal lazy var rightButtonUri: String = {
-        return ""
+
+    lazy var rightButtonUri: String = {
+        ""
     }()
-    
-    internal lazy var rightButtonColor: UIColor = {
-        return #colorLiteral(red: 0.137254902, green: 0.1019607843, blue: 0.3960784314, alpha: 1)
-        
+
+    lazy var rightButtonColor: UIColor = {
+        #colorLiteral(red: 0.137254902, green: 0.1019607843, blue: 0.3960784314, alpha: 1)
+
     }()
-    
-    internal lazy var rightButtonFontColor: UIColor = {
-        return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+
+    lazy var rightButtonFontColor: UIColor = {
+        #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
     }()
-    
-    internal var rightButtonBorderColor: UIColor?
-    
-    internal lazy var rightButtonBorderWidth: Double = {
-        return 1
+
+    var rightButtonBorderColor: UIColor?
+
+    lazy var rightButtonBorderWidth: Double = {
+        1
     }()
-    
-    internal lazy var rightButtonCornerRadius: Int = {
-        return 5
+
+    lazy var rightButtonCornerRadius: Int = {
+        5
     }()
+
     /**
      Settings for Slide Up
      */
-    internal lazy var slideUpTitle: String = {
-        return ""
+    lazy var slideUpTitle: String = {
+        ""
     }()
-    
-    internal lazy var slideUpClickAction: String = {
-        return ""
+
+    lazy var slideUpClickAction: String = {
+        ""
     }()
-    
-    internal lazy var slideUpUri: String = {
-        return ""
+
+    lazy var slideUpUri: String = {
+        ""
     }()
-    
-    internal lazy var slideUpBgColor: UIColor = {
-        return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+
+    lazy var slideUpBgColor: UIColor = {
+        #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+
     }()
-    
-    internal lazy var slideUpFontSize: Int = {
-        return 16
+
+    lazy var slideUpFontSize: Int = {
+        16
     }()
-    
-    internal lazy var slideUpFont: UIFont = {
-        return UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
-        
+
+    lazy var slideUpFont: UIFont = {
+        UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
+
     }()
-    
-    internal lazy var slideUpFontColor: UIColor = {
-        return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+
+    lazy var slideUpFontColor: UIColor = {
+        #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     }()
-    
-    internal func populateConfigurationsFrom(inAppObject : CastledInAppObject){
-        
+
+    func populateConfigurationsFrom(inAppObject: CastledInAppObject) {
         if inAppObject.message?.type.rawValue ==
             CIMessageType.modal.rawValue {
-            
-            //title
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.titleFontColor ?? "")   {
-                
+            // title
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.titleFontColor ?? "") {
                 titleFontColor = color
             }
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.titleBgColor ?? "")   {
-                
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.titleBgColor ?? "") {
                 titleBgColor = color
             }
             titleFontSize = inAppObject.message?.modal?.titleFontSize ?? 18
             title = inAppObject.message?.modal?.title ?? ""
             body = inAppObject.message?.modal?.body ?? ""
             imageUrl = inAppObject.message?.modal?.imageURL ?? ""
-            
-            //body
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.bodyFontColor ?? "")   {
-                
+
+            // body
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.bodyFontColor ?? "") {
                 bodyFontColor = color
             }
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.bodyBgColor ?? "")   {
-                
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.bodyBgColor ?? "") {
                 bodyBgColor = color
             }
             bodyFontSize = inAppObject.message?.modal?.bodyFontSize ?? 14
-            
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.screenOverlayColor ?? "")   {
-                
+
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.modal?.screenOverlayColor ?? "") {
                 screenOverlayColor = color
             }
-            
-            if let actionButtons = inAppObject.message?.modal?.actionButtons{
-                if actionButtons.count > 0{
+
+            if let actionButtons = inAppObject.message?.modal?.actionButtons {
+                if !actionButtons.isEmpty {
                     leftButtonTitle = actionButtons[0].label
                     leftButtonClickAction = actionButtons[0].clickAction.rawValue
                     leftButtonUri = actionButtons[0].url
-                    
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].buttonColor)   {
-                        
+
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].buttonColor) {
                         leftButtonColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].fontColor)   {
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].fontColor) {
                         leftButtonFontColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].borderColor)   {
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].borderColor) {
                         leftButtonBorderColor = color
                     }
-                    
                 }
-                if actionButtons.count > 1{
-                    
+                if actionButtons.count > 1 {
                     rightButtonTitle = actionButtons[1].label
                     rightButtonClickAction = actionButtons[1].clickAction.rawValue
                     rightButtonUri = actionButtons[1].url
-                    
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].buttonColor)   {
-                        
+
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].buttonColor) {
                         rightButtonColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].fontColor)   {
-                        
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].fontColor) {
                         rightButtonFontColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].borderColor)   {
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].borderColor) {
                         rightButtonBorderColor = color
                     }
-                    
                 }
             }
-        }
-        else if inAppObject.message?.type.rawValue == CIMessageType.fs.rawValue {
-            //title
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.titleFontColor ?? "")   {
-                
+        } else if inAppObject.message?.type.rawValue == CIMessageType.fs.rawValue {
+            // title
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.titleFontColor ?? "") {
                 titleFontColor = color
             }
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.titleBgColor ?? "")   {
-                
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.titleBgColor ?? "") {
                 titleBgColor = color
             }
             titleFontSize = inAppObject.message?.fs?.titleFontSize ?? 18
             title = inAppObject.message?.fs?.title ?? ""
             body = inAppObject.message?.fs?.body ?? ""
             imageUrl = inAppObject.message?.fs?.imageURL ?? ""
-            //body
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.bodyFontColor ?? "")   {
-                
+            // body
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.bodyFontColor ?? "") {
                 bodyFontColor = color
             }
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.bodyBgColor ?? "")   {
-                
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.bodyBgColor ?? "") {
                 bodyBgColor = color
             }
             bodyFontSize = inAppObject.message?.fs?.bodyFontSize ?? 14
-            
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.screenOverlayColor ?? "")   {
-                
+
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.fs?.screenOverlayColor ?? "") {
                 screenOverlayColor = color
             }
-            
-            if let actionButtons = inAppObject.message?.fs?.actionButtons{
-                if actionButtons.count > 0{
-                    
+
+            if let actionButtons = inAppObject.message?.fs?.actionButtons {
+                if !actionButtons.isEmpty {
                     leftButtonTitle = actionButtons[0].label
                     leftButtonClickAction = actionButtons[0].clickAction.rawValue
                     leftButtonUri = actionButtons[0].url
-                    
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].buttonColor)   {
-                        
+
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].buttonColor) {
                         leftButtonColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].fontColor)   {
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].fontColor) {
                         leftButtonFontColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].borderColor)   {
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[0].borderColor) {
                         leftButtonBorderColor = color
                     }
-                    
                 }
-                if actionButtons.count > 1{
+                if actionButtons.count > 1 {
                     rightButtonTitle = actionButtons[1].label
                     rightButtonClickAction = actionButtons[1].clickAction.rawValue
                     rightButtonUri = actionButtons[1].url
-                    
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].buttonColor)   {
-                        
+
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].buttonColor) {
                         rightButtonColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].fontColor)   {
-                        
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].fontColor) {
                         rightButtonFontColor = color
                     }
-                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].borderColor)   {
+                    if let color = CastledCommonClass.hexStringToUIColor(hex: actionButtons[1].borderColor) {
                         rightButtonBorderColor = color
                     }
-                    
                 }
             }
-            
+
         } else if inAppObject.message?.type.rawValue == CIMessageType.banner.rawValue {
-            
             slideUpTitle = inAppObject.message?.banner?.body ?? ""
             imageUrl = inAppObject.message?.banner?.imageURL ?? ""
             slideUpClickAction = inAppObject.message?.banner?.clickAction.rawValue ?? ""
             slideUpUri = inAppObject.message?.banner?.url ?? ""
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.banner?.bgColor ?? "")   {
-                
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.banner?.bgColor ?? "") {
                 slideUpBgColor = color
             }
-            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.banner?.fontColor ?? "")   {
-                
+            if let color = CastledCommonClass.hexStringToUIColor(hex: inAppObject.message?.banner?.fontColor ?? "") {
                 slideUpFontColor = color
             }
             slideUpFontSize = inAppObject.message?.banner?.fontSize ?? 16

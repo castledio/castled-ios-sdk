@@ -1,8 +1,7 @@
 //
 //  DeeplinkViewController.swift
-//  CastledPusherExample
+//  CastledDemo
 //
-//  Created by Faisal Azeez on 04/12/2022.
 //
 
 import UIKit
