@@ -13,13 +13,13 @@
             <rect key="frame" x="0.0" y="0.0" width="411" height="1370"/>
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dG6-JK-kBI">
-                    <rect key="frame" x="0.0" y="487" width="411" height="396"/>
+                    <rect key="frame" x="0.0" y="484.33333333333337" width="411" height="401.33333333333337"/>
                     <subviews>
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOC-Dv-Sah" userLabel="Image Container">
-                            <rect key="frame" x="0.0" y="0.0" width="411" height="200"/>
+                            <rect key="frame" x="0.0" y="0.0" width="411" height="205.33333333333334"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qfc-SR-yre">
-                                    <rect key="frame" x="0.0" y="0.0" width="411" height="200"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="411" height="205.33333333333334"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -27,14 +27,14 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="Qfc-SR-yre" secondAttribute="bottom" id="Bdc-06-R8x"/>
                                 <constraint firstAttribute="trailing" secondItem="Qfc-SR-yre" secondAttribute="trailing" id="BhO-s0-jNi"/>
-                                <constraint firstAttribute="width" secondItem="GOC-Dv-Sah" secondAttribute="height" multiplier="411:200" priority="999" id="KEk-63-dJP"/>
-                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="mBE-zg-cAB"/>
+                                <constraint firstAttribute="height" secondItem="GOC-Dv-Sah" secondAttribute="width" multiplier="1/2" priority="999" id="KEk-63-dJP"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="400" id="mBE-zg-cAB"/>
                                 <constraint firstItem="Qfc-SR-yre" firstAttribute="top" secondItem="GOC-Dv-Sah" secondAttribute="top" id="o3O-ia-yuI"/>
                                 <constraint firstItem="Qfc-SR-yre" firstAttribute="leading" secondItem="GOC-Dv-Sah" secondAttribute="leading" id="pIW-B9-2JX"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jF7-W3-xsY" userLabel="Title Container">
-                            <rect key="frame" x="0.0" y="200" width="411" height="56"/>
+                            <rect key="frame" x="0.0" y="205.33333333333331" width="411" height="56"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" insetsLayoutMarginsFromSafeArea="NO" text="Title " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="24r-TY-Vqd">
                                     <rect key="frame" x="20" y="10" width="371" height="36"/>
@@ -56,7 +56,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oh9-hD-aq7" userLabel="Body Container">
-                            <rect key="frame" x="0.0" y="256" width="411" height="50"/>
+                            <rect key="frame" x="0.0" y="261.33333333333331" width="411" height="50"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Body " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5oJ-nJ-vUh">
                                     <rect key="frame" x="20" y="10" width="371" height="30"/>
@@ -78,7 +78,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GcZ-8o-bG7" userLabel="Button Container">
-                            <rect key="frame" x="0.0" y="306" width="411" height="90"/>
+                            <rect key="frame" x="0.0" y="311.33333333333331" width="411" height="90"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G7g-DT-fGW" userLabel="Two Button Container">
                                     <rect key="frame" x="20" y="20" width="371" height="50"/>

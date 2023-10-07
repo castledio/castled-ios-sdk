@@ -34,13 +34,13 @@ import Foundation
             if let evaluator = getParamEvaluator(triggerType: filter.operation.propertyType.rawValue) {
                 if evaluator.evaluateCondition(value: params?[filter.name], propertyOperation: filter.operation) == false {
                     if showLog == true {
-                        castledLog("Error:❌❌❌ Unable to satisfy the trigger condition: \(filter.name) for \(String(describing: params?[filter.name]))")
+                        CastledLog.castledLog("Error:❌❌❌ Unable to satisfy the trigger condition: \(filter.name) for \(String(describing: params?[filter.name]))", logLevel: CastledLogLevel.error)
                     }
                     return false
                 }
             } else {
                 if showLog == true {
-                    castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.operation.type)")
+                    CastledLog.castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.operation.type)", logLevel: CastledLogLevel.error)
                 }
                 return false
             }
@@ -56,7 +56,7 @@ import Foundation
                 }
             } else {
                 if showLog == true {
-                    castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.name)")
+                    CastledLog.castledLog("Error:❌❌❌ No evaluator defined for property type: \(filter.name)", logLevel: CastledLogLevel.error)
                 }
             }
         }

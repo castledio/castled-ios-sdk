@@ -24,7 +24,7 @@ class CIStringEvaluator: CIParamsConditionEvaluatable {
             return propertyOperation.value != textValue
 
         default:
-            castledLog("Operations type \(propertyOperation.type.rawValue) not supported for string operand")
+            CastledLog.castledLog("Operations type \(propertyOperation.type.rawValue) not supported for string operand", logLevel: CastledLogLevel.error)
             return false
         }
     }
@@ -59,7 +59,7 @@ class CINumberEvaluator: CIParamsConditionEvaluatable {
             return fromValue.doubleValue < numberValue.doubleValue && toValue.doubleValue > numberValue.doubleValue
         default:
             let message = String(format: "Operations type %@ not supported for numeric operand", propertyOperation.propertyType.rawValue)
-            castledLog(message)
+            CastledLog.castledLog(message, logLevel: CastledLogLevel.error)
         }
         return false
     }

@@ -13,7 +13,7 @@ import Foundation
 
     // MARK: - initialization method
 
-    @objc public static func initialize(withInstanceId instanceId: String) -> CastledConfigs {
+    @objc public static func initialize(apiKey instanceId: String) -> CastledConfigs {
         if let existingConfig = CastledConfigs.sharedConfig {
             existingConfig.instanceId = instanceId
         } else {
@@ -26,10 +26,6 @@ import Foundation
 
     @objc public lazy var appGroupId: String = {
         ""
-    }()
-
-    @objc public lazy var disableLog: Bool = {
-        false
     }()
 
     @objc public lazy var enableAppInbox: Bool = {
@@ -50,6 +46,10 @@ import Foundation
 
     @objc public lazy var inAppFetchIntervalSec: Int = {
         15 * 60
+    }()
+
+    @objc public lazy var logLevel: CastledLogLevel = {
+        CastledLogLevel.debug
     }()
 
     @objc public lazy var location: CastledLocation = {

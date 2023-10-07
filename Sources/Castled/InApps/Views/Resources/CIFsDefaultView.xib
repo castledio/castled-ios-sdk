@@ -18,10 +18,10 @@
                     <rect key="frame" x="0.0" y="0.0" width="411" height="1370"/>
                     <subviews>
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GOC-Dv-Sah" userLabel="Image Container">
-                            <rect key="frame" x="0.0" y="0.0" width="411" height="616.66666666666663"/>
+                            <rect key="frame" x="0.0" y="0.0" width="411" height="308.33333333333331"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qfc-SR-yre">
-                                    <rect key="frame" x="0.0" y="0.0" width="411" height="616.66666666666663"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="411" height="308.33333333333331"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -29,13 +29,14 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="Qfc-SR-yre" secondAttribute="bottom" id="Bdc-06-R8x"/>
                                 <constraint firstAttribute="trailing" secondItem="Qfc-SR-yre" secondAttribute="trailing" id="BhO-s0-jNi"/>
-                                <constraint firstAttribute="height" relation="lessThanOrEqual" priority="999" constant="200" id="mBE-zg-cAB"/>
+                                <constraint firstAttribute="height" secondItem="GOC-Dv-Sah" secondAttribute="width" multiplier="3/4" priority="999" id="OGe-CH-fS5"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="400" id="mBE-zg-cAB"/>
                                 <constraint firstItem="Qfc-SR-yre" firstAttribute="top" secondItem="GOC-Dv-Sah" secondAttribute="top" id="o3O-ia-yuI"/>
                                 <constraint firstItem="Qfc-SR-yre" firstAttribute="leading" secondItem="GOC-Dv-Sah" secondAttribute="leading" id="pIW-B9-2JX"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jF7-W3-xsY" userLabel="Title Container">
-                            <rect key="frame" x="0.0" y="616.66666666666663" width="411" height="56"/>
+                            <rect key="frame" x="0.0" y="308.33333333333331" width="411" height="56"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" insetsLayoutMarginsFromSafeArea="NO" text="Title " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="24r-TY-Vqd">
                                     <rect key="frame" x="20" y="10" width="371" height="36"/>
@@ -57,7 +58,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oh9-hD-aq7" userLabel="Body Container">
-                            <rect key="frame" x="0.0" y="672.66666666666663" width="411" height="50"/>
+                            <rect key="frame" x="0.0" y="364.33333333333331" width="411" height="50"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" text="Body " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5oJ-nJ-vUh">
                                     <rect key="frame" x="20" y="10" width="371" height="30"/>
@@ -148,7 +149,6 @@
                         <constraint firstItem="jF7-W3-xsY" firstAttribute="leading" secondItem="dG6-JK-kBI" secondAttribute="leading" id="cyL-uO-sKM"/>
                         <constraint firstItem="GcZ-8o-bG7" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Oh9-hD-aq7" secondAttribute="bottom" id="l1p-Gv-FWa"/>
                         <constraint firstItem="Oh9-hD-aq7" firstAttribute="top" secondItem="jF7-W3-xsY" secondAttribute="bottom" id="nb8-aR-jau"/>
-                        <constraint firstItem="GOC-Dv-Sah" firstAttribute="height" secondItem="dG6-JK-kBI" secondAttribute="height" multiplier="0.45" id="nd4-EK-RgI"/>
                         <constraint firstItem="GOC-Dv-Sah" firstAttribute="leading" secondItem="dG6-JK-kBI" secondAttribute="leading" id="rCY-PN-j22"/>
                         <constraint firstAttribute="bottom" secondItem="GcZ-8o-bG7" secondAttribute="bottom" constant="10" id="t09-Ph-aGT"/>
                         <constraint firstItem="Oh9-hD-aq7" firstAttribute="leading" secondItem="dG6-JK-kBI" secondAttribute="leading" id="wGd-UD-8vJ"/>

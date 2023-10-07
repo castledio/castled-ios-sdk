@@ -105,7 +105,7 @@ import UIKit
                     self?.tblView.endUpdates()
                 case .error(let error):
                     // Handle error
-                    castledLog("Error: \(error)")
+                    CastledLog.castledLog("Error: \(error)", logLevel: CastledLogLevel.error)
             }
 
             DispatchQueue.main.async {

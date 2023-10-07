@@ -21,7 +21,13 @@ class CastledInboxServices: NSObject {
                 savedEventTypes.append(self.getSendingParametersFrom(eventType, inboxObject, ""))
             }
             if !savedEventTypes.isEmpty {
-                self.updateInBoxEvents(savedEventTypes: savedEventTypes) { _, _ in
+                self.updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
+                    if success {
+                        CastledLog.castledLog("Inbox item read status success", logLevel: CastledLogLevel.debug)
+                    }
+                    else {
+                        CastledLog.castledLog("Inbox item read status failed \(String(describing: error))", logLevel: CastledLogLevel.error)
+                    }
                 }
             }
         }
@@ -30,7 +36,13 @@ class CastledInboxServices: NSObject {
     func reportInboxItemsClicked(inboxObject: CastledInboxItem, buttonTitle: String?) {
         backgroundQueue.async { [self] in
             let eventType = "CLICKED"
-            self.updateInBoxEvents(savedEventTypes: [self.getSendingParametersFrom(eventType, inboxObject, buttonTitle ?? "")]) { _, _ in
+            self.updateInBoxEvents(savedEventTypes: [self.getSendingParametersFrom(eventType, inboxObject, buttonTitle ?? "")]) { success, error in
+                if success {
+                    CastledLog.castledLog("Inbox item clicked success", logLevel: CastledLogLevel.debug)
+                }
+                else {
+                    CastledLog.castledLog("Inbox item clicked status failed \(String(describing: error))", logLevel: CastledLogLevel.error)
+                }
             }
         }
     }
@@ -44,10 +56,10 @@ class CastledInboxServices: NSObject {
                 updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
                     if success {
                         CastledStore.deleteInboxItem(inboxItem: inboxObject)
-                        // castledLog("Delete inboxItem  success")
+                        CastledLog.castledLog("Inbox item deleted", logLevel: CastledLogLevel.debug)
                     }
                     else {
-                        castledLog("Error: ❌❌❌  in Delete inboxItem \(String(describing: error))")
+                        CastledLog.castledLog(" Delete Inbox item failed \(String(describing: error))", logLevel: CastledLogLevel.error)
                     }
                     completion(success, error)
                 }

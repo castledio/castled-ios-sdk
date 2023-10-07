@@ -20,13 +20,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    CastledConfigs *config = [CastledConfigs initializeWithInstanceId:@"718c38e2e359d94367a2e0d35e1fd4df"];
+
+    CastledConfigs *config = [CastledConfigs initializeWithApiKey:@"718c38e2e359d94367a2e0d35e1fd4df"];
 //    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
     
     config.enableInApp = TRUE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
-//    config.disableLog = FALSE;
+    config.logLevel = CastledLogLevelNone;
     config.location = CastledLocationUS;
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
     [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];

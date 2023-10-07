@@ -29,7 +29,7 @@ import UIKit
                         self?.prefetchInApps()
 
                     } catch {
-                        castledLog("Unable to Encode response (\(error))")
+                        CastledLog.castledLog("Unable to Encode response (\(error))", logLevel: CastledLogLevel.error)
                     }
                     completion()
                 }
@@ -74,9 +74,9 @@ import UIKit
             json[CastledConstants.CastledNetworkRequestTypeKey] = CastledNotificationType.inapp.value()
             Castled.updateInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
                 if response.success {
-                    // castledLog(response.result as Any)
+                    // CastledLog.castledLog(response.result as Any)
                 } else {
-                    // castledLog("Error in updating inapp event ")
+                    // CastledLog.castledLog("Error in updating inapp event ")
                 }
             })
         }
@@ -89,7 +89,7 @@ import UIKit
     private func getDeepLinkUrlFrom(url: String, parameters: [String: String]?) -> URL? {
         // Define the base URL for your deep link
         guard let baseURL = URL(string: url) else {
-            castledLog("Error:❌❌❌ Invalid Deeplink URL provided")
+            CastledLog.castledLog("Error:❌❌❌ Invalid Deeplink URL provided", logLevel: CastledLogLevel.error)
             return nil
         }
         var queryString = ""
@@ -108,7 +108,7 @@ import UIKit
             // deepLinkURL now contains the complete deep link URL with query parameters
             return deepLinkURL
         } else {
-            castledLog("Error:❌❌❌ Invalid Deeplink URL provided")
+            CastledLog.castledLog("Error:❌❌❌ Invalid Deeplink URL provided", logLevel: CastledLogLevel.error)
         }
         return nil
     }

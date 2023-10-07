@@ -12,7 +12,7 @@ import Foundation
     case AP
     case INDIA
     case TEST
-    internal var description: String {
+    var description: String {
         switch self {
             case .US:
                 return "app"
@@ -48,4 +48,11 @@ import Foundation
             case .other: return "other"
         }
     }
+}
+
+@objc public enum CastledLogLevel: Int {
+    case none
+    case error
+    case info
+    case debug
 }

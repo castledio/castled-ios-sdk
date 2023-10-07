@@ -20,7 +20,7 @@ class CastledCommonClass {
         let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
         center.add(request) { error in
             if error != nil {
-                castledLog("Error = \(error?.localizedDescription ?? "error local notification")")
+                CastledLog.castledLog("Error = \(error?.localizedDescription ?? "error local notification")", logLevel: CastledLogLevel.error)
             }
         }
     }
@@ -30,7 +30,7 @@ class CastledCommonClass {
             do {
                 return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
             } catch {
-                castledLog(error.localizedDescription)
+                CastledLog.castledLog(error.localizedDescription, logLevel: CastledLogLevel.error)
             }
         }
         return nil
@@ -78,7 +78,8 @@ class CastledCommonClass {
         if let msgFramesString = customDict["msg_frames"] as? String,
            let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? [Any],
            detailsArray.count > index!,
-           let selectedCategory = detailsArray[index!] as? [String: Any] {
+           let selectedCategory = detailsArray[index!] as? [String: Any]
+        {
             return selectedCategory
         }
         return nil

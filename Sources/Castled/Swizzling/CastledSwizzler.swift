@@ -32,7 +32,7 @@ class CastledSwizzler {
 
         let swizzledSelector = Selector("swizzled_" + methodSelector)
         guard let defaultMethod = class_getInstanceMethod(className, defaultSelector), let swizzleMethod = class_getInstanceMethod(Castled.self, swizzledSelector) else {
-            castledLog("failed to swizzle \(methodSelector)")
+            CastledLog.castledLog("failed to swizzle \(methodSelector)", logLevel: CastledLogLevel.info)
             return
         }
         // Adding a method to the class at runtime and returns a boolean if the “add procedure” was successful

@@ -46,9 +46,9 @@ class CastledRetryHandler {
                                     self?.castledGroup.leave()
                                 }
                                 if response.success {
-                                    //  castledLog("push upload success in \(#function) response\(response.result as Any)")
+                                    //  CastledLog.castledLog("push upload success in \(#function) response\(response.result as Any)")
                                 } else {
-                                    // castledLog("Error in updating inapp event \(#function)")
+                                    // CastledLog.castledLog("Error in updating inapp event \(#function)")
                                 }
                             })
                         }
@@ -63,9 +63,9 @@ class CastledRetryHandler {
                                 }
 
                                 if response.success {
-                                    //    castledLog("inApp upload success in \(#function) response\(response.result as Any)")
+                                    //    CastledLog.castledLog("inApp upload success in \(#function) response\(response.result as Any)")
                                 } else {
-                                    // castledLog("Error in updating inapp event \(#function)")
+                                    // CastledLog.castledLog("Error in updating inapp event \(#function)")
                                 }
                             })
                         }
@@ -80,9 +80,9 @@ class CastledRetryHandler {
                                 }
 
                                 if response.success {
-                                    //   castledLog("inbox upload success in \(#function) response\(response.result as Any)")
+                                    //   CastledLog.castledLog("inbox upload success in \(#function) response\(response.result as Any)")
                                 } else {
-                                    // castledLog("Error in updating inapp event \(#function)")
+                                    // CastledLog.castledLog("Error in updating inapp event \(#function)")
                                 }
                             })
                         }

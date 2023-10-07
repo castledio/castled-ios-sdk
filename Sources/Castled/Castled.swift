@@ -94,11 +94,11 @@ import UserNotifications
      */
     @objc public func logAppPageViewedEvent(_ viewContoller: UIViewController) {
         if Castled.sharedInstance == nil {
-            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
+            CastledLog.castledLog("Log page viewed \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         guard let _ = CastledUserDefaults.shared.userId else {
-            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.userNotRegistered.rawValue)")
+            CastledLog.castledLog("Log page viewed \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: viewContoller, eventName: CIEventType.page_viewed.rawValue, params: ["name": String(describing: type(of: viewContoller))], showLog: false)
@@ -109,7 +109,7 @@ import UserNotifications
      */
     @objc public func logCustomAppEvent(_ viewController: UIViewController, eventName: String, params: [String: Any]) {
         if Castled.sharedInstance == nil {
-            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
+            CastledLog.castledLog("Log inapp event \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: viewController, eventName: eventName, params: params, showLog: false)
@@ -117,6 +117,10 @@ import UserNotifications
 
     private func initialSetup(categories: Set<UNNotificationCategory>?) {
         let config = CastledConfigs.sharedInstance
+        CastledLog.setLogLevel(config.logLevel)
+        #if !DEBUG
+            CastledLog.setLogLevel(CastledLogLevel.none)
+        #endif
         if config.enablePush || CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey) == true {
             CastledSwizzler.enableSwizzlingForNotifications()
             setNotificationCategories(withItems: categories ?? Set<UNNotificationCategory>())
@@ -129,6 +133,7 @@ import UserNotifications
         CastledNetworkMonitor.shared.startMonitoring()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        CastledLog.castledLog("SDK initialized..", logLevel: .debug)
     }
 
     /**
@@ -155,7 +160,7 @@ import UserNotifications
             return
         }
         if Castled.sharedInstance == nil {
-            castledLog("Error: ❌❌❌ \(CastledExceptionMessages.notInitialised.rawValue)")
+            CastledLog.castledLog("Log app opened event \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)

@@ -13,13 +13,13 @@ public extension Castled {
     // MARK: - Notification Delegates Swizzled methods
 
     @objc func swizzled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        castledLog("didRegisterForRemoteNotificationsWithDeviceToken swizzled \(deviceToken.debugDescription)")
+        CastledLog.castledLog("didRegisterForRemoteNotificationsWithDeviceToken swizzled \(deviceToken.debugDescription)", logLevel: CastledLogLevel.info)
         Castled.sharedInstance?.setDeviceToken(deviceToken: deviceToken)
         Castled.sharedInstance?.delegate.castled_application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
     }
 
     @objc func swizzled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        castledLog("Failed to register: \(error)")
+        CastledLog.castledLog("Failed to register: \(error)", logLevel: CastledLogLevel.error)
         Castled.sharedInstance?.delegate.castled_application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
     }
 
@@ -57,7 +57,7 @@ public extension Castled {
             completionHandler()
 
         })) != nil else {
-            castledLog("castled_userNotificationCenter didReceive  not implemented")
+            CastledLog.castledLog("castled_userNotificationCenter didReceive  not implemented", logLevel: CastledLogLevel.info)
             completionHandler()
             return
         }
@@ -65,7 +65,7 @@ public extension Castled {
 
     @objc internal func setDeviceToken(deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        castledLog("deviceTokenString  \(deviceTokenString)")
+        CastledLog.castledLog("deviceTokenString  \(deviceTokenString)", logLevel: CastledLogLevel.debug)
         Castled.sharedInstance?.setPushToken(deviceTokenString)
     }
 
@@ -166,7 +166,7 @@ public extension Castled {
     private func processCastledPushEvents(userInfo: [AnyHashable: Any], isForeGround: Bool? = false, isOpened: Bool? = false, isDismissed: Bool? = false, isDiscardedRich: Bool? = false, isAcceptRich: Bool? = false, actionLabel: String? = "", actionType: String? = "") {
         castledNotificationQueue.async {
             if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
-                //  castledLog("Castled PushEvents \(customCasledDict)")
+                //  CastledLog.castledLog("Castled PushEvents \(customCasledDict)")
                 if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                     let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String
                     let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String
