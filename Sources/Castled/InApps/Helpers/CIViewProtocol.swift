@@ -11,6 +11,7 @@ import UIKit
 protocol CIViewProtocol {
     var parentContainerVC: CastledInAppDisplayViewController? { get set }
     var viewContainer: UIView? { get set }
+    var viewChildViewsContainer: UIView? { get set }
     var selectedInAppObject: CastledInAppObject? { get set }
     var inAppDisplaySettings: InAppDisplayConfig? { get set }
     func configureTheViews()
