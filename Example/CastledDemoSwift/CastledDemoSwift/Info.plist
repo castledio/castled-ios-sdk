@@ -26,7 +26,11 @@
 		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
-    <key>CastledSwizzlingDisabled</key>
-    <false/>
+	<key>CastledSwizzlingDisabled</key>
+	<false/>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.castled.backgroundtask</string>
+	</array>
 </dict>
 </plist>

@@ -21,7 +21,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    CastledConfigs *config = [CastledConfigs initializeWithApiKey:@"718c38e2e359d94367a2e0d35e1fd4df"];
+    CastledConfigs *config = [CastledConfigs initializeWithAppId:@"718c38e2e359d94367a2e0d35e1fd4df"];
 //    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
     
