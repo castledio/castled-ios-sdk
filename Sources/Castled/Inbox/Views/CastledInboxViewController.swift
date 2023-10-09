@@ -9,12 +9,12 @@ import Combine
 import RealmSwift
 import UIKit
 
-@objc public protocol CastledInboxDelegate {
+@objc public protocol CastledInboxViewControllerDelegate {
     @objc optional func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
 }
 
 @objc public class CastledInboxViewController: UIViewController {
-    @objc public var delegate: CastledInboxDelegate?
+    @objc public var delegate: CastledInboxViewControllerDelegate?
     @IBOutlet weak var lblTitle: UILabel!
     var inboxConfig: CastledInboxDisplayConfig?
     @IBOutlet private weak var tblView: UITableView!
@@ -25,7 +25,7 @@ import UIKit
     @IBOutlet weak var btnClose: UIButton!
     private var cancellables: Set<AnyCancellable> = []
     private var viewModel = CastledInboxViewModel()
-    private var readItems = [CAppInbox]()
+    private var readItems = [Int64]()
     private var notificationToken: NotificationToken?
 
     override public func viewDidLoad() {
@@ -147,7 +147,7 @@ import UIKit
 
     private func updateReadStatus() {
         if !readItems.isEmpty {
-            CastledStore.saveInboxObjectsRead(readItemsObjects: readItems, shouldCallApi: true)
+            CastledStore.saveInboxIdsRead(readItems: readItems)
         }
     }
 
@@ -188,8 +188,8 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
 
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let item = viewModel.inboxItems[indexPath.row]
-        if !item.isRead, !readItems.contains(item) {
-            readItems.append(item)
+        if !item.isRead, !readItems.contains(item.messageId) {
+            readItems.append(item.messageId)
         }
     }
 
@@ -213,13 +213,15 @@ extension CastledInboxViewController: UITableViewDelegate, UITableViewDataSource
             try? self.viewModel.realm.write {
                 item.isDeleted = true
             }
-
+            let message_id = item.messageId
             Castled.sharedInstance?.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item), completion: { [weak self] success, _ in
                 DispatchQueue.main.async {
                     if !success {
                         try? self?.viewModel.realm.write {
                             item.isDeleted = false
                         }
+                    } else {
+                        self?.readItems.removeAll { $0 == message_id }
                     }
                     self?.viewModel.showLoader = false
                 }

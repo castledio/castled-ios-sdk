@@ -10,7 +10,7 @@ import RealmSwift
 import UIKit
 
 class CAppInbox: Object {
-    @Persisted(primaryKey: true) var messageId: Int
+    @Persisted(primaryKey: true) var messageId: Int64
     @Persisted var teamID: Int
     @Persisted var startTs: Int64
     @Persisted var sourceContext: String

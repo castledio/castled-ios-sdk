@@ -8,7 +8,7 @@
 import Castled
 import UIKit
 
-class ViewController: UIViewController, CastledInboxDelegate {
+class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     let userIdKey = "userIdKey"
     @IBOutlet weak var btnRegisterUser: UIButton!
     @IBOutlet weak var btnGotoSecondVC: UIButton!
@@ -67,10 +67,10 @@ class ViewController: UIViewController, CastledInboxDelegate {
     @objc func inboxTapped() {
         // Handle the button tap here
         let style = CastledInboxDisplayConfig()
-        style.inboxViewBackgroundColor = .white
+        style.inboxViewBackgroundColor = .lightText
         style.navigationBarBackgroundColor = .link
         style.navigationBarTitle = "Castled Inbox"
-        style.navigationBarButtonTintColor = .white
+        style.navigationBarButtonTintColor = .lightGray
         style.loaderTintColor = .blue
         style.hideCloseButton = true
 
