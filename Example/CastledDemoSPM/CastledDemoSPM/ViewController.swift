@@ -8,7 +8,7 @@
 import Castled
 import UIKit
 
-class ViewController: UIViewController, CastledInboxDelegate {
+class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     let userIdKey = "userIdKey"
     @IBOutlet weak var btnRegisterUser: UIButton!
     @IBOutlet weak var btnGotoSecondVC: UIButton!

@@ -9,7 +9,7 @@
 #import <Castled/Castled-Swift.h>
 
 static NSString *userIdKey = @"userIdKey";
-@interface ViewController () <CastledInboxDelegate>
+@interface ViewController () <CastledInboxViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnRegisterUser;
 @property (weak, nonatomic) IBOutlet UIButton *btnGotoSecondVC;
 
