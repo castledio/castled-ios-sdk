@@ -25,7 +25,7 @@ public extension Castled {
     /**
      Inbox : Function that will returns the Inbox ViewController
      */
-    @objc func getInboxViewController(with config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxDelegate) -> CastledInboxViewController {
+    @objc func getInboxViewController(with config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxViewControllerDelegate) -> CastledInboxViewController {
         let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
         castledInboxVC.inboxConfig = config ?? CastledInboxDisplayConfig()
         castledInboxVC.delegate = delegate
@@ -39,9 +39,11 @@ public extension Castled {
         CastledStore.castledStoreQueue.async {
             if !CastledConfigs.sharedInstance.enableAppInbox {
                 completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
+                CastledLog.castledLog(CastledExceptionMessages.appInboxDisabled.rawValue, logLevel: .error)
                 return
             }
             guard let _ = CastledUserDefaults.shared.userId else {
+                CastledLog.castledLog(CastledExceptionMessages.userNotRegistered.rawValue, logLevel: .error)
                 completion(false, [], CastledExceptionMessages.userNotRegistered.rawValue)
                 return
             }

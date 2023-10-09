@@ -57,6 +57,16 @@ import RealmSwift
         }
     }
 
+    static func saveInboxIdsRead(readItems: [Int64]) {
+        DispatchQueue.main.async {
+            let realm = CastledDBManager.shared.getRealm()
+            let filteredAppInbox = realm.objects(CAppInbox.self).filter("messageId IN %d", readItems)
+            if !filteredAppInbox.isEmpty {
+                CastledStore.saveInboxObjectsRead(readItemsObjects: Array(filteredAppInbox), shouldCallApi: true)
+            }
+        }
+    }
+
     static func saveInboxObjectsRead(readItemsObjects: [CAppInbox], shouldCallApi: Bool? = false) {
         let realm = CastledDBManager.shared.getRealm()
         var readItems = [CastledInboxItem]()
