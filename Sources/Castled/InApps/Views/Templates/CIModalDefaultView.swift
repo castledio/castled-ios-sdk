@@ -8,6 +8,7 @@
 import UIKit
 
 class CIModalDefaultView: UIView, CIViewProtocol {
+    var viewChildViewsContainer: UIView?
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
@@ -33,6 +34,7 @@ class CIModalDefaultView: UIView, CIViewProtocol {
      */
 
     func configureTheViews() {
+        viewChildViewsContainer = viewMainContainer
         lblMessageTitle?.font = inAppDisplaySettings?.titleFont.withSize(CGFloat(inAppDisplaySettings!.titleFontSize))
         lblMessageSubTitle?.font = inAppDisplaySettings?.bodyFont.withSize(CGFloat(inAppDisplaySettings!.bodyFontSize))
         btnLeftOfView?.titleLabel?.font = inAppDisplaySettings?.buttonFont.withSize(CGFloat(min(inAppDisplaySettings!.titleFontSize - 1, 16)))

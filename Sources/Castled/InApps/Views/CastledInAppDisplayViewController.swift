@@ -52,7 +52,6 @@ class CastledInAppDisplayViewController: UIViewController {
         }
 
         containerView?.isHidden = false
-        arrangeDismissButton(containerView: containerView!)
         isSlideUpInApp = containerView == viewBannerContainer
         inAppWindow?.shouldPassThrough = isSlideUpInApp // for enabling touch only for banner
 
@@ -62,6 +61,7 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppView?.inAppDisplaySettings = inAppDisplaySettings
         inAppView?.selectedInAppObject = selectedInAppObject
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
+        arrangeDismissButton(containerView: containerView!)
         if let html = items.2 {
             let htmlView = inAppView as! CIHTMLView
             if let decodedData = Data(base64Encoded: html) {
@@ -134,17 +134,22 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     private func arrangeDismissButton(containerView: UIView) {
-        let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
-        dismissView.initialiseActions(actions: action)
         if containerView == viewFSContainer {
             let safeArea = view.safeAreaLayoutGuide
             dismissView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10).isActive = true
             dismissView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 0).isActive = true
 
         } else {
-            dismissView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: dismissView.frame.size.width/2).isActive = true
-            dismissView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: -dismissView.frame.size.width/2).isActive = true
+            var buttonParentView = containerView
+            if let childContainer = inAppView?.viewChildViewsContainer {
+                buttonParentView = childContainer
+                childContainer.superview!.addSubview(dismissView)
+            }
+            dismissView.trailingAnchor.constraint(equalTo: buttonParentView.trailingAnchor, constant: 5).isActive = true
+            dismissView.topAnchor.constraint(equalTo: buttonParentView.topAnchor, constant: -5).isActive = true
         }
+        let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
+        dismissView.initialiseActions(actions: action)
     }
 }
 

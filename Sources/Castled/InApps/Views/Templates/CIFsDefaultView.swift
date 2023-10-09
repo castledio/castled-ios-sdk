@@ -8,6 +8,7 @@
 import UIKit
 
 class CIFsDefaultView: UIView, CIViewProtocol {
+    var viewChildViewsContainer: UIView?
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?

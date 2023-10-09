@@ -13,8 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        let config = CastledConfigs.initialize(apiKey: "718c38e2e359d94367a2e0d35e1fd4df")
+        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
         // config.permittedBGIdentifier = "com.castled.backgroundtask"
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         config.enablePush = true

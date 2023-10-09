@@ -24,7 +24,6 @@ enum HTTPMethod: String {
 enum CastledNetworkRouter {
     case registerUser(userID: String, apnsToken: String, instanceId: String)
     case registerEvents(params: [[String: Any]], instanceId: String)
-    case triggerCampaign
     case fetchInAppNotification(userID: String, instanceId: String)
     case fetchInInboxItems(userID: String, instanceId: String)
     case registerInAppEvent(params: [[String: Any]], instanceId: String)
@@ -52,13 +51,6 @@ enum CastledNetworkRouter {
                                    path: "/push/\(instanceId)/event",
                                    method: .post,
                                    parameters: ["events": params])
-
-        case .triggerCampaign:
-            return CastledEndpoint(baseURL: baseURL,
-                                   baseURLEndPoint: baseURLEndPoint,
-                                   path: "/campaigns/119/trigger-run",
-                                   method: .put,
-                                   parameters: nil)
 
         case .fetchInAppNotification(let userID, let instanceId):
             return CastledEndpoint(baseURL: baseURL,

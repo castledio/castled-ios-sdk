@@ -71,23 +71,6 @@ extension Castled {
     }
 
     /**
-     trigger Campaign api
-     */
-    static func triggerCampaign(completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
-        if Castled.sharedInstance == nil {
-            CastledLog.castledLog("\(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.debug)
-            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
-            return
-        }
-        Castled.sharedInstance?.api_Trigger_Campaign(model: [String: String].self, completion: { response in
-            if response.success {
-                CastledLog.castledLog("Campaign triggered", logLevel: CastledLogLevel.debug)
-            }
-            completion(response)
-        })
-    }
-
-    /**
      Function to fetch all App Notification
      */
     static func fetchInAppNotification(completion: @escaping (_ response: CastledResponse<[CastledInAppObject]>) -> Void) {
@@ -234,21 +217,6 @@ extension Castled {
                 completion(CastledResponse(response: responsJSON as! T))
             case .failure(let error):
                 CastledStore.insertAllFailedItemsToStore(params)
-                completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
-            }
-        }
-    }
-
-    private func api_Trigger_Campaign<T: Any>(model: T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void) {
-        Task {
-            let router: CastledNetworkRouter = .triggerCampaign
-            let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint: router.endpoint)
-            switch response {
-            case .success(let responsJSON):
-                //  CastledLog.castledLog("Trigger Campaign Success \(responsJSON)")
-                completion(CastledResponse(response: responsJSON as! T))
-            case .failure(let error):
-                //  CastledLog.castledLog("Trigger Campaign\(error.localizedDescription)")
                 completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }

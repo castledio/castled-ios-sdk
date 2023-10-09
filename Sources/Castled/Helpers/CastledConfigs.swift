@@ -13,7 +13,7 @@ import Foundation
 
     // MARK: - initialization method
 
-    @objc public static func initialize(apiKey instanceId: String) -> CastledConfigs {
+    @objc public static func initialize(appId instanceId: String) -> CastledConfigs {
         if let existingConfig = CastledConfigs.sharedConfig {
             existingConfig.instanceId = instanceId
         } else {
