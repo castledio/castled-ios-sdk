@@ -67,10 +67,10 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     @objc func inboxTapped() {
         // Handle the button tap here
         let style = CastledInboxDisplayConfig()
-        style.inboxViewBackgroundColor = .lightText
+        style.inboxViewBackgroundColor = .white
         style.navigationBarBackgroundColor = .link
         style.navigationBarTitle = "Castled Inbox"
-        style.navigationBarButtonTintColor = .lightGray
+        style.navigationBarButtonTintColor = .white
         style.loaderTintColor = .blue
         style.hideCloseButton = true
 
@@ -81,11 +81,11 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     }
 
     func setUpInboxCallback() {
-        //        Castled.sharedInstance?.inboxUnreadCount(listener: {unreadCount in
-        //                print("Inbox unread count is \(unreadCount)")
-        //            print("Inbox unread count is -> \(Castled.sharedInstance?.getInboxUnreadCount())")
-        //
-        //        })
+        Castled.sharedInstance?.inboxUnreadCount(listener: { unreadCount in
+            print("Inbox unread count is \(unreadCount)")
+            print("Inbox unread count is -> \(Castled.sharedInstance?.getInboxUnreadCount())")
+
+        })
         //        Castled.sharedInstance?.getInboxItems(completion: { _, result, errormessage in
         //
         //            print("getInboxItems \(result) \(errormessage)")

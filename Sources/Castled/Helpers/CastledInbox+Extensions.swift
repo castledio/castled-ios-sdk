@@ -49,15 +49,13 @@ public extension Castled {
             }
             do {
                 let backgroundRealm = CastledDBManager.shared.getRealm()
-                try backgroundRealm.write {
-                    let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self)
-                    let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
-                        let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
-                        return inboxItem
-                    }
-                    DispatchQueue.main.async {
-                        completion(true, liveInboxItems, nil)
-                    }
+                let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self)
+                let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
+                    let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
+                    return inboxItem
+                }
+                DispatchQueue.main.async {
+                    completion(true, liveInboxItems, nil)
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -142,9 +140,13 @@ public extension Castled {
                             return inboxItem
                         }
                     }
-                    backgroundRealm.add(liveInboxItems, update: .modified) // Insert or update as necessary
+                    if !liveInboxItems.isEmpty {
+                        backgroundRealm.add(liveInboxItems, update: .modified) // Insert or update as necessary
+                    }
                     let expiredInboxItems = cachedInboxItems.filter { !liveInboxItemIds.contains($0.messageId) }
-                    backgroundRealm.delete(expiredInboxItems)
+                    if !expiredInboxItems.isEmpty {
+                        backgroundRealm.delete(expiredInboxItems)
+                    }
                     self.inboxUnreadCount = backgroundRealm.objects(CAppInbox.self)
                         .filter("isRead == false")
                         .count

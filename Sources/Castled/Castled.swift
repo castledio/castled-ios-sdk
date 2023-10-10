@@ -32,11 +32,9 @@ import UserNotifications
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)
 
-    private let realm = CastledDBManager.shared.getRealm()
     lazy var inboxUnreadCount: Int = {
-        realm.objects(CAppInbox.self)
-            .filter("isRead == false")
-            .count
+        CastledStore.getInboxUnreadCount(realm: CastledDBManager.shared.getRealm())
+
     }() {
         didSet {
             inboxUnreadCountCallback?(inboxUnreadCount)

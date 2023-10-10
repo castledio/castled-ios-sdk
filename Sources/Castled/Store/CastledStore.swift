@@ -37,6 +37,16 @@ import RealmSwift
 
     // MARK: - DB
 
+    static func getInboxUnreadCount(realm: Realm) -> Int {
+        realm.objects(CAppInbox.self)
+            .filter("isRead == false")
+            .count
+    }
+    static func getIAllnboxItemsCount(realm: Realm) -> Int {
+        realm.objects(CAppInbox.self)
+            .filter("isDeleted == false")
+            .count
+    }
     static func deleteInboxItem(inboxItem: CastledInboxItem) {
         let realm = CastledDBManager.shared.getRealm()
         if let existingItem = realm.object(ofType: CAppInbox.self, forPrimaryKey: inboxItem.messageId) {
