@@ -14,6 +14,8 @@ class CastledInAppDisplayViewController: UIViewController {
     @IBOutlet weak var constraintBannerBottom: NSLayoutConstraint!
     @IBOutlet weak var constraintBannerTop: NSLayoutConstraint!
 
+    @IBOutlet weak var constraintCloseTrialing: NSLayoutConstraint!
+    @IBOutlet weak var constraintCloseTop: NSLayoutConstraint!
     @IBOutlet weak var dismissView: CastledDismissButton!
     private var inAppWindow: CastledTouchThroughWindow?
     var selectedInAppObject: CastledInAppObject?
@@ -24,7 +26,7 @@ class CastledInAppDisplayViewController: UIViewController {
         super.viewDidLoad()
     }
 
-    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject, inAppDisplaySettings: InAppDisplayConfig) {
+    func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject, inAppDisplaySettings: InAppDisplayConfig) -> Bool {
         if #available(iOS 13, tvOS 13.0, *) {
             let connectedScenes = UIApplication.shared.connectedScenes
             for scene in connectedScenes {
@@ -40,7 +42,7 @@ class CastledInAppDisplayViewController: UIViewController {
                 frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
         }
         guard let window = inAppWindow else {
-            return
+            return false
         }
         selectedInAppObject = inAppObj
         let items = getInappViewFrom(inappAObject: inAppObj)
@@ -48,7 +50,7 @@ class CastledInAppDisplayViewController: UIViewController {
         let containerView = items.1
 
         if inAppView == nil || containerView == nil {
-            return
+            return false
         }
 
         containerView?.isHidden = false
@@ -98,9 +100,11 @@ class CastledInAppDisplayViewController: UIViewController {
                                               execute: requestWorkItem)
             }
         }
+        return true
     }
 
     func hideInAppViewFromWindow(withAnimation: Bool? = true) {
+        CastledInApps.sharedInstance.isCurrentlyDisplaying = false
         autoDismissalWorkItem?.cancel()
         guard let interstitialView = view else {
             return
@@ -134,6 +138,10 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     private func arrangeDismissButton(containerView: UIView) {
+        // we are resetting the constrionts after adding to the new contianer, removing this to prevent the strtiching issue
+        dismissView.superview?.removeConstraint(constraintCloseTop)
+        dismissView.superview?.removeConstraint(constraintCloseTrialing)
+
         if containerView == viewFSContainer {
             let safeArea = view.safeAreaLayoutGuide
             dismissView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10).isActive = true

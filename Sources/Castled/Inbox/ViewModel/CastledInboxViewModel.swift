@@ -25,19 +25,16 @@ protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxV
 
 final class CastledInboxViewModel: DefaultCastledInboxViewModel {
     let realm = CastledDBManager.shared.getRealm()
-    lazy var inboxItems: Results<CAppInbox> = { realm.objects(CAppInbox.self)
-        .filter("isDeleted == false")
-        .sorted(by: [
-            SortDescriptor(keyPath: "isPinned", ascending: false),
-            SortDescriptor(keyPath: "addedDate", ascending: false)
-        ])
+    lazy var inboxUnreadCount: Int = {
+        CastledStore.getIAllnboxItemsCount(realm: CastledDBManager.shared.getRealm())
+
     }()
 
     @Published var errorMessage: String?
     @Published var showLoader: Bool = false
 
     func didLoadNextPage() {
-        if inboxItems.isEmpty {
+        if inboxUnreadCount == 0 {
             showLoader = true
         }
         Castled.fetchInboxItems { response in

@@ -22,7 +22,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1"),
-        .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.0.0")
+        .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.43.0")
 
     ],
     targets: [

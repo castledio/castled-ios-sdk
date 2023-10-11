@@ -39,4 +39,30 @@ import UIKit
     @objc public lazy var navigationBarTitle: String = {
         "App Inbox"
     }()
+
+    // MARK: - Tabbar Configuraitions
+
+    @objc public lazy var showCategoriesTab: Bool = {
+        true
+    }()
+
+    @objc public lazy var tabBarDefaultBackgroundColor: UIColor = {
+        .white
+    }()
+
+    @objc public lazy var tabBarSelectedBackgroundColor: UIColor = {
+        UIColor.white.withAlphaComponent(0.8)
+    }()
+
+    @objc public lazy var tabBarDefaultTextColor: UIColor = {
+        .black
+    }()
+
+    @objc public lazy var tabBarSelectedTextColor: UIColor = {
+        .link
+    }()
+
+    @objc public lazy var tabBarIndicatorBackgroundColor: UIColor = {
+        .link
+    }()
 }
