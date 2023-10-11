@@ -10,6 +10,7 @@ import UIKit
 
 class CastledInboxListingViewController: UIViewController {
     var currentIndex = 0
+    var inboxConfig: CastledInboxDisplayConfig?
 
     @IBOutlet private weak var tblView: UITableView!
     @IBOutlet weak var lblNoUpdates: UILabel!
@@ -29,6 +30,7 @@ class CastledInboxListingViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         populateInboxItems()
+        setUpDisplayConfigs()
         setupTableView()
     }
 
@@ -46,6 +48,12 @@ class CastledInboxListingViewController: UIViewController {
         tblView.rowHeight = UITableView.automaticDimension
         tblView.estimatedRowHeight = 600
         tblView.register(UINib(nibName: CastledInboxCell.castledInboxImageAndTitleCell, bundle: Bundle.resourceBundle(for: Self.self)), forCellReuseIdentifier: CastledInboxCell.castledInboxImageAndTitleCell)
+    }
+
+    private func setUpDisplayConfigs() {
+        indicatorView.color = inboxConfig!.loaderTintColor
+        view.backgroundColor = inboxConfig!.inboxViewBackgroundColor
+        lblNoUpdates.text = inboxConfig!.emptyMessageViewText
     }
 
     private func populateInboxItems() {
@@ -74,7 +82,7 @@ class CastledInboxListingViewController: UIViewController {
                         self?.tblView.endUpdates()
                     case .error(let error):
                         // Handle error
-                        CastledLog.castledLog("Error: \(error)", logLevel: CastledLogLevel.error)
+                        CastledLog.castledLog("Inbox listing Error: \(error)", logLevel: CastledLogLevel.error)
                 }
 
                 DispatchQueue.main.async {
@@ -84,13 +92,35 @@ class CastledInboxListingViewController: UIViewController {
         }
     }
 
-    func removeObservers() {
+    private func removeObservers() {
         notificationToken?.invalidate()
         notificationToken = nil
     }
 
-    func showRequiredViews() {
-        // TODO: implement the functionalities
+    private func showRequiredViews() {
+        tblView.isHidden = inboxItems!.isEmpty
+        lblNoUpdates.isHidden = !tblView.isHidden
+        showOrHideLoader(showLoader: inboxViewController?.viewModel.showLoader ?? false)
+        setErrorTextWith(title: inboxViewController?.viewModel.errorMessage)
+    }
+
+    func showOrHideLoader(showLoader: Bool) {
+        if let indicator = indicatorView {
+            indicator.isHidden = !showLoader
+            if showLoader == true {
+                if !indicator.isAnimating {
+                    indicator.startAnimating()
+                }
+            } else if indicator.isAnimating {
+                indicator.stopAnimating()
+            }
+        }
+    }
+
+    func setErrorTextWith(title: String?) {
+        if let lblError = lblNoUpdates, let titleString = title {
+            lblError.text = titleString
+        }
     }
     /*
      // MARK: - Navigation

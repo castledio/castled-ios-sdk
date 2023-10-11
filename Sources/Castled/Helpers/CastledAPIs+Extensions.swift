@@ -120,7 +120,7 @@ extension Castled {
             let response = await CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint: router.endpoint)
             if !response.success {
             } else {
-                Castled.sharedInstance?.refreshInboxItems(liveInboxResponse: response.result as? [CastledInboxItem] ?? [])
+                CastledStore.refreshInboxItems(liveInboxResponse: response.result as? [CastledInboxItem] ?? [])
                 // CastledLog.castledLog("Fetch InApps Success \(String(describing: response.result))")
             }
             completion(response)

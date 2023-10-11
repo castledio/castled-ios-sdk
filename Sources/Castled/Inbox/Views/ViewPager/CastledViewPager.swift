@@ -26,7 +26,7 @@ class CastledViewPager: NSObject {
     private weak var dataSource: CastledViewPagerDataSource?
     private weak var delegate: CastledViewPagerDelegate?
     private weak var controller: UIViewController?
-    private var view: UIView
+    private var parentView: UIView
 
     private var scrollTabContainer = UIScrollView()
     private var pageController: UIPageViewController?
@@ -45,7 +45,7 @@ class CastledViewPager: NSObject {
 
     init(viewController: UIViewController, containerView: UIView? = nil) {
         self.controller = viewController
-        self.view = containerView ?? viewController.view
+        self.parentView = containerView ?? viewController.view
     }
 
     func setDisplayConfigs(config: CastledViewPagerDisplayConfigs) {
@@ -70,7 +70,7 @@ class CastledViewPager: NSObject {
 
     private func setupTabContainerScrollView() {
         scrollTabContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(scrollTabContainer)
+        parentView.addSubview(scrollTabContainer)
 
         scrollTabContainer.backgroundColor = configs.tabBarDefaultColor
         scrollTabContainer.isScrollEnabled = true
@@ -84,15 +84,20 @@ class CastledViewPager: NSObject {
             scrollTabContainer.heightAnchor.constraint(equalToConstant: configs.tabBarHeight).isActive = true
         }
 
-        scrollTabContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollTabContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        scrollTabContainer.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        scrollTabContainer.leadingAnchor.constraint(equalTo: parentView.leadingAnchor).isActive = true
+        scrollTabContainer.trailingAnchor.constraint(equalTo: parentView.trailingAnchor).isActive = true
+        scrollTabContainer.widthAnchor.constraint(equalTo: parentView.widthAnchor).isActive = true
 
         if #available(iOS 11.0, *) {
-            let safeArea = view.safeAreaLayoutGuide
-            scrollTabContainer.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+            if let topBarInContainer = configs.viewTopAlignmentView {
+                scrollTabContainer.topAnchor.constraint(equalTo: topBarInContainer.bottomAnchor).isActive = true
+
+            } else {
+                let safeArea = parentView.safeAreaLayoutGuide
+                scrollTabContainer.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+            }
         } else {
-            let marginGuide = view.layoutMarginsGuide
+            let marginGuide = parentView.layoutMarginsGuide
             scrollTabContainer.topAnchor.constraint(equalTo: marginGuide.topAnchor).isActive = true
         }
 
@@ -112,17 +117,17 @@ class CastledViewPager: NSObject {
         let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         controller?.addChild(pageController)
 
-        setupForAutolayout(view: pageController.view, inView: view)
+        setupForAutolayout(view: pageController.view, inView: parentView)
         pageController.didMove(toParent: controller)
         self.pageController = pageController
 
         self.pageController?.dataSource = self
         self.pageController?.delegate = self
 
-        self.pageController?.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        self.pageController?.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        self.pageController?.view.leadingAnchor.constraint(equalTo: parentView.leadingAnchor).isActive = true
+        self.pageController?.view.trailingAnchor.constraint(equalTo: parentView.trailingAnchor).isActive = true
         self.pageController?.view.topAnchor.constraint(equalTo: scrollTabContainer.bottomAnchor).isActive = true
-        self.pageController?.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        self.pageController?.view.bottomAnchor.constraint(equalTo: parentView.bottomAnchor).isActive = true
 
         guard let viewPagerDataSource = dataSource else {
             fatalError("CastledViewPager DataSource not set")
@@ -161,7 +166,7 @@ class CastledViewPager: NSObject {
         constraintTabIndicatorLeading?.isActive = true
         constraintTabIndicatorWidth?.isActive = true
 
-        tabBarViews[currentPageIndex].addHighlight(options: configs)
+        tabBarViews[currentPageIndex].addHighlight(config: configs)
 
         scrollTabContainer.layer.masksToBounds = false
         scrollTabContainer.layer.shadowColor = UIColor.black.cgColor
@@ -169,7 +174,7 @@ class CastledViewPager: NSObject {
         scrollTabContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
         scrollTabContainer.layer.shadowRadius = 2
 
-        view.bringSubviewToFront(scrollTabContainer)
+        parentView.bringSubviewToFront(scrollTabContainer)
     }
 
     private func setupTabs() {
@@ -183,7 +188,7 @@ class CastledViewPager: NSObject {
             setupForAutolayout(view: tabBarView, inView: scrollTabContainer)
 
             tabBarView.backgroundColor = configs.tabBarDefaultColor
-            tabBarView.setup(tab: tab, options: configs)
+            tabBarView.setup(tab: tab, config: configs)
 
             if let previousTab = lastTab {
                 tabBarView.leadingAnchor.constraint(equalTo: previousTab.trailingAnchor).isActive = true
@@ -236,10 +241,10 @@ class CastledViewPager: NSObject {
         let currentTab = tabBarViews[currentIndex]
         let currentFrame = currentTab.frame
 
-        tabBarViews[previousIndex].removeHighlight(options: configs)
+        tabBarViews[previousIndex].removeHighlight(config: configs)
 
         UIView.animate(withDuration: 0.4, animations: {
-            self.tabBarViews[currentIndex].addHighlight(options: self.configs)
+            self.tabBarViews[currentIndex].addHighlight(config: self.configs)
         })
         constraintTabIndicatorLeading?.isActive = false
         constraintTabIndicatorWidth?.isActive = false
@@ -247,7 +252,7 @@ class CastledViewPager: NSObject {
         constraintTabIndicatorLeading = viewCurrentSelectiionIndicater.leadingAnchor.constraint(equalTo: currentTab.leadingAnchor)
         constraintTabIndicatorWidth = viewCurrentSelectiionIndicater.widthAnchor.constraint(equalTo: currentTab.widthAnchor)
 
-        view.layoutIfNeeded()
+        parentView.layoutIfNeeded()
         UIView.animate(withDuration: 0.5) {
             self.constraintTabIndicatorWidth?.isActive = true
             self.constraintTabIndicatorLeading?.isActive = true

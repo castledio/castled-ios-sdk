@@ -54,8 +54,6 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // Function for registering the user with Castled
     func registerUserAPI() {
         let userId = "antony@castled.io"
-        // let userId    = "abhilash@castled.io"
-
         Castled.sharedInstance?.setUserId(userId)
         UserDefaults.standard.setValue(userId, forKey: userIdKey)
         UserDefaults.standard.synchronize()
@@ -72,24 +70,32 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         style.navigationBarTitle = "Castled Inbox"
         style.navigationBarButtonTintColor = .white
         style.loaderTintColor = .blue
-        style.hideCloseButton = true
+        style.hideCloseButton = false
 
+        // for catgory tabs
+        style.showCategoriesTab = true
+        style.tabBarDefaultTextColor = .green
+        style.tabBarSelectedTextColor = .brown
+        style.tabBarDefaultBackgroundColor = .purple
+        style.tabBarSelectedBackgroundColor = .lightGray
+        style.tabBarIndicatorBackgroundColor = .red
         let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style, andDelegate: self)
-        // inboxViewController?.modalPresentationStyle = .fullScreen
-        // present(inboxViewController!, animated: true)
-        navigationController?.pushViewController(inboxViewController!, animated: true)
+        inboxViewController?.modalPresentationStyle = .fullScreen
+        present(inboxViewController!, animated: true)
+        //  navigationController?.setNavigationBarHidden(true, animated: false)
+        // navigationController?.pushViewController(inboxViewController!, animated: true)
     }
 
     func setUpInboxCallback() {
-//        Castled.sharedInstance?.inboxUnreadCount(listener: {unreadCount in
-//                print("Inbox unread count is \(unreadCount)")
-//            print("Inbox unread count is -> \(Castled.sharedInstance?.getInboxUnreadCount())")
-//
-//        })
-        //        Castled.sharedInstance?.getInboxItems(completion: { _, result, errormessage in
-        //
-        //            print("getInboxItems \(result) \(errormessage)")
-        //        })
+        Castled.sharedInstance?.inboxUnreadCount(listener: { unreadCount in
+            print("Inbox unread count is \(unreadCount)")
+            // print("Inbox unread count is -> \(Castled.sharedInstance?.getInboxUnreadCount())")
+
+        })
+        Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
+
+            //   print("getInboxItems \(result) \(errormessage)")
+        })
         //       Castled.sharedInstance?.dismissInboxViewController()
     }
 

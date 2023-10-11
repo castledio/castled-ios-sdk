@@ -87,6 +87,14 @@ static NSString *userIdKey = @"userIdKey";
     style.loaderTintColor = [UIColor blueColor];
     style.hideCloseButton = YES;
 
+
+    style.showCategoriesTab = YES;
+    style.tabBarDefaultTextColor = [UIColor greenColor];
+    style.tabBarSelectedTextColor = [UIColor brownColor];
+    style.tabBarDefaultBackgroundColor = [UIColor purpleColor];
+    style.tabBarSelectedBackgroundColor = [UIColor lightGrayColor];
+    style.tabBarIndicatorBackgroundColor = [UIColor redColor];
+
     UIViewController *inboxViewController = [[Castled sharedInstance] getInboxViewControllerWith:style andDelegate:self];
     // inboxViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     // [self presentViewController:inboxViewController animated:YES completion:nil];

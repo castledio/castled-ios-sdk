@@ -42,16 +42,23 @@ import RealmSwift
             .filter("isRead == false")
             .count
     }
+
     static func getIAllnboxItemsCount(realm: Realm) -> Int {
         realm.objects(CAppInbox.self)
             .filter("isDeleted == false")
             .count
     }
+
     static func deleteInboxItem(inboxItem: CastledInboxItem) {
         let realm = CastledDBManager.shared.getRealm()
         if let existingItem = realm.object(ofType: CAppInbox.self, forPrimaryKey: inboxItem.messageId) {
-            try! realm.write {
-                realm.delete(existingItem)
+            do {
+                try? realm.write {
+                    realm.delete(existingItem)
+                    CastledStore.resetUnreadUncountAfterCRUD(realm: realm)
+                }
+            } catch let error as NSError {
+                CastledLog.castledLog("in deltion \(error.localizedDescription)", logLevel: .error)
             }
         }
     }
@@ -72,24 +79,64 @@ import RealmSwift
             let realm = CastledDBManager.shared.getRealm()
             let filteredAppInbox = realm.objects(CAppInbox.self).filter("messageId IN %d", readItems)
             if !filteredAppInbox.isEmpty {
-                CastledStore.saveInboxObjectsRead(readItemsObjects: Array(filteredAppInbox), shouldCallApi: true)
+                CastledStore.saveInboxObjectsRead(readItemsObjects: Array(filteredAppInbox))
+                let inboxItems = Array(filteredAppInbox.compactMap {
+                    CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
+                })
+                CastledInboxServices().reportInboxItemsRead(inboxItems: inboxItems, changeReadStatus: false)
             }
         }
     }
 
-    static func saveInboxObjectsRead(readItemsObjects: [CAppInbox], shouldCallApi: Bool? = false) {
+    static func saveInboxObjectsRead(readItemsObjects: [CAppInbox]) {
         let realm = CastledDBManager.shared.getRealm()
-        var readItems = [CastledInboxItem]()
         realm.writeAsync {
             for item in readItemsObjects {
-                readItems.append(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
                 item.isRead = true
             }
+            CastledStore.resetUnreadUncountAfterCRUD(realm: realm)
 
-        } onComplete: { error in
-            if !(error != nil) {
-                if let api = shouldCallApi, api {
-                    Castled.sharedInstance?.logInboxItemsRead(readItems)
+        } onComplete: { _ in
+        }
+    }
+
+    static func resetUnreadUncountAfterCRUD(realm: Realm) {
+        Castled.sharedInstance?.inboxUnreadCount = getInboxUnreadCount(realm: realm)
+    }
+
+    static func refreshInboxItems(liveInboxResponse: [CastledInboxItem]) {
+        if CastledStore.isInserting {
+            return
+        }
+        CastledStore.isInserting = true
+        CastledStore.castledStoreQueue.async {
+            autoreleasepool {
+                let backgroundRealm = CastledDBManager.shared.getRealm()
+                try! backgroundRealm.write {
+                    // Map live inbox response to Realm objects and add them to the Realm
+                    let cachedInboxItems = backgroundRealm.objects(CAppInbox.self)
+                    let liveInboxItemIds = Set(liveInboxResponse.map { $0.messageId })
+
+                    let liveInboxItems = liveInboxResponse.compactMap { responseItem -> CAppInbox? in
+                        if cachedInboxItems.contains(where: { $0.messageId == responseItem.messageId }) {
+                            // If it exists, return nil to filter it out
+                            return nil
+                        } else {
+                            let inboxItem = CastledInboxResponseConverter.convertToInbox(inboxItem: responseItem, realm: backgroundRealm)
+                            return inboxItem
+                        }
+                    }
+                    if !liveInboxItems.isEmpty {
+                        backgroundRealm.add(liveInboxItems, update: .modified) // Insert or update as necessary
+                    }
+                    let expiredInboxItems = cachedInboxItems.filter { !liveInboxItemIds.contains($0.messageId) }
+                    if !expiredInboxItems.isEmpty {
+                        backgroundRealm.delete(expiredInboxItems)
+                    }
+
+                    CastledStore.resetUnreadUncountAfterCRUD(realm: backgroundRealm)
+
+                    CastledStore.isInserting = false
                 }
             }
         }

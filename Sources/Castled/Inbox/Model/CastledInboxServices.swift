@@ -9,19 +9,21 @@ import UIKit
 
 class CastledInboxServices: NSObject {
     private let backgroundQueue = DispatchQueue(label: "CastledInboxQueue", qos: .background)
-    func reportInboxItemsRead(inboxItems: [CastledInboxItem]) {
+    func reportInboxItemsRead(inboxItems: [CastledInboxItem], changeReadStatus: Bool) {
         if inboxItems.isEmpty {
             return
         }
-        CastledStore.saveInboxItemsRead(readItems: inboxItems)
+        if changeReadStatus {
+            CastledStore.saveInboxItemsRead(readItems: inboxItems)
+        }
         backgroundQueue.async { [self] in
             let eventType = "READ"
             var savedEventTypes = [[String: String]]()
             for inboxObject in inboxItems {
-                savedEventTypes.append(self.getSendingParametersFrom(eventType, inboxObject, ""))
+                savedEventTypes.append(getSendingParametersFrom(eventType, inboxObject, ""))
             }
             if !savedEventTypes.isEmpty {
-                self.updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
+                updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
                     if success {
                         CastledLog.castledLog("Inbox item read status success", logLevel: CastledLogLevel.debug)
                     }

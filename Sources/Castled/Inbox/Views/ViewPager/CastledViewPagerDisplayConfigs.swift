@@ -12,6 +12,7 @@ class CastledViewPagerDisplayConfigs {
     var isEqualWidth = false
     var disableContainerScroll = true
     var hideTabBar = false
+    var viewTopAlignmentView: UIView?
 
     var tabBarDefaultColor: UIColor = .white
     var tabBarSelectedColor: UIColor = UIColor.white.withAlphaComponent(0.8)

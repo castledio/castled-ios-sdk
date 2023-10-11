@@ -69,7 +69,7 @@ public extension Castled {
      Inbox : Function to mark inbox items as read
      */
     @objc func logInboxItemsRead(_ inboxItems: [CastledInboxItem]) {
-        CastledInboxServices().reportInboxItemsRead(inboxItems: inboxItems)
+        CastledInboxServices().reportInboxItemsRead(inboxItems: inboxItems, changeReadStatus: true)
     }
 
     /**
@@ -113,44 +113,6 @@ public extension Castled {
                     // Dismiss the CastledInboxViewController if it's not embedded in a UINavigationController
                     inboxViewController.removeObservers()
                     inboxViewController.dismiss(animated: true, completion: nil)
-                }
-            }
-        }
-    }
-
-    internal func refreshInboxItems(liveInboxResponse: [CastledInboxItem]) {
-        if CastledStore.isInserting {
-            return
-        }
-        CastledStore.isInserting = true
-        CastledStore.castledStoreQueue.async {
-            autoreleasepool {
-                let backgroundRealm = CastledDBManager.shared.getRealm()
-                try! backgroundRealm.write {
-                    // Map live inbox response to Realm objects and add them to the Realm
-                    let cachedInboxItems = backgroundRealm.objects(CAppInbox.self)
-                    let liveInboxItemIds = Set(liveInboxResponse.map { $0.messageId })
-
-                    let liveInboxItems = liveInboxResponse.compactMap { responseItem -> CAppInbox? in
-                        if cachedInboxItems.contains(where: { $0.messageId == responseItem.messageId }) {
-                            // If it exists, return nil to filter it out
-                            return nil
-                        } else {
-                            let inboxItem = CastledInboxResponseConverter.convertToInbox(inboxItem: responseItem, realm: backgroundRealm)
-                            return inboxItem
-                        }
-                    }
-                    if !liveInboxItems.isEmpty {
-                        backgroundRealm.add(liveInboxItems, update: .modified) // Insert or update as necessary
-                    }
-                    let expiredInboxItems = cachedInboxItems.filter { !liveInboxItemIds.contains($0.messageId) }
-                    if !expiredInboxItems.isEmpty {
-                        backgroundRealm.delete(expiredInboxItems)
-                    }
-                    self.inboxUnreadCount = backgroundRealm.objects(CAppInbox.self)
-                        .filter("isRead == false")
-                        .count
-                    CastledStore.isInserting = false
                 }
             }
         }

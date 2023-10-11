@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 @objc class CastledInApps: NSObject {
+    var isCurrentlyDisplaying = false
     static var sharedInstance = CastledInApps()
     var savedInApps = [CastledInAppObject]()
     private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", qos: .background)
@@ -214,7 +215,7 @@ import UIKit
     }
 
     func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
-        guard let _ = CastledUserDefaults.shared.userId else {
+        guard let _ = CastledUserDefaults.shared.userId,!isCurrentlyDisplaying else {
             return
         }
         self.castledInAppsQueue.async { [self] in
@@ -239,10 +240,11 @@ import UIKit
                     castle.view.isHidden = false // added this to call viewdidload. it was not getting called after initialising from xib https://stackoverflow.com/questions/913627/uiviewcontroller-viewdidload-not-being-called
                     //  castle.loadView()
 
-                    castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings)
+                    if castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings) {
+                        self.isCurrentlyDisplaying = true
+                        self.saveInappDisplayStatus(event: event)
+                    }
                 }
-
-                self.saveInappDisplayStatus(event: event)
             }
         }
     }

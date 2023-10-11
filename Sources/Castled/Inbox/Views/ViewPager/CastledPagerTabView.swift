@@ -23,12 +23,12 @@ class CastledViewPagerTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setup(tab: CastledViewPagerTabItem, options: CastledViewPagerDisplayConfigs) {
-        setupTabView(options: options, tab: tab)
+    func setup(tab: CastledViewPagerTabItem, config: CastledViewPagerDisplayConfigs) {
+        setupTabView(config: config, tab: tab)
     }
 
-    private func setupTabView(options: CastledViewPagerDisplayConfigs, tab: CastledViewPagerTabItem) {
-        setupTitleLabel(withOptions: options, text: tab.title)
+    private func setupTabView(config: CastledViewPagerDisplayConfigs, tab: CastledViewPagerTabItem) {
+        setupTitleLabel(withOptions: config, text: tab.title)
 
         setupForAutolayout(view: lblTitle)
         lblTitle?.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
@@ -40,7 +40,7 @@ class CastledViewPagerTabView: UIView {
         width = labelWidth
     }
 
-    // MARK: - Helpers
+    // MARK: - Helper Method
 
     private func setupTitleLabel(withOptions options: CastledViewPagerDisplayConfigs, text: String) {
         lblTitle = UILabel()
@@ -52,14 +52,14 @@ class CastledViewPagerTabView: UIView {
         lblTitle?.text = text
     }
 
-    func addHighlight(options: CastledViewPagerDisplayConfigs) {
-        backgroundColor = options.tabBarSelectedColor
-        lblTitle?.textColor = options.tabBarSelectedTextColor
+    func addHighlight(config: CastledViewPagerDisplayConfigs) {
+        backgroundColor = config.tabBarSelectedColor
+        lblTitle?.textColor = config.tabBarSelectedTextColor
     }
 
-    func removeHighlight(options: CastledViewPagerDisplayConfigs) {
-        backgroundColor = options.tabBarDefaultColor
-        lblTitle?.textColor = options.tabBarDefaultTextColor
+    func removeHighlight(config: CastledViewPagerDisplayConfigs) {
+        backgroundColor = config.tabBarDefaultColor
+        lblTitle?.textColor = config.tabBarDefaultTextColor
     }
 
     func setupForAutolayout(view: UIView?) {

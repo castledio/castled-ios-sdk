@@ -34,10 +34,9 @@ import UIKit
         if Castled.sharedInstance == nil {
             fatalError(CastledExceptionMessages.notInitialised.rawValue)
         }
-        setupTopCategories()
         setupViews()
+        setupTopCategories()
         bindViewModel()
-
     }
 
     override public func viewWillDisappear(_ animated: Bool) {
@@ -47,9 +46,8 @@ import UIKit
 
     private func setupViews() {
         view.backgroundColor = inboxConfig!.inboxViewBackgroundColor
-        // TODO: indicatorView.color = inboxConfig!.loaderTintColor
 
-        if navigationController?.isNavigationBarHidden == false {
+        if navigationController != nil, navigationController?.isNavigationBarHidden == false {
             navigationItem.title = inboxConfig!.navigationBarTitle
             viewTopBar.isHidden = true
             constraintTopBarHeight.constant = 0
@@ -61,54 +59,58 @@ import UIKit
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.compactAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
             if !inboxConfig!.hideCloseButton {
                 let closeButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonTapped(_:)))
                 navigationItem.rightBarButtonItem = closeButton
             }
         } else {
             viewTopBar.backgroundColor = inboxConfig!.navigationBarBackgroundColor
-            let window = UIApplication.shared.windows.first
-            let topPadding = window?.safeAreaInsets.top
+            modifyTopBarHeight()
+            lblTitle.text = inboxConfig!.navigationBarTitle
+            btnClose.tintColor = inboxConfig!.navigationBarButtonTintColor
+            lblTitle.textColor = inboxConfig!.navigationBarButtonTintColor
+            btnClose.isHidden = inboxConfig!.hideCloseButton
+        }
+    }
+
+    private func modifyTopBarHeight() {
+        let window = UIApplication.shared.windows.first
+        let topPadding = window?.safeAreaInsets.top
+
+        if navigationController != nil {
+            constraintTopBarHeight.constant = (topPadding ?? 0) + 44.0
+        } else {
             if modalPresentationStyle == .fullScreen {
                 constraintTopBarHeight.constant = (topPadding ?? 0) + 44.0
 
             } else {
                 constraintTopBarHeight.constant = 44.0
             }
-            lblTitle.text = inboxConfig!.navigationBarTitle
-            btnClose.tintColor = inboxConfig!.navigationBarButtonTintColor
-            lblTitle.textColor = inboxConfig!.navigationBarButtonTintColor
-            btnClose.isHidden = inboxConfig!.hideCloseButton
         }
-        // TODO: lblNoUpdates.text = inboxConfig!.emptyMessageViewText
-
-        showRequiredViews()
     }
 
     private func bindViewModel() {
         viewModel.$showLoader
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                // TODO: check below code
-                /*
-                 self?.indicatorView.isHidden = !showLoader
-                 if showLoader == true {
-                     self?.indicatorView.startAnimating()
-                 } else if (self?.indicatorView.isAnimating) != nil {
-                     self?.indicatorView.stopAnimating()
-                 }*/
+            .sink { [weak self] showLoader in
+                if let listingControllers = self?.listingViewControllers {
+                    for lisitngVc in listingControllers {
+                        lisitngVc.showOrHideLoader(showLoader: showLoader)
+                    }
+                }
             }
             .store(in: &cancellables)
         viewModel.$errorMessage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] errorMessage in
-                //  self?.errorLabel.text = errorMessage
-                //
                 if errorMessage != nil {
                     DispatchQueue.main.async {
-                        // TODO: self?.lblNoUpdates.text = errorMessage
-
-                        self?.showRequiredViews()
+                        if let listingControllers = self?.listingViewControllers {
+                            for lisitngVc in listingControllers {
+                                lisitngVc.setErrorTextWith(title: errorMessage)
+                            }
+                        }
                     }
                 }
             }
@@ -117,39 +119,40 @@ import UIKit
         viewModel.didLoadNextPage()
     }
 
-    private func showRequiredViews() {
-        /*
-         tblView.isHidden = viewModel.inboxItems.isEmpty
-         lblNoUpdates.isHidden = !tblView.isHidden
-         lblNoUpdates.isHidden = true
-         tblView.isHidden = true*/
-    }
-
     private func setupTopCategories() {
         topCategories.append(CastledViewPagerTabItem(title: "All"))
-        let realm = viewModel.realm
-        let uniqueCategories = Set(realm.objects(CAppInbox.self)
-            .filter("tag != ''")
-            .distinct(by: ["tag"])
-            .compactMap { $0.tag }).sorted()
+        let tabDisplayConfig = CastledViewPagerDisplayConfigs()
+        tabDisplayConfig.hideTabBar = !inboxConfig!.showCategoriesTab
+        if inboxConfig!.showCategoriesTab {
+            let realm = viewModel.realm
+            let uniqueCategories = Set(realm.objects(CAppInbox.self)
+                .filter("tag != ''")
+                .distinct(by: ["tag"])
+                .compactMap { $0.tag }).sorted()
 
-        for tag in uniqueCategories {
-            topCategories.append(CastledViewPagerTabItem(title: tag))
+            for tag in uniqueCategories {
+                topCategories.append(CastledViewPagerTabItem(title: tag))
+            }
+            tabDisplayConfig.hideTabBar = topCategories.count == 1 ? true : false
         }
+
         for (index, item) in topCategories.enumerated() {
             let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxListingViewController") as! CastledInboxListingViewController
             castledInboxVC.currentCategory = item.title
             castledInboxVC.currentIndex = index
+            castledInboxVC.inboxConfig = inboxConfig
             castledInboxVC.inboxViewController = self
             listingViewControllers.append(castledInboxVC)
         }
-
-        let options = CastledViewPagerDisplayConfigs()
-        options.hideTabBar = topCategories.count == 1 ? true : false
-        // TODO: add other configs
+        tabDisplayConfig.tabBarDefaultTextColor = inboxConfig!.tabBarDefaultTextColor
+        tabDisplayConfig.tabBarSelectedTextColor = inboxConfig!.tabBarSelectedTextColor
+        tabDisplayConfig.tabBarDefaultColor = inboxConfig!.tabBarDefaultBackgroundColor
+        tabDisplayConfig.tabBarSelectedColor = inboxConfig!.tabBarSelectedBackgroundColor
+        tabDisplayConfig.tabBarIndicatorBackgroundColor = inboxConfig!.tabBarIndicatorBackgroundColor
+        tabDisplayConfig.viewTopAlignmentView = viewTopBar
 
         viewPager = CastledViewPager(viewController: self)
-        viewPager?.setDisplayConfigs(config: options)
+        viewPager?.setDisplayConfigs(config: tabDisplayConfig)
         viewPager?.setDataSource(dataSource: self)
         viewPager?.setDelegate(delegate: self)
         viewPager?.setupViews()
@@ -170,18 +173,18 @@ import UIKit
     }
 
     deinit {
-        print("Memory Deallocation")
         removeObservers()
     }
 
     override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape \(viewPager?.getCurrentPageIndex() ?? 0)")
-        } else {
-            print("Portrait \(viewPager?.getCurrentPageIndex() ?? 0)")
+
+        DispatchQueue.main.async {
+            if !self.viewTopBar.isHidden {
+                self.modifyTopBarHeight()
+            }
+            self.viewPager?.invalidateCurrentTabs()
         }
-        viewPager?.invalidateCurrentTabs()
     }
 
     func getCurrentPageIndex() -> Int {
