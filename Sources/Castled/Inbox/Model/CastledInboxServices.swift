@@ -49,21 +49,31 @@ class CastledInboxServices: NSObject {
         }
     }
 
-    func reportInboxItemsDeleted(inboxObject: CastledInboxItem, completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
+    func reportInboxItemsDeleted(inboxObject: CastledInboxItem) {
         backgroundQueue.async { [self] in
+            let realm = CastledDBManager.shared.getRealm()
+            if let existingItem = realm.object(ofType: CAppInbox.self, forPrimaryKey: inboxObject.messageId) {
+                do {
+                    try? realm.write {
+                        existingItem.isDeleted = true
+                        CastledStore.resetUnreadUncountAfterCRUD(realm: realm)
+                    }
+                }
+                catch let error as NSError {
+                    CastledLog.castledLog("in deltion \(error.localizedDescription)", logLevel: .error)
+                }
+            }
+
             let eventType = "DELETED"
             var savedEventTypes = [[String: String]]()
             savedEventTypes.append(self.getSendingParametersFrom(eventType, inboxObject, ""))
-            if !savedEventTypes.isEmpty {
-                updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
-                    if success {
-                        CastledStore.deleteInboxItem(inboxItem: inboxObject)
-                        CastledLog.castledLog("Inbox item deleted", logLevel: CastledLogLevel.debug)
-                    }
-                    else {
-                        CastledLog.castledLog(" Delete Inbox item failed \(String(describing: error))", logLevel: CastledLogLevel.error)
-                    }
-                    completion(success, error)
+            updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
+                if success {
+                    CastledStore.deleteInboxItem(inboxItem: inboxObject)
+                    CastledLog.castledLog("Inbox item deleted", logLevel: CastledLogLevel.debug)
+                }
+                else {
+                    CastledLog.castledLog(" Delete Inbox item failed \(String(describing: error))", logLevel: CastledLogLevel.error)
                 }
             }
         }

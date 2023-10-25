@@ -79,7 +79,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         style.tabBarDefaultBackgroundColor = .purple
         style.tabBarSelectedBackgroundColor = .lightGray
         style.tabBarIndicatorBackgroundColor = .red
-        let inboxViewController = Castled.sharedInstance?.getInboxViewController(with: style, andDelegate: self)
+        let inboxViewController = Castled.sharedInstance?.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController?.modalPresentationStyle = .fullScreen
         present(inboxViewController!, animated: true)
         //  navigationController?.setNavigationBarHidden(true, animated: false)
@@ -87,14 +87,13 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     }
 
     func setUpInboxCallback() {
-        Castled.sharedInstance?.inboxUnreadCount(listener: { unreadCount in
+        Castled.sharedInstance?.observeUnreadCountChanges(listener: { unreadCount in
             print("Inbox unread count is \(unreadCount)")
-            // print("Inbox unread count is -> \(Castled.sharedInstance?.getInboxUnreadCount())")
-
         })
-        Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
 
-            //   print("getInboxItems \(result) \(errormessage)")
+        Castled.sharedInstance?.getInboxItems(completion: { _, result, errormessage in
+
+            print("getInboxItems \(result) \(errormessage)")
         })
         //       Castled.sharedInstance?.dismissInboxViewController()
     }

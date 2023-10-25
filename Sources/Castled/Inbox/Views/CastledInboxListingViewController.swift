@@ -11,6 +11,7 @@ import UIKit
 class CastledInboxListingViewController: UIViewController {
     var currentIndex = 0
     var inboxConfig: CastledInboxDisplayConfig?
+    private let refreshControl = UIRefreshControl()
 
     @IBOutlet private weak var tblView: UITableView!
     @IBOutlet weak var lblNoUpdates: UILabel!
@@ -48,10 +49,19 @@ class CastledInboxListingViewController: UIViewController {
         tblView.rowHeight = UITableView.automaticDimension
         tblView.estimatedRowHeight = 600
         tblView.register(UINib(nibName: CastledInboxCell.castledInboxImageAndTitleCell, bundle: Bundle.resourceBundle(for: Self.self)), forCellReuseIdentifier: CastledInboxCell.castledInboxImageAndTitleCell)
+        tblView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshInboxData(_:)), for: .valueChanged)
+    }
+
+    @objc private func refreshInboxData(_ sender: Any) {
+        // Fetch Weather Data
+        inboxViewController?.viewModel.didLoadNextPage()
     }
 
     private func setUpDisplayConfigs() {
+        tblView.backgroundColor = .clear
         indicatorView.color = inboxConfig!.loaderTintColor
+        refreshControl.tintColor = inboxConfig!.loaderTintColor
         view.backgroundColor = inboxConfig!.inboxViewBackgroundColor
         lblNoUpdates.text = inboxConfig!.emptyMessageViewText
     }
@@ -98,8 +108,7 @@ class CastledInboxListingViewController: UIViewController {
     }
 
     private func showRequiredViews() {
-        tblView.isHidden = inboxItems!.isEmpty
-        lblNoUpdates.isHidden = !tblView.isHidden
+        lblNoUpdates.isHidden = !inboxItems!.isEmpty
         showOrHideLoader(showLoader: inboxViewController?.viewModel.showLoader ?? false)
         setErrorTextWith(title: inboxViewController?.viewModel.errorMessage)
     }
@@ -113,6 +122,9 @@ class CastledInboxListingViewController: UIViewController {
                 }
             } else if indicator.isAnimating {
                 indicator.stopAnimating()
+            }
+            if refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
             }
         }
     }
@@ -176,24 +188,9 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .normal, title: "", handler: { _, _, _ in
             let item = self.inboxItems![indexPath.row]
-            self.inboxViewController!.viewModel.showLoader = true
-            try? self.inboxViewController!.viewModel.realm.write {
-                item.isDeleted = true
-            }
             let message_id = item.messageId
-            Castled.sharedInstance?.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item), completion: { [weak self] success, _ in
-                DispatchQueue.main.async {
-                    if !success {
-                        try? self?.inboxViewController!.viewModel.realm.write {
-                            item.isDeleted = false
-                        }
-                    } else {
-                        self?.inboxViewController!.readItems.removeAll { $0 == message_id }
-                    }
-                    self?.inboxViewController!.viewModel.showLoader = false
-                }
-
-            })
+            self.inboxViewController?.readItems.removeAll { $0 == message_id }
+            Castled.sharedInstance?.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
 
         })
         let trashImage = UIImage(named: "castled_swipe_delete_filled", in: Bundle.resourceBundle(for: CastledInboxViewController.self), compatibleWith: nil)

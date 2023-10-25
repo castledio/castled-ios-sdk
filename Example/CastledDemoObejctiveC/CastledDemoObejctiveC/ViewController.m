@@ -65,15 +65,17 @@ static NSString *userIdKey = @"userIdKey";
 }
 
 -(void)inboxCallBack{
-     /*   [[Castled sharedInstance] getInboxItemsWithCompletion:^(BOOL succes, NSArray<CastledInboxItem *> * _Nullable inboxItems, NSString * _Nullable errorMessage) {
+   [[Castled sharedInstance] getInboxItemsWithCompletion:^(BOOL succes, NSArray<CastledInboxItem *> * _Nullable inboxItems, NSString * _Nullable errorMessage) {
             NSLog(@"Inbox items are %@", inboxItems);
-    
+       [[Castled sharedInstance] deleteInboxItem:inboxItems.lastObject];
+
+
         }];
-    [[Castled sharedInstance] inboxUnreadCountWithListener:^(NSInteger unreadCount) {
+    [[Castled sharedInstance] observeUnreadCountChangesWithListener:^(NSInteger unreadCount) {
         NSLog(@"Inbox unread count is %ld", (long)unreadCount);
         NSLog(@"Inbox unread count is -- %ld", [[Castled sharedInstance] getInboxUnreadCount]);
 
-    }];*/
+    }];
 
 
 }
@@ -95,7 +97,7 @@ static NSString *userIdKey = @"userIdKey";
     style.tabBarSelectedBackgroundColor = [UIColor lightGrayColor];
     style.tabBarIndicatorBackgroundColor = [UIColor redColor];
 
-    UIViewController *inboxViewController = [[Castled sharedInstance] getInboxViewControllerWith:style andDelegate:self];
+    UIViewController *inboxViewController = [[Castled sharedInstance] getInboxViewControllerWithUIConfigs:style andDelegate:self];
     // inboxViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     // [self presentViewController:inboxViewController animated:YES completion:nil];
     [self.navigationController pushViewController:inboxViewController animated:YES];
