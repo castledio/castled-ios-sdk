@@ -13,18 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
-        // config.permittedBGIdentifier = "com.castled.backgroundtask"
-        config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
-        config.enablePush = true
-        config.enableInApp = true
+        let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
+        config.location = .US
         config.enableAppInbox = true
-        config.location = CastledLocation.US
-        config.logLevel = CastledLogLevel.debug
 
+        config.location = CastledLocation.TEST
+        config.logLevel = CastledLogLevel.debug
         // Register the custom category
         let notificationCategories = self.getNotificationCategories()
         Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: notificationCategories)
+        Castled.sharedInstance?.setUserId("antony@castled.io")
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()

@@ -126,7 +126,7 @@ import UIKit
         if inboxConfig!.showCategoriesTab {
             let realm = viewModel.realm
             let uniqueCategories = Set(realm.objects(CAppInbox.self)
-                .filter("tag != ''")
+                .filter("tag != '' && isDeleted == false")
                 .distinct(by: ["tag"])
                 .compactMap { $0.tag }).sorted()
 

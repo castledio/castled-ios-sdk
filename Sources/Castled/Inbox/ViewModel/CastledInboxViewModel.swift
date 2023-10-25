@@ -32,18 +32,18 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
 
     @Published var errorMessage: String?
     @Published var showLoader: Bool = false
-
+    var isLoading = false
     func didLoadNextPage() {
+        if isLoading {
+            return
+        }
+        isLoading = true
         if inboxUnreadCount == 0 {
             showLoader = true
         }
-        Castled.fetchInboxItems { response in
-            if !response.success {
-                DispatchQueue.main.async {
-                    self.errorMessage = response.errorMessage
-                }
-            }
-            self.showLoader = false
+        Castled.fetchInboxItems { [weak self] _ in
+            self?.showLoader = false
+            self?.isLoading = false
         }
     }
 

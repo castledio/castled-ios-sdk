@@ -13,7 +13,7 @@ public extension Castled {
     /**
      Inbox : Function that will returns the unread message count
      */
-    @objc func inboxUnreadCount(listener: @escaping (Int) -> Void) {
+    @objc func observeUnreadCountChanges(listener: @escaping (Int) -> Void) {
         inboxUnreadCountCallback = listener
         inboxUnreadCountCallback?(inboxUnreadCount)
     }
@@ -25,7 +25,7 @@ public extension Castled {
     /**
      Inbox : Function that will returns the Inbox ViewController
      */
-    @objc func getInboxViewController(with config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxViewControllerDelegate) -> CastledInboxViewController {
+    @objc func getInboxViewController(withUIConfigs config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxViewControllerDelegate) -> CastledInboxViewController {
         let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
         castledInboxVC.inboxConfig = config ?? CastledInboxDisplayConfig()
         castledInboxVC.delegate = delegate
@@ -49,7 +49,8 @@ public extension Castled {
             }
             do {
                 let backgroundRealm = CastledDBManager.shared.getRealm()
-                let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self)
+                let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self).filter("isDeleted == false")
+
                 let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
                     let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
                     return inboxItem
@@ -82,10 +83,8 @@ public extension Castled {
     /**
      Inbox : Function to delete an inbox item
      */
-    @objc func deleteInboxItem(_ inboxItem: CastledInboxItem, completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
-        CastledInboxServices().reportInboxItemsDeleted(inboxObject: inboxItem) { success, errorMessage in
-            completion(success, errorMessage)
-        }
+    @objc func deleteInboxItem(_ inboxItem: CastledInboxItem) {
+        CastledInboxServices().reportInboxItemsDeleted(inboxObject: inboxItem)
     }
 
     /**
