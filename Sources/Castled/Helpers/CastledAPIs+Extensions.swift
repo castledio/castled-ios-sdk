@@ -89,11 +89,12 @@ extension Castled {
      */
     static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItem]>) -> Void) {
         if Castled.sharedInstance == nil {
-            CastledLog.castledLog("Fetch inbox items \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            CastledLog.castledLog("Fetch inbox items: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
         if !CastledConfigs.sharedInstance.enableAppInbox {
+            CastledLog.castledLog("Fetch inbox items: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
             return
         }
@@ -106,12 +107,12 @@ extension Castled {
 extension Castled {
     private func api_fetch_inBox<T: Codable>(model: T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void) {
         guard let instance_id = Castled.sharedInstance?.instanceId else {
-            CastledLog.castledLog("Fetch InApps\(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            CastledLog.castledLog("Fetch inbox items:\(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
         guard let userId = CastledUserDefaults.shared.userId else {
-            CastledLog.castledLog("Fetch InApps \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
+            CastledLog.castledLog("Fetch inbox items: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
             return
         }
@@ -119,6 +120,8 @@ extension Castled {
             let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: instance_id)
             let response = await CastledNetworkLayer.shared.sendRequestFoFetch(model: model, endpoint: router.endpoint)
             if !response.success {
+                CastledLog.castledLog("Fetch inbox items: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+
             } else {
                 CastledStore.refreshInboxItems(liveInboxResponse: response.result as? [CastledInboxItem] ?? [])
                 // CastledLog.castledLog("Fetch InApps Success \(String(describing: response.result))")
