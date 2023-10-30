@@ -13,7 +13,7 @@ protocol CastledViewPagerDataSource: AnyObject {
 
     func getViewControllerAtIndex(index: Int) -> UIViewController
 
-    func getTabBarItems() -> [CastledViewPagerTabItem]
+    func getTabBarItems() -> [String]
 
     func getInitialPageViewIndex() -> Int
 }
@@ -35,10 +35,10 @@ class CastledViewPager: NSObject {
     private var constraintTabIndicatorLeading: NSLayoutConstraint?
     private var constraintTabIndicatorWidth: NSLayoutConstraint?
 
-    private var tabBarItems = [CastledViewPagerTabItem]()
+    private var tabBarItems = [String]()
     private var tabBarViews = [CastledViewPagerTabView]()
 
-    private var configs = CastledViewPagerDisplayConfigs()
+    var configs = CastledViewPagerDisplayConfigs()
     private var currentPageIndex = 0
 
     // MARK: - Initialization
@@ -111,6 +111,23 @@ class CastledViewPager: NSObject {
                 subView.isScrollEnabled = false
             }
         }
+    }
+
+    func removeChildViews() {
+        pageController?.delegate = nil
+        pageController?.dataSource = nil
+        pageController?.willMove(toParent: nil)
+        pageController?.view.removeFromSuperview()
+        pageController?.removeFromParent()
+
+        _ = tabBarViews.map({ $0.removeFromSuperview() })
+        constraintTabIndicatorLeading?.isActive = false
+        constraintTabIndicatorWidth?.isActive = false
+
+        tabBarItems.removeAll()
+        tabBarViews.removeAll()
+
+        scrollTabContainer.removeFromSuperview()
     }
 
     private func setupPageViewController() {

@@ -24,10 +24,12 @@ import UIKit
     var viewModel = CastledInboxViewModel()
     var readItems = [Int64]()
 
-    private var topCategories = [CastledViewPagerTabItem]()
+    private var topCategories = [String]()
     private var viewPager: CastledViewPager?
     private var listingViewControllers = [CastledInboxListingViewController]()
     private var cancellables: Set<AnyCancellable> = []
+    private var currentPageIndex = 0
+    private static let ALL_STRING = "All"
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -119,30 +121,21 @@ import UIKit
         viewModel.didLoadNextPage()
     }
 
+    private func getCategories(realm: Realm) -> [String] {
+        let uniqueCategories = Set(realm.objects(CAppInbox.self)
+            .filter("tag != '' && isDeleted == false")
+            .distinct(by: ["tag"])
+            .compactMap { $0.tag }).sorted()
+        return uniqueCategories
+    }
+
     private func setupTopCategories() {
-        topCategories.append(CastledViewPagerTabItem(title: "All"))
+        topCategories.append(CastledInboxViewController.ALL_STRING)
         let tabDisplayConfig = CastledViewPagerDisplayConfigs()
         tabDisplayConfig.hideTabBar = !inboxConfig!.showCategoriesTab
         if inboxConfig!.showCategoriesTab {
-            let realm = viewModel.realm
-            let uniqueCategories = Set(realm.objects(CAppInbox.self)
-                .filter("tag != '' && isDeleted == false")
-                .distinct(by: ["tag"])
-                .compactMap { $0.tag }).sorted()
-
-            for tag in uniqueCategories {
-                topCategories.append(CastledViewPagerTabItem(title: tag))
-            }
+            topCategories.append(contentsOf: getCategories(realm: viewModel.realm))
             tabDisplayConfig.hideTabBar = topCategories.count == 1 ? true : false
-        }
-
-        for (index, item) in topCategories.enumerated() {
-            let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxListingViewController") as! CastledInboxListingViewController
-            castledInboxVC.currentCategory = item.title
-            castledInboxVC.currentIndex = index
-            castledInboxVC.inboxConfig = inboxConfig
-            castledInboxVC.inboxViewController = self
-            listingViewControllers.append(castledInboxVC)
         }
         tabDisplayConfig.tabBarDefaultTextColor = inboxConfig!.tabBarDefaultTextColor
         tabDisplayConfig.tabBarSelectedTextColor = inboxConfig!.tabBarSelectedTextColor
@@ -150,12 +143,53 @@ import UIKit
         tabDisplayConfig.tabBarSelectedColor = inboxConfig!.tabBarSelectedBackgroundColor
         tabDisplayConfig.tabBarIndicatorBackgroundColor = inboxConfig!.tabBarIndicatorBackgroundColor
         tabDisplayConfig.viewTopAlignmentView = viewTopBar
+        createTabViews(tabDisplayConfig: tabDisplayConfig)
+    }
 
+    private func createTabViews(tabDisplayConfig: CastledViewPagerDisplayConfigs) {
+        for (index, item) in topCategories.enumerated() {
+            let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxListingViewController") as! CastledInboxListingViewController
+            castledInboxVC.currentCategory = item
+            castledInboxVC.currentIndex = index
+            castledInboxVC.inboxConfig = inboxConfig
+            castledInboxVC.inboxViewController = self
+            listingViewControllers.append(castledInboxVC)
+        }
         viewPager = CastledViewPager(viewController: self)
-        viewPager?.setDisplayConfigs(config: tabDisplayConfig)
         viewPager?.setDataSource(dataSource: self)
         viewPager?.setDelegate(delegate: self)
+        viewPager?.setDisplayConfigs(config: tabDisplayConfig)
         viewPager?.setupViews()
+    }
+
+    func updateViewPagerAfterDBChanges() {
+        if !inboxConfig!.showCategoriesTab {
+            return
+        }
+        CastledStore.castledStoreQueue.async { [weak self] in
+            var currentCategories = [CastledInboxViewController.ALL_STRING]
+            currentCategories.append(contentsOf: self?.getCategories(realm: CastledDBManager.shared.getRealm()) ?? [])
+            if currentCategories != self?.topCategories {
+                DispatchQueue.main.async { [weak self] in
+                    self?.topCategories.removeAll()
+                    self?.topCategories.append(contentsOf: currentCategories)
+                    let tabDisplayConfig = self?.viewPager?.configs
+                    tabDisplayConfig!.hideTabBar = self?.topCategories.count == 1 ? true : false
+                    var lastIndex = self?.getCurrentPageIndex() ?? 0
+                    if lastIndex >= currentCategories.count {
+                        lastIndex = 0
+                    }
+                    self?.currentPageIndex = lastIndex
+                    self?.viewPager?.removeChildViews()
+                    self?.viewPager?.setDelegate(delegate: nil)
+                    self?.listingViewControllers.forEach { $0.removeObservers() }
+                    self?.listingViewControllers.removeAll()
+
+                    self?.viewPager = nil
+                    self?.createTabViews(tabDisplayConfig: tabDisplayConfig!)
+                }
+            }
+        }
     }
 
     private func updateReadStatus() {
@@ -201,12 +235,12 @@ extension CastledInboxViewController: CastledViewPagerDataSource {
         return listingViewControllers[index]
     }
 
-    func getTabBarItems() -> [CastledViewPagerTabItem] {
+    func getTabBarItems() -> [String] {
         return topCategories
     }
 
     func getInitialPageViewIndex() -> Int {
-        0
+        return currentPageIndex
     }
 }
 

@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
         config.location = .US
         config.enableAppInbox = true
-
+        config.enablePush = true
         config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         // Register the custom category

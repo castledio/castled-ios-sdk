@@ -54,7 +54,6 @@ class CastledInboxListingViewController: UIViewController {
     }
 
     @objc private func refreshInboxData(_ sender: Any) {
-        // Fetch Weather Data
         inboxViewController?.viewModel.didLoadNextPage()
     }
 
@@ -84,12 +83,16 @@ class CastledInboxListingViewController: UIViewController {
                         // Initial data is loaded
                         self?.tblView.reloadData()
                     case .update(_, let deletions, let insertions, let modifications):
+
                         // Data has been updated, handle deletions, insertions, and modifications
                         self?.tblView.beginUpdates()
                         self?.tblView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
                         self?.tblView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
                         self?.tblView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
                         self?.tblView.endUpdates()
+                        if !deletions.isEmpty || !insertions.isEmpty {
+                            self?.inboxViewController?.updateViewPagerAfterDBChanges()
+                        }
                     case .error(let error):
                         // Handle error
                         CastledLog.castledLog("Inbox listing Error: \(error)", logLevel: CastledLogLevel.error)
@@ -102,7 +105,7 @@ class CastledInboxListingViewController: UIViewController {
         }
     }
 
-    private func removeObservers() {
+    func removeObservers() {
         notificationToken?.invalidate()
         notificationToken = nil
     }

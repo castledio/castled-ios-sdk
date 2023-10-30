@@ -42,11 +42,11 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
             showLoader = true
         }
         Castled.fetchInboxItems { [weak self] response in
-            if !response.success {
-                DispatchQueue.main.async {
-                    self?.errorMessage = response.errorMessage
-                }
-            }
+//            if !response.success {
+//                DispatchQueue.main.async {
+//                    self?.errorMessage = response.errorMessage
+//                }
+//            }
             self?.showLoader = false
             self?.isLoading = false
         }
