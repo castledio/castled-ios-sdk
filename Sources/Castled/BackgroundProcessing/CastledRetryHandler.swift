@@ -36,7 +36,7 @@ class CastledRetryHandler {
             })
             for (key, value) in requestHandlerRegistry {
                 switch key {
-                    case CastledNotificationType.push.value():
+                    case CastledConstants.CastledNetworkRequestType.pushRequest.rawValue:
                         if let savedEvents = value as? [[String: String]] {
                             self?.castledSemaphore.wait()
                             self?.castledGroup.enter()
@@ -52,7 +52,7 @@ class CastledRetryHandler {
                                 }
                             })
                         }
-                    case CastledNotificationType.inapp.value():
+                    case CastledConstants.CastledNetworkRequestType.inappRequest.rawValue:
                         if let savedEvents = value as? [[String: String]] {
                             self?.castledSemaphore.wait()
                             self?.castledGroup.enter()
@@ -69,7 +69,7 @@ class CastledRetryHandler {
                                 }
                             })
                         }
-                    case CastledNotificationType.inbox.value():
+                    case CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue:
                         if let savedEvents = value as? [[String: String]] {
                             self?.castledSemaphore.wait()
                             self?.castledGroup.enter()
@@ -85,6 +85,25 @@ class CastledRetryHandler {
                                     // CastledLog.castledLog("Error in updating inapp event \(#function)")
                                 }
                             })
+                        }
+                    case CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue:
+                        if let savedEvents = value as? [[String: String]] {
+                            for info in savedEvents {
+                                self?.castledSemaphore.wait()
+                                self?.castledGroup.enter()
+                                Castled.updateDeviceInfo(deviceInfo: info) { [weak self] (response: CastledResponse<[String: String]>) in
+                                    defer {
+                                        self?.castledSemaphore.signal()
+                                        self?.castledGroup.leave()
+                                    }
+
+                                    if response.success {
+                                        //   CastledLog.castledLog("inbox upload success in \(#function) response\(response.result as Any)")
+                                    } else {
+                                        // CastledLog.castledLog("Error in updating inapp event \(#function)")
+                                    }
+                                }
+                            }
                         }
                     default:
                         break

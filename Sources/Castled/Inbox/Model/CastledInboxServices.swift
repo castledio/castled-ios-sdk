@@ -96,7 +96,7 @@ class CastledInboxServices: NSObject {
                     "teamId": teamId,
                     "eventType": eventType,
                     "sourceContext": sourceContext] as [String: String]
-        json[CastledConstants.CastledNetworkRequestTypeKey] = CastledNotificationType.inbox.value()
+        json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue
         json["btnLabel"] = title
         return json
     }

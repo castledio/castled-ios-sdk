@@ -14,17 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
-        // config.permittedBGIdentifier = "com.castled.backgroundtask"
-        config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
+        config.location = .US
+        config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
-        config.enableAppInbox = true
         config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
-
         // Register the custom category
         let notificationCategories = self.getNotificationCategories()
         Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: notificationCategories)
+        Castled.sharedInstance?.setUserId("antony@castled.io")
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -37,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).standardAppearance = navBarAppearance
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).scrollEdgeAppearance = navBarAppearance
         }
-
+        registerForPush()
         return true
     }
 
@@ -217,21 +216,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("didReceive \(self.description)")
         // Handle the click events
         Castled.sharedInstance?.userNotificationCenter(center, didReceive: response)
         completionHandler()
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("willPresent \(self.description)")
         Castled.sharedInstance?.userNotificationCenter(center, willPresent: notification)
         completionHandler([.alert, .badge, .sound])
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Castled.sharedInstance?.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { _ in
-            print("didReceiveRemoteNotification \(self.description)")
             completionHandler(.newData)
 
         })

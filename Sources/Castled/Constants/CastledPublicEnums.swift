@@ -15,7 +15,7 @@ import Foundation
     var description: String {
         switch self {
             case .US:
-                return "app"
+                return "api"
             case .AP:
                 return "in"
             case .INDIA:

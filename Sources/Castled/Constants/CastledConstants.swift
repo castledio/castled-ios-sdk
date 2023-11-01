@@ -9,6 +9,7 @@ import Foundation
 
 class CastledConstants {
     // Plist Key for enable/ Disable swizzling
+
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     enum PushNotification {
         static let customKey = "castled"
@@ -130,5 +131,12 @@ class CastledConstants {
         static func < (lhs: InDisplayPriority, rhs: InDisplayPriority) -> Bool {
             return lhs.sortOrder < rhs.sortOrder
         }
+    }
+
+    enum CastledNetworkRequestType: String {
+        case pushRequest = "push"
+        case inappRequest = "inapp"
+        case inboxRequest = "inbox"
+        case deviceInfoRequest = "deviceInfo"
     }
 }

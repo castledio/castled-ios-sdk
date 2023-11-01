@@ -43,12 +43,12 @@
 		0A4C76582A7C258A00F60D16 /* CIBannerDefaultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */; };
 		0A4C765A2A7C25AD00F60D16 /* CIBannerDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C76592A7C25AD00F60D16 /* CIBannerDefaultView.swift */; };
 		0A5B30872AD5CAEE00A3EC4F /* CastledViewPagerDisplayConfigs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B30832AD5CAED00A3EC4F /* CastledViewPagerDisplayConfigs.swift */; };
-		0A5B30882AD5CAEE00A3EC4F /* CastledViewPagerTabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B30842AD5CAEE00A3EC4F /* CastledViewPagerTabItem.swift */; };
 		0A5B30892AD5CAEE00A3EC4F /* CastledViewPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B30852AD5CAEE00A3EC4F /* CastledViewPager.swift */; };
 		0A5B308A2AD5CAEE00A3EC4F /* CastledPagerTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B30862AD5CAEE00A3EC4F /* CastledPagerTabView.swift */; };
 		0A5B308C2AD5CC1800A3EC4F /* CastledInboxListingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B308B2AD5CC1800A3EC4F /* CastledInboxListingViewController.swift */; };
 		0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */; };
 		0A6A93E129E7F53C0083249E /* CastledInAppDisplaySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6A93E029E7F53C0083249E /* CastledInAppDisplaySettings.swift */; };
+		0A74B0892AF2B0A7003364CD /* CastledDeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74B0872AF2B0A6003364CD /* CastledDeviceInfo.swift */; };
 		0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74E08C29E6D615004F2610 /* CastledInApps.swift */; };
 		0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */; };
 		0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */; };
@@ -157,12 +157,12 @@
 		0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIBannerDefaultView.xib; sourceTree = "<group>"; };
 		0A4C76592A7C25AD00F60D16 /* CIBannerDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIBannerDefaultView.swift; sourceTree = "<group>"; };
 		0A5B30832AD5CAED00A3EC4F /* CastledViewPagerDisplayConfigs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledViewPagerDisplayConfigs.swift; sourceTree = "<group>"; };
-		0A5B30842AD5CAEE00A3EC4F /* CastledViewPagerTabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledViewPagerTabItem.swift; sourceTree = "<group>"; };
 		0A5B30852AD5CAEE00A3EC4F /* CastledViewPager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledViewPager.swift; sourceTree = "<group>"; };
 		0A5B30862AD5CAEE00A3EC4F /* CastledPagerTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledPagerTabView.swift; sourceTree = "<group>"; };
 		0A5B308B2AD5CC1800A3EC4F /* CastledInboxListingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxListingViewController.swift; sourceTree = "<group>"; };
 		0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTouchThroughWindow.swift; sourceTree = "<group>"; };
 		0A6A93E029E7F53C0083249E /* CastledInAppDisplaySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppDisplaySettings.swift; sourceTree = "<group>"; };
+		0A74B0872AF2B0A6003364CD /* CastledDeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledDeviceInfo.swift; sourceTree = "<group>"; };
 		0A74E08C29E6D615004F2610 /* CastledInApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInApps.swift; sourceTree = "<group>"; };
 		0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppTriggerEvaluator.swift; sourceTree = "<group>"; };
 		0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasstledTriggerParamsConditionEvaluator.swift; sourceTree = "<group>"; };
@@ -394,7 +394,6 @@
 				0A5B30862AD5CAEE00A3EC4F /* CastledPagerTabView.swift */,
 				0A5B30852AD5CAEE00A3EC4F /* CastledViewPager.swift */,
 				0A5B30832AD5CAED00A3EC4F /* CastledViewPagerDisplayConfigs.swift */,
-				0A5B30842AD5CAEE00A3EC4F /* CastledViewPagerTabItem.swift */,
 			);
 			path = ViewPager;
 			sourceTree = "<group>";
@@ -406,6 +405,30 @@
 				0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */,
 			);
 			path = Trigger;
+			sourceTree = "<group>";
+		};
+		0A74B0852AF2B0A6003364CD /* Tracking */ = {
+			isa = PBXGroup;
+			children = (
+				0A74B0862AF2B0A6003364CD /* Device */,
+				0A74B0882AF2B0A6003364CD /* Events */,
+			);
+			path = Tracking;
+			sourceTree = "<group>";
+		};
+		0A74B0862AF2B0A6003364CD /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				0A74B0872AF2B0A6003364CD /* CastledDeviceInfo.swift */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
+		0A74B0882AF2B0A6003364CD /* Events */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Events;
 			sourceTree = "<group>";
 		};
 		0A7505EC29EDE69500B84973 /* Views */ = {
@@ -484,6 +507,7 @@
 				12C72C482947865B00B6B3DC /* InApps */,
 				0A1DE5EC2A9DA1E800DB2E29 /* Inbox */,
 				0ABDE8B229FBF23400D3EF79 /* BackgroundProcessing */,
+				0A74B0852AF2B0A6003364CD /* Tracking */,
 			);
 			path = Castled;
 			sourceTree = "<group>";
@@ -870,7 +894,7 @@
 				0A0F97F32ACC7E9900BA05D0 /* CastledInboxResponseConverter.swift in Sources */,
 				12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */,
 				0AB5C59F291C27840027C36B /* CastledSwizzler.swift in Sources */,
-				0A5B30882AD5CAEE00A3EC4F /* CastledViewPagerTabItem.swift in Sources */,
+				0A74B0892AF2B0A7003364CD /* CastledDeviceInfo.swift in Sources */,
 				0AB5C5A1291C27840027C36B /* CastledNotifications+Extensions.swift in Sources */,
 				0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */,
 				0AB5C5A0291C27840027C36B /* CastledAPIs+Extensions.swift in Sources */,
