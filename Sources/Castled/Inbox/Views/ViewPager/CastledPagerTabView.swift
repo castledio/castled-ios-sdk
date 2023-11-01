@@ -23,12 +23,12 @@ class CastledViewPagerTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setup(tab: CastledViewPagerTabItem, config: CastledViewPagerDisplayConfigs) {
+    func setup(tab: String, config: CastledViewPagerDisplayConfigs) {
         setupTabView(config: config, tab: tab)
     }
 
-    private func setupTabView(config: CastledViewPagerDisplayConfigs, tab: CastledViewPagerTabItem) {
-        setupTitleLabel(withOptions: config, text: tab.title)
+    private func setupTabView(config: CastledViewPagerDisplayConfigs, tab: String) {
+        setupTitleLabel(withOptions: config, text: tab)
 
         setupForAutolayout(view: lblTitle)
         lblTitle?.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true

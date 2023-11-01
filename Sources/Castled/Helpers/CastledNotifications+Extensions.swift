@@ -237,7 +237,7 @@ public extension Castled {
         if actionType?.count ?? 0 > 0 {
             params["actionType"] = actionType
         }
-        params[CastledConstants.CastledNetworkRequestTypeKey] = CastledNotificationType.push.value()
+        params[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.pushRequest.rawValue
         return params
     }
 
@@ -249,7 +249,6 @@ public extension Castled {
 
     internal func registerForPushNotifications() {
         CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey, true)
-        Castled.sharedInstance?.delegate.registerForPush?()
     }
 
     private func getCastledCategory() -> UNNotificationCategory {

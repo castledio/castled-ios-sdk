@@ -72,7 +72,7 @@ import UIKit
             if let value = actionUri {
                 json["actionUri"] = value
             }
-            json[CastledConstants.CastledNetworkRequestTypeKey] = CastledNotificationType.inapp.value()
+            json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inappRequest.rawValue
             Castled.updateInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
                 if response.success {
                     // CastledLog.castledLog(response.result as Any)

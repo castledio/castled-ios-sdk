@@ -42,7 +42,7 @@
         [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setStandardAppearance:navBarAppearance];
         [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setScrollEdgeAppearance:navBarAppearance];
     }
-
+    [self registerForPush];
 
     
     return YES;
@@ -99,9 +99,7 @@
     }];
 }
 
--(void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
-    NSLog(@"failed to register for remote notifications: %@ %@", self.description, error.localizedDescription);
-}
+
 /*************************************************************IMPPORTANT*************************************************************/
 //If you disabled the swizzling in plist you should call the required functions in the delegate methods
 
@@ -109,7 +107,9 @@
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@", self.description, deviceToken.debugDescription);
     [[Castled sharedInstance] setPushToken:deviceToken.debugDescription];
 }
-
+-(void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    NSLog(@"failed to register for remote notifications: %@ %@", self.description, error.localizedDescription);
+}
 -(void) userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
     //response.notification.request.content.userInfo
     NSLog(@"didReceiveNotificationResponse: %@", self.description);

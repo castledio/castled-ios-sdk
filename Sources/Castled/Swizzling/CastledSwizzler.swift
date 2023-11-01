@@ -24,26 +24,29 @@ class CastledSwizzler {
         self.swizzleImplementations(type(of: appDelegate), "userNotificationCenter:willPresentNotification:withCompletionHandler:")
         self.swizzleImplementations(type(of: appDelegate), "application:didReceiveRemoteNotification:fetchCompletionHandler:")
     }
-
     private class func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {
         // Name of the method
         // We are not changing the method name
         let defaultSelector = Selector(methodSelector)
 
         let swizzledSelector = Selector("swizzled_" + methodSelector)
-        guard let defaultMethod = class_getInstanceMethod(className, defaultSelector), let swizzleMethod = class_getInstanceMethod(Castled.self, swizzledSelector) else {
-            CastledLog.castledLog("failed to swizzle \(methodSelector)", logLevel: CastledLogLevel.info)
-            return
-        }
-        // Adding a method to the class at runtime and returns a boolean if the “add procedure” was successful
-        let isMethodExists = class_addMethod(className, defaultSelector, method_getImplementation(swizzleMethod), method_getTypeEncoding(swizzleMethod))
+        if let swizzledMethod = class_getInstanceMethod(Castled.self, swizzledSelector) {
+            guard let defaultMethod = class_getInstanceMethod(className, defaultSelector) else {
+                class_addMethod(className, defaultSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
 
-        if !isMethodExists {
-            // Swap the implementation of our defaultMethod with the swizzledMethod
-            method_exchangeImplementations(defaultMethod, swizzleMethod)
-        } else {
-            // Method already defined
-            //   class_replaceMethod(className, selector, method_getImplementation(defaultMethod!), method_getTypeEncoding(defaultMethod!));
+              //  CastledLog.castledLog("failed to swizzle \(methodSelector)", logLevel: CastledLogLevel.info)
+                return
+            }
+            // Adding a method to the class at runtime and returns a boolean if the “add procedure” was successful
+            let isMethodExists = class_addMethod(className, defaultSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+
+            if !isMethodExists {
+                // Swap the implementation of our defaultMethod with the swizzledMethod
+                method_exchangeImplementations(defaultMethod, swizzledMethod)
+            } else {
+                // Method already defined
+                class_replaceMethod(Castled.self, swizzledSelector, method_getImplementation(defaultMethod), method_getTypeEncoding(defaultMethod))
+            }
         }
     }
 }

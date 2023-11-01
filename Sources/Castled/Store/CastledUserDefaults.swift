@@ -13,6 +13,8 @@ class CastledUserDefaults: NSObject {
     // Userdefault keys
     static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
     static var kCastledUserIdKey = "_castledUserId_"
+    static var kCastledDeviceIddKey = "_castledDeviceId_"
+    static var kCastledDeviceInfoKey = "_castledDeviceInfo_"
     static var kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
     static let kCastledInAppsList = "castled_inapps"
@@ -28,6 +30,7 @@ class CastledUserDefaults: NSObject {
 
     override private init() {
         userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
+
         userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)
         apnsToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
     }

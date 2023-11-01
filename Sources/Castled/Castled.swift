@@ -11,7 +11,6 @@ import UIKit
 import UserNotifications
 
 @objc public protocol CastledNotificationDelegate {
-    @objc optional func registerForPush()
     @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void)
     @objc optional func castled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error)
@@ -27,7 +26,7 @@ import UserNotifications
     let delegate: CastledNotificationDelegate
     var clientRootViewController: UIViewController?
     // Create a dispatch queue
-    private let castledDispatchQueue = DispatchQueue(label: "CastledQueue", qos: .background)
+    let castledDispatchQueue = DispatchQueue(label: "CastledQueue", qos: .background)
     let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)
@@ -131,6 +130,7 @@ import UserNotifications
         CastledNetworkMonitor.shared.startMonitoring()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        CastledDeviceInfo.shared.updateDeviceInfo()
         CastledLog.castledLog("SDK initialized..", logLevel: .debug)
     }
 
@@ -174,6 +174,7 @@ import UserNotifications
         }
         CastledUserDefaults.shared.userId = userId
         CastledUserDefaults.shared.userToken = userToken
+        CastledDeviceInfo.shared.updateDeviceInfo()
 
         guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
             Castled.sharedInstance?.executeBGTasks()

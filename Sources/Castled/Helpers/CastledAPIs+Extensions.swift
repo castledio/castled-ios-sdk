@@ -157,6 +157,46 @@ extension Castled {
         }
     }
 
+    static func updateDeviceInfo(deviceInfo: [String: String], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+        if Castled.sharedInstance == nil {
+            CastledLog.castledLog("\(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+            return
+        }
+        let router: CastledNetworkRouter = .registerDeviceInfo(deviceInfo: deviceInfo, userID: CastledUserDefaults.shared.userId!)
+        Castled.sharedInstance?.reportEvents(router: router, sendingParams: [deviceInfo], type: [String: String].self, completion: { response in
+            if !response.success {
+                CastledLog.castledLog("Update Device Info failure\(response.errorMessage)", logLevel: CastledLogLevel.error)
+            }
+            completion(response)
+
+        })
+    }
+
+    // MARK: - PRIVATE METHODS
+
+    private func reportEvents<T: Any>(router: CastledNetworkRouter, sendingParams: [[String: String]], type: T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void) {
+        // sendingParams used for insert/ delete from failed items array for resending purpose
+
+        guard (Castled.sharedInstance?.instanceId) != nil else {
+            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+            return
+        }
+
+        Task {
+            let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, endpoint: router.endpoint)
+            switch response {
+            case .success(let responsJSON):
+                CastledStore.deleteAllFailedItemsFromStore(sendingParams)
+                completion(CastledResponse(response: responsJSON as! T))
+
+            case .failure(let error):
+                CastledStore.insertAllFailedItemsToStore(sendingParams)
+                completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
+            }
+        }
+    }
+
     private func api_RegisterEvents<T: Any>(params: [[String: String]], type: T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void) {
         guard let instance_id = Castled.sharedInstance?.instanceId else {
             CastledLog.castledLog("Register Push Events\(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
