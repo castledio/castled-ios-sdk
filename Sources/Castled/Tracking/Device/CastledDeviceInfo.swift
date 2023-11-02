@@ -11,30 +11,31 @@ class CastledDeviceInfo: NSObject {
     static let shared = CastledDeviceInfo()
     override private init() {}
     func updateDeviceInfo() {
-        guard let userId = CastledUserDefaults.shared.userId else {
+        guard CastledUserDefaults.shared.userId != nil else {
             return
         }
         Castled.sharedInstance?.castledDispatchQueue.async {
-            let deviceInfo = ["sdkVersion": self.getSDKVersion(),
-                              "appVersion": self.getAppVersion(),
-                              "model": self.getModel(),
-                              "make": self.getMake(),
-                              "osVersion": self.getOSVersion(),
-                              "locale": self.getLocale(),
-                              "deviceId": self.getDeviceId(),
-                              "platform": "MOBILE_IOS",
-                              CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue]
+            self.checkNotificationPermissions { granted in
+                let deviceInfo = ["sdkVersion": self.getSDKVersion(),
+                                  "appVersion": self.getAppVersion(),
+                                  "model": self.getModel(),
+                                  "make": self.getMake(),
+                                  "osVersion": self.getOSVersion(),
+                                  "locale": self.getLocale(),
+                                  "deviceId": self.getDeviceId(),
+                                  "pushPermission": granted ? "1" : "0",
+                                  "platform": "MOBILE_IOS",
+                                  CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue]
 
-            if deviceInfo != self.fetchSavedDeviceInfo() {
-                do {
-                    let encoder = JSONEncoder()
-                    let data = try encoder.encode(deviceInfo)
-                    CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledDeviceInfoKey, data)
-                }
-                catch {
-                    CastledLog.castledLog("Unable to Encode device info (\(error))", logLevel: CastledLogLevel.error)
-                }
-                Castled.updateDeviceInfo(deviceInfo: deviceInfo) { [weak self] (_: CastledResponse<[String: String]>) in
+                if deviceInfo != self.fetchSavedDeviceInfo() {
+                    do {
+                        let encoder = JSONEncoder()
+                        let data = try encoder.encode(deviceInfo)
+                        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledDeviceInfoKey, data)
+                    } catch {
+                        CastledLog.castledLog("Unable to Encode device info (\(error))", logLevel: CastledLogLevel.error)
+                    }
+                    Castled.reportDeviceInfo(deviceInfo: deviceInfo) { _ in }
                 }
             }
         }
@@ -42,6 +43,13 @@ class CastledDeviceInfo: NSObject {
 }
 
 extension CastledDeviceInfo {
+    func checkNotificationPermissions(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            let isAuthorized = settings.authorizationStatus == .authorized
+            completion(isAuthorized)
+        }
+    }
+
     private func getSDKVersion() -> String {
         if let plistPath = Bundle.resourceBundle(for: Castled.self).path(forResource: "Info", ofType: "plist"),
            let infoDict = NSDictionary(contentsOfFile: plistPath) as? [String: Any],

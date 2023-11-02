@@ -106,10 +106,15 @@ import UserNotifications
      */
     @objc public func logCustomAppEvent(_ viewController: UIViewController, eventName: String, params: [String: Any]) {
         if Castled.sharedInstance == nil {
-            CastledLog.castledLog("Log inapp event \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            CastledLog.castledLog("Log inApp event failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: viewController, eventName: eventName, params: params, showLog: false)
+        CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
+    }
+
+    @objc public func setUserAttributes(params: [String: Any]) {
+        CastledEventsTracker.shared.setUserAttributes(params: params)
     }
 
     private func initialSetup(categories: Set<UNNotificationCategory>?) {

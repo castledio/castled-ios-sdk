@@ -15,9 +15,9 @@ import Foundation
     private var request: URLRequest?
     override private init() {}
 
-    private func createGetRequestWithURLComponents(url: URL, endpoint: CastledEndpoint) -> URLRequest? {
+    private func createGetRequestWithURLComponents(url: URL, castled_request: CastledNetworkRequest) -> URLRequest? {
         var components = URLComponents(string: url.absoluteString)!
-        if let parameters = endpoint.parameters {
+        if let parameters = castled_request.parameters {
             var queryItems: [URLQueryItem] = []
             for (key, value) in parameters {
                 let queryItem = URLQueryItem(name: key, value: "\(value)")
@@ -27,24 +27,31 @@ import Foundation
         }
         components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
         request = URLRequest(url: components.url ?? url)
-        request?.httpMethod = endpoint.method.rawValue
+        request?.httpMethod = castled_request.method.rawValue
         return request
     }
 
-    private func createPostRequestWithBody(url: URL, endpoint: CastledEndpoint) -> URLRequest? {
+    private func createPostRequestWithBody(url: URL, castled_request: CastledNetworkRequest) -> URLRequest? {
         request = URLRequest(url: url)
-        request?.httpMethod = endpoint.method.rawValue
+        request?.httpMethod = castled_request.method.rawValue
         request?.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request?.addValue("application/json", forHTTPHeaderField: "Accept")
-        if let requestBody = getParameterBody(with: endpoint.parameters!) {
+
+        if let headers = castled_request.headers {
+            for (key, value) in headers {
+                request?.setValue(value, forHTTPHeaderField: key)
+            }
+        }
+
+        if let requestBody = getParameterBody(with: castled_request.parameters!) {
             request?.httpBody = requestBody
         }
         return request
     }
 
-    private func createPutRequestWithBody(url: URL, endpoint: CastledEndpoint) -> URLRequest? {
+    private func createPutRequestWithBody(url: URL, castled_request: CastledNetworkRequest) -> URLRequest? {
         request = URLRequest(url: url)
-        request?.httpMethod = endpoint.method.rawValue
+        request?.httpMethod = castled_request.method.rawValue
         request?.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request?.addValue("application/json", forHTTPHeaderField: "Accept")
         return request
@@ -57,7 +64,7 @@ import Foundation
         return httpBody
     }
 
-    func createRequest(with endpoint: CastledEndpoint) -> URLRequest? {
+    func createRequest(with endpoint: CastledNetworkRequest) -> URLRequest? {
         guard let url = constructURL(for: endpoint) else {
             print("Invalid URL")
             return nil
@@ -65,33 +72,33 @@ import Foundation
 
         switch endpoint.method {
         case .get:
-            return createGetRequestWithURLComponents(url: url, endpoint: endpoint)
+            return createGetRequestWithURLComponents(url: url, castled_request: endpoint)
         case .post:
-            return createPostRequestWithBody(url: url, endpoint: endpoint)
+            return createPostRequestWithBody(url: url, castled_request: endpoint)
         case .put:
-            return createPutRequestWithBody(url: url, endpoint: endpoint)
+            return createPutRequestWithBody(url: url, castled_request: endpoint)
         }
     }
 
-    func constructURL(for endpoint: CastledEndpoint) -> URL? {
+    func constructURL(for endpoint: CastledNetworkRequest) -> URL? {
         let urlString = endpoint.baseURL + endpoint.baseURLEndPoint + endpoint.path
         return URL(string: urlString)
     }
 
-    func sendRequest<T: Any>(model: T.Type, endpoint: CastledEndpoint, retryAttempt: Int? = 0) async -> Result<[String: Any], Error> {
+    func sendRequest<T: Any>(model: T.Type, request: CastledNetworkRequest, retryAttempt: Int? = 0) async -> Result<[String: Any], Error> {
         if #available(iOS 13.0, *) {
             do {
                 if CastledReachability.isConnectedToNetwork() == false {
                     return .failure(CastledException.error(CastledExceptionMessages.common.rawValue))
                 }
 
-                guard let urlRequest = createRequest(with: endpoint) else {
+                guard let urlRequest = createRequest(with: request) else {
                     return .failure(CastledException.error(CastledExceptionMessages.paramsMisMatch.rawValue))
                 }
                 if #available(iOS 13.0, *) {
                     let (data, response) = try await URLSession.shared.data(for: urlRequest)
                     do {
-                        switch endpoint.method {
+                        switch request.method {
                         case .post, .put:
                             if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                                 return .success(["success": "1"])
@@ -122,7 +129,7 @@ import Foundation
 
             } catch {
                 if retryAttempt! < retryLimit {
-                    return await CastledNetworkLayer.shared.sendRequest(model: model, endpoint: endpoint, retryAttempt: retryAttempt! + 1)
+                    return await CastledNetworkLayer.shared.sendRequest(model: model, request: request, retryAttempt: retryAttempt! + 1)
                 }
                 return .failure(CastledException.error(CastledExceptionMessages.common.rawValue))
             }
@@ -130,7 +137,7 @@ import Foundation
         return .failure(CastledException.error(CastledExceptionMessages.iOS13Less.rawValue))
     }
 
-    func sendRequestFoFetch<T: Codable>(model: T.Type, endpoint: CastledEndpoint, retryAttempt: Int? = 0) async -> CastledResponse<T> {
+    func sendRequestFoFetch<T: Codable>(model: T.Type, endpoint: CastledNetworkRequest, retryAttempt: Int? = 0) async -> CastledResponse<T> {
         if #available(iOS 13.0, *) {
             do {
                 if CastledReachability.isConnectedToNetwork() == false {

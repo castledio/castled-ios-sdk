@@ -75,7 +75,7 @@ public extension Castled {
                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
                 let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
                 let params = getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
-                Castled.registerEvents(params: [params]) { _ in
+                Castled.reportPushEvents(params: [params]) { _ in
                     completionHandler(.newData)
                 }
             } else {
@@ -186,7 +186,7 @@ public extension Castled {
                     }
 
                     let params = self.getPushPayload(event: event, teamID: teamID ?? "", sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType)
-                    Castled.registerEvents(params: [params]) { _ in
+                    Castled.reportPushEvents(params: [params]) { _ in
                     }
                 }
             }
@@ -214,7 +214,7 @@ public extension Castled {
                         }
                     }
                     if !castledPushEvents.isEmpty {
-                        Castled.registerEvents(params: castledPushEvents) { _ in
+                        Castled.reportPushEvents(params: castledPushEvents) { _ in
                         }
                     }
                     if shouldClear == true {

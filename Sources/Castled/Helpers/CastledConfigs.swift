@@ -36,6 +36,10 @@ import Foundation
         false
     }()
 
+    @objc public lazy var enableTracking: Bool = {
+        false
+    }()
+
     @objc public lazy var enablePush = false {
         didSet {
             if enablePush {

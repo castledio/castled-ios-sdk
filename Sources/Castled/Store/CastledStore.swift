@@ -11,19 +11,21 @@ import RealmSwift
 @objc class CastledStore: NSObject {
     static let castledStoreQueue = DispatchQueue(label: "com.castled.dbHandler")
     static var isInserting = false
-    static func insertAllFailedItemsToStore(_ items: [[String: String]]) {
+
+    static func insertAllFailedItemsToStore(_ items: [[String: Any]]) {
         CastledStore.castledStoreQueue.async {
-            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: String]]) ?? [[String: String]]()
+            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
             failedItems.append(contentsOf: items)
-            failedItems = Array(Set(failedItems))
+            failedItems = failedItems.removeDuplicates()
+
             CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
         }
     }
 
-    static func deleteAllFailedItemsFromStore(_ items: [[String: String]]) {
+    static func deleteAllFailedItemsFromStore(_ items: [[String: Any]]) {
         CastledStore.castledStoreQueue.async {
-            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: String]]) ?? [[String: String]]()
-            failedItems = failedItems.filter { !items.contains($0) }
+            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
+            failedItems = failedItems.subtract(items)
             CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
         }
     }

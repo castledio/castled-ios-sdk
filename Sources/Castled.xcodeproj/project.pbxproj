@@ -80,6 +80,9 @@
 		0ABDE8B429FBF24B00D3EF79 /* CastledBGManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDE8B329FBF24B00D3EF79 /* CastledBGManager.swift */; };
 		0ABDE8B629FBFEB500D3EF79 /* CastledRetryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDE8B529FBFEB500D3EF79 /* CastledRetryHandler.swift */; };
 		0ABDE8BE29FC41F400D3EF79 /* CastledConfigs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABDE8BD29FC41F400D3EF79 /* CastledConfigs.swift */; };
+		0AC493F92AF3723F007E5967 /* CastledEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC493F82AF3723F007E5967 /* CastledEventsTracker.swift */; };
+		0AC493FB2AF38FBE007E5967 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC493FA2AF38FBE007E5967 /* Dictionary+Extension.swift */; };
+		0AC493FD2AF3AA4D007E5967 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC493FC2AF3AA4D007E5967 /* Array+Extensions.swift */; };
 		0ADBF14E2A437C810018F110 /* CastledMediasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */; };
 		0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */; };
 		0AE9DAEA2AC3E4AC00FE975C /* CastledStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */; };
@@ -195,6 +198,9 @@
 		0ABDE8B329FBF24B00D3EF79 /* CastledBGManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledBGManager.swift; sourceTree = "<group>"; };
 		0ABDE8B529FBFEB500D3EF79 /* CastledRetryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledRetryHandler.swift; sourceTree = "<group>"; };
 		0ABDE8BD29FC41F400D3EF79 /* CastledConfigs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledConfigs.swift; sourceTree = "<group>"; };
+		0AC493F82AF3723F007E5967 /* CastledEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledEventsTracker.swift; sourceTree = "<group>"; };
+		0AC493FA2AF38FBE007E5967 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
+		0AC493FC2AF3AA4D007E5967 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediasViewController.swift; sourceTree = "<group>"; };
 		0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledStore.swift; sourceTree = "<group>"; };
@@ -328,6 +334,8 @@
 				0A1DE6092A9F488B00DB2E29 /* DecodingContainer+Extensions.swift */,
 				0A1DE5F92A9DA25200DB2E29 /* NSLayoutConstraint+Extensions.swift */,
 				0A1DE6052A9F47BD00DB2E29 /* Date+Extension.swift */,
+				0AC493FA2AF38FBE007E5967 /* Dictionary+Extension.swift */,
+				0AC493FC2AF3AA4D007E5967 /* Array+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -427,6 +435,7 @@
 		0A74B0882AF2B0A6003364CD /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				0AC493F82AF3723F007E5967 /* CastledEventsTracker.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -874,6 +883,7 @@
 				0ABDE8BE29FC41F400D3EF79 /* CastledConfigs.swift in Sources */,
 				0AE9DAEA2AC3E4AC00FE975C /* CastledStore.swift in Sources */,
 				0ABA754B2A7CE0D600CD0734 /* UIImageView+Extensions.swift in Sources */,
+				0AC493FD2AF3AA4D007E5967 /* Array+Extensions.swift in Sources */,
 				0A1B4B782A7BB1E100D6430B /* CIFsDefaultView.swift in Sources */,
 				0A7C51B02AD1C20E001B2CE4 /* CastledLog.swift in Sources */,
 				0A79E22D2AA0873C0087C3AF /* CastledInboxType.swift in Sources */,
@@ -881,6 +891,7 @@
 				0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */,
 				0A5B308A2AD5CAEE00A3EC4F /* CastledPagerTabView.swift in Sources */,
 				0A1DE5F82A9DA24B00DB2E29 /* CastledInboxCell.swift in Sources */,
+				0AC493FB2AF38FBE007E5967 /* Dictionary+Extension.swift in Sources */,
 				0A1DE5FE2A9DA26500DB2E29 /* CastledInboxViewController.swift in Sources */,
 				0A4C765A2A7C25AD00F60D16 /* CIBannerDefaultView.swift in Sources */,
 				0AB5C59C291C27840027C36B /* CastledNetworkLayer.swift in Sources */,
@@ -897,6 +908,7 @@
 				0A74B0892AF2B0A7003364CD /* CastledDeviceInfo.swift in Sources */,
 				0AB5C5A1291C27840027C36B /* CastledNotifications+Extensions.swift in Sources */,
 				0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */,
+				0AC493F92AF3723F007E5967 /* CastledEventsTracker.swift in Sources */,
 				0AB5C5A0291C27840027C36B /* CastledAPIs+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

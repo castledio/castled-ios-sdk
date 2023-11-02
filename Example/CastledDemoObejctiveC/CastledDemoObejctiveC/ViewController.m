@@ -67,7 +67,7 @@ static NSString *userIdKey = @"userIdKey";
 -(void)inboxCallBack{
    [[Castled sharedInstance] getInboxItemsWithCompletion:^(BOOL succes, NSArray<CastledInboxItem *> * _Nullable inboxItems, NSString * _Nullable errorMessage) {
             NSLog(@"Inbox items are %@", inboxItems);
-       [[Castled sharedInstance] deleteInboxItem:inboxItems.lastObject];
+      // [[Castled sharedInstance] deleteInboxItem:inboxItems.lastObject];
 
 
         }];
@@ -76,6 +76,8 @@ static NSString *userIdKey = @"userIdKey";
         NSLog(@"Inbox unread count is -- %ld", [[Castled sharedInstance] getInboxUnreadCount]);
 
     }];
+//    [[Castled sharedInstance] setUserAttributesWithParams:@{@"fName":@"Antony",@"lName":@"Mathew",@"Age":@35}];
+//    [[Castled sharedInstance] logCustomAppEvent:self eventName:@"test_event" params:@{@"fName":@"Antony",@"lName":@"Mathew",@"Age":@35}];
 
 
 }
