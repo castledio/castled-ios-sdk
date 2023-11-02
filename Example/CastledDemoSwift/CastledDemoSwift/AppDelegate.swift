@@ -18,12 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
+        config.enableTracking = true
         config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         // Register the custom category
         let notificationCategories = self.getNotificationCategories()
         Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: notificationCategories)
-        Castled.sharedInstance?.setUserId("antony@castled.io")
+        Castled.sharedInstance?.setUserId("antony@castled.io", userToken: "test_token")
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()

@@ -37,74 +37,62 @@ class CastledRetryHandler {
             for (key, value) in requestHandlerRegistry {
                 switch key {
                     case CastledConstants.CastledNetworkRequestType.pushRequest.rawValue:
-                        if let savedEvents = value as? [[String: String]] {
-                            self?.castledSemaphore.wait()
-                            self?.castledGroup.enter()
-                            Castled.registerEvents(params: savedEvents, completion: { [weak self] response in
-                                defer {
-                                    self?.castledSemaphore.signal()
-                                    self?.castledGroup.leave()
-                                }
-                                if response.success {
-                                    //  CastledLog.castledLog("push upload success in \(#function) response\(response.result as Any)")
-                                } else {
-                                    // CastledLog.castledLog("Error in updating inapp event \(#function)")
-                                }
-                            })
-                        }
+                        let savedEvents = value
+                        self?.castledSemaphore.wait()
+                        self?.castledGroup.enter()
+                        Castled.reportPushEvents(params: savedEvents, completion: { [weak self] _ in
+                            self?.castledSemaphore.signal()
+                            self?.castledGroup.leave()
+                        })
+
                     case CastledConstants.CastledNetworkRequestType.inappRequest.rawValue:
-                        if let savedEvents = value as? [[String: String]] {
-                            self?.castledSemaphore.wait()
-                            self?.castledGroup.enter()
-                            Castled.updateInAppEvents(params: savedEvents, completion: { [weak self] (response: CastledResponse<[String: String]>) in
-                                defer {
-                                    self?.castledSemaphore.signal()
-                                    self?.castledGroup.leave()
-                                }
+                        let savedEvents = value
+                        self?.castledSemaphore.wait()
+                        self?.castledGroup.enter()
+                        Castled.reportInAppEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                            self?.castledSemaphore.signal()
+                            self?.castledGroup.leave()
 
-                                if response.success {
-                                    //    CastledLog.castledLog("inApp upload success in \(#function) response\(response.result as Any)")
-                                } else {
-                                    // CastledLog.castledLog("Error in updating inapp event \(#function)")
-                                }
-                            })
-                        }
+                        })
                     case CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue:
-                        if let savedEvents = value as? [[String: String]] {
-                            self?.castledSemaphore.wait()
-                            self?.castledGroup.enter()
-                            Castled.updateInboxEvents(params: savedEvents, completion: { [weak self] (response: CastledResponse<[String: String]>) in
-                                defer {
-                                    self?.castledSemaphore.signal()
-                                    self?.castledGroup.leave()
-                                }
+                        let savedEvents = value
+                        self?.castledSemaphore.wait()
+                        self?.castledGroup.enter()
+                        Castled.reportInboxEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                            self?.castledSemaphore.signal()
+                            self?.castledGroup.leave()
+                        })
 
-                                if response.success {
-                                    //   CastledLog.castledLog("inbox upload success in \(#function) response\(response.result as Any)")
-                                } else {
-                                    // CastledLog.castledLog("Error in updating inapp event \(#function)")
-                                }
-                            })
-                        }
                     case CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue:
                         if let savedEvents = value as? [[String: String]] {
                             for info in savedEvents {
                                 self?.castledSemaphore.wait()
                                 self?.castledGroup.enter()
-                                Castled.updateDeviceInfo(deviceInfo: info) { [weak self] (response: CastledResponse<[String: String]>) in
-                                    defer {
-                                        self?.castledSemaphore.signal()
-                                        self?.castledGroup.leave()
-                                    }
-
-                                    if response.success {
-                                        //   CastledLog.castledLog("inbox upload success in \(#function) response\(response.result as Any)")
-                                    } else {
-                                        // CastledLog.castledLog("Error in updating inapp event \(#function)")
-                                    }
+                                Castled.reportDeviceInfo(deviceInfo: info) { [weak self] (_: CastledResponse<[String: String]>) in
+                                    self?.castledSemaphore.signal()
+                                    self?.castledGroup.leave()
                                 }
                             }
                         }
+                    case CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue:
+                        let savedEvents = value
+                        self?.castledSemaphore.wait()
+                        self?.castledGroup.enter()
+                        Castled.reportCustomEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                            self?.castledSemaphore.signal()
+                            self?.castledGroup.leave()
+                        })
+                    case CastledConstants.CastledNetworkRequestType.userProfileRequest.rawValue:
+                        let savedEvents = value
+                        for info in savedEvents {
+                            self?.castledSemaphore.wait()
+                            self?.castledGroup.enter()
+                            Castled.reportUserAttributes(params: info) { [weak self] (_: CastledResponse<[String: String]>) in
+                                self?.castledSemaphore.signal()
+                                self?.castledGroup.leave()
+                            }
+                        }
+
                     default:
                         break
                 }

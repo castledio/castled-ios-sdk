@@ -25,10 +25,10 @@ class CastledInboxServices: NSObject {
             if !savedEventTypes.isEmpty {
                 updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
                     if success {
-                        CastledLog.castledLog("Inbox item read status success", logLevel: CastledLogLevel.debug)
+                        CastledLog.castledLog("Inbox item read status reported...", logLevel: CastledLogLevel.debug)
                     }
                     else {
-                        CastledLog.castledLog("Inbox item read status failed \(String(describing: error))", logLevel: CastledLogLevel.error)
+                        CastledLog.castledLog("Inbox item read status reporting failed... \(String(describing: error))", logLevel: CastledLogLevel.error)
                     }
                 }
             }
@@ -40,10 +40,10 @@ class CastledInboxServices: NSObject {
             let eventType = "CLICKED"
             self.updateInBoxEvents(savedEventTypes: [self.getSendingParametersFrom(eventType, inboxObject, buttonTitle ?? "")]) { success, error in
                 if success {
-                    CastledLog.castledLog("Inbox item clicked success", logLevel: CastledLogLevel.debug)
+                    CastledLog.castledLog("Inbox item click event reported...", logLevel: CastledLogLevel.debug)
                 }
                 else {
-                    CastledLog.castledLog("Inbox item clicked status failed \(String(describing: error))", logLevel: CastledLogLevel.error)
+                    CastledLog.castledLog("Inbox item click event reporting failed... \(String(describing: error))", logLevel: CastledLogLevel.error)
                 }
             }
         }
@@ -80,7 +80,7 @@ class CastledInboxServices: NSObject {
     }
 
     private func updateInBoxEvents(savedEventTypes: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
-        Castled.updateInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
+        Castled.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
             completion(response.success, response.errorMessage)
         })
     }

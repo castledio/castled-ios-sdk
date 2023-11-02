@@ -15,6 +15,7 @@ enum CastledExceptionMessages: String {
     case paramsMisMatch = "Unable to create the request. Please check the params or url."
     case userNotRegistered = "Please register the user with Castled using the api 'setUserId:'."
     case appInboxDisabled = "Set 'enableAppInbox' while initializing Castled SDK"
+    case trackingDisabled = "Set 'enableTracking' while initializing Castled SDK"
     case emptyEventsArray = "Notificaion Id array cannot be empty"
     case noDeviceToken = "Register User needs a valid APNS token"
     case permittedIdentifiersNotInitialised = "Kindly add 'BGTaskSchedulerPermittedIdentifiers' key to the Info.plist and pass the same value  as 'CastledConfigs permittedBGIdentifier'. Please note that In iOS 13 and later, adding a BGTaskSchedulerPermittedIdentifiers key to the Info.plist disables the application(_:performFetchWithCompletionHandler:) and setMinimumBackgroundFetchInterval(_:) methods."

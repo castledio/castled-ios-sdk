@@ -27,6 +27,25 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         super.viewDidAppear(animated)
         //        Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
         //        CastledConfigs.sharedInstance.enablePush = true
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // Customize the format as needed
+
+        // Create a Date object representing the date you want to convert to a string
+        let date = Date() // This represents the current date and time
+
+        // Use the DateFormatter to convert the Date to a string
+        let dateString = dateFormatter.string(from: date)
+        //
+        //        Castled.sharedInstance?.logCustomAppEvent(self, eventName: "ios test_event \(dateString)", params: ["Int": 100,
+        //                                                                                                            "Date": Date(),
+        //                                                                                                            "Bool": false,
+        //                                                                                                            "Name": "Antony"])
+        //
+        //        Castled.sharedInstance?.setUserAttributes(params: ["Age": 100,
+        //                                                           "DOB": Date(),
+        //                                                           "LName": "Mathew",
+        //                                                           "FName": "Antony"])
     }
 
     func showRequiredViews() {
@@ -87,13 +106,13 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     }
 
     func setUpInboxCallback() {
-        Castled.sharedInstance?.observeUnreadCountChanges(listener: { unreadCount in
-            print("Inbox unread count is \(unreadCount)")
+        Castled.sharedInstance?.observeUnreadCountChanges(listener: { _ in
+            //   print("Inbox unread count is \(unreadCount)")
         })
 
-        Castled.sharedInstance?.getInboxItems(completion: { _, result, errormessage in
+        Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
 
-            print("getInboxItems \(result) \(errormessage)")
+            //   print("getInboxItems \(result) \(errormessage)")
         })
         //       Castled.sharedInstance?.dismissInboxViewController()
     }

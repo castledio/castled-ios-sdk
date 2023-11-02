@@ -24,10 +24,11 @@
     CastledConfigs *config = [CastledConfigs initializeWithAppId:@"e8a4f68bfb6a58b40a77a0e6150eca0b"];
 //    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
-    
+    config.enableAppInbox = TRUE;
+//    config.enableTracking = TRUE;
     config.enableInApp = TRUE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
-    config.logLevel = CastledLogLevelNone;
+    config.logLevel = CastledLogLevelDebug;
     config.location = CastledLocationTEST;
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
     [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];
