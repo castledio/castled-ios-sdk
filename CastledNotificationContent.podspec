@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "CastledNotificationContent"
-  spec.version      = '2.4.1'
+  spec.version      = '2.4.2'
   spec.summary      = "A Notification Content Extension for displaying custom content in iOS push notifications."
   spec.description  = <<-DESC
 The CastledNotificationContent framework provides a Notification Content Extension that allows you to create custom interfaces for displaying rich content in push notifications on iOS.
@@ -22,6 +22,7 @@ The CastledNotificationContent framework provides a Notification Content Extensi
  spec.resource_bundles = {
     "Castled" => ['Sources/CastledNotificationContent/**/*.{xcassets,storyboard,xib}']
   }
+ spec.readme = 'README.md'
 
 end
 

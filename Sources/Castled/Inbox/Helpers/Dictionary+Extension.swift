@@ -5,7 +5,7 @@
 //  Created by antony on 02/11/2023.
 //
 
-import UIKit
+import Foundation
 
 extension Dictionary where Key == String, Value: Any {
     func toJSONString() -> String? {

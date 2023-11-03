@@ -117,9 +117,8 @@ enum CastledNetworkRouter {
         if let secureUserId = CastledUserDefaults.shared.userToken {
             headers["Auth-Key"] = secureUserId
         }
-        if let instanceId = Castled.sharedInstance?.instanceId {
-            headers["App-Id"] = instanceId
-        }
+        headers["App-Id"] = Castled.sharedInstance.instanceId
+
         return headers
     }
 }

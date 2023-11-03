@@ -100,7 +100,7 @@ class CastledRetryHandler {
             if shouldCallRegister == true {
                 self?.castledSemaphore.wait()
                 self?.castledGroup.enter()
-                Castled.sharedInstance?.api_RegisterUser(userId: CastledUserDefaults.shared.userId ?? "", apnsToken: pushToken ?? "") { _ in
+                Castled.sharedInstance.api_RegisterUser(userId: CastledUserDefaults.shared.userId ?? "", apnsToken: pushToken ?? "") { _ in
                     self?.castledSemaphore.signal()
                     self?.castledGroup.leave()
                 }

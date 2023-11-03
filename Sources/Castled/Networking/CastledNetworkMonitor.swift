@@ -19,7 +19,7 @@ class CastledNetworkMonitor {
             if path.status == .satisfied {
                 if self.shouldCallApis {
                     self.shouldCallApis = false
-                    Castled.sharedInstance?.executeBGTasks()
+                    Castled.sharedInstance.executeBGTasks()
                 }
             }
             else {

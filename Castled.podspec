@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "Castled"
-  spec.version      = '2.4.1'
+  spec.version      = '2.4.2'
   spec.summary      = "iOS SDK for Castled Push and InApp support"
   spec.description  = <<-DESC
   Castled SDK library providing support for push and in app notifications and event handling.
@@ -23,5 +23,5 @@ Pod::Spec.new do |spec|
   spec.resource_bundles = {
     "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib,js}']
   }
-
+ spec.readme = 'README.md'
 end

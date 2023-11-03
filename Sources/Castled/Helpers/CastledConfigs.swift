@@ -43,7 +43,7 @@ import Foundation
     @objc public lazy var enablePush = false {
         didSet {
             if enablePush {
-                Castled.sharedInstance?.registerForPushNotifications()
+                Castled.sharedInstance.registerForPushNotifications()
             }
         }
     }

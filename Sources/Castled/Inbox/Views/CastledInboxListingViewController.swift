@@ -193,7 +193,7 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
             let item = self.inboxItems![indexPath.row]
             let message_id = item.messageId
             self.inboxViewController?.readItems.removeAll { $0 == message_id }
-            Castled.sharedInstance?.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
+            Castled.sharedInstance.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
 
         })
         let trashImage = UIImage(named: "castled_swipe_delete_filled", in: Bundle.resourceBundle(for: CastledInboxViewController.self), compatibleWith: nil)
@@ -207,7 +207,7 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
 
     public func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
         let title = (kvPairs?["label"] as? String) ?? ""
-        Castled.sharedInstance?.logInboxItemClicked(inboxItem, buttonTitle: title)
+        Castled.sharedInstance.logInboxItemClicked(inboxItem, buttonTitle: title)
         guard (inboxViewController!.delegate?.didSelectedInboxWith?(CastledConstants.PushNotification.ClickActionType(stringValue: (kvPairs?["clickAction"] as? String) ?? "").getCastledClickActionType(), kvPairs, inboxItem)) != nil else {
             return
         }

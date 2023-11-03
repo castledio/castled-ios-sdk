@@ -38,7 +38,7 @@ class CastledBGManager {
         let dispatchSemaphore = DispatchSemaphore(value: 1)
         dispatchGroup.enter()
         dispatchSemaphore.wait()
-        Castled.fetchInAppNotifications { [weak self] in
+        Castled.fetchInAppNotifications { [weak self] _ in
             Castled.fetchInboxItems { _ in
                 self?.retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
             }
@@ -67,7 +67,7 @@ class CastledBGManager {
         }
         task.expirationHandler = expirationHandler
         scheduleNextTask()
-        if CastledUserDefaults.shared.userId != nil {
+        if CastledUserDefaults.shared.userId == nil || Castled.sharedInstance.instanceId.isEmpty {
             task.setTaskCompleted(success: false)
 
         } else {

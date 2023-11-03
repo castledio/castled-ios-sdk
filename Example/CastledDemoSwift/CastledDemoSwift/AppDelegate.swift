@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Register the custom category
         let notificationCategories = self.getNotificationCategories()
         Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: notificationCategories)
-        Castled.sharedInstance?.setUserId("antony@castled.io", userToken: "test_token")
+        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "test_token")
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -208,7 +208,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // If you disabled the swizzling in plist you should call the required functions in the delegate methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        Castled.sharedInstance?.setPushToken(deviceTokenString)
+        Castled.sharedInstance.setPushToken(deviceTokenString)
         print("APNs token \(deviceTokenString) \(self.description)")
     }
 
@@ -218,17 +218,17 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         // Handle the click events
-        Castled.sharedInstance?.userNotificationCenter(center, didReceive: response)
+        Castled.sharedInstance.userNotificationCenter(center, didReceive: response)
         completionHandler()
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        Castled.sharedInstance?.userNotificationCenter(center, willPresent: notification)
+        Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
         completionHandler([.alert, .badge, .sound])
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Castled.sharedInstance?.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { _ in
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { _ in
             completionHandler(.newData)
 
         })
