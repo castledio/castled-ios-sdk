@@ -110,10 +110,9 @@ import UserNotifications
         #if !DEBUG
             CastledLog.setLogLevel(CastledLogLevel.none)
         #endif
-        if config.enablePush || CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey) == true {
+        if config.enablePush {
             CastledSwizzler.enableSwizzlingForNotifications()
             setNotificationCategories(withItems: categories ?? Set<UNNotificationCategory>())
-            registerForPushNotifications()
         }
         if config.enableInApp {
             UIViewController.swizzleViewDidAppear()

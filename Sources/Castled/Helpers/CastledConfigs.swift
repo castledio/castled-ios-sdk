@@ -40,13 +40,9 @@ import Foundation
         false
     }()
 
-    @objc public lazy var enablePush = false {
-        didSet {
-            if enablePush {
-                Castled.sharedInstance.registerForPushNotifications()
-            }
-        }
-    }
+    @objc public lazy var enablePush: Bool = {
+        false
+    }()
 
     @objc public lazy var inAppFetchIntervalSec: Int = {
         15 * 60

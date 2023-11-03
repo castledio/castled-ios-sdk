@@ -246,10 +246,6 @@ public extension Castled {
         UNUserNotificationCenter.current().setNotificationCategories(categorySet)
     }
 
-    internal func registerForPushNotifications() {
-        CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey, true)
-    }
-
     private func getCastledCategory() -> UNNotificationCategory {
         let castledCategory = UNNotificationCategory(identifier: "CASTLED_PUSH_TEMPLATE", actions: [], intentIdentifiers: [], options: .customDismissAction)
         return castledCategory
