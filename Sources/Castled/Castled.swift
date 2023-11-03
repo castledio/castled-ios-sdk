@@ -20,10 +20,10 @@ import UserNotifications
 }
 
 @objc public class Castled: NSObject {
-    @objc public static var sharedInstance: Castled?
+    @objc public static var sharedInstance = Castled()
     var inboxUnreadCountCallback: ((Int) -> Void)?
-    var instanceId: String
-    let delegate: CastledNotificationDelegate
+    var instanceId = ""
+    var delegate: CastledNotificationDelegate?
     var clientRootViewController: UIViewController?
     // Create a dispatch queue
     let castledDispatchQueue = DispatchQueue(label: "CastledQueue", qos: .background)
@@ -40,33 +40,28 @@ import UserNotifications
         }
     }
 
+    override private init() {}
+
     /**
      Static method for conguring the Castled framework.
      */
     @objc public static func initialize(withConfig config: CastledConfigs, delegate: CastledNotificationDelegate, andNotificationCategories categories: Set<UNNotificationCategory>? = nil) {
-        if Castled.sharedInstance == nil {
-            Castled.sharedInstance = Castled(instanceId: config.instanceId, delegate: delegate, categories: categories)
-        }
-    }
-
-    private init(instanceId: String, delegate: CastledNotificationDelegate, categories: Set<UNNotificationCategory>?) {
-        if instanceId.isEmpty {
+        if config.instanceId.isEmpty {
             fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
         }
-        self.instanceId = instanceId
-        self.delegate = delegate
-        super.init()
-        if Castled.sharedInstance == nil {
-            Castled.sharedInstance = self
-        }
-        initialSetup(categories: categories)
+        Castled.sharedInstance.instanceId = config.instanceId
+        Castled.sharedInstance.delegate = delegate
+        Castled.sharedInstance.initialSetup(categories: categories)
     }
 
     /**
      Function that allows users to set the userId and  userToken.
      */
     @objc public func setUserId(_ userId: String, userToken: String? = nil) {
-        Castled.sharedInstance?.saveUserId(userId, userToken)
+        if Castled.sharedInstance.instanceId.isEmpty {
+            fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
+        }
+        Castled.sharedInstance.saveUserId(userId, userToken)
     }
 
     /**
@@ -81,7 +76,7 @@ import UserNotifications
             CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
 
             if let uid = CastledUserDefaults.shared.userId {
-                Castled.sharedInstance?.updateTheUserIdAndToken(uid, token)
+                Castled.sharedInstance.updateTheUserIdAndToken(uid, token)
             }
         }
     }
@@ -90,10 +85,6 @@ import UserNotifications
      InApps : Function that allows to display page view inapp
      */
     @objc public func logAppPageViewedEvent(_ viewContoller: UIViewController) {
-        if Castled.sharedInstance == nil {
-            CastledLog.castledLog("Log page viewed \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
-            return
-        }
         guard let _ = CastledUserDefaults.shared.userId else {
             CastledLog.castledLog("Log page viewed \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
             return
@@ -105,10 +96,6 @@ import UserNotifications
      InApps : Function that allows to display custom inapp
      */
     @objc public func logCustomAppEvent(_ viewController: UIViewController, eventName: String, params: [String: Any]) {
-        if Castled.sharedInstance == nil {
-            CastledLog.castledLog("Log inApp event failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
-            return
-        }
         CastledInApps.sharedInstance.logAppEvent(context: viewController, eventName: eventName, params: params, showLog: false)
         CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
     }
@@ -123,10 +110,9 @@ import UserNotifications
         #if !DEBUG
             CastledLog.setLogLevel(CastledLogLevel.none)
         #endif
-        if config.enablePush || CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledEnablePushNotificationKey) == true {
+        if config.enablePush {
             CastledSwizzler.enableSwizzlingForNotifications()
             setNotificationCategories(withItems: categories ?? Set<UNNotificationCategory>())
-            registerForPushNotifications()
         }
         if config.enableInApp {
             UIViewController.swizzleViewDidAppear()
@@ -151,19 +137,15 @@ import UserNotifications
     }
 
     @objc func appBecomeActive() {
-        Castled.sharedInstance?.processAllDeliveredNotifications(shouldClear: false)
+        Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.shared.userId != nil {
-            Castled.sharedInstance?.logAppOpenedEventIfAny()
-            Castled.sharedInstance?.executeBGTasks()
+            Castled.sharedInstance.logAppOpenedEventIfAny()
+            Castled.sharedInstance.executeBGTasks()
         }
     }
 
     private func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if CastledConfigs.sharedInstance.enableInApp == false {
-            return
-        }
-        if Castled.sharedInstance == nil {
-            CastledLog.castledLog("Log app opened event \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
@@ -182,16 +164,16 @@ import UserNotifications
         CastledDeviceInfo.shared.updateDeviceInfo()
 
         guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
-            Castled.sharedInstance?.executeBGTasks()
+            Castled.sharedInstance.executeBGTasks()
             return
         }
-        Castled.sharedInstance?.updateTheUserIdAndToken(userId, deviceToken)
+        Castled.sharedInstance.updateTheUserIdAndToken(userId, deviceToken)
     }
 
     func updateTheUserIdAndToken(_ userId: String, _ deviceToken: String) {
         if CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false {
-            Castled.sharedInstance?.api_RegisterUser(userId: userId, apnsToken: deviceToken) { _ in
-                Castled.sharedInstance?.executeBGTasks()
+            Castled.sharedInstance.api_RegisterUser(userId: userId, apnsToken: deviceToken) { _ in
+                Castled.sharedInstance.executeBGTasks()
             }
         }
     }

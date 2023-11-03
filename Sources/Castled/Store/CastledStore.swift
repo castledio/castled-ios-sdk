@@ -103,7 +103,7 @@ import RealmSwift
     }
 
     static func resetUnreadUncountAfterCRUD(realm: Realm) {
-        Castled.sharedInstance?.inboxUnreadCount = getInboxUnreadCount(realm: realm)
+        Castled.sharedInstance.inboxUnreadCount = getInboxUnreadCount(realm: realm)
     }
 
     static func refreshInboxItems(liveInboxResponse: [CastledInboxItem]) {

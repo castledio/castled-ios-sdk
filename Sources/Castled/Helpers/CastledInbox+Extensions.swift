@@ -37,13 +37,17 @@ public extension Castled {
      */
     @objc func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?, _ errorMessage: String?) -> Void) {
         CastledStore.castledStoreQueue.async {
-            if !CastledConfigs.sharedInstance.enableAppInbox {
+            if Castled.sharedInstance.instanceId.isEmpty {
+                completion(false, [], CastledExceptionMessages.notInitialised.rawValue)
+                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: .error)
+                return
+            } else if !CastledConfigs.sharedInstance.enableAppInbox {
                 completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
-                CastledLog.castledLog(CastledExceptionMessages.appInboxDisabled.rawValue, logLevel: .error)
+                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: .error)
                 return
             }
             guard let _ = CastledUserDefaults.shared.userId else {
-                CastledLog.castledLog(CastledExceptionMessages.userNotRegistered.rawValue, logLevel: .error)
+                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: .error)
                 completion(false, [], CastledExceptionMessages.userNotRegistered.rawValue)
                 return
             }

@@ -4,6 +4,8 @@
 //
 //  Created by antony on 02/11/2023.
 //
+import Foundation
+
 extension Array where Element == [String: Any] {
     func removeDuplicates() -> [[String: Any]] {
         var uniqueArray: [[String: Any]] = []

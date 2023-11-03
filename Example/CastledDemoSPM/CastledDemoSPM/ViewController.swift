@@ -25,7 +25,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //        Castled.sharedInstance?.logPageViewedEventIfAny(context: self)
+        //        Castled.sharedInstance.logPageViewedEventIfAny(context: self)
         //        CastledConfigs.sharedInstance.enablePush = true
 
         let dateFormatter = DateFormatter()
@@ -37,12 +37,12 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         // Use the DateFormatter to convert the Date to a string
         let dateString = dateFormatter.string(from: date)
         //
-        //        Castled.sharedInstance?.logCustomAppEvent(self, eventName: "ios test_event \(dateString)", params: ["Int": 100,
+        //        Castled.sharedInstance.logCustomAppEvent(self, eventName: "ios test_event \(dateString)", params: ["Int": 100,
         //                                                                                                            "Date": Date(),
         //                                                                                                            "Bool": false,
         //                                                                                                            "Name": "Antony"])
         //
-        //        Castled.sharedInstance?.setUserAttributes(params: ["Age": 100,
+        //        Castled.sharedInstance.setUserAttributes(params: ["Age": 100,
         //                                                           "DOB": Date(),
         //                                                           "LName": "Mathew",
         //                                                           "FName": "Antony"])
@@ -73,7 +73,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // Function for registering the user with Castled
     func registerUserAPI() {
         let userId = "antony@castled.io"
-        Castled.sharedInstance?.setUserId(userId)
+        Castled.sharedInstance.setUserId(userId)
         UserDefaults.standard.setValue(userId, forKey: userIdKey)
         UserDefaults.standard.synchronize()
         showRequiredViews()
@@ -98,23 +98,23 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         style.tabBarDefaultBackgroundColor = .purple
         style.tabBarSelectedBackgroundColor = .lightGray
         style.tabBarIndicatorBackgroundColor = .red
-        let inboxViewController = Castled.sharedInstance?.getInboxViewController(withUIConfigs: style, andDelegate: self)
-        inboxViewController?.modalPresentationStyle = .fullScreen
-        present(inboxViewController!, animated: true)
+        let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
+        inboxViewController.modalPresentationStyle = .fullScreen
+        present(inboxViewController, animated: true)
         //  navigationController?.setNavigationBarHidden(true, animated: false)
-        // navigationController?.pushViewController(inboxViewController!, animated: true)
+        // navigationController?.pushViewController(inboxViewController, animated: true)
     }
 
     func setUpInboxCallback() {
-        Castled.sharedInstance?.observeUnreadCountChanges(listener: { _ in
+        Castled.sharedInstance.observeUnreadCountChanges(listener: { _ in
             //   print("Inbox unread count is \(unreadCount)")
         })
 
-        Castled.sharedInstance?.getInboxItems(completion: { _, _, _ in
+        Castled.sharedInstance.getInboxItems(completion: { _, _, _ in
 
             //   print("getInboxItems \(result) \(errormessage)")
         })
-        //       Castled.sharedInstance?.dismissInboxViewController()
+        //       Castled.sharedInstance.dismissInboxViewController()
     }
 
     // MARK: - Inbox delegate

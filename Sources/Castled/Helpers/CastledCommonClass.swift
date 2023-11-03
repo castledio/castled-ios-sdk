@@ -160,7 +160,7 @@ extension UIWindow {
                 break
             }
         }
-        Castled.sharedInstance?.clientRootViewController = top
+        Castled.sharedInstance.clientRootViewController = top
         return top
     }
 }

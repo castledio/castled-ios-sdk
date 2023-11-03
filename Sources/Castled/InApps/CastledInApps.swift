@@ -18,30 +18,7 @@ import UIKit
         super.init()
     }
 
-    func fetchInAppNotificationWithCompletion(completion: @escaping () -> Void) {
-        Castled.fetchInAppNotification { [weak self] response in
-            if response.success {
-                DispatchQueue.global().async {
-                    do {
-                        // Create JSON Encoder
-                        let encoder = JSONEncoder()
-                        let data = try encoder.encode(response.result)
-                        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledInAppsList, data)
-                        self?.prefetchInApps()
-
-                    } catch {
-                        CastledLog.castledLog("Unable to Encode response (\(error))", logLevel: CastledLogLevel.error)
-                    }
-                    completion()
-                }
-
-            } else {
-                completion()
-            }
-        }
-    }
-
-    private func prefetchInApps() {
+    func prefetchInApps() {
         if let savedItems = CastledUserDefaults.getDataFor(CastledUserDefaults.kCastledInAppsList) {
             let decoder = JSONDecoder()
             if let loadedInApps = try? decoder.decode([CastledInAppObject].self, from: savedItems) {
@@ -140,19 +117,19 @@ import UIKit
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction
         switch clickAction {
             case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .deepLink, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .deepLink, kvPairs: params, userInfo: params ?? [String: String]())
             case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .richLanding, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .richLanding, kvPairs: params, userInfo: params ?? [String: String]())
             case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .navigateToScreen, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .navigateToScreen, kvPairs: params, userInfo: params ?? [String: String]())
             case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .requestForPush, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .requestForPush, kvPairs: params, userInfo: params ?? [String: String]())
             case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .dismiss, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .dismiss, kvPairs: params, userInfo: params ?? [String: String]())
             case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
             default:
-                Castled.sharedInstance?.delegate.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
         }
     }
 

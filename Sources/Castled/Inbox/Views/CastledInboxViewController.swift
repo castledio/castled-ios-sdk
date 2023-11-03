@@ -33,9 +33,7 @@ import UIKit
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        if Castled.sharedInstance == nil {
-            fatalError(CastledExceptionMessages.notInitialised.rawValue)
-        }
+
         setupViews()
         setupTopCategories()
         bindViewModel()
@@ -199,7 +197,7 @@ import UIKit
     }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        Castled.sharedInstance?.dismissInboxViewController()
+        Castled.sharedInstance.dismissInboxViewController()
     }
 
     func removeObservers() {
