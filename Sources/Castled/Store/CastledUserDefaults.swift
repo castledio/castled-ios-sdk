@@ -21,12 +21,16 @@ class CastledUserDefaults: NSObject {
     static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
     static let kCastledFailedItems = "_castledFailedItems_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
+    static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
     static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
     static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
     static let shared = CastledUserDefaults()
     var userId: String?
     var userToken: String?
     var apnsToken: String?
+    lazy var deliveredPushIds: [String] = {
+        CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
+    }()
 
     override private init() {
         userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
