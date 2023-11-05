@@ -34,7 +34,6 @@
 		0A1DE6002A9DA27400DB2E29 /* CastledInboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE5FF2A9DA27400DB2E29 /* CastledInboxItem.swift */; };
 		0A1DE6062A9F47BD00DB2E29 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE6052A9F47BD00DB2E29 /* Date+Extension.swift */; };
 		0A1DE60A2A9F488B00DB2E29 /* DecodingContainer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DE6092A9F488B00DB2E29 /* DecodingContainer+Extensions.swift */; };
-		0A23BFFF2AC20CAD00F8772A /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A23BFFE2AC20CAD00F8772A /* CastledBridge.js */; };
 		0A23C0052AC20E1B00F8772A /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A23C0042AC20E1B00F8772A /* SDWebImage.framework */; };
 		0A23C0072AC20E9F00F8772A /* CastledInbox+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A23C0062AC20E9F00F8772A /* CastledInbox+Extensions.swift */; };
 		0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */; };
@@ -83,6 +82,7 @@
 		0AC493F92AF3723F007E5967 /* CastledEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC493F82AF3723F007E5967 /* CastledEventsTracker.swift */; };
 		0AC493FB2AF38FBE007E5967 /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC493FA2AF38FBE007E5967 /* Dictionary+Extension.swift */; };
 		0AC493FD2AF3AA4D007E5967 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC493FC2AF3AA4D007E5967 /* Array+Extensions.swift */; };
+		0AD586A42AF79ADB00965E2E /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0AD586A32AF79ADB00965E2E /* CastledBridge.js */; };
 		0ADBF14E2A437C810018F110 /* CastledMediasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */; };
 		0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */; };
 		0AE9DAEA2AC3E4AC00FE975C /* CastledStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */; };
@@ -151,7 +151,6 @@
 		0A1DE5FF2A9DA27400DB2E29 /* CastledInboxItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxItem.swift; sourceTree = "<group>"; };
 		0A1DE6052A9F47BD00DB2E29 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		0A1DE6092A9F488B00DB2E29 /* DecodingContainer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DecodingContainer+Extensions.swift"; sourceTree = "<group>"; };
-		0A23BFFE2AC20CAD00F8772A /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = CastledBridge.js; path = ../../../../../../../../../../../../Desktop/CastledBridge.js; sourceTree = "<group>"; };
 		0A23C0042AC20E1B00F8772A /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = "<group>"; };
 		0A23C0062AC20E9F00F8772A /* CastledInbox+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CastledInbox+Extensions.swift"; path = "../../../../../../../../../../Desktop/CastledInbox+Extensions.swift"; sourceTree = "<group>"; };
 		0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CastledAssets.xcassets; sourceTree = "<group>"; };
@@ -201,6 +200,7 @@
 		0AC493F82AF3723F007E5967 /* CastledEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledEventsTracker.swift; sourceTree = "<group>"; };
 		0AC493FA2AF38FBE007E5967 /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		0AC493FC2AF3AA4D007E5967 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		0AD586A32AF79ADB00965E2E /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = CastledBridge.js; sourceTree = "<group>"; };
 		0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediasViewController.swift; sourceTree = "<group>"; };
 		0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledStore.swift; sourceTree = "<group>"; };
@@ -599,7 +599,7 @@
 		12C72C4D2947951B00B6B3DC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0A23BFFE2AC20CAD00F8772A /* CastledBridge.js */,
+				0AD586A32AF79ADB00965E2E /* CastledBridge.js */,
 				0A1B4B872A7BB53300D6430B /* CIModalDefaultView.xib */,
 				0A1B4B862A7BB53200D6430B /* CIFsDefaultView.xib */,
 				0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */,
@@ -819,7 +819,7 @@
 			files = (
 				0A1DE5F42A9DA24400DB2E29 /* CastledInboxImageAndTitleCell.xib in Resources */,
 				0ABA759C2A7D742200CD0734 /* CastledDismissButton.xib in Resources */,
-				0A23BFFF2AC20CAD00F8772A /* CastledBridge.js in Resources */,
+				0AD586A42AF79ADB00965E2E /* CastledBridge.js in Resources */,
 				0A1B4B892A7BB53300D6430B /* CIFsDefaultView.xib in Resources */,
 				0A1DE5F52A9DA24400DB2E29 /* CastledInbox.storyboard in Resources */,
 				0A4C76582A7C258A00F60D16 /* CIBannerDefaultView.xib in Resources */,

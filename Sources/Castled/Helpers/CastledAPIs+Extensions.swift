@@ -117,7 +117,7 @@ extension Castled {
                         CastledInApps.sharedInstance.prefetchInApps()
 
                     } catch {
-                        CastledLog.castledLog("Unable to Encode response (\(error))", logLevel: CastledLogLevel.error)
+                        // CastledLog.castledLog("Unable to Encode response (\(error))", logLevel: CastledLogLevel.error)
                     }
                 }
             }
@@ -131,17 +131,14 @@ extension Castled {
      */
     static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItem]>) -> Void) {
         if Castled.sharedInstance.instanceId.isEmpty {
-            CastledLog.castledLog("Fetch inbox items failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
 
             return
         } else if !CastledConfigs.sharedInstance.enableAppInbox {
-            CastledLog.castledLog("Fetch inbox items failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
             return
         }
         guard let userId = CastledUserDefaults.shared.userId else {
-            CastledLog.castledLog("Fetch inbox items failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
 
             return
@@ -149,11 +146,8 @@ extension Castled {
         Task {
             let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: Castled.sharedInstance.instanceId)
             let response = await CastledNetworkLayer.shared.sendRequestFoFetch(model: [CastledInboxItem].self, endpoint: router.request)
-            if !response.success {
-                CastledLog.castledLog("Fetch inbox items failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-            } else {
+            if response.success {
                 CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
-                // CastledLog.castledLog("Fetch InApps Success \(String(describing: response.result))")
             }
             completion(response)
         }
@@ -175,7 +169,7 @@ extension Castled {
             let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, request: router.request)
             switch response {
                 case .success(let responsJSON):
-                    CastledLog.castledLog("Register User Success \(responsJSON)", logLevel: CastledLogLevel.debug)
+                    CastledLog.castledLog("Register User Success... \(responsJSON)", logLevel: CastledLogLevel.debug)
                     CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, true)
                     completion(CastledResponse(response: responsJSON as! [String: String]))
 

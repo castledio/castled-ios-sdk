@@ -73,10 +73,15 @@ public extension Castled {
             if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
                 let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
-                let params = getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
-                Castled.reportPushEvents(params: [params]) { _ in
+                let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
+                if !params.isEmpty {
+                    Castled.reportPushEvents(params: params) { _ in
+                        completionHandler(.newData)
+                    }
+                } else {
                     completionHandler(.newData)
                 }
+
             } else {
                 completionHandler(.newData)
             }
@@ -184,8 +189,10 @@ public extension Castled {
                         event = CastledConstants.CastledEventTypes.received.rawValue
                     }
 
-                    let params = self.getPushPayload(event: event, teamID: teamID ?? "", sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType)
-                    Castled.reportPushEvents(params: [params]) { _ in
+                    let params = Castled.sharedInstance.getPushPayload(event: event, teamID: teamID ?? "", sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType)
+                    if !params.isEmpty {
+                        Castled.reportPushEvents(params: params) { _ in
+                        }
                     }
                 }
             }
@@ -207,8 +214,8 @@ public extension Castled {
                             if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
                                 let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
-                                let params = self.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
-                                castledPushEvents.append(params)
+                                let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
+                                castledPushEvents.append(contentsOf: params)
                             }
                         }
                     }
@@ -226,7 +233,24 @@ public extension Castled {
         }
     }
 
-    private func getPushPayload(event: String, teamID: String, sourceContext: String, actionLabel: String? = "", actionType: String? = "") -> [String: String] {
+    private func getPushPayload(event: String, teamID: String, sourceContext: String, actionLabel: String? = "", actionType: String? = "") -> [[String: String]] {
+        if sourceContext.isEmpty {
+            return []
+        }
+        var payload = [[String: String]]()
+        if event == CastledConstants.CastledEventTypes.received.rawValue {
+            if CastledUserDefaults.shared.deliveredPushIds.contains(sourceContext) {
+                return payload
+            } else {
+                CastledUserDefaults.shared.deliveredPushIds.append(sourceContext)
+                if CastledUserDefaults.shared.deliveredPushIds.count > 20 {
+                    CastledUserDefaults.shared.deliveredPushIds.removeFirst()
+                }
+                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledDeliveredPushIds, CastledUserDefaults.shared.deliveredPushIds)
+            }
+        } else if event == CastledConstants.CastledEventTypes.cliked.rawValue {
+            payload.append(contentsOf: Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext))
+        }
         let timezone = TimeZone.current
         let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
         var params = ["eventType": event, "appInBg": String(false), "ts": "\(Int(Date().timeIntervalSince1970))", "tz": abbreviation, "teamId": teamID, "sourceContext": sourceContext] as [String: String]
@@ -237,7 +261,8 @@ public extension Castled {
             params["actionType"] = actionType
         }
         params[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.pushRequest.rawValue
-        return params
+        payload.append(params)
+        return payload
     }
 
     internal func setNotificationCategories(withItems items: Set<UNNotificationCategory>) {

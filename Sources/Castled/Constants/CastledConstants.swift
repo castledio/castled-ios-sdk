@@ -93,7 +93,7 @@ class CastledConstants {
         case cliked = "CLICKED"
         case discarded = "DISCARDED"
         case received = "RECEIVED"
-        case viewed = "VIEWED"
+        case viewed = "VIEWED" // this is for inapp
     }
 
     static let CastledNetworkRequestTypeKey = "castled_request_type"
