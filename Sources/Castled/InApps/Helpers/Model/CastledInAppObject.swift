@@ -64,9 +64,11 @@ enum CIMessageType: String, Codable {
 struct CIBannerPresentation: Codable {
     let type: CITemplateType
     let html: String?
+    let url: String?
+
     let imageURL: String
     let clickAction: CastledConstants.PushNotification.ClickActionType
-    let url, body, bgColor: String
+    let body, bgColor: String
     let fontSize: Int
     let fontColor: String
     let keyVals: [String: String]?
@@ -77,6 +79,20 @@ struct CIBannerPresentation: Codable {
         case imageURL = "imageUrl"
         case clickAction, url, body, bgColor, fontSize, fontColor, html
     }
+
+    /* init(from decoder: Decoder) throws {
+         let container = try decoder.container(keyedBy: CodingKeys.self)
+         self.type = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .other
+         self.html = (try? container.decodeIfPresent(String.self, forKey: .html))
+         self.imageURL = (try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? ""
+         self.clickAction = (try? container.decodeIfPresent(CastledConstants.PushNotification.ClickActionType.self, forKey: .clickAction)) ?? CastledConstants.PushNotification.ClickActionType.none
+         self.url = (try? container.decodeIfPresent(String.self, forKey: .url)) ?? ""
+         self.body = (try? container.decodeIfPresent(String.self, forKey: .body)) ?? ""
+         self.bgColor = (try? container.decodeIfPresent(String.self, forKey: .bgColor)) ?? ""
+         self.fontSize = (try? container.decodeIfPresent(Int.self, forKey: .fontSize)) ?? 16
+         self.fontColor = (try? container.decodeIfPresent(String.self, forKey: .fontColor)) ?? ""
+         self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .fontColor)) ?? [String: String]()
+     }*/
 }
 
 // MARK: - Modal
@@ -205,6 +221,7 @@ enum CITemplateType: String, Codable {
     case text_buttons = "TEXT_AND_BUTTONS"
     case image_only = "IMG_ONLY"
     case custom_html = "CUSTOM_HTML"
+    case other = "OTHER"
 }
 
 enum CIEventType: String, Codable {

@@ -49,6 +49,7 @@ class CastledConstants {
             case discardNotification = "DISMISS_NOTIFICATION"
             case requestPushPermission = "REQUEST_PUSH_PERMISSION" // this is for inapp
             case custom = "CUSTOM" // this is for inapp
+            case none = "NONE" // this is for inapp
 
             init(stringValue: String) {
                 if let actionType = ClickActionType(rawValue: stringValue) {

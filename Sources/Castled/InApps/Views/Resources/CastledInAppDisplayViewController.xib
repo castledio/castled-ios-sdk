@@ -42,7 +42,7 @@ RlMDIENvbnRhaW5lcg
 </string>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Okd-or-gr5" userLabel="Banner Container">
-                    <rect key="frame" x="20" y="730" width="350" height="70"/>
+                    <rect key="frame" x="10" y="730" width="370" height="70"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="70" id="ydZ-As-t6q"/>
@@ -62,7 +62,7 @@ RlMDIENvbnRhaW5lcg
             <constraints>
                 <constraint firstItem="Bdm-DS-X9u" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4RO-T7-ejx"/>
                 <constraint firstItem="Bdm-DS-X9u" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="7H9-1a-vZU"/>
-                <constraint firstItem="Okd-or-gr5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="E5N-Fy-Me2"/>
+                <constraint firstItem="Okd-or-gr5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="E5N-Fy-Me2"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qS0-8c-fUo" secondAttribute="trailing" priority="999" id="LCu-Ij-0o8"/>
                 <constraint firstItem="Bdm-DS-X9u" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="MBe-P1-jfb"/>
                 <constraint firstAttribute="trailing" secondItem="Itt-nb-4mg" secondAttribute="trailing" id="Voo-7T-rlt"/>
@@ -72,7 +72,7 @@ RlMDIENvbnRhaW5lcg
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Bdm-DS-X9u" secondAttribute="trailing" constant="20" id="iER-GZ-CLV"/>
                 <constraint firstAttribute="bottom" secondItem="Itt-nb-4mg" secondAttribute="bottom" id="kMj-yL-imh"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Okd-or-gr5" secondAttribute="bottom" constant="10" id="lZV-7W-PCN"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Okd-or-gr5" secondAttribute="trailing" constant="20" id="mWL-50-1st"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Okd-or-gr5" secondAttribute="trailing" constant="10" id="mWL-50-1st"/>
                 <constraint firstItem="Okd-or-gr5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="sS0-iQ-MXh"/>
                 <constraint firstItem="Itt-nb-4mg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="z3Z-bd-Oo0"/>
             </constraints>
