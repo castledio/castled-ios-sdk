@@ -104,7 +104,7 @@ extension CIViewProtocol {
             imgMedia.loadImage(from: inAppDisplaySettings?.imageUrl)
         }
         if let viewMainContainer = viewInppContainer {
-            viewMainContainer.layer.cornerRadius = 5
+            viewMainContainer.layer.cornerRadius = 10
         }
         if let viewTitleContainer = viewTitleContainer {
             viewTitleContainer.backgroundColor = inAppDisplaySettings?.titleBgColor

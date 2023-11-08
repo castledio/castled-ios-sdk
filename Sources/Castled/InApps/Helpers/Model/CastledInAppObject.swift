@@ -101,9 +101,9 @@ struct CIModalPresentation: Codable {
     let type: CITemplateType
     let imageURL: String
     let html: String?
-
-    let defaultClickAction: String
-    let url: String
+    let url: String?
+    let defaultClickAction: CastledConstants.PushNotification.ClickActionType
+    let keyVals: [String: String]?
     let title, titleFontColor: String
     let titleFontSize: Int
     let titleBgColor, body, bodyFontColor: String
@@ -114,20 +114,17 @@ struct CIModalPresentation: Codable {
     enum CodingKeys: String, CodingKey {
         case type
         case imageURL = "imageUrl"
-        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons, html
+        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons, html, keyVals
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
         self.html = (try? container.decodeIfPresent(String.self, forKey: .html)) ?? ""
-
         self.imageURL = (try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? ""
-        self.defaultClickAction = (try? container.decodeIfPresent(String.self, forKey: .defaultClickAction)) ?? ""
         self.title = (try? container.decodeIfPresent(String.self, forKey: .title)) ?? ""
         self.titleFontColor = (try? container.decodeIfPresent(String.self, forKey: .titleFontColor)) ?? ""
         self.titleFontSize = (try? container.decodeIfPresent(Int.self, forKey: .titleFontSize)) ?? 20
-        self.url = (try? container.decodeIfPresent(String.self, forKey: .url)) ?? ""
         self.titleBgColor = (try? container.decodeIfPresent(String.self, forKey: .titleBgColor)) ?? ""
         self.body = (try? container.decodeIfPresent(String.self, forKey: .body)) ?? ""
         self.bodyFontColor = (try? container.decodeIfPresent(String.self, forKey: .bodyFontColor)) ?? ""
@@ -135,6 +132,9 @@ struct CIModalPresentation: Codable {
         self.bodyBgColor = (try? container.decodeIfPresent(String.self, forKey: .bodyBgColor)) ?? ""
         self.screenOverlayColor = (try? container.decodeIfPresent(String.self, forKey: .screenOverlayColor)) ?? ""
         self.actionButtons = (try? container.decodeIfPresent([CIActionButton].self, forKey: .actionButtons)) ?? []
+        self.defaultClickAction = (try? container.decodeIfPresent(CastledConstants.PushNotification.ClickActionType.self, forKey: .defaultClickAction)) ?? CastledConstants.PushNotification.ClickActionType.none
+        self.url = (try? container.decodeIfPresent(String.self, forKey: .url)) ?? ""
+        self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals))
     }
 }
 
@@ -142,8 +142,9 @@ struct CIFullScreenPresentation: Codable {
     let type: CITemplateType
     let html: String?
     let imageURL: String
-    let defaultClickAction: String
-    let url: String
+    let url: String?
+    let defaultClickAction: CastledConstants.PushNotification.ClickActionType
+    let keyVals: [String: String]?
     let title, titleFontColor: String
     let titleFontSize: Int
     let titleBgColor, body, bodyFontColor: String
@@ -154,20 +155,17 @@ struct CIFullScreenPresentation: Codable {
     enum CodingKeys: String, CodingKey {
         case type
         case imageURL = "imageUrl"
-        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons, html
+        case defaultClickAction, url, title, titleFontColor, titleFontSize, titleBgColor, body, bodyFontColor, bodyFontSize, bodyBgColor, screenOverlayColor, actionButtons, html, keyVals
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
         self.html = (try? container.decodeIfPresent(String.self, forKey: .html)) ?? ""
-
         self.imageURL = (try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? ""
-        self.defaultClickAction = (try? container.decodeIfPresent(String.self, forKey: .defaultClickAction)) ?? ""
         self.title = (try? container.decodeIfPresent(String.self, forKey: .title)) ?? ""
         self.titleFontColor = (try? container.decodeIfPresent(String.self, forKey: .titleFontColor)) ?? ""
         self.titleFontSize = (try? container.decodeIfPresent(Int.self, forKey: .titleFontSize)) ?? 20
-        self.url = (try? container.decodeIfPresent(String.self, forKey: .url)) ?? ""
         self.titleBgColor = (try? container.decodeIfPresent(String.self, forKey: .titleBgColor)) ?? ""
         self.body = (try? container.decodeIfPresent(String.self, forKey: .body)) ?? ""
         self.bodyFontColor = (try? container.decodeIfPresent(String.self, forKey: .bodyFontColor)) ?? ""
@@ -175,6 +173,10 @@ struct CIFullScreenPresentation: Codable {
         self.bodyBgColor = (try? container.decodeIfPresent(String.self, forKey: .bodyBgColor)) ?? ""
         self.screenOverlayColor = (try? container.decodeIfPresent(String.self, forKey: .screenOverlayColor)) ?? ""
         self.actionButtons = (try? container.decodeIfPresent([CIActionButton].self, forKey: .actionButtons)) ?? []
+
+        self.defaultClickAction = (try? container.decodeIfPresent(CastledConstants.PushNotification.ClickActionType.self, forKey: .defaultClickAction)) ?? CastledConstants.PushNotification.ClickActionType.none
+        self.url = (try? container.decodeIfPresent(String.self, forKey: .url)) ?? ""
+        self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals))
     }
 }
 

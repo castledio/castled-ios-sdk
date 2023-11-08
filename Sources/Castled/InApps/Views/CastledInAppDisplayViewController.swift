@@ -153,8 +153,8 @@ class CastledInAppDisplayViewController: UIViewController {
                 buttonParentView = childContainer
                 childContainer.superview!.addSubview(dismissView)
             }
-            dismissView.trailingAnchor.constraint(equalTo: buttonParentView.trailingAnchor, constant: 5).isActive = true
-            dismissView.topAnchor.constraint(equalTo: buttonParentView.topAnchor, constant: -5).isActive = true
+            dismissView.trailingAnchor.constraint(equalTo: buttonParentView.trailingAnchor, constant: 0).isActive = true
+            dismissView.topAnchor.constraint(equalTo: buttonParentView.topAnchor, constant: 0).isActive = true
         }
         let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
         dismissView.initialiseActions(actions: action)
@@ -183,8 +183,14 @@ class CastledInAppDisplayViewController: UIViewController {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        if let inappObject = selectedInAppObject, inappObject.message?.type != CIMessageType.banner {
-            print("touchesEnded \(self)")
+        if let inappObject = selectedInAppObject, inappObject.message?.type != CIMessageType.banner, let defaultAction = inappObject.message?.fs?.defaultClickAction ?? inappObject.message?.modal?.defaultClickAction, defaultAction != .none {
+            let url = inappObject.message?.modal?.url ?? inappObject.message?.fs?.url ?? ""
+            var keyvals = inappObject.message?.modal?.keyVals ?? inappObject.message?.fs?.keyVals ?? [String: String]()
+            keyvals[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url
+            keyvals[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = defaultAction.rawValue
+            CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)
+            CastledInApps.sharedInstance.performButtonActionFor(webParams: keyvals)
+            hideInAppViewFromWindow(withAnimation: true)
         }
     }
 }
