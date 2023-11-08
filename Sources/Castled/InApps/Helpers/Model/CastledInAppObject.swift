@@ -219,6 +219,7 @@ enum CITemplateType: String, Codable {
     case default_template = "DEFAULT"
     case image_buttons = "IMG_AND_BUTTONS"
     case text_buttons = "TEXT_AND_BUTTONS"
+    case img_text_buttons = "IMG_TEXT_AND_BUTTONS"
     case image_only = "IMG_ONLY"
     case custom_html = "CUSTOM_HTML"
     case other = "OTHER"

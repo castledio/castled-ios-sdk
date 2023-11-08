@@ -180,6 +180,13 @@ class CastledInAppDisplayViewController: UIViewController {
 
         hideInAppViewFromWindow(withAnimation: true)
     }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        if let inappObject = selectedInAppObject, inappObject.message?.type != CIMessageType.banner {
+            print("touchesEnded \(self)")
+        }
+    }
 }
 
 private extension CastledInAppDisplayViewController {
@@ -196,7 +203,9 @@ private extension CastledInAppDisplayViewController {
                     case CITemplateType.image_buttons.rawValue:
                         break
                     case CITemplateType.text_buttons.rawValue:
-                        break
+                        inppV = CastledCommonClass.loadView(fromNib: "CIModalTextAndButtons", withType: CIModalTextAndButtons.self)
+                    case CITemplateType.img_text_buttons.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIModalImageBodyAndButtons", withType: CIModalImageBodyAndButtons.self)
                     case CITemplateType.image_only.rawValue:
                         break
                     case CITemplateType.custom_html.rawValue:
@@ -212,7 +221,7 @@ private extension CastledInAppDisplayViewController {
                     case CITemplateType.default_template.rawValue:
                         inppV = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
                     case CITemplateType.image_buttons.rawValue:
-                        break
+                        inppV = CastledCommonClass.loadView(fromNib: "CIFsImageAndButtons", withType: CIFsImageAndButtons.self)
                     case CITemplateType.text_buttons.rawValue:
                         break
                     case CITemplateType.image_only.rawValue:
