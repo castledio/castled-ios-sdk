@@ -54,18 +54,17 @@ extension CIViewProtocol {
             if let inapp = selectedInAppObject, inapp.message?.type == CIMessageType.banner {
                 alignment = NSTextAlignment.left
             }
-            lblTitle.attributedText = getAttributedString(title: inAppDisplaySettings!.title,
-                                                          textColr: inAppDisplaySettings!.titleFontColor,
-                                                          font: inAppDisplaySettings!.titleFont.withSize(CGFloat(inAppDisplaySettings!.titleFontSize)), alignment: alignment)
+
+            lblTitle.attributedText = inAppDisplaySettings!.title.getAttributedStringFrom(textColr: inAppDisplaySettings!.titleFontColor,
+                                                                                          font: inAppDisplaySettings!.titleFont.withSize(CGFloat(inAppDisplaySettings!.titleFontSize)), alignment: alignment)
         }
         if let lblBody = lblBody {
             lblBody.numberOfLines = 5
             if let inapp = selectedInAppObject, inapp.message?.type == CIMessageType.fs {
                 lblBody.numberOfLines = 10
             }
-            lblBody.attributedText = getAttributedString(title: inAppDisplaySettings!.body,
-                                                         textColr: inAppDisplaySettings!.bodyFontColor,
-                                                         font: inAppDisplaySettings!.bodyFont.withSize(CGFloat(inAppDisplaySettings!.bodyFontSize)), alignment: .center)
+
+            lblBody.attributedText = inAppDisplaySettings!.body.getAttributedStringFrom(textColr: inAppDisplaySettings!.bodyFontColor, font: inAppDisplaySettings!.bodyFont.withSize(CGFloat(inAppDisplaySettings!.bodyFontSize)), alignment: .center)
         }
         if let btnSecondary = btnSeondary { // left button
             btnSecondary.titleLabel?.font = inAppDisplaySettings?.buttonFont.withSize(CGFloat(min(inAppDisplaySettings!.titleFontSize, 16)))
@@ -113,21 +112,5 @@ extension CIViewProtocol {
             viewDetailContainer.backgroundColor = inAppDisplaySettings?.bodyBgColor
             viewButtonContainer?.backgroundColor = viewDetailContainer.backgroundColor
         }
-    }
-
-    private func getAttributedString(title: String, textColr: UIColor, font: UIFont, alignment: NSTextAlignment) -> NSMutableAttributedString {
-        let fullString = title
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = alignment
-        paragraphStyle.lineSpacing = 3.0
-        paragraphStyle.lineBreakMode = .byTruncatingTail
-        paragraphStyle.firstLineHeadIndent = 0
-        paragraphStyle.maximumLineHeight = paragraphStyle.minimumLineHeight
-
-        let attributes = [NSAttributedString.Key.foregroundColor: textColr as Any, .font: font as Any, NSAttributedString.Key.paragraphStyle: paragraphStyle]
-        let attrString = NSMutableAttributedString(string: fullString, attributes: attributes as [NSMutableAttributedString.Key: Any])
-
-        return attrString
     }
 }
