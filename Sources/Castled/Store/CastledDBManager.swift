@@ -22,7 +22,7 @@ class CastledDBManager {
         if let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let customURL = documentsURL.appendingPathComponent("castled_db.realm")
             config.fileURL = customURL
-            //  CastledLog.castledLog(config.fileURL as Any, logLevel: CastledLogLevel.info)
+            CastledLog.castledLog(config.fileURL as Any, logLevel: CastledLogLevel.info)
         }
 
         // Set the new configuration as the default

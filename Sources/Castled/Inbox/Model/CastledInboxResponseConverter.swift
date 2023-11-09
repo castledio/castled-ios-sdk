@@ -9,12 +9,19 @@ import Foundation
 import RealmSwift
 
 enum CastledInboxResponseConverter {
-    static func convertToInbox(inboxItem: CastledInboxItem, realm: Realm? = nil) -> CAppInbox {
+    static func convertToInbox(inboxItem: CastledInboxItem, realm: Realm? = nil) -> CAppInbox? {
+        let appinbox: CAppInbox
         if let existingItem = realm?.object(ofType: CAppInbox.self, forPrimaryKey: inboxItem.messageId) {
-            return existingItem
+            if existingItem.updatedTime == inboxItem.updatedTime {
+                return nil
+            }
+            appinbox = existingItem
         }
-        let appinbox = CAppInbox()
-        appinbox.messageId = inboxItem.messageId
+        else {
+            appinbox = CAppInbox()
+            appinbox.messageId = inboxItem.messageId
+        }
+
         appinbox.isPinned = inboxItem.isPinned
         appinbox.tag = inboxItem.tag
         appinbox.updatedTime = inboxItem.updatedTime
