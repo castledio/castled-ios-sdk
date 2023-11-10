@@ -143,7 +143,7 @@ import UserNotifications
     @objc func appBecomeActive() {
         Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.shared.userId != nil {
-            Castled.sharedInstance.logAppOpenedEventIfAny()
+         //   Castled.sharedInstance.logAppOpenedEventIfAny()
             Castled.sharedInstance.executeBGTasks(isFromBG: true)
         }
     }
