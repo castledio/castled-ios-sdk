@@ -64,7 +64,7 @@ extension CIViewProtocol {
                 lblBody.numberOfLines = 10
             }
 
-            lblBody.attributedText = inAppDisplaySettings!.body.getAttributedStringFrom(textColr: inAppDisplaySettings!.bodyFontColor, font: inAppDisplaySettings!.bodyFont.withSize(CGFloat(inAppDisplaySettings!.bodyFontSize)), alignment: .center)
+            lblBody.attributedText = inAppDisplaySettings!.body.getAttributedStringFrom(textColr: inAppDisplaySettings!.bodyFontColor, font: inAppDisplaySettings!.bodyFont.withSize(CGFloat(inAppDisplaySettings!.bodyFontSize)), alignment: NSTextAlignment.center)
         }
         if let btnSecondary = btnSeondary { // left button
             btnSecondary.titleLabel?.font = inAppDisplaySettings?.buttonFont.withSize(CGFloat(min(inAppDisplaySettings!.titleFontSize, 16)))
