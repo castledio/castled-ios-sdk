@@ -15,7 +15,7 @@ extension String {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = alignment
         paragraphStyle.lineSpacing = 3.0
-        paragraphStyle.lineBreakMode = .byTruncatingTail
+        paragraphStyle.lineBreakMode = NSLineBreakMode.byTruncatingTail
         paragraphStyle.firstLineHeadIndent = 0
         paragraphStyle.maximumLineHeight = paragraphStyle.minimumLineHeight
 
