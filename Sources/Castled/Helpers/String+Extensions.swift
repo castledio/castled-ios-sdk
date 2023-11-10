@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
     func getAttributedStringFrom(textColr: UIColor, font: UIFont, alignment: NSTextAlignment) -> NSMutableAttributedString {
