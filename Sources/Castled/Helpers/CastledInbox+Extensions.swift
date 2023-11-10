@@ -62,10 +62,6 @@ public extension Castled {
                 DispatchQueue.main.async {
                     completion(true, liveInboxItems, nil)
                 }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(false, [], error.localizedDescription)
-                }
             }
         }
     }

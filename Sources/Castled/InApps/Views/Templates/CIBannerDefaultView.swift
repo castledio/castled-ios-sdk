@@ -8,16 +8,23 @@
 import UIKit
 
 class CIBannerDefaultView: UIView, CIViewProtocol {
+    @IBOutlet weak var imgMedia: UIImageView?
+    @IBOutlet weak var lblTitle: UILabel?
+    @IBOutlet weak var lblBody: UILabel?
+    @IBOutlet weak var btnPrimary: UIButton?
+    @IBOutlet weak var btnSeondary: UIButton?
+    @IBOutlet weak var viewButtonContainer: UIView?
+    @IBOutlet weak var viewTitleContainer: UIView?
+    @IBOutlet weak var viewBodyContainer: UIView?
+    @IBOutlet weak var viewInppContainer: UIView?
+    var viewParentContainer: UIView?
+
     var viewChildViewsContainer: UIView?
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
-    var viewContainer: UIView?
 
     @IBOutlet weak var btnDetails: UIButton!
-    @IBOutlet weak var lblTitle: UILabel!
-    @IBOutlet weak var imgViewMain: UIImageView!
-    @IBOutlet weak var viewMainContainer: UIView!
 
     /*
      // Only override draw() if you perform custom drawing.
@@ -28,25 +35,17 @@ class CIBannerDefaultView: UIView, CIViewProtocol {
      */
 
     func configureTheViews() {
-        lblTitle?.font = inAppDisplaySettings?.slideUpFont.withSize(CGFloat(inAppDisplaySettings!.slideUpFontSize))
-        lblTitle?.textColor = inAppDisplaySettings?.slideUpFontColor
-        viewMainContainer?.backgroundColor = inAppDisplaySettings?.slideUpBgColor
+        updateheaderAndButtonViews()
+
+        viewInppContainer?.backgroundColor = inAppDisplaySettings?.titleBgColor
         let detailsArrowImage = btnDetails?.imageView?.image?.withRenderingMode(.alwaysTemplate)
         btnDetails?.setImage(detailsArrowImage, for: .normal)
         btnDetails?.tintColor = .black
-        viewMainContainer?.layer.cornerRadius = 5
-        imgViewMain?.layer.cornerRadius = 5
-        lblTitle?.text = inAppDisplaySettings?.slideUpTitle
-        imgViewMain.loadImage(from: inAppDisplaySettings?.imageUrl)
-    }
-
-    @IBAction func hideInAppView(_ sender: Any) {
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
-        parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)
+        imgMedia?.layer.cornerRadius = 5
     }
 
     @IBAction func detailsButtonClikd(_ sender: Any) {
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.slideUpClickAction, btnLabel: inAppDisplaySettings?.slideUpTitle, actionUri: inAppDisplaySettings?.slideUpUri)
+        CastledInApps.sharedInstance.reportInAppEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.defaultClickAction, btnLabel: inAppDisplaySettings?.title, actionUri: inAppDisplaySettings?.defaultClickActionUri)
         CastledInApps.sharedInstance.performButtonActionFor(slide: (parentContainerVC?.selectedInAppObject)!.message?.banner)
         parentContainerVC?.hideInAppViewFromWindow()
     }

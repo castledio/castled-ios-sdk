@@ -59,8 +59,6 @@ import RealmSwift
                     realm.delete(existingItem)
                     CastledStore.resetUnreadUncountAfterCRUD(realm: realm)
                 }
-            } catch let error as NSError {
-                CastledLog.castledLog("in deltion \(error.localizedDescription)", logLevel: .error)
             }
         }
     }
@@ -120,13 +118,8 @@ import RealmSwift
                     let liveInboxItemIds = Set(liveInboxResponse.map { $0.messageId })
 
                     let liveInboxItems = liveInboxResponse.compactMap { responseItem -> CAppInbox? in
-                        if cachedInboxItems.contains(where: { $0.messageId == responseItem.messageId }) {
-                            // If it exists, return nil to filter it out
-                            return nil
-                        } else {
-                            let inboxItem = CastledInboxResponseConverter.convertToInbox(inboxItem: responseItem, realm: backgroundRealm)
-                            return inboxItem
-                        }
+                        let inboxItem = CastledInboxResponseConverter.convertToInbox(inboxItem: responseItem, realm: backgroundRealm)
+                        return inboxItem
                     }
                     if !liveInboxItems.isEmpty {
                         backgroundRealm.add(liveInboxItems, update: .modified) // Insert or update as necessary

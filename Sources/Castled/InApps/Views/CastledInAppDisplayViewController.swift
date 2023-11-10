@@ -59,7 +59,7 @@ class CastledInAppDisplayViewController: UIViewController {
 
         // required properties for population
         inAppView?.parentContainerVC = self
-        inAppView?.viewContainer = containerView
+        inAppView?.viewParentContainer = containerView
         inAppView?.inAppDisplaySettings = inAppDisplaySettings
         inAppView?.selectedInAppObject = selectedInAppObject
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
@@ -89,7 +89,7 @@ class CastledInAppDisplayViewController: UIViewController {
 
         }) { [weak self] _ in
             self?.view.layoutSubviews()
-            CastledInApps.sharedInstance.updateInappEvent(inappObject: inAppObj, eventType: CastledConstants.CastledEventTypes.viewed.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
+            CastledInApps.sharedInstance.reportInAppEvent(inappObject: inAppObj, eventType: CastledConstants.CastledEventTypes.viewed.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
             if inAppObj.displayConfig?.autoDismissInterval ?? 0 > 0 {
                 self?.autoDismissalWorkItem?.cancel()
                 let requestWorkItem = DispatchWorkItem { [weak self] in
@@ -104,7 +104,6 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     func hideInAppViewFromWindow(withAnimation: Bool? = true) {
-        CastledInApps.sharedInstance.isCurrentlyDisplaying = false
         autoDismissalWorkItem?.cancel()
         guard let interstitialView = view else {
             return
@@ -114,6 +113,7 @@ class CastledInAppDisplayViewController: UIViewController {
                 interstitialView.alpha = 0
             }) { [weak self] _ in
                 // Remove the interstitial view controller from the view hierarchy
+                CastledInApps.sharedInstance.isCurrentlyDisplaying = false
                 self?.removeAllViews()
                 // Notify the delegate that it should dismiss the interstitial view controller
             }
@@ -133,12 +133,12 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     private func dismissButtonClicked(_ sender: Any) {
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
+        CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
         hideInAppViewFromWindow(withAnimation: true)
     }
 
     private func arrangeDismissButton(containerView: UIView) {
-        // we are resetting the constrionts after adding to the new contianer, removing this to prevent the strtiching issue
+        // we are resetting the constrionts after adding to the new contianer, removing this to prevent the stretiching issue
         dismissView.superview?.removeConstraint(constraintCloseTop)
         dismissView.superview?.removeConstraint(constraintCloseTrialing)
 
@@ -153,43 +153,65 @@ class CastledInAppDisplayViewController: UIViewController {
                 buttonParentView = childContainer
                 childContainer.superview!.addSubview(dismissView)
             }
-            dismissView.trailingAnchor.constraint(equalTo: buttonParentView.trailingAnchor, constant: 5).isActive = true
-            dismissView.topAnchor.constraint(equalTo: buttonParentView.topAnchor, constant: -5).isActive = true
+            dismissView.trailingAnchor.constraint(equalTo: buttonParentView.trailingAnchor, constant: 0).isActive = true
+            dismissView.topAnchor.constraint(equalTo: buttonParentView.topAnchor, constant: 0).isActive = true
         }
         let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
         dismissView.initialiseActions(actions: action)
     }
-}
 
-extension CastledInAppDisplayViewController {
-    private func getHTML() -> String {
-        var html = ""
-        if let htmlPathURL = Bundle.resourceBundle(for: Self.self).url(forResource: "index1", withExtension: "html") {
-            do {
-                html = try String(contentsOf: htmlPathURL, encoding: .utf8)
-            } catch {
-                print("Unable to get the file.")
-            }
-        }
-
-        return html
+    private func getActionbuttons() -> [CIActionButton]? {
+        return selectedInAppObject?.message?.type == CIMessageType.modal ? selectedInAppObject?.message?.modal?.actionButtons : selectedInAppObject?.message?.fs?.actionButtons
     }
 
-    fileprivate func getInappViewFrom(inappAObject: CastledInAppObject) -> ((any CIViewProtocol)?, contanerV: UIView?, htmlString: String?) {
+    @objc func primaryButtonClikd(_ sender: UIButton) {
+        if let actionButtons = getActionbuttons() {
+            CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppView?.inAppDisplaySettings?.primaryButtonClickAction, btnLabel: inAppView?.inAppDisplaySettings?.primaryButtonTitle, actionUri: inAppView?.inAppDisplaySettings?.primaryButtonClickActionUri)
+            CastledInApps.sharedInstance.performButtonActionFor(buttonAction: actionButtons.last)
+        }
+        hideInAppViewFromWindow(withAnimation: true)
+    }
+
+    @objc func secondaryButtonClikd(_ sender: UIButton) {
+        if let actionButtons = getActionbuttons() {
+            CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppView?.inAppDisplaySettings?.seondaryButtonClickAction, btnLabel: inAppView?.inAppDisplaySettings?.seondaryButtonTitle, actionUri: inAppView?.inAppDisplaySettings?.seondaryButtonClickActionUri)
+            CastledInApps.sharedInstance.performButtonActionFor(buttonAction: actionButtons.first)
+        }
+
+        hideInAppViewFromWindow(withAnimation: true)
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        if let inappObject = selectedInAppObject, inappObject.message?.type != CIMessageType.banner, let defaultAction = inappObject.message?.fs?.defaultClickAction ?? inappObject.message?.modal?.defaultClickAction, defaultAction != .none {
+            let url = inappObject.message?.modal?.url ?? inappObject.message?.fs?.url ?? ""
+            var keyvals = inappObject.message?.modal?.keyVals ?? inappObject.message?.fs?.keyVals ?? [String: String]()
+            keyvals[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url
+            keyvals[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = defaultAction.rawValue
+            CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)
+            CastledInApps.sharedInstance.performButtonActionFor(webParams: keyvals)
+            hideInAppViewFromWindow(withAnimation: true)
+        }
+    }
+}
+
+private extension CastledInAppDisplayViewController {
+    func getInappViewFrom(inappAObject: CastledInAppObject) -> ((any CIViewProtocol)?, contanerV: UIView?, htmlString: String?) {
         var inppV: (any CIViewProtocol)?
         var container: UIView?
         var html: String?
         switch inappAObject.message?.type.rawValue {
             case CIMessageType.modal.rawValue:
                 container = viewModalContainer
-
                 switch inappAObject.message?.modal?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
                         inppV = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
                     case CITemplateType.image_buttons.rawValue:
                         break
                     case CITemplateType.text_buttons.rawValue:
-                        break
+                        inppV = CastledCommonClass.loadView(fromNib: "CIModalTextAndButtons", withType: CIModalTextAndButtons.self)
+                    case CITemplateType.img_text_buttons.rawValue:
+                        inppV = CastledCommonClass.loadView(fromNib: "CIModalImageBodyAndButtons", withType: CIModalImageBodyAndButtons.self)
                     case CITemplateType.image_only.rawValue:
                         break
                     case CITemplateType.custom_html.rawValue:
@@ -205,7 +227,7 @@ extension CastledInAppDisplayViewController {
                     case CITemplateType.default_template.rawValue:
                         inppV = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
                     case CITemplateType.image_buttons.rawValue:
-                        break
+                        inppV = CastledCommonClass.loadView(fromNib: "CIFsImageAndButtons", withType: CIFsImageAndButtons.self)
                     case CITemplateType.text_buttons.rawValue:
                         break
                     case CITemplateType.image_only.rawValue:

@@ -9,11 +9,21 @@ import UIKit
 import WebKit
 
 class CIHTMLView: UIView, CIViewProtocol {
+    var imgMedia: UIImageView?
+    var lblTitle: UILabel?
+    var lblBody: UILabel?
+    var btnPrimary: UIButton?
+    var btnSeondary: UIButton?
+    var viewButtonContainer: UIView?
+    var viewTitleContainer: UIView?
+    var viewBodyContainer: UIView?
+    var viewInppContainer: UIView?
+    var viewParentContainer: UIView?
+
     var viewChildViewsContainer: UIView?
     var parentContainerVC: CastledInAppDisplayViewController?
     var selectedInAppObject: CastledInAppObject?
     var inAppDisplaySettings: InAppDisplayConfig?
-    var viewContainer: UIView?
 
     @IBOutlet weak var viewMainContainer: UIView!
     var htmlString = ""
@@ -63,7 +73,7 @@ extension CIHTMLView: CastledInAppJSBridgeDelegate {
         if let optional_params = params["custom_params"] as? [String: Any] {
             btnLabel = optional_params["button_title"] as? String ?? ""
         }
-        CastledInApps.sharedInstance.updateInappEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "", btnLabel: btnLabel, actionUri: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? "")
+        CastledInApps.sharedInstance.reportInAppEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "", btnLabel: btnLabel, actionUri: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? "")
         CastledInApps.sharedInstance.performButtonActionFor(webParams: params as? [String: Any])
         webViewBridge.delegate = nil
         webViewBridge.delegate = nil

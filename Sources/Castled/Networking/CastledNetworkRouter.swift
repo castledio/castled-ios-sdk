@@ -94,7 +94,7 @@ enum CastledNetworkRouter {
                                          path: "external/v1/collections/devices",
                                          method: .post,
                                          parameters: ["type": "track", "deviceInfo": deviceInfo, "userId": userID],
-                                         headers: nil)
+                                         headers: getHeaders())
         case .reportCustomEvent(let params):
             return CastledNetworkRequest(baseURL: baseURL,
                                          baseURLEndPoint: baseURLEndPoint,

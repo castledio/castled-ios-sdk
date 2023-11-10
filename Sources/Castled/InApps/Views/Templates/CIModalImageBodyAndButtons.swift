@@ -1,13 +1,13 @@
 //
-//  CIFsDefault.swift
+//  CIModalDefaultView.swift
 //  SB
 //
-//  Created by antony on 02/08/2023.
+//  Created by antony on 01/08/2023.
 //
 
 import UIKit
 
-class CIFsDefaultView: UIView, CIViewProtocol {
+class CIModalImageBodyAndButtons: UIView, CIViewProtocol {
     @IBOutlet weak var imgMedia: UIImageView?
     @IBOutlet weak var lblTitle: UILabel?
     @IBOutlet weak var lblBody: UILabel?
@@ -25,7 +25,6 @@ class CIFsDefaultView: UIView, CIViewProtocol {
     var inAppDisplaySettings: InAppDisplayConfig?
 
     @IBOutlet weak var constraintButtonStackHeight: NSLayoutConstraint!
-
     /*
      // Only override draw() if you perform custom drawing.
      // An empty implementation adversely affects performance during animation.
@@ -35,13 +34,13 @@ class CIFsDefaultView: UIView, CIViewProtocol {
      */
 
     func configureTheViews() {
+        viewChildViewsContainer = viewInppContainer
+
         updateheaderAndButtonViews()
         parentContainerVC?.view?.backgroundColor = inAppDisplaySettings?.screenOverlayColor
         if btnSeondary!.superview!.isHidden {
             constraintButtonStackHeight.constant = 0
         }
-
-        backgroundColor = viewButtonContainer?.backgroundColor
-        viewParentContainer?.backgroundColor = backgroundColor
+        viewInppContainer?.backgroundColor = viewBodyContainer?.backgroundColor
     }
 }

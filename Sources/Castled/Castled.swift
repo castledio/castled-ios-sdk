@@ -132,15 +132,19 @@ import UserNotifications
         UIApplication.shared.applicationIconBadgeNumber = count
     }
 
-    @objc func executeBGTasks() {
-        CastledBGManager.sharedInstance.executeBackgroundTask {}
+    @objc func executeBGTasks(isFromBG: Bool = false) {
+        CastledBGManager.sharedInstance.executeBackgroundTask {
+            if isFromBG {
+                Castled.sharedInstance.logAppOpenedEventIfAny()
+            }
+        }
     }
 
     @objc func appBecomeActive() {
         Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.shared.userId != nil {
-            Castled.sharedInstance.logAppOpenedEventIfAny()
-            Castled.sharedInstance.executeBGTasks()
+         //   Castled.sharedInstance.logAppOpenedEventIfAny()
+            Castled.sharedInstance.executeBGTasks(isFromBG: true)
         }
     }
 

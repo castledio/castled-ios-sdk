@@ -28,7 +28,7 @@ import UIKit
         }
     }
 
-    func updateInappEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
+    func reportInAppEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
         DispatchQueue.global().async {
             let teamId = "\(inappObject.teamID)"
             let sourceContext = inappObject.sourceContext
@@ -112,6 +112,8 @@ import UIKit
             params = webP
             url = params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? ""
             clickAction = params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? ""
+        } else {
+            return
         }
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url ?? ""
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction

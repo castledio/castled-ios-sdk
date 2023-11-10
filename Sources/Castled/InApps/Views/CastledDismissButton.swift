@@ -42,12 +42,15 @@ class CastledDismissButton: UIView {
 
     private func setupViews() {
         backgroundColor = .clear
-        let closeImage = imgClose.image?.withRenderingMode(.alwaysTemplate)
-        imgClose.image = closeImage
-        imgClose.tintColor = .white
-        imgClose.backgroundColor = UIColor.gray.withAlphaComponent(0.9)
-        imgClose.layer.cornerRadius = imgClose.frame.size.height / 2
-        imgClose.addShadow(radius: 5, opacity: 0.6, offset: CGSize(width: 0, height: 2), color: UIColor.black)
+//        let closeImage = imgClose.image?.withRenderingMode(.alwaysTemplate)
+//        //  imgClose.alpha = 0.5
+//        //  imgClose.image = closeImage
+        ////        imgClose.tintColor = .white
+//        imgClose.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+//        DispatchQueue.main.async { [weak self] in
+//            self?.imgClose.layer.cornerRadius = (self?.imgClose.frame.size.height ?? 0) / 2
+//        }
+//        imgClose.addShadow(radius: 5, opacity: 0.6, offset: CGSize(width: 0, height: 2), color: UIColor.black)
     }
 
     func initialiseActions(actions: DismissViewActions? = nil) {

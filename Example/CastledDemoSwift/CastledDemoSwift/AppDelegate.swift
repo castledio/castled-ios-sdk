@@ -168,7 +168,7 @@ extension AppDelegate: CastledNotificationDelegate {
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
-        print("type \(type.rawValue) action \(action.rawValue)")
+        print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************\(userInfo)")
         switch action {
             case .deepLink:
                 if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {

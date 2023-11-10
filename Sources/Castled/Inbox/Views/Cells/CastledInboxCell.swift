@@ -62,10 +62,9 @@ class CastledInboxCell: UITableViewCell {
         inboxItem = inboxObj
         viewContainer.backgroundColor = inboxObj.colorContainer
         lblTitle.textColor = inboxObj.colorTitle
-        lblDescription.textColor = inboxObj.colorBody
-        lblTime.textColor = lblDescription.textColor
+        lblTime.textColor = inboxObj.colorBody
         lblTitle.text = inboxObj.title
-        lblDescription.text = inboxObj.body
+        lblDescription.attributedText = inboxObj.body.getAttributedStringFrom(textColr: inboxObj.colorBody, font: lblDescription.font, alignment: .left)
         lblTime.text = inboxObj.addedDate.timeAgo()
         viewIsRead.superview?.isHidden = inboxObj.isRead
         imgPin.isHidden = !inboxObj.isPinned

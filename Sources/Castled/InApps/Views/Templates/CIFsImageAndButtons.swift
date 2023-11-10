@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CIFsDefaultView: UIView, CIViewProtocol {
+class CIFsImageAndButtons: UIView, CIViewProtocol {
     @IBOutlet weak var imgMedia: UIImageView?
     @IBOutlet weak var lblTitle: UILabel?
     @IBOutlet weak var lblBody: UILabel?

@@ -19,7 +19,10 @@ extension Castled {
         Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             if !response.success {
                 CastledLog.castledLog("Report InApp Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-            }
+            } 
+//            else {
+//                CastledLog.castledLog("Report InApp success : \(params)", logLevel: CastledLogLevel.info)
+//            }
             completion(response)
 
         })
