@@ -92,12 +92,12 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         style.hideCloseButton = false
 
         // for catgory tabs
-        style.showCategoriesTab = true
-        style.tabBarDefaultTextColor = .green
-        style.tabBarSelectedTextColor = .brown
-        style.tabBarDefaultBackgroundColor = .purple
-        style.tabBarSelectedBackgroundColor = .lightGray
-        style.tabBarIndicatorBackgroundColor = .red
+//        style.showCategoriesTab = true
+//        style.tabBarDefaultTextColor = .green
+//        style.tabBarSelectedTextColor = .brown
+//        style.tabBarDefaultBackgroundColor = .purple
+//        style.tabBarSelectedBackgroundColor = .lightGray
+//        style.tabBarIndicatorBackgroundColor = .red
         let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController.modalPresentationStyle = .fullScreen
         present(inboxViewController, animated: true)

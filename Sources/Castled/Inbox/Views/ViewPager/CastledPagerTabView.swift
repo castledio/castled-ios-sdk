@@ -46,8 +46,8 @@ class CastledViewPagerTabView: UIView {
         lblTitle = UILabel()
         lblTitle?.textAlignment = .center
         lblTitle?.textColor = options.tabBarDefaultTextColor
-        lblTitle?.numberOfLines = 2
-        lblTitle?.adjustsFontSizeToFitWidth = true
+        lblTitle?.numberOfLines = 1
+        lblTitle?.adjustsFontSizeToFitWidth = false
         lblTitle?.font = options.tabBarTitletFont
         lblTitle?.text = text
     }

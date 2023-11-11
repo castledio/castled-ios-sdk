@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc public class CastledInAppTriggerEvaluator: NSObject {
+@objc class CastledInAppTriggerEvaluator: NSObject {
     override init() {
         super.init()
     }

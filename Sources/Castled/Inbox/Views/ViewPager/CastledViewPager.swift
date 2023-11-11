@@ -243,7 +243,7 @@ class CastledViewPager: NSObject {
 
             } else {
                 if CGFloat(contentWidth) < UIScreen.main.bounds.width {
-                    tabItem.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / CGFloat(numberOfItems!)).isActive = true
+                    tabItem.widthAnchor.constraint(equalToConstant: max(UIScreen.main.bounds.width / CGFloat(numberOfItems!), tabItem.width)).isActive = true
                 } else {
                     tabItem.widthAnchor.constraint(equalToConstant: tabItem.width).isActive = true
                 }
