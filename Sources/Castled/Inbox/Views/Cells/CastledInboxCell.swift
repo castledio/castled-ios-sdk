@@ -8,7 +8,7 @@
 import SDWebImage
 import UIKit
 
-@objc public protocol CastledInboxCellDelegate {
+@objc protocol CastledInboxCellDelegate {
     @objc func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
 }
 

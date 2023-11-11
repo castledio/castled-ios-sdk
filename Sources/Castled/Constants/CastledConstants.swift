@@ -66,7 +66,7 @@ class CastledConstants {
                     case .deepLink:
                         return CastledClickActionType.deepLink
                     case .richLanding:
-                        return CastledClickActionType.navigateToScreen
+                        return CastledClickActionType.richLanding
                     case .discardNotification:
                         return CastledClickActionType.dismiss
                     case .requestPushPermission:
