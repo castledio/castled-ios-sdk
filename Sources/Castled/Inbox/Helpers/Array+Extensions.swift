@@ -23,7 +23,7 @@ extension Array where Element == [String: Any] {
     func subtract(_ otherArray: [[String: Any]]) -> [[String: Any]] {
         return filter { element in
             !otherArray.contains { otherElement in
-                dictionariesAreEqual(dict1: element, dict2: otherElement)
+                self.dictionariesAreEqual(dict1: element, dict2: otherElement)
             }
         }
     }
@@ -32,5 +32,12 @@ extension Array where Element == [String: Any] {
         // Implement your custom comparison logic here
         // Example: Check if dictionaries have the same keys and values
         return NSDictionary(dictionary: dict1).isEqual(to: dict2)
+    }
+}
+
+extension Array where Element: Equatable {
+    mutating func mergeElements<C: Collection>(newElements: C) where C.Iterator.Element == Element {
+        let filteredList = newElements.filter({ !self.contains($0) })
+        self.append(contentsOf: filteredList)
     }
 }

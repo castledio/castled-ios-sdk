@@ -9,7 +9,11 @@ import Foundation
 
 // MARK: - InAppObject
 
-struct CastledInAppObject: Codable {
+struct CastledInAppObject: Codable, Equatable {
+    static func == (lhs: CastledInAppObject, rhs: CastledInAppObject) -> Bool {
+        return lhs.notificationID == rhs.notificationID
+    }
+
     let teamID, notificationID: Int
     let sourceContext, priority: String
     let message: CIMessage?
