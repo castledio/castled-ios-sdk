@@ -141,8 +141,6 @@ import UIKit
             return
         }
         self.castledInAppsQueue.async { [self] in
-            self.checkPendingNotificationsIfAny()
-
             if self.savedInApps.isEmpty {
                 self.prefetchInApps()
             }
@@ -172,14 +170,8 @@ import UIKit
                 if let satisiiedIndex = events.firstIndex(where: { item in
                     self.isSatisfiedWithGlobalIntervalBtwDisplays(inAppObj: item) && self.canShowInViewController(currentTopVc)
                 }) {
-                    CastledLog.castledLog("foun and item to trigger count \(campaigns.count) \(campaigns[satisiiedIndex].message?.type)", logLevel: .debug)
-
                     self.displayInappNotification(event: campaigns[satisiiedIndex])
                     campaigns.remove(at: satisiiedIndex)
-                    CastledLog.castledLog("removing the item  \(campaigns.count)", logLevel: .debug)
-
-                } else {
-                    CastledLog.castledLog("no items found  trigger", logLevel: .debug)
                 }
                 self.enqueInappObject(campaigns)
             }
@@ -204,7 +196,6 @@ import UIKit
             if castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings) {
                 self.saveInappDisplayStatus(event: event)
                 self.pendingInApps.removeAll { $0.notificationID == event.notificationID }
-                CastledLog.castledLog("removing the item  from pendingInApps \(self.pendingInApps.count)", logLevel: .debug)
             } else {
                 self.isCurrentlyDisplaying = false
             }
@@ -269,8 +260,6 @@ import UIKit
     private func isSatisfiedWithGlobalIntervalBtwDisplays(inAppObj: CastledInAppObject) -> Bool {
         let lastGlobalDisplayedTime = Double(CastledUserDefaults.getString(CastledUserDefaults.kCastledLastInappDisplayedTime) ?? "-100000000000") ?? -100000000000
         let currentTime = Date().timeIntervalSince1970
-        // FIXME: remove following
-     //   return (currentTime - lastGlobalDisplayedTime) > CGFloat(7)
         return (currentTime - lastGlobalDisplayedTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplaysGlobal ?? 0)
     }
 
@@ -308,9 +297,6 @@ import UIKit
     }
 
     private func enqueInappObject(_ inApps: [CastledInAppObject]) {
-        CastledLog.castledLog("enqueInappObject  before \(self.pendingInApps.count) idss \(self.pendingInApps.map({ $0.notificationID }))", logLevel: .debug)
         self.pendingInApps.mergeElements(newElements: inApps)
-
-        CastledLog.castledLog("enqueInappObject  after \(self.pendingInApps.count) idss \(self.pendingInApps.map({ $0.notificationID }))", logLevel: .debug)
     }
 }
