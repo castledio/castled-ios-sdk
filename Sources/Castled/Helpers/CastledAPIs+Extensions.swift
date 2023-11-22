@@ -19,12 +19,11 @@ extension Castled {
         Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             if !response.success {
                 CastledLog.castledLog("Report InApp Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-            } 
+            }
 //            else {
 //                CastledLog.castledLog("Report InApp success : \(params)", logLevel: CastledLogLevel.info)
 //            }
             completion(response)
-
         })
     }
 
@@ -40,7 +39,6 @@ extension Castled {
 //            }
 
             completion(response)
-
         })
     }
 
@@ -54,7 +52,6 @@ extension Castled {
                 CastledLog.castledLog("Report Custom Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
             completion(response)
-
         })
     }
 
@@ -70,7 +67,6 @@ extension Castled {
                 CastledLog.castledLog("Set User Attributes succsss", logLevel: CastledLogLevel.debug)
             }
             completion(response)
-
         })
     }
 
@@ -84,16 +80,13 @@ extension Castled {
                 CastledLog.castledLog("Report Push Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
             completion(response)
-
         })
     }
 
     static func reportDeviceInfo(deviceInfo: [String: String], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportDeviceInfo(deviceInfo: deviceInfo, userID: CastledUserDefaults.shared.userId!)
         Castled.sharedInstance.reportEvents(router: router, sendingParams: [deviceInfo], type: [String: String].self, completion: { response in
-
             completion(response)
-
         })
     }
 

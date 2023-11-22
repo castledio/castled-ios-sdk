@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +25,8 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hS3-Kk-BmQ">
-                            <rect key="frame" x="70" y="9.9999999999999964" width="275" height="52.666666666666657"/>
+                            <rect key="frame" x="70" y="5" width="275" height="60"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -53,7 +54,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="hS3-Kk-BmQ" firstAttribute="top" secondItem="gwt-nh-DVg" secondAttribute="top" constant="10" id="1IC-2V-Tci"/>
+                        <constraint firstItem="hS3-Kk-BmQ" firstAttribute="top" secondItem="gwt-nh-DVg" secondAttribute="top" constant="5" id="1IC-2V-Tci"/>
                         <constraint firstItem="CLY-gJ-PU8" firstAttribute="centerX" secondItem="gwt-nh-DVg" secondAttribute="centerX" id="3op-KF-oAf"/>
                         <constraint firstItem="CLY-gJ-PU8" firstAttribute="width" secondItem="gwt-nh-DVg" secondAttribute="width" id="EMn-09-fnB"/>
                         <constraint firstAttribute="trailing" secondItem="mJe-LD-IRk" secondAttribute="trailing" constant="5" id="GYX-06-DEe"/>
@@ -64,7 +65,7 @@
                         <constraint firstItem="CLY-gJ-PU8" firstAttribute="height" secondItem="gwt-nh-DVg" secondAttribute="height" id="gLi-XB-aBu"/>
                         <constraint firstItem="ZsH-X1-npL" firstAttribute="leading" secondItem="gwt-nh-DVg" secondAttribute="leading" constant="10" id="kPV-U2-Z6z"/>
                         <constraint firstItem="hS3-Kk-BmQ" firstAttribute="leading" secondItem="ZsH-X1-npL" secondAttribute="trailing" constant="10" id="lg6-Tm-WDo"/>
-                        <constraint firstAttribute="bottom" secondItem="hS3-Kk-BmQ" secondAttribute="bottom" constant="7.5" id="rgf-B6-2TO"/>
+                        <constraint firstAttribute="bottom" secondItem="hS3-Kk-BmQ" secondAttribute="bottom" constant="5" id="rgf-B6-2TO"/>
                         <constraint firstItem="mJe-LD-IRk" firstAttribute="top" secondItem="gwt-nh-DVg" secondAttribute="top" id="xix-7n-GTr"/>
                     </constraints>
                 </view>

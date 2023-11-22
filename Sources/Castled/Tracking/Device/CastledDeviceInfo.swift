@@ -23,6 +23,7 @@ class CastledDeviceInfo: NSObject {
                                   "osVersion": self.getOSVersion(),
                                   "locale": self.getLocale(),
                                   "deviceId": self.getDeviceId(),
+                                  "timeZone": self.getTimeZone(),
                                   "pushPermission": granted ? "1" : "0",
                                   "platform": "MOBILE_IOS",
                                   CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue]
@@ -108,5 +109,22 @@ extension CastledDeviceInfo {
             }
         }
         return nil
+    }
+
+    private func getAppName() -> String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "Castled"
+    }
+
+    private func getTimeZone() -> String {
+        let timezone = TimeZone.current
+        return timezone.abbreviation(for: Date()) ?? "GMT"
+    }
+
+    private func getBundleId() -> String {
+        if let bundleIdentifier = Bundle.main.bundleIdentifier {
+            // Now, 'bundleIdentifier' contains the bundle ID of your application
+            return bundleIdentifier
+        }
+        return ""
     }
 }

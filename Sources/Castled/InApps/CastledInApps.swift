@@ -10,9 +10,11 @@ import UIKit
 
 @objc class CastledInApps: NSObject {
     var isCurrentlyDisplaying = false
+    private var pendingInApps = [CastledInAppObject]()
     static var sharedInstance = CastledInApps()
     var savedInApps = [CastledInAppObject]()
     private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", qos: .background)
+    private let castledInAppsPendinItemsQueue = DispatchQueue(label: "CastledInAppsPendingItemsQueue", attributes: .concurrent)
 
     override private init() {
         super.init()
@@ -135,43 +137,70 @@ import UIKit
         }
     }
 
-    /**
-     Display inapp
-     */
-    private func findTriggeredInApps(inAppsArray: [CastledInAppObject]) -> CastledInAppObject? {
-//         return inAppsArray.last
-//        let count = 1
-//        if inAppsArray.count>count{
-//            return inAppsArray[count]
-//        }
-        let savedInApptriggers = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSavedInappConfigs) as? [[String: String]]) ?? [[String: String]]()
-        let lastGlobalDisplayedTime = Double(CastledUserDefaults.getString(CastledUserDefaults.kCastledLastInappDisplayedTime) ?? "-100000000000") ?? -100000000000
-        let currentTime = Date().timeIntervalSince1970
-        let filteredArray = inAppsArray.filter { inAppObj in
-            let parentId = inAppObj.notificationID
-            // Check if the savedInApptriggers contains the id
-            if savedInApptriggers.contains(where: { Int($0[CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue] ?? "-1") == parentId }) {
-                guard let savedValues = savedInApptriggers.first(where: { Int($0[CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue] ?? "") == parentId }),
-                      let currentCounter = Int(savedValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue]!),
-                      let lastDiplayTime = Double(savedValues[CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue]!)
-                else { return false }
-                return currentCounter < inAppObj.displayConfig?.displayLimit ?? 0 &&
-                    (currentTime - lastDiplayTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplays ?? 0) &&
-                    (currentTime - lastGlobalDisplayedTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplaysGlobal ?? 0)
-            } else {
-                return true
+    func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
+        guard let _ = CastledUserDefaults.shared.userId,!isCurrentlyDisplaying else {
+            return
+        }
+        self.castledInAppsQueue.async { [self] in
+            if self.savedInApps.isEmpty {
+                self.prefetchInApps()
+            }
+            var satisfiedEvents = [CastledInAppObject]()
+            let filteredInApps = self.savedInApps.filter { $0.trigger?.eventName == eventName }
+            if !filteredInApps.isEmpty {
+                let evaluator = CastledInAppTriggerEvaluator()
+                for event in filteredInApps {
+                    if evaluator.shouldTriggerEvent(filter: event.trigger?.eventFilter, params: params, showLog: showLog) {
+                        satisfiedEvents.append(event)
+                    }
+                }
+            }
+            if let events = findTriggeredInApps(inAppsArray: satisfiedEvents),!events.isEmpty {
+                self.validateInappBeforeDisplay(events)
             }
         }
+    }
 
-        if !filteredArray.isEmpty {
-            let event = filteredArray.sorted { lhs, rhs -> Bool in
-                let lhsPriority = CastledConstants.InDisplayPriority(rawValue: lhs.priority)
-                let rhsPriority = CastledConstants.InDisplayPriority(rawValue: rhs.priority)
-                return lhsPriority?.sortOrder ?? 0 > rhsPriority?.sortOrder ?? 0
-            }.first
-            return event
+    // MARK: - Display methods
+
+    private func validateInappBeforeDisplay(_ events: [CastledInAppObject]) {
+        DispatchQueue.main.async {
+            var campaigns = events
+            let currentTopVc = self.getTopViewController()
+            self.castledInAppsQueue.async {
+                if let satisiiedIndex = events.firstIndex(where: { item in
+                    self.isSatisfiedWithGlobalIntervalBtwDisplays(inAppObj: item) && self.canShowInViewController(currentTopVc)
+                }) {
+                    self.displayInappNotification(event: campaigns[satisiiedIndex])
+                    campaigns.remove(at: satisiiedIndex)
+                }
+                self.enqueInappObject(campaigns)
+            }
         }
-        return nil
+    }
+
+    private func displayInappNotification(event: CastledInAppObject) {
+        if self.isCurrentlyDisplaying {
+            self.enqueInappObject([event])
+            return
+        }
+        self.isCurrentlyDisplaying = true
+
+        DispatchQueue.main.async {
+            let inAppDisplaySettings = InAppDisplayConfig()
+            inAppDisplaySettings.populateConfigurationsFrom(inAppObject: event)
+
+            let castle = CastledCommonClass.instantiateFromNib(vc: CastledInAppDisplayViewController.self)
+            castle.view.isHidden = false // added this to call viewdidload. it was not getting called after initialising from xib https://stackoverflow.com/questions/913627/uiviewcontroller-viewdidload-not-being-called
+            //  castle.loadView()
+
+            if castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings) {
+                self.saveInappDisplayStatus(event: event)
+                self.removeFromPendingItems(event)
+            } else {
+                self.isCurrentlyDisplaying = false
+            }
+        }
     }
 
     private func saveInappDisplayStatus(event: CastledInAppObject) {
@@ -193,38 +222,98 @@ import UIKit
         CastledUserDefaults.setString(CastledUserDefaults.kCastledLastInappDisplayedTime, "\(currentTime)")
     }
 
-    func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
-        guard let _ = CastledUserDefaults.shared.userId,!isCurrentlyDisplaying else {
-            return
-        }
-        self.castledInAppsQueue.async { [self] in
-            if self.savedInApps.isEmpty {
-                self.prefetchInApps()
-            }
-            var satisfiedEvents = [CastledInAppObject]()
-            let filteredInApps = self.savedInApps.filter { $0.trigger?.eventName == eventName }
-            if !filteredInApps.isEmpty {
-                let evaluator = CastledInAppTriggerEvaluator()
-                for event in filteredInApps {
-                    if evaluator.shouldTriggerEvent(filter: event.trigger?.eventFilter, params: params, showLog: showLog) {
-                        satisfiedEvents.append(event)
-                    }
-                }
-            }
-            if let event = findTriggeredInApps(inAppsArray: satisfiedEvents) {
-                let inAppDisplaySettings = InAppDisplayConfig()
-                inAppDisplaySettings.populateConfigurationsFrom(inAppObject: event)
-                DispatchQueue.main.async {
-                    let castle = CastledCommonClass.instantiateFromNib(vc: CastledInAppDisplayViewController.self)
-                    castle.view.isHidden = false // added this to call viewdidload. it was not getting called after initialising from xib https://stackoverflow.com/questions/913627/uiviewcontroller-viewdidload-not-being-called
-                    //  castle.loadView()
+    // MARK: - Trgigger Evaluation
 
-                    if castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings) {
-                        self.isCurrentlyDisplaying = true
-                        self.saveInappDisplayStatus(event: event)
+    private func findTriggeredInApps(inAppsArray: [CastledInAppObject]) -> [CastledInAppObject]? {
+        //         return inAppsArray.last
+        //        let count = 1
+        //        if inAppsArray.count>count{
+        //            return inAppsArray[count]
+        //        }
+        let savedInApptriggers = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSavedInappConfigs) as? [[String: String]]) ?? [[String: String]]()
+        let currentTime = Date().timeIntervalSince1970
+        let filteredArray = inAppsArray.filter { inAppObj in
+            let parentId = inAppObj.notificationID
+            // Check if the savedInApptriggers contains the id
+            if savedInApptriggers.contains(where: { Int($0[CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue] ?? "-1") == parentId }) {
+                guard let savedValues = savedInApptriggers.first(where: { Int($0[CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue] ?? "") == parentId }),
+                      let currentCounter = Int(savedValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue]!),
+                      let lastDiplayTime = Double(savedValues[CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue]!)
+                else { return false }
+                return currentCounter < inAppObj.displayConfig?.displayLimit ?? 0 &&
+                    (currentTime - lastDiplayTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplays ?? 0)
+            } else {
+                return true
+            }
+        }
+
+        if !filteredArray.isEmpty {
+            let event = filteredArray.sorted { lhs, rhs -> Bool in
+                let lhsPriority = CastledConstants.InDisplayPriority(rawValue: lhs.priority)
+                let rhsPriority = CastledConstants.InDisplayPriority(rawValue: rhs.priority)
+                return lhsPriority?.sortOrder ?? 0 > rhsPriority?.sortOrder ?? 0
+            } // first
+            return event
+        }
+        return nil
+    }
+
+    private func isSatisfiedWithGlobalIntervalBtwDisplays(inAppObj: CastledInAppObject) -> Bool {
+        let lastGlobalDisplayedTime = Double(CastledUserDefaults.getString(CastledUserDefaults.kCastledLastInappDisplayedTime) ?? "-100000000000") ?? -100000000000
+        let currentTime = Date().timeIntervalSince1970
+        return (currentTime - lastGlobalDisplayedTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplaysGlobal ?? 0)
+    }
+
+    private func getTopViewController() -> String? {
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = scene.windows.first(where: { $0.isKeyWindow })
+        {
+            if let topViewController = window.rootViewController {
+                var currentViewController = topViewController
+                while let presentedViewController = currentViewController.presentedViewController {
+                    currentViewController = presentedViewController
+                }
+                if let navigationController = currentViewController as? UINavigationController {
+                    if let vc = navigationController.topViewController {
+                        return String(describing: type(of: vc))
                     }
+
+                } else {
+                    return String(describing: type(of: currentViewController))
                 }
             }
         }
+        return nil
+    }
+
+    private func canShowInViewController(_ topViewController: String?) -> Bool {
+        if let topVC = topViewController, let excludedVCs = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledExcludedInAppViewControllers) as? [String],!excludedVCs.isEmpty {
+            return !excludedVCs.contains(topVC)
+        }
+        return true
+    }
+
+    func checkPendingNotificationsIfAny() {
+        self.validateInappBeforeDisplay(self.getAllPendingItems())
+    }
+
+    private func enqueInappObject(_ inApps: [CastledInAppObject]) {
+        self.castledInAppsPendinItemsQueue.async(flags: .barrier) {
+            self.pendingInApps.mergeElements(newElements: inApps)
+        }
+    }
+
+    private func removeFromPendingItems(_ inApp: CastledInAppObject) {
+        self.castledInAppsPendinItemsQueue.async(flags: .barrier) {
+            self.pendingInApps.removeAll { $0.notificationID == inApp.notificationID }
+        }
+    }
+
+    private func getAllPendingItems() -> [CastledInAppObject] {
+        var result: [CastledInAppObject]!
+        self.castledInAppsPendinItemsQueue.sync {
+            result = self.pendingInApps
+        }
+        return result
     }
 }

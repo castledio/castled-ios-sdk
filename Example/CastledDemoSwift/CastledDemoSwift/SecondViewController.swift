@@ -19,6 +19,10 @@ class SecondViewController: UIViewController {
         super.viewDidAppear(animated)
     }
 
+    @IBAction func addToCartActiuonnn(_ sender: Any) {
+        Castled.sharedInstance.logCustomAppEvent(self, eventName: "added_to_cart", params: ["Int": 100, "Name": "Antony"])
+    }
+
     /*
      // MARK: - Navigation
 

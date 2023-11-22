@@ -114,6 +114,7 @@ class CastledInAppDisplayViewController: UIViewController {
             }) { [weak self] _ in
                 // Remove the interstitial view controller from the view hierarchy
                 CastledInApps.sharedInstance.isCurrentlyDisplaying = false
+                CastledInApps.sharedInstance.checkPendingNotificationsIfAny()
                 self?.removeAllViews()
                 // Notify the delegate that it should dismiss the interstitial view controller
             }

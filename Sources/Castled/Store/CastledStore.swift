@@ -10,20 +10,21 @@ import RealmSwift
 
 @objc class CastledStore: NSObject {
     static let castledStoreQueue = DispatchQueue(label: "com.castled.dbHandler")
+    static let castledFailedItemsOperations = DispatchQueue(label: "com.castled.failedItemsOperations", attributes: .concurrent)
+
     static var isInserting = false
 
     static func insertAllFailedItemsToStore(_ items: [[String: Any]]) {
-        CastledStore.castledStoreQueue.async {
+        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
             var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
             failedItems.append(contentsOf: items)
             failedItems = failedItems.removeDuplicates()
-
             CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
         }
     }
 
     static func deleteAllFailedItemsFromStore(_ items: [[String: Any]]) {
-        CastledStore.castledStoreQueue.async {
+        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
             var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
             failedItems = failedItems.subtract(items)
             CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
@@ -31,10 +32,15 @@ import RealmSwift
     }
 
     static func getAllFailedItemss() -> [[String: Any]] {
-        guard let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]] else {
-            return [[String: Any]]()
+        var result: [[String: Any]]!
+        CastledStore.castledFailedItemsOperations.sync {
+            if let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]] {
+                result = failedItems
+            } else {
+                result = [[String: Any]]()
+            }
         }
-        return failedItems
+        return result
     }
 
     // MARK: - DB

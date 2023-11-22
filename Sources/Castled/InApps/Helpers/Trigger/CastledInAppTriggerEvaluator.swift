@@ -18,7 +18,7 @@ import Foundation
         }
 
         let filters = eventFilter.filters
-        if filters == nil || ((filters?.isEmpty) != nil) {
+        if filters == nil {
             return true
         }
 

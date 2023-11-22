@@ -32,5 +32,10 @@
 	<array>
 		<string>com.castled.backgroundtask</string>
 	</array>
+	<key>CASTLED_EXCLUDED_INAPPS</key>
+	<array>
+		<string>SplashViewController</string>
+		<string>TutorialPageViewController</string>
+	</array>
 </dict>
 </plist>

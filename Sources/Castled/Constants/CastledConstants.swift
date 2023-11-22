@@ -11,6 +11,8 @@ class CastledConstants {
     // Plist Key for enable/ Disable swizzling
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
+    static let kCastledExcludedInAppViewControllers = "CASTLED_EXCLUDED_INAPPS"
+
     enum PushNotification {
         static let customKey = "castled"
         static let apsKey = "aps"
