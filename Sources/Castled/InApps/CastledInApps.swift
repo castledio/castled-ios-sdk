@@ -14,6 +14,7 @@ import UIKit
     static var sharedInstance = CastledInApps()
     var savedInApps = [CastledInAppObject]()
     private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", qos: .background)
+    private let castledInAppsPendinItemsQueue = DispatchQueue(label: "CastledInAppsPendingItemsQueue", attributes: .concurrent)
 
     override private init() {
         super.init()
@@ -195,7 +196,7 @@ import UIKit
 
             if castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings) {
                 self.saveInappDisplayStatus(event: event)
-                self.pendingInApps.removeAll { $0.notificationID == event.notificationID }
+                self.removeFromPendingItems(event)
             } else {
                 self.isCurrentlyDisplaying = false
             }
@@ -293,10 +294,26 @@ import UIKit
     }
 
     func checkPendingNotificationsIfAny() {
-        self.validateInappBeforeDisplay(self.pendingInApps)
+        self.validateInappBeforeDisplay(self.getAllPendingItems())
     }
 
     private func enqueInappObject(_ inApps: [CastledInAppObject]) {
-        self.pendingInApps.mergeElements(newElements: inApps)
+        self.castledInAppsPendinItemsQueue.async(flags: .barrier) {
+            self.pendingInApps.mergeElements(newElements: inApps)
+        }
+    }
+
+    private func removeFromPendingItems(_ inApp: CastledInAppObject) {
+        self.castledInAppsPendinItemsQueue.async(flags: .barrier) {
+            self.pendingInApps.removeAll { $0.notificationID == inApp.notificationID }
+        }
+    }
+
+    private func getAllPendingItems() -> [CastledInAppObject] {
+        var result: [CastledInAppObject]!
+        self.castledInAppsPendinItemsQueue.sync {
+            result = self.pendingInApps
+        }
+        return result
     }
 }
