@@ -43,5 +43,6 @@ class CIFsImageAndButtons: UIView, CIViewProtocol {
 
         backgroundColor = viewButtonContainer?.backgroundColor
         viewParentContainer?.backgroundColor = backgroundColor
+        viewInppContainer?.layer.cornerRadius = 0
     }
 }
