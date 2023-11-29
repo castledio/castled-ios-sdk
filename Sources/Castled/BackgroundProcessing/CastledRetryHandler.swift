@@ -23,7 +23,7 @@ class CastledRetryHandler {
             let failedItems = CastledStore.getAllFailedItemss()
             var shouldCallRegister = false
             let pushToken = CastledUserDefaults.shared.apnsToken
-            if pushToken != nil && !CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) {
+            if pushToken != nil && CastledUserDefaults.shared.userId != nil && !CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) {
                 shouldCallRegister = true
             }
             guard !failedItems.isEmpty || shouldCallRegister else {

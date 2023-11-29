@@ -13,18 +13,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
-        config.location = .US
+        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
         config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
         config.enableTracking = true
-        config.location = CastledLocation.TEST
+        config.location = CastledLocation.US
         config.logLevel = CastledLogLevel.debug
         // Register the custom category
         let notificationCategories = self.getNotificationCategories()
         Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: notificationCategories)
-        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "test_token")
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -33,7 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
             navBarAppearance.backgroundColor = .link
             UINavigationBar.appearance().tintColor = UIColor.white
-
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).standardAppearance = navBarAppearance
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).scrollEdgeAppearance = navBarAppearance
         }
@@ -159,7 +156,8 @@ extension AppDelegate: CastledNotificationDelegate {
     }
 
     func castled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("didRegisterForRemoteNotificationsWithDeviceToken \(self.description) \(#function)")
+        let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        print("didRegisterForRemoteNotificationsWithDeviceToken \(self.description) \(#function) deviceTokenString \(deviceTokenString)")
     }
 
     func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -168,7 +166,7 @@ extension AppDelegate: CastledNotificationDelegate {
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
-        print("type \(type.rawValue) action \(action.rawValue)")
+        print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************\(userInfo)")
         switch action {
             case .deepLink:
                 if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {

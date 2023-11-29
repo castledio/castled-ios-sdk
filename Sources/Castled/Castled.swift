@@ -26,7 +26,7 @@ import UserNotifications
     var delegate: CastledNotificationDelegate?
     var clientRootViewController: UIViewController?
     // Create a dispatch queue
-    let castledDispatchQueue = DispatchQueue(label: "CastledQueue", qos: .background)
+    let castledDispatchQueue = DispatchQueue(label: "CastledQueue", attributes: .concurrent)
     let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)
@@ -68,15 +68,16 @@ import UserNotifications
      Function that allows users to set the PushNotifiication token.
      */
     @objc public func setPushToken(_ token: String) {
-        let oldToken = CastledUserDefaults.shared.apnsToken ?? ""
-        CastledUserDefaults.shared.apnsToken = token
-        CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, token)
+        castledDispatchQueue.async(flags: .barrier) {
+            let oldToken = CastledUserDefaults.shared.apnsToken ?? ""
+            CastledUserDefaults.shared.apnsToken = token
+            CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, token)
 
-        if oldToken != token || CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false {
-            CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
-
-            if let uid = CastledUserDefaults.shared.userId {
-                Castled.sharedInstance.updateTheUserIdAndToken(uid, token)
+            if token != oldToken {
+                CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
+                if let uid = CastledUserDefaults.shared.userId {
+                    Castled.sharedInstance.updateTheUserIdAndToken(uid, token)
+                }
             }
         }
     }
@@ -143,7 +144,6 @@ import UserNotifications
     @objc func appBecomeActive() {
         Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
         if CastledUserDefaults.shared.userId != nil {
-         //   Castled.sharedInstance.logAppOpenedEventIfAny()
             Castled.sharedInstance.executeBGTasks(isFromBG: true)
         }
     }
@@ -159,26 +159,31 @@ import UserNotifications
      Funtion which alllows to register the User & Token with Castled.
      */
     private func saveUserId(_ userId: String, _ userToken: String? = nil) {
-        CastledUserDefaults.setString(CastledUserDefaults.kCastledUserIdKey, userId)
-        if let secureUserId = userToken {
-            CastledUserDefaults.setString(CastledUserDefaults.kCastledUserTokenKey, secureUserId)
-        }
-        CastledUserDefaults.shared.userId = userId
-        CastledUserDefaults.shared.userToken = userToken
-        CastledDeviceInfo.shared.updateDeviceInfo()
+        castledDispatchQueue.async(flags: .barrier) {
+            let existingUserId = CastledUserDefaults.shared.userId
+            CastledUserDefaults.setString(CastledUserDefaults.kCastledUserIdKey, userId)
+            if let secureUserId = userToken {
+                CastledUserDefaults.setString(CastledUserDefaults.kCastledUserTokenKey, secureUserId)
+            }
 
-        guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
-            Castled.sharedInstance.executeBGTasks()
-            return
+            CastledUserDefaults.shared.userId = userId
+            CastledUserDefaults.shared.userToken = userToken
+            CastledDeviceInfo.shared.updateDeviceInfo()
+
+            guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
+                Castled.sharedInstance.executeBGTasks()
+                return
+            }
+            if userId != existingUserId {
+                CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
+                Castled.sharedInstance.updateTheUserIdAndToken(userId, deviceToken)
+            }
         }
-        Castled.sharedInstance.updateTheUserIdAndToken(userId, deviceToken)
     }
 
     func updateTheUserIdAndToken(_ userId: String, _ deviceToken: String) {
-        if CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) == false {
-            Castled.sharedInstance.api_RegisterUser(userId: userId, apnsToken: deviceToken) { _ in
-                Castled.sharedInstance.executeBGTasks()
-            }
+        Castled.sharedInstance.api_RegisterUser(userId: userId, apnsToken: deviceToken) { _ in
+            Castled.sharedInstance.executeBGTasks()
         }
     }
 }
