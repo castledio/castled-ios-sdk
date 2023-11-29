@@ -156,21 +156,21 @@ extension Castled {
      */
     func api_RegisterUser(userId uid: String, apnsToken token: String, completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         if token.isEmpty {
+            CastledLog.castledLog("Register User [\(uid)] failed: \(CastledExceptionMessages.emptyToken.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.emptyToken.rawValue, statusCode: 999))
             return
         }
-
         Task {
             let router: CastledNetworkRouter = .registerUser(userID: uid, apnsToken: token, instanceId: Castled.sharedInstance.instanceId)
             let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, request: router.request)
             switch response {
                 case .success(let responsJSON):
-                    CastledLog.castledLog("Register User Success... \(responsJSON)", logLevel: CastledLogLevel.debug)
+                    CastledLog.castledLog("'\(uid)' registered successfully...", logLevel: CastledLogLevel.debug)
                     CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, true)
                     completion(CastledResponse(response: responsJSON as! [String: String]))
 
                 case .failure(let error):
-                    CastledLog.castledLog("Register User failed: \(error.localizedDescription)", logLevel: CastledLogLevel.error)
+                    CastledLog.castledLog("Register User '\(uid)' failed: \(error.localizedDescription)", logLevel: CastledLogLevel.error)
                     completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
             }
         }

@@ -34,7 +34,6 @@ class CastledUserDefaults: NSObject {
 
     override private init() {
         userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
-
         userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)
         apnsToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
     }
