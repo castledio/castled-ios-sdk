@@ -125,6 +125,17 @@ class CastledCommonClass {
         }
         return nil
     }
+
+    static func getSDKVersion() -> String {
+        if let plistPath = Bundle.resourceBundle(for: Castled.self).path(forResource: "Info", ofType: "plist"),
+           let infoDict = NSDictionary(contentsOfFile: plistPath) as? [String: Any],
+           let version = infoDict["CFBundleShortVersionString"] as? String
+        {
+            // 'version' contains the CFBundleShortVersionString value
+            return version
+        }
+        return "0.0.0"
+    }
 }
 
 extension UIView {
