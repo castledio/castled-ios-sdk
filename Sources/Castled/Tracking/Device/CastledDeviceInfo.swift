@@ -18,7 +18,7 @@ class CastledDeviceInfo: NSObject {
             self.checkNotificationPermissions { granted in
                 let deviceInfo = ["sdkVersion": self.getSDKVersion(),
                                   "appVersion": self.getAppVersion(),
-                                  "model": self.getModel(),
+                                  "model": self.getModelIdentifier(),
                                   "make": self.getMake(),
                                   "osVersion": self.getOSVersion(),
                                   "locale": self.getLocale(),
@@ -52,14 +52,7 @@ extension CastledDeviceInfo {
     }
 
     private func getSDKVersion() -> String {
-        if let plistPath = Bundle.resourceBundle(for: Castled.self).path(forResource: "Info", ofType: "plist"),
-           let infoDict = NSDictionary(contentsOfFile: plistPath) as? [String: Any],
-           let version = infoDict["CFBundleShortVersionString"] as? String
-        {
-            // 'version' contains the CFBundleShortVersionString value
-            return version
-        }
-        return "0.0.0"
+        return CastledCommonClass.getSDKVersion()
     }
 
     private func getAppVersion() -> String {
@@ -71,8 +64,17 @@ extension CastledDeviceInfo {
         return "0.0.0"
     }
 
-    private func getModel() -> String {
-        return UIDevice.current.model
+    private func getModelIdentifier() -> String {
+        if ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] != nil {
+            return "Simulator"
+        }
+        var sysinfo = utsname()
+        uname(&sysinfo)
+        if let identifier = String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)?.trimmingCharacters(in: .controlCharacters) {
+            return identifier.isEmpty ? UIDevice.current.model : identifier
+        } else {
+            return UIDevice.current.model
+        }
     }
 
     private func getMake() -> String {

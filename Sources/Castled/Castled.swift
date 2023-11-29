@@ -123,7 +123,7 @@ import UserNotifications
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         CastledDeviceInfo.shared.updateDeviceInfo()
-        CastledLog.castledLog("SDK initialized..", logLevel: .debug)
+        CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
     }
 
     /**
