@@ -31,6 +31,7 @@ enum CastledNetworkRouter {
     case reportInboxEvent(params: [[String: Any]], instanceId: String)
     case reportDeviceInfo(deviceInfo: [String: String], userID: String)
     case reportCustomEvent(params: [[String: Any]])
+    case reportUserEvent(params: [String: Any])
     case reportUserAttributes(params: [String: Any])
 
     var baseURL: String {
@@ -101,6 +102,13 @@ enum CastledNetworkRouter {
                                          path: "external/v1/collections/events/lists?apiSource=app",
                                          method: .post,
                                          parameters: ["events": params],
+                                         headers: getHeaders())
+        case .reportUserEvent(let params):
+            return CastledNetworkRequest(baseURL: baseURL,
+                                         baseURLEndPoint: baseURLEndPoint,
+                                         path: "external/v1/collections/events/lists?apiSource=app",
+                                         method: .post,
+                                         parameters: params,
                                          headers: getHeaders())
         case .reportUserAttributes(let params):
             return CastledNetworkRequest(baseURL: baseURL,

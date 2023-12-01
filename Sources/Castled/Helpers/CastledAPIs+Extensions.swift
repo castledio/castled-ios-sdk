@@ -56,6 +56,19 @@ extension Castled {
     }
 
     /**
+     Funtion which alllows to report the Events for InApp with Castled.
+     */
+    static func reportUserEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+        let router: CastledNetworkRouter = .reportUserEvent(params: params.last!)
+        Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+//            if !response.success {
+//                CastledLog.castledLog("Report User Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+//            }
+            completion(response)
+        })
+    }
+
+    /**
      Funtion which alllows to set the user attributes..
      */
     static func reportUserAttributes(params: [String: Any], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
@@ -64,7 +77,7 @@ extension Castled {
             if !response.success {
                 CastledLog.castledLog("Set User Attributes failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             } else {
-                CastledLog.castledLog("Set User Attributes succsss", logLevel: CastledLogLevel.debug)
+                CastledLog.castledLog("Set User Attributes success", logLevel: CastledLogLevel.debug)
             }
             completion(response)
         })

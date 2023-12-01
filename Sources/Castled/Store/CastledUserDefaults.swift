@@ -82,4 +82,5 @@ class CastledUserDefaults: NSObject {
     static func getObjectFor(_ key: String) -> Any? {
         return userDefaults.object(forKey: key)
     }
+
 }

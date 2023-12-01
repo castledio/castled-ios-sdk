@@ -142,6 +142,7 @@ class CastledConstants {
         case inboxRequest = "inbox"
         case deviceInfoRequest = "deviceInfo"
         case productEventRequest = "prodEvent"
+        case userEventRequest = "userEvent"
         case userProfileRequest = "userProf"
     }
 }

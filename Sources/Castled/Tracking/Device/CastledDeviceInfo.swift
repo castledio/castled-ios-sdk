@@ -14,7 +14,7 @@ class CastledDeviceInfo: NSObject {
         guard CastledUserDefaults.shared.userId != nil else {
             return
         }
-        Castled.sharedInstance.castledNotificationQueue.async {
+        Castled.sharedInstance.castledEventsTrackingQueue.async(flags: .barrier) {
             self.checkNotificationPermissions { granted in
                 let deviceInfo = ["sdkVersion": self.getSDKVersion(),
                                   "appVersion": self.getAppVersion(),
@@ -36,7 +36,8 @@ class CastledDeviceInfo: NSObject {
                     } catch {
                         CastledLog.castledLog("Unable to Encode device info (\(error))", logLevel: CastledLogLevel.error)
                     }
-                    Castled.reportDeviceInfo(deviceInfo: deviceInfo) { _ in }
+                    Castled.reportDeviceInfo(deviceInfo: deviceInfo) { _ in
+                    }
                 }
             }
         }
@@ -44,7 +45,7 @@ class CastledDeviceInfo: NSObject {
 }
 
 extension CastledDeviceInfo {
-    func checkNotificationPermissions(completion: @escaping (Bool) -> Void) {
+    private func checkNotificationPermissions(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             let isAuthorized = settings.authorizationStatus == .authorized
             completion(isAuthorized)
@@ -55,7 +56,7 @@ extension CastledDeviceInfo {
         return CastledCommonClass.getSDKVersion()
     }
 
-    private func getAppVersion() -> String {
+    func getAppVersion() -> String {
         if let infoDictionary = Bundle.main.infoDictionary,
            let version = infoDictionary["CFBundleShortVersionString"] as? String
         {
@@ -89,7 +90,7 @@ extension CastledDeviceInfo {
         return Locale.current.identifier
     }
 
-    private func getDeviceId() -> String {
+    func getDeviceId() -> String {
         if let deviceID = CastledUserDefaults.getString(CastledUserDefaults.kCastledDeviceIddKey) {
             return deviceID
         }
