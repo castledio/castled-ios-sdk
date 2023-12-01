@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Register the custom category
         let notificationCategories = self.getNotificationCategories()
         Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: nil)
-        // Castled.sharedInstance.setUserId("antonyjo@castled.io", userToken: nil)
+        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
         registerForPush()
 
         if #available(iOS 13.0, *) {

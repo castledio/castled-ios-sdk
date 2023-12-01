@@ -28,6 +28,8 @@ import UserNotifications
     // Create a dispatch queue
     let castledDispatchQueue = DispatchQueue(label: "CastledQueue", attributes: .concurrent)
     let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
+    let castledEventsTrackingQueue = DispatchQueue(label: "CastledEventsTrackingQueue", attributes: .concurrent)
+
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)
 
@@ -123,6 +125,7 @@ import UserNotifications
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         CastledDeviceInfo.shared.updateDeviceInfo()
+        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
     }
 
@@ -143,6 +146,7 @@ import UserNotifications
 
     @objc func appBecomeActive() {
         Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
+        CastledUserEventsTracker.shared.setTheUserEventsFromBG()
         if CastledUserDefaults.shared.userId != nil {
             Castled.sharedInstance.executeBGTasks(isFromBG: true)
         }
@@ -168,13 +172,15 @@ import UserNotifications
 
             CastledUserDefaults.shared.userId = userId
             CastledUserDefaults.shared.userToken = userToken
-            CastledDeviceInfo.shared.updateDeviceInfo()
 
-            guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
-                Castled.sharedInstance.executeBGTasks()
-                return
-            }
             if userId != existingUserId {
+                CastledDeviceInfo.shared.updateDeviceInfo()
+                CastledUserEventsTracker.shared.updateUserEvents()
+
+                guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
+                    Castled.sharedInstance.executeBGTasks()
+                    return
+                }
                 CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
                 Castled.sharedInstance.updateTheUserIdAndToken(userId, deviceToken)
             }

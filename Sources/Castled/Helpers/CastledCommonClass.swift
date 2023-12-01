@@ -8,23 +8,6 @@ import Foundation
 import UIKit
 
 class CastledCommonClass {
-    static func showNotificationWIthTitle(title: String, body: String) {
-        let center = UNUserNotificationCenter.current()
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = body
-        content.sound = .default
-        content.userInfo = ["value": "Data with local notification"]
-        let fireDate = Calendar.current.dateComponents([.day, .month, .year, .hour, .minute, .second], from: Date().addingTimeInterval(2))
-        let trigger = UNCalendarNotificationTrigger(dateMatching: fireDate, repeats: false)
-        let request = UNNotificationRequest(identifier: title, content: content, trigger: trigger)
-        center.add(request) { error in
-            if error != nil {
-                CastledLog.castledLog("Error = \(error?.localizedDescription ?? "error local notification")", logLevel: CastledLogLevel.error)
-            }
-        }
-    }
-
     static func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
             do {
@@ -91,21 +74,7 @@ class CastledCommonClass {
     }
 
     static func hexStringToUIColor(hex: String) -> UIColor? {
-        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        if cString.hasPrefix("#") {
-            cString.remove(at: cString.startIndex)
-        }
-        if (cString.count) != 6 {
-            return nil
-        }
-        var rgbValue: UInt64 = 0
-        Scanner(string: cString).scanHexInt64(&rgbValue)
-        return UIColor(
-            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
-        )
+        return UIColor(hexString: hex)
     }
 
     static func instantiateFromNib<T: UIViewController>(vc: T.Type) -> T {
@@ -135,83 +104,5 @@ class CastledCommonClass {
             return version
         }
         return "0.0.0"
-    }
-}
-
-extension UIView {
-    func addShadow(radius: CGFloat, opacity: Float, offset: CGSize, color: UIColor) {
-        layer.shadowColor = color.cgColor
-        layer.shadowOpacity = opacity
-        layer.shadowOffset = offset
-        layer.shadowRadius = radius
-        layer.masksToBounds = false
-    }
-
-    func applyShadow(radius: CGFloat) {
-        layer.cornerRadius = radius
-        layer.masksToBounds = false
-        layer.shadowRadius = 4
-        layer.shadowOpacity = 0.3
-        layer.shadowColor = UIColor.gray.cgColor
-        layer.shadowOffset = CGSize(width: 1, height: 5)
-    }
-}
-
-extension UIWindow {
-    func castledTopViewController() -> UIViewController? {
-        var top = self.rootViewController
-        while true {
-            if let presented = top?.presentedViewController {
-                top = presented
-            } else if let nav = top as? UINavigationController {
-                top = nav.visibleViewController
-            } else if let tab = top as? UITabBarController {
-                top = tab.selectedViewController
-            } else {
-                break
-            }
-        }
-        Castled.sharedInstance.clientRootViewController = top
-        return top
-    }
-}
-
-extension Bundle {
-    static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-        let mainBundle = Bundle.main
-        let sourceBundle = Bundle(for: bundleClass)
-        guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
-            fatalError("Couldn't determine module name from class \(bundleClass)")
-        }
-        // SPM
-        var bundle: Bundle?
-        if bundle == nil, let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
-            // cocoapod
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        // CocoaPods (static)
-        else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: staticBundlePath)
-        }
-
-        // CocoaPods (framework)
-        else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: frameworkBundlePath)
-        }
-        return bundle ?? sourceBundle
     }
 }
