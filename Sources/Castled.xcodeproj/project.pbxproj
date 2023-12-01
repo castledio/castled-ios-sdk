@@ -56,7 +56,6 @@
 		0A74B0892AF2B0A7003364CD /* CastledDeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74B0872AF2B0A6003364CD /* CastledDeviceInfo.swift */; };
 		0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A74E08C29E6D615004F2610 /* CastledInApps.swift */; };
 		0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */; };
-		0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */; };
 		0A79E22D2AA0873C0087C3AF /* CastledInboxType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E22C2AA0873C0087C3AF /* CastledInboxType.swift */; };
 		0A79E22F2AA08E0B0087C3AF /* CastledInboxServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A79E22E2AA08E0B0087C3AF /* CastledInboxServices.swift */; };
 		0A7B3DB12AFD51540055C968 /* CIViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B3DB02AFD51540055C968 /* CIViewProtocol.swift */; };
@@ -71,6 +70,7 @@
 		0AA24EF72B18B9D500FD0878 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA24EF62B18B9D500FD0878 /* Color+Extensions.swift */; };
 		0AA24EF92B18BA0800FD0878 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA24EF82B18BA0800FD0878 /* Bundle+Extensions.swift */; };
 		0AA24EFB2B18BA4F00FD0878 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA24EFA2B18BA4F00FD0878 /* View+Extensions.swift */; };
+		0AA24F242B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA24F232B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift */; };
 		0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */; };
 		0AB5C554291C222C0027C36B /* Castled.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB5C553291C222C0027C36B /* Castled.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0AB5C599291C27840027C36B /* CastledExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58C291C27830027C36B /* CastledExceptions.swift */; };
@@ -184,7 +184,6 @@
 		0A74B0872AF2B0A6003364CD /* CastledDeviceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledDeviceInfo.swift; sourceTree = "<group>"; };
 		0A74E08C29E6D615004F2610 /* CastledInApps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInApps.swift; sourceTree = "<group>"; };
 		0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppTriggerEvaluator.swift; sourceTree = "<group>"; };
-		0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CasstledTriggerParamsConditionEvaluator.swift; sourceTree = "<group>"; };
 		0A79E22C2AA0873C0087C3AF /* CastledInboxType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxType.swift; sourceTree = "<group>"; };
 		0A79E22E2AA08E0B0087C3AF /* CastledInboxServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxServices.swift; sourceTree = "<group>"; };
 		0A7B3DB02AFD51540055C968 /* CIViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIViewProtocol.swift; sourceTree = "<group>"; };
@@ -199,6 +198,7 @@
 		0AA24EF62B18B9D500FD0878 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		0AA24EF82B18BA0800FD0878 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		0AA24EFA2B18BA4F00FD0878 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		0AA24F232B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledTriggerParamsConditionEvaluator.swift; sourceTree = "<group>"; };
 		0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledPublicEnums.swift; sourceTree = "<group>"; };
 		0AB5C550291C222C0027C36B /* Castled.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Castled.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB5C553291C222C0027C36B /* Castled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Castled.h; sourceTree = "<group>"; };
@@ -434,7 +434,7 @@
 			isa = PBXGroup;
 			children = (
 				0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */,
-				0A7505E829ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift */,
+				0AA24F232B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift */,
 			);
 			path = Trigger;
 			sourceTree = "<group>";
@@ -937,7 +937,6 @@
 				0A7C51B02AD1C20E001B2CE4 /* CastledLog.swift in Sources */,
 				0A79E22D2AA0873C0087C3AF /* CastledInboxType.swift in Sources */,
 				0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */,
-				0A7505E929ED5B1B00B84973 /* CasstledTriggerParamsConditionEvaluator.swift in Sources */,
 				0A5B308A2AD5CAEE00A3EC4F /* CastledPagerTabView.swift in Sources */,
 				0A1DE5F82A9DA24B00DB2E29 /* CastledInboxCell.swift in Sources */,
 				0AC493FB2AF38FBE007E5967 /* Dictionary+Extension.swift in Sources */,
@@ -958,6 +957,7 @@
 				0AB5C59F291C27840027C36B /* CastledSwizzler.swift in Sources */,
 				0A74B0892AF2B0A7003364CD /* CastledDeviceInfo.swift in Sources */,
 				0AB5C5A1291C27840027C36B /* CastledNotifications+Extensions.swift in Sources */,
+				0AA24F242B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift in Sources */,
 				0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */,
 				0AA24EF52B1854AD00FD0878 /* CastledUserEventsTracker.swift in Sources */,
 				0AC493F92AF3723F007E5967 /* CastledEventsTracker.swift in Sources */,
