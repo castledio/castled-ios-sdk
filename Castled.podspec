@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "Castled"
-  spec.version      = '2.5.4'
+  spec.version      = '2.5.5'
   spec.summary      = "iOS SDK for Castled Push and InApp support"
   spec.description  = <<-DESC
   Castled SDK library providing support for push and in app notifications and event handling.
@@ -15,6 +15,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = "13.0"
   spec.swift_version = "5.7"
   spec.ios.dependency 'SDWebImage', '~> 5.11'
+
   spec.ios.dependency 'RealmSwift', '~>10.43.0'
 
   spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
@@ -24,4 +25,7 @@ Pod::Spec.new do |spec|
     "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib,js}']
   }
  spec.readme = 'README.md'
+ spec.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
+
+
 end

@@ -13,17 +13,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
+        let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
         config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
         config.enableTracking = true
-        config.location = CastledLocation.US
+        config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         // Register the custom category
         let notificationCategories = self.getNotificationCategories()
         Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: nil)
-        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
+      //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
         registerForPush()
 
         if #available(iOS 13.0, *) {
