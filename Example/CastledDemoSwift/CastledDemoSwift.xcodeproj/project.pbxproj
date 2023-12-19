@@ -10,6 +10,7 @@
 		0A4350D92A30E74E00890CE8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A4350D82A30E74E00890CE8 /* Main.storyboard */; };
 		0A4350DC2A30E75A00890CE8 /* DeeplinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */; };
 		0A4350DD2A30E75A00890CE8 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */; };
+		0A5AA3742B1F5656006B2008 /* pexels-senuscape-1658967.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0A5AA3732B1F5656006B2008 /* pexels-senuscape-1658967.jpg */; };
 		0AC0217D2A30B9D300656DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC0217C2A30B9D300656DFD /* AppDelegate.swift */; };
 		0AC0217F2A30B9D300656DFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC0217E2A30B9D300656DFD /* SceneDelegate.swift */; };
 		0AC021812A30B9D300656DFD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC021802A30B9D300656DFD /* ViewController.swift */; };
@@ -84,6 +85,7 @@
 		0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkViewController.swift; sourceTree = "<group>"; };
 		0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		0A4350DE2A30E7B300890CE8 /* CastledDemoSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CastledDemoSwift.entitlements; sourceTree = "<group>"; };
+		0A5AA3732B1F5656006B2008 /* pexels-senuscape-1658967.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "pexels-senuscape-1658967.jpg"; sourceTree = "<group>"; };
 		0AC021792A30B9D300656DFD /* CastledDemoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CastledDemoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AC0217C2A30B9D300656DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0AC0217E2A30B9D300656DFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				0A4350DE2A30E7B300890CE8 /* CastledDemoSwift.entitlements */,
+				0A5AA3732B1F5656006B2008 /* pexels-senuscape-1658967.jpg */,
 				0AC0217C2A30B9D300656DFD /* AppDelegate.swift */,
 				0AC0217E2A30B9D300656DFD /* SceneDelegate.swift */,
 				0AC021802A30B9D300656DFD /* ViewController.swift */,
@@ -437,6 +440,7 @@
 				0A4350D92A30E74E00890CE8 /* Main.storyboard in Resources */,
 				0AC021892A30B9D300656DFD /* LaunchScreen.storyboard in Resources */,
 				0AC021862A30B9D300656DFD /* Assets.xcassets in Resources */,
+				0A5AA3742B1F5656006B2008 /* pexels-senuscape-1658967.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

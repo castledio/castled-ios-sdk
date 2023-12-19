@@ -41,6 +41,5 @@ class CIModalDefaultView: UIView, CIViewProtocol {
         if btnSeondary!.superview!.isHidden {
             constraintButtonStackHeight.constant = 0
         }
-        viewInppContainer?.backgroundColor = viewBodyContainer?.backgroundColor
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -60,7 +60,7 @@
                             </constraints>
                         </view>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GcZ-8o-bG7" userLabel="Button Container">
-                            <rect key="frame" x="0.0" y="196.33333333333326" width="411" height="50"/>
+                            <rect key="frame" x="0.0" y="196.33333333333326" width="411" height="65"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="DUw-yB-AaL">
                                     <rect key="frame" x="15" y="0.0" width="381" height="50"/>
@@ -92,10 +92,10 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="DUw-yB-AaL" firstAttribute="centerY" secondItem="GcZ-8o-bG7" secondAttribute="centerY" id="OMx-5c-osN"/>
+                                <constraint firstItem="DUw-yB-AaL" firstAttribute="top" secondItem="GcZ-8o-bG7" secondAttribute="top" id="5nU-7w-alZ"/>
                                 <constraint firstAttribute="trailing" secondItem="DUw-yB-AaL" secondAttribute="trailing" constant="15" id="Qdj-He-C6S"/>
                                 <constraint firstItem="DUw-yB-AaL" firstAttribute="leading" secondItem="GcZ-8o-bG7" secondAttribute="leading" constant="15" id="YPX-Zp-Rvo"/>
-                                <constraint firstAttribute="height" secondItem="DUw-yB-AaL" secondAttribute="height" id="aaU-k8-GbU"/>
+                                <constraint firstAttribute="bottom" secondItem="DUw-yB-AaL" secondAttribute="bottom" constant="15" id="suQ-FJ-8oP"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -109,7 +109,7 @@
                         <constraint firstItem="jF7-W3-xsY" firstAttribute="leading" secondItem="dG6-JK-kBI" secondAttribute="leading" id="cyL-uO-sKM"/>
                         <constraint firstItem="Oh9-hD-aq7" firstAttribute="top" secondItem="jF7-W3-xsY" secondAttribute="bottom" id="nb8-aR-jau"/>
                         <constraint firstItem="GcZ-8o-bG7" firstAttribute="top" secondItem="Oh9-hD-aq7" secondAttribute="bottom" id="pXi-Qh-miB"/>
-                        <constraint firstAttribute="bottom" secondItem="GcZ-8o-bG7" secondAttribute="bottom" constant="15" id="t09-Ph-aGT"/>
+                        <constraint firstAttribute="bottom" secondItem="GcZ-8o-bG7" secondAttribute="bottom" id="t09-Ph-aGT"/>
                         <constraint firstItem="Oh9-hD-aq7" firstAttribute="leading" secondItem="dG6-JK-kBI" secondAttribute="leading" id="wGd-UD-8vJ"/>
                     </constraints>
                 </view>
