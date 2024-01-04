@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "CastledNotificationService"
-  spec.version      = '2.5.5'
+  spec.version      = '2.5.6'
   spec.summary      = "A Notification Service extension for customizing push notifications in your app."
   spec.description  = <<-DESC
     CastledNotificationService is a framework that provides the functionality to modify and customize

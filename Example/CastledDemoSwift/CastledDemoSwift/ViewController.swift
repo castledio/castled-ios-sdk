@@ -100,9 +100,9 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 //        style.tabBarIndicatorBackgroundColor = .red
         let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController.modalPresentationStyle = .fullScreen
-        present(inboxViewController, animated: true)
-        //  navigationController?.setNavigationBarHidden(true, animated: false)
-        // navigationController?.pushViewController(inboxViewController, animated: true)
+        // present(inboxViewController, animated: true)
+        // navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.pushViewController(inboxViewController, animated: true)
     }
 
     func setUpInboxCallback() {

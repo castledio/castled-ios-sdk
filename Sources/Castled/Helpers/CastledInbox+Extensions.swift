@@ -41,7 +41,8 @@ public extension Castled {
                 completion(false, [], CastledExceptionMessages.notInitialised.rawValue)
                 CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: .error)
                 return
-            } else if !CastledConfigs.sharedInstance.enableAppInbox {
+            }
+            else if !CastledConfigs.sharedInstance.enableAppInbox {
                 completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
                 CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: .error)
                 return
@@ -108,7 +109,14 @@ public extension Castled {
                         inboxViewController.removeObservers()
                         inboxViewController.navigationController?.popViewController(animated: true)
                     }
-                } else if let inboxViewController = currentViewController as? CastledInboxViewController {
+                }
+                else if let tabBarController = currentViewController as? UITabBarController {
+                    if let selectedNavigationController = tabBarController.selectedViewController as? UINavigationController, let inboxViewController = selectedNavigationController.topViewController as? CastledInboxViewController {
+                        inboxViewController.removeObservers()
+                        inboxViewController.navigationController?.popViewController(animated: true)
+                    }
+                }
+                else if let inboxViewController = currentViewController as? CastledInboxViewController {
                     // Dismiss the CastledInboxViewController if it's not embedded in a UINavigationController
                     inboxViewController.removeObservers()
                     inboxViewController.dismiss(animated: true, completion: nil)
