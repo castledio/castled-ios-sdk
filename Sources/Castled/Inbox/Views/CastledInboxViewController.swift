@@ -197,7 +197,14 @@ import UIKit
     }
 
     @IBAction func closeButtonTapped(_ sender: Any) {
-        Castled.sharedInstance.dismissInboxViewController()
+        if let presentingViewController = presentingViewController {
+            // If presented modally, dismiss it
+            presentingViewController.dismiss(animated: true, completion: nil)
+        } else if let navigationController = navigationController {
+            navigationController.popViewController(animated: true)
+        } else {
+            Castled.sharedInstance.dismissInboxViewController()
+        }
     }
 
     func removeObservers() {
