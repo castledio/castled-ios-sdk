@@ -17,18 +17,21 @@ class CastledEventsTracker: NSObject {
         guard let userId = CastledUserDefaults.shared.userId else {
             return
         }
-            Castled.sharedInstance.castledEventsTrackingQueue.async {
-                // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
-                let stringDict = params.compactMapValues { "\($0)" }
-                let trackParams: [String: Any] = ["type": "track",
-                                                  "event": eventName,
-                                                  "userId": userId,
-                                                  "properties": stringDict,
-                                                  "timestamp": Date().string(),
-                                                  CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
-                Castled.reportCustomEvents(params: [trackParams]) { _ in
+        Castled.sharedInstance.castledEventsTrackingQueue.async {
+            // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
+            let stringDict = params.compactMapValues { "\($0)" }
+            let trackParams: [String: Any] = ["type": "track",
+                                              "event": eventName,
+                                              "userId": userId,
+                                              "properties": stringDict,
+                                              "timestamp": Date().string(),
+                                              CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
+            Castled.reportCustomEvents(params: [trackParams]) { response in
+                if response.success {
+                    CastledLog.castledLog("Log event '\(eventName)' success!! ", logLevel: CastledLogLevel.debug)
                 }
             }
+        }
     }
 
     func setUserAttributes(params: [String: Any]) {
@@ -49,7 +52,10 @@ class CastledEventsTracker: NSObject {
                 "timestamp": Date().string(),
                 CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userProfileRequest.rawValue,
             ]
-            Castled.reportUserAttributes(params: trackParams) { _ in
+            Castled.reportUserAttributes(params: trackParams) { response in
+                if response.success {
+                    CastledLog.castledLog("Set user attributes success!!", logLevel: CastledLogLevel.debug)
+                }
             }
         }
     }

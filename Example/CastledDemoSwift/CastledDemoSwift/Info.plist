@@ -11,6 +11,17 @@
 		<string>SplashViewController</string>
 		<string>TutorialPageViewController</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>castledDemo</string>
+			</array>
+		</dict>
+	</array>
 	<key>CastledSwizzlingDisabled</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>

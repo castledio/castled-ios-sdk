@@ -31,7 +31,7 @@
     config.logLevel = CastledLogLevelDebug;
     config.location = CastledLocationTEST;
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
-    [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];
+   // [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *navBarAppearance = [[UINavigationBarAppearance alloc] init];
         [navBarAppearance configureWithOpaqueBackground];
@@ -135,7 +135,11 @@
     }];
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+    // Your implementation goes here
 
+    return YES; // Return YES if the URL was handled successfully, or NO if not.
+}
 #pragma mark - CastledNotification Delegate Methods
 
 

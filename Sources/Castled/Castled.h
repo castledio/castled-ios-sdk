@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+ 
 //! Project version number for Castled.
 FOUNDATION_EXPORT double CastledVersionNumber;
 
@@ -14,5 +14,4 @@ FOUNDATION_EXPORT double CastledVersionNumber;
 FOUNDATION_EXPORT const unsigned char CastledVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Castled/PublicHeader.h>
-
 

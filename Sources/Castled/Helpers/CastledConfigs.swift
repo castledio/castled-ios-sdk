@@ -72,7 +72,7 @@ import Foundation
 
     static var sharedInstance: CastledConfigs {
         guard let sharedConfig = sharedConfig else {
-            fatalError("CastledConfigs has not been initialized. Call CastledConfigs.initialize(instanceId:) first.")
+            fatalError("Castled 'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) first.")
         }
         return sharedConfig
     }
