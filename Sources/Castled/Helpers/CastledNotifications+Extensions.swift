@@ -14,8 +14,6 @@ public extension Castled {
 
     @objc func swizzled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Castled.sharedInstance.setDeviceToken(deviceToken: deviceToken)
-        Castled.sharedInstance.delegate?.castled_application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
-
         if responds(to: #selector(swizzled_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))) {
             self.swizzled_application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
         }
@@ -23,7 +21,6 @@ public extension Castled {
 
     @objc func swizzled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         CastledLog.castledLog("Failed to register: \(error)", logLevel: CastledLogLevel.error)
-        Castled.sharedInstance.delegate?.castled_application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
         if responds(to: #selector(swizzled_application(_:didFailToRegisterForRemoteNotificationsWithError:))) {
             swizzled_application(application, didFailToRegisterForRemoteNotificationsWithError: error)
         }
@@ -40,15 +37,7 @@ public extension Castled {
             }
         } else {
             completionHandler([[.alert, .badge, .sound]])
-            return
         }
-//        guard (Castled.sharedInstance.delegate?.castled_userNotificationCenter?(center, willPresent: notification, withCompletionHandler: { options in
-//            completionHandler(options)
-//        })) != nil
-//        else {
-//            completionHandler([[.alert, .badge, .sound]])
-//            return
-//        }
     }
 
     @objc func swizzled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -78,17 +67,7 @@ public extension Castled {
             CastledLog.castledLog("userNotificationCenter didReceive  not implemented", logLevel: CastledLogLevel.info)
 
             completionHandler()
-            return
         }
-
-//        guard (Castled.sharedInstance.delegate?.castled_userNotificationCenter?(center, didReceive: response, withCompletionHandler: {
-//            completionHandler()
-//
-//        })) != nil else {
-//            CastledLog.castledLog("castled_userNotificationCenter didReceive  not implemented", logLevel: CastledLogLevel.info)
-//            completionHandler()
-//            return
-//        }
     }
 
     @objc func swizzled_application(_ application: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -275,6 +254,15 @@ public extension Castled {
             }
         } else if event == CastledConstants.CastledEventTypes.cliked.rawValue {
             payload.append(contentsOf: Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext))
+            if CastledUserDefaults.shared.clickedPushIds.contains(sourceContext) {
+                return payload
+            } else {
+                CastledUserDefaults.shared.clickedPushIds.append(sourceContext)
+                if CastledUserDefaults.shared.clickedPushIds.count > 20 {
+                    CastledUserDefaults.shared.clickedPushIds.removeFirst()
+                }
+                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledClickedPushIds, CastledUserDefaults.shared.clickedPushIds)
+            }
         }
         let timezone = TimeZone.current
         let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"

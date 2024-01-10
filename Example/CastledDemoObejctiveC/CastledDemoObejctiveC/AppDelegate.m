@@ -21,7 +21,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
 
-    CastledConfigs *config = [CastledConfigs initializeWithAppId:@"e8a4f68bfb6a58b40a77a0e6150eca0b"];
+    CastledConfigs *config = [CastledConfigs initializeWithAppId:@"718c38e2e359d94367a2e0d35e1fd4df"];
 //    config.permittedBGIdentifier = @"";
     config.enablePush = TRUE;
     config.enableAppInbox = TRUE;
@@ -29,9 +29,9 @@
     config.enableInApp = TRUE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     config.logLevel = CastledLogLevelDebug;
-    config.location = CastledLocationTEST;
+    config.location = CastledLocationUS;
     NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
-   // [Castled initializeWithConfig:config delegate:(id)self andNotificationCategories:nil];
+  [Castled initializeWithConfig:config andDelegate:self];
     if (@available(iOS 13.0, *)) {
         UINavigationBarAppearance *navBarAppearance = [[UINavigationBarAppearance alloc] init];
         [navBarAppearance configureWithOpaqueBackground];
@@ -43,6 +43,7 @@
         [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setStandardAppearance:navBarAppearance];
         [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setScrollEdgeAppearance:navBarAppearance];
     }
+    [[Castled sharedInstance] setNotificationCategoriesWithItems:notificationCategories];
     [self registerForPush];
 
     
@@ -105,8 +106,25 @@
 //If you disabled the swizzling in plist you should call the required functions in the delegate methods
 
 -(void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@", self.description, deviceToken.debugDescription);
-    [[Castled sharedInstance] setPushToken:deviceToken.debugDescription];
+
+    NSMutableString *deviceTokenString =[NSMutableString string];
+    if (@available(iOS 13.0, *)) {
+        deviceTokenString = [NSMutableString string];
+        const unsigned char *bytes = (const unsigned char *)[deviceToken bytes];
+        NSInteger count = deviceToken.length;
+        for (int i = 0; i < count; i++) {
+            [deviceTokenString appendFormat:@"%02x", bytes[i]&0x000000FF];
+        }
+    } else {
+        NSString *deviceToken1 =  [[[[deviceToken description]
+                                     stringByReplacingOccurrencesOfString:@"<" withString:@""]
+                                    stringByReplacingOccurrencesOfString:@">" withString:@""]
+                                   stringByReplacingOccurrencesOfString:@" " withString:@""];
+        deviceTokenString = [[NSMutableString alloc] initWithString:deviceToken1];
+    }
+
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", deviceTokenString);
+    [[Castled sharedInstance] setPushToken:deviceTokenString];
 }
 -(void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"failed to register for remote notifications: %@ %@", self.description, error.localizedDescription);
@@ -141,40 +159,6 @@
     return YES; // Return YES if the URL was handled successfully, or NO if not.
 }
 #pragma mark - CastledNotification Delegate Methods
-
-
-- (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center willPresent:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
-    ///notification.request.content.userInfo
-    NSLog(@"will present notification: %@ %@", self.description,NSStringFromSelector(_cmd));
-
-    completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
-
-
-}
-- (void)castled_userNotificationCenter:(UNUserNotificationCenter *)center didReceive:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
-{
-    NSLog(@"didReceive: %@ %@", self.description,NSStringFromSelector(_cmd));
-
-    completionHandler();
-
-}
-- (void)castled_application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    NSLog(@"didReceiveRemoteNotification: %@ %@", self.description,NSStringFromSelector(_cmd));
-    completionHandler(UIBackgroundFetchResultNewData);
-
-}
-
-- (void)castled_application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
-    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: %@ %@ %@", self.description,NSStringFromSelector(_cmd),error.localizedDescription);
-
-}
-
-
-- (void)castled_application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@ %@ %@", self.description,NSStringFromSelector(_cmd),deviceToken.debugDescription);
-
-}
-
 
 - (void)notificationClickedWithNotificationType:(CastledNotificationType)type
                                          action:(CastledClickActionType)action

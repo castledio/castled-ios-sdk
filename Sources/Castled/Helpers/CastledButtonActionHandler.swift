@@ -67,10 +67,6 @@ class CastledButtonActionHandler {
     }
 
     private static func openURL(_ url: URL) {
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        } else {
-            CastledLog.castledLog("Cannot open URL \(url)", logLevel: CastledLogLevel.error)
-        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

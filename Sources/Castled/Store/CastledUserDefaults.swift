@@ -22,6 +22,7 @@ class CastledUserDefaults: NSObject {
     static let kCastledFailedItems = "_castledFailedItems_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
+    static let kCastledClickedPushIds = "_castledClickedPushIds_"
     static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
     static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
     static let shared = CastledUserDefaults()
@@ -31,7 +32,10 @@ class CastledUserDefaults: NSObject {
     lazy var deliveredPushIds: [String] = {
         CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
     }()
-
+   
+    lazy var clickedPushIds: [String] = {
+        CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
+    }()
     override private init() {
         userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
         userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)

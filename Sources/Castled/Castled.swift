@@ -11,11 +11,6 @@ import UIKit
 import UserNotifications
 
 @objc public protocol CastledNotificationDelegate {
-    @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
-    @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void)
-    @objc optional func castled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error)
-    @objc optional func castled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
-    @objc optional func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
     @objc optional func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any])
 }
 
@@ -49,7 +44,7 @@ import UserNotifications
      */
     @objc public static func initialize(withConfig config: CastledConfigs, andDelegate delegate: CastledNotificationDelegate?) {
         if config.instanceId.isEmpty {
-            fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
         Castled.sharedInstance.instanceId = config.instanceId
         Castled.sharedInstance.delegate = delegate
@@ -65,7 +60,7 @@ import UserNotifications
      */
     @objc public func setUserId(_ userId: String, userToken: String? = nil) {
         if !Castled.sharedInstance.isCastledInitialized() {
-            fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
         Castled.sharedInstance.saveUserId(userId, userToken)
     }
@@ -135,7 +130,7 @@ import UserNotifications
 
     @objc func setLaunchOptions(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if !Castled.sharedInstance.isCastledInitialized() {
-            fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
 
         let notificationOption = launchOptions?[.remoteNotification]
@@ -149,7 +144,7 @@ import UserNotifications
 
     @objc public func setNotificationCategories(withItems items: Set<UNNotificationCategory>) {
         if !Castled.sharedInstance.isCastledInitialized() {
-            fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
         var categorySet = items
         categorySet.insert(getCastledCategory())

@@ -30,12 +30,10 @@ class CastledSwizzler {
     private class func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {
         let defaultSelector = Selector(methodSelector)
         let swizzledSelector = Selector("swizzled_" + methodSelector)
-
         if let swizzledMethod = class_getInstanceMethod(Castled.self, swizzledSelector) {
             let updatedImplementaiton = method_getImplementation(swizzledMethod)
             let methodTypeEncoding = method_getTypeEncoding(swizzledMethod)
             let isOriginalMethodExists = class_getInstanceMethod(className, defaultSelector) != nil
-
             if isOriginalMethodExists {
                 if let defaultMethod = class_getInstanceMethod(className, defaultSelector) {
                     let defaultImplementation = method_getImplementation(defaultMethod)

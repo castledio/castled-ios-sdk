@@ -38,6 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         Castled.sharedInstance.setNotificationCategories(withItems: self.getNotificationCategories())
+        self.window?.makeKeyAndVisible()
+
         return true
     }
 
@@ -140,32 +142,6 @@ extension AppDelegate: CastledNotificationDelegate {
                 }
             }
         })
-    }
-
-    func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("willPresent \(self.description) \(#function)")
-        print(notification.request.content.userInfo)
-        completionHandler([[.alert, .badge, .sound]])
-    }
-
-    func castled_userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("didReceive \(self.description) \(#function)")
-
-        completionHandler()
-    }
-
-    func castled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("didFailToRegisterForRemoteNotificationsWithError \(self.description) \(#function) \(error.localizedDescription)")
-    }
-
-    func castled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print("didRegisterForRemoteNotificationsWithDeviceToken \(self.description) \(#function) deviceTokenString \(deviceTokenString)")
-    }
-
-    func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("\(self.description) \(#function)")
-        completionHandler(.newData)
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
