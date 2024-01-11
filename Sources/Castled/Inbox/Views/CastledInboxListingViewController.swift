@@ -180,7 +180,7 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
         if let defaultClickAction = item["defaultClickAction"] as? String {
             didSelectedInboxWith(["clickAction": defaultClickAction,
                                   "url": (item["url"] as? String) ?? "",
-                                  "keyVals": item["keyVals"] ?? [String: Any]()], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItems![indexPath.row]))
+                                  CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: item[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] ?? [String: Any]()], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItems![indexPath.row]))
         }
     }
 

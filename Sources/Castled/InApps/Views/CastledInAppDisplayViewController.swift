@@ -190,7 +190,7 @@ class CastledInAppDisplayViewController: UIViewController {
             params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url
             params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = defaultAction.rawValue
             if let keyvals = inappObject.message?.modal?.keyVals ?? inappObject.message?.fs?.keyVals {
-                params["keyVals"] = keyvals
+                params[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyvals
             }
 
             CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)

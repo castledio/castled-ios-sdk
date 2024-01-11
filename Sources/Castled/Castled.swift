@@ -128,7 +128,7 @@ import UserNotifications
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
     }
 
-    @objc func setLaunchOptions(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+    @objc public func setLaunchOptions(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if !Castled.sharedInstance.isCastledInitialized() {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }

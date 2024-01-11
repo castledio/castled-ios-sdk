@@ -47,7 +47,7 @@ class CastledButtonActionHandler {
         }
         var queryString = ""
         // Create a dictionary of query parameters
-        if let params = parameters, let keyVals = params["keyVals"] as? [String: String] {
+        if let params = parameters, let keyVals = params[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] as? [String: String] {
             // Convert the query parameters to a query string
             queryString = keyVals.map { key, value in
                 "\(key)=\(value)"

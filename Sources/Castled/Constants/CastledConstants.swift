@@ -39,6 +39,7 @@ class CastledConstants {
                     static let clickActionUrl = "clickActionUrl"
                     static let url = "url"
                     static let useWebView = "useWebview"
+                    static let keyVals = "keyVals"
                 }
             }
         }

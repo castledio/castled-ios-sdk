@@ -106,14 +106,14 @@ import UIKit
             clickAction = action.clickAction.rawValue
             if let keyVals = action.keyVals {
                 params = [String: Any]()
-                params?["keyVals"] = keyVals
+                params?[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyVals
             }
             url = action.url
         } else if let slideUp = slide {
             clickAction = slideUp.clickAction.rawValue
             if let keyVals = slideUp.keyVals {
                 params = [String: Any]()
-                params?["keyVals"] = keyVals
+                params?[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyVals
             }
             url = slideUp.url
         } else if let webP = webParams {
