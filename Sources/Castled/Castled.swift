@@ -175,7 +175,7 @@ import UserNotifications
         }
     }
 
-    private func logAppOpenedEventIfAny(showLog: Bool? = false) {
+    public func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if CastledConfigs.sharedInstance.enableInApp == false {
             return
         }
