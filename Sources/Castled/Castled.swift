@@ -11,11 +11,6 @@ import UIKit
 import UserNotifications
 
 @objc public protocol CastledNotificationDelegate {
-    @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
-    @objc optional func castled_userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void)
-    @objc optional func castled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error)
-    @objc optional func castled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
-    @objc optional func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
     @objc optional func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any])
 }
 
@@ -47,21 +42,25 @@ import UserNotifications
     /**
      Static method for conguring the Castled framework.
      */
-    @objc public static func initialize(withConfig config: CastledConfigs, delegate: CastledNotificationDelegate, andNotificationCategories categories: Set<UNNotificationCategory>? = nil) {
+    @objc public static func initialize(withConfig config: CastledConfigs, andDelegate delegate: CastledNotificationDelegate?) {
         if config.instanceId.isEmpty {
-            fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
         Castled.sharedInstance.instanceId = config.instanceId
         Castled.sharedInstance.delegate = delegate
-        Castled.sharedInstance.initialSetup(categories: categories)
+        Castled.sharedInstance.initialSetup()
+    }
+
+    @objc public func isCastledInitialized() -> Bool {
+        return !instanceId.isEmpty
     }
 
     /**
      Function that allows users to set the userId and  userToken.
      */
     @objc public func setUserId(_ userId: String, userToken: String? = nil) {
-        if Castled.sharedInstance.instanceId.isEmpty {
-            fatalError("'instanceId' has not been initialized. Call CastledConfigs.initialize(instanceId:) with a valid instanceId.")
+        if !Castled.sharedInstance.isCastledInitialized() {
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
         Castled.sharedInstance.saveUserId(userId, userToken)
     }
@@ -98,8 +97,9 @@ import UserNotifications
     /**
      InApps : Function that allows to display custom inapp
      */
-    @objc public func logCustomAppEvent(_ viewController: UIViewController, eventName: String, params: [String: Any]) {
-        CastledInApps.sharedInstance.logAppEvent(context: viewController, eventName: eventName, params: params, showLog: false)
+    // TODO: update docs and other
+    @objc public func logCustomAppEvent(eventName: String, params: [String: Any]) {
+        CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: eventName, params: params, showLog: false)
         CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
     }
 
@@ -107,7 +107,7 @@ import UserNotifications
         CastledEventsTracker.shared.setUserAttributes(params: params)
     }
 
-    private func initialSetup(categories: Set<UNNotificationCategory>?) {
+    private func initialSetup() {
         let config = CastledConfigs.sharedInstance
         CastledLog.setLogLevel(config.logLevel)
         #if !DEBUG
@@ -115,18 +115,41 @@ import UserNotifications
         #endif
         if config.enablePush {
             CastledSwizzler.enableSwizzlingForNotifications()
-            setNotificationCategories(withItems: categories ?? Set<UNNotificationCategory>())
         }
         if config.enableInApp {
             UIViewController.swizzleViewDidAppear()
         }
-        CastledBGManager.sharedInstance.registerBackgroundTasks()
         CastledNetworkMonitor.shared.startMonitoring()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         CastledDeviceInfo.shared.updateDeviceInfo()
         CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
+        setNotificationCategories(withItems: Set<UNNotificationCategory>())
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
+    }
+
+    @objc public func setLaunchOptions(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        if !Castled.sharedInstance.isCastledInitialized() {
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
+        }
+
+        let notificationOption = launchOptions?[.remoteNotification]
+        if let notification = notificationOption as? [String: AnyObject],
+           notification["aps"] as? [String: AnyObject] != nil
+        {
+            Castled.sharedInstance.processCastledPushEvents(userInfo: notification, isOpened: true)
+        }
+        //  CastledBGManager.sharedInstance.registerBackgroundTasks()
+    }
+
+    @objc public func setNotificationCategories(withItems items: Set<UNNotificationCategory>) {
+        if !Castled.sharedInstance.isCastledInitialized() {
+            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
+        }
+        var categorySet = items
+        categorySet.insert(getCastledCategory())
+        UNUserNotificationCenter.current().setNotificationCategories([])
+        UNUserNotificationCenter.current().setNotificationCategories(categorySet)
     }
 
     /**
@@ -152,7 +175,7 @@ import UserNotifications
         }
     }
 
-    private func logAppOpenedEventIfAny(showLog: Bool? = false) {
+    public func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if CastledConfigs.sharedInstance.enableInApp == false {
             return
         }

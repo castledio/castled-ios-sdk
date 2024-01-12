@@ -54,9 +54,7 @@ class CastledUserEventsTracker: NSObject {
                               "userId": userId,
                               "deviceId": CastledDeviceInfo.shared.getDeviceId(),
                               CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userEventRequest.rawValue]
-            print("user events \(userEvents)")
             if userEvents != self.fetchUserEventsInfo() {
-                print("updating user events")
                 do {
                     let encoder = JSONEncoder()
                     let data = try encoder.encode(userEvents)

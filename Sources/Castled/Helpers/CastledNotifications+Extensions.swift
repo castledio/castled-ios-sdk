@@ -14,12 +14,16 @@ public extension Castled {
 
     @objc func swizzled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Castled.sharedInstance.setDeviceToken(deviceToken: deviceToken)
-        Castled.sharedInstance.delegate?.castled_application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        if responds(to: #selector(swizzled_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))) {
+            self.swizzled_application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        }
     }
 
     @objc func swizzled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         CastledLog.castledLog("Failed to register: \(error)", logLevel: CastledLogLevel.error)
-        Castled.sharedInstance.delegate?.castled_application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        if responds(to: #selector(swizzled_application(_:didFailToRegisterForRemoteNotificationsWithError:))) {
+            swizzled_application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        }
     }
 
     @objc func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -27,20 +31,22 @@ public extension Castled {
                                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
         Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
-        guard (Castled.sharedInstance.delegate?.castled_userNotificationCenter?(center, willPresent: notification, withCompletionHandler: { options in
-            completionHandler(options)
-        })) != nil
-        else {
+        if responds(to: #selector(swizzled_userNotificationCenter(_:willPresentNotification:withCompletionHandler:))) {
+            swizzled_userNotificationCenter(center, willPresentNotification: notification) { options in
+                completionHandler(options)
+            }
+        } else {
             completionHandler([[.alert, .badge, .sound]])
-            return
         }
     }
 
     @objc func swizzled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { _ in
-            guard (Castled.sharedInstance.delegate?.castled_application?(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: { result in
-                completionHandler(result)
-            })) != nil else {
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { [self] _ in
+            if self.responds(to: #selector(swizzled_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))) {
+                self.swizzled_application(application, didReceiveRemoteNotification: userInfo) { result in
+                    completionHandler(result)
+                }
+            } else {
                 completionHandler(.newData)
                 return
             }
@@ -52,14 +58,23 @@ public extension Castled {
                                                withCompletionHandler completionHandler: @escaping () -> Void)
     {
         Castled.sharedInstance.handleNotificationAction(response: response)
-        guard (Castled.sharedInstance.delegate?.castled_userNotificationCenter?(center, didReceive: response, withCompletionHandler: {
-            completionHandler()
 
-        })) != nil else {
-            CastledLog.castledLog("castled_userNotificationCenter didReceive  not implemented", logLevel: CastledLogLevel.info)
+        if responds(to: #selector(swizzled_userNotificationCenter(_:didReceiveNotificationResponse:withCompletionHandler:))) {
+            swizzled_userNotificationCenter(center, didReceiveNotificationResponse: response) {
+                completionHandler()
+            }
+        } else {
+            CastledLog.castledLog("userNotificationCenter didReceive  not implemented", logLevel: CastledLogLevel.info)
+
             completionHandler()
-            return
         }
+    }
+
+    @objc func swizzled_application(_ application: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if responds(to: #selector(swizzled_application(_:openURL:options:))) {
+            return swizzled_application(application, openURL: url, options: options)
+        }
+        return true
     }
 
     @objc internal func setDeviceToken(deviceToken: Data) {
@@ -91,7 +106,7 @@ public extension Castled {
     }
 
     @objc func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) {
-        processCastledPushEvents(userInfo: notification.request.content.userInfo, isForeGround: true)
+        processCastledPushEvents(userInfo: notification.request.content.userInfo)
     }
 
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
@@ -121,16 +136,18 @@ public extension Castled {
                     default:
                         break
                 }
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
                 CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx)
+                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
+                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
             } else {
                 // handle other actions
+                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
                 Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
             }
             processCastledPushEvents(userInfo: userInfo, isOpened: true)
         } else if response.actionIdentifier == UNNotificationDismissActionIdentifier {
             Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: .dismiss, kvPairs: nil, userInfo: userInfo)
-            processCastledPushEvents(userInfo: userInfo, isDismissed: true)
+            processCastledPushEvents(userInfo: userInfo, isDismissed: true, actionType: CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue)
         } else {
             if let actionDetails: [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
                let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
@@ -138,36 +155,29 @@ public extension Castled {
                 switch clickAction {
                     case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
                         pushActionType = CastledClickActionType.deepLink
-                        processCastledPushEvents(userInfo: userInfo, isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.deepLink.rawValue)
+                        processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.deepLink.rawValue)
                     case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
                         pushActionType = CastledClickActionType.navigateToScreen
-                        processCastledPushEvents(userInfo: userInfo, isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue)
+                        processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue)
                     case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
                         pushActionType = CastledClickActionType.richLanding
-                        processCastledPushEvents(userInfo: userInfo, isAcceptRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.richLanding.rawValue)
+                        processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.richLanding.rawValue)
                     case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
                         pushActionType = CastledClickActionType.dismiss
-                        processCastledPushEvents(userInfo: userInfo, isDiscardedRich: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue)
+                        processCastledPushEvents(userInfo: userInfo, isDismissed: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue)
                     default:
                         break
                 }
+                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: actionDetails, userInfo: userInfo)
                 Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: actionDetails, userInfo: userInfo)
             } else {
+                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
                 Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
             }
         }
     }
 
-    internal func checkAppIsLaunchedViaPush(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        let notificationOption = launchOptions?[.remoteNotification]
-        if let notification = notificationOption as? [String: AnyObject],
-           notification["aps"] as? [String: AnyObject] != nil
-        {
-            processCastledPushEvents(userInfo: notification, isOpened: true)
-        }
-    }
-
-    private func processCastledPushEvents(userInfo: [AnyHashable: Any], isForeGround: Bool? = false, isOpened: Bool? = false, isDismissed: Bool? = false, isDiscardedRich: Bool? = false, isAcceptRich: Bool? = false, actionLabel: String? = "", actionType: String? = "") {
+    internal func processCastledPushEvents(userInfo: [AnyHashable: Any], isOpened: Bool? = false, isDismissed: Bool? = false, actionLabel: String? = "", actionType: String? = "") {
         castledNotificationQueue.async {
             if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
                 //  CastledLog.castledLog("Castled PushEvents \(customCasledDict)")
@@ -179,13 +189,7 @@ public extension Castled {
                         event = CastledConstants.CastledEventTypes.cliked.rawValue
                     } else if isDismissed == true {
                         event = CastledConstants.CastledEventTypes.discarded.rawValue
-                    }
-                    if isDiscardedRich == true {
-                        event = CastledConstants.CastledEventTypes.discarded.rawValue
-                    } else if isAcceptRich == true {
-                        event = CastledConstants.CastledEventTypes.cliked.rawValue
-                    }
-                    if isForeGround == true {
+                    } else {
                         event = CastledConstants.CastledEventTypes.received.rawValue
                     }
 
@@ -250,6 +254,15 @@ public extension Castled {
             }
         } else if event == CastledConstants.CastledEventTypes.cliked.rawValue {
             payload.append(contentsOf: Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext))
+            if CastledUserDefaults.shared.clickedPushIds.contains(sourceContext) {
+                return payload
+            } else {
+                CastledUserDefaults.shared.clickedPushIds.append(sourceContext)
+                if CastledUserDefaults.shared.clickedPushIds.count > 20 {
+                    CastledUserDefaults.shared.clickedPushIds.removeFirst()
+                }
+                CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledClickedPushIds, CastledUserDefaults.shared.clickedPushIds)
+            }
         }
         let timezone = TimeZone.current
         let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
@@ -265,13 +278,7 @@ public extension Castled {
         return payload
     }
 
-    internal func setNotificationCategories(withItems items: Set<UNNotificationCategory>) {
-        var categorySet = items
-        categorySet.insert(getCastledCategory())
-        UNUserNotificationCenter.current().setNotificationCategories(categorySet)
-    }
-
-    private func getCastledCategory() -> UNNotificationCategory {
+    internal func getCastledCategory() -> UNNotificationCategory {
         let castledCategory = UNNotificationCategory(identifier: "CASTLED_PUSH_TEMPLATE", actions: [], intentIdentifiers: [], options: .customDismissAction)
         return castledCategory
     }

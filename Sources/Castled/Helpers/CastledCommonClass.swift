@@ -41,11 +41,13 @@ class CastledCommonClass {
 
         for action in actionsArray {
             if let identifier = action[CastledConstants.PushNotification.CustomProperties.Category.Action.actionId] as? String, identifier == actionType {
+                let keyVals = action[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] as? NSDictionary ?? [:]
                 return [
                     CastledConstants.PushNotification.ApsProperties.category: category,
                     CastledConstants.PushNotification.CustomProperties.Category.Action.actionId: identifier,
                     CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction: action[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "",
                     CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl: action[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String ?? "",
+                    CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: keyVals,
                     CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView: action[CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView] as? Bool ?? false
                 ]
             }

@@ -15,7 +15,6 @@ class CastledNetworkMonitor {
     private let queue = DispatchQueue(label: "CastledNetworkMonitor")
     func startMonitoring() {
         monitor.pathUpdateHandler = { path in
-//            print(path.status == .satisfied ? "Connected" : "Disconnected")
             if path.status == .satisfied {
                 if self.shouldCallApis {
                     self.shouldCallApis = false

@@ -104,11 +104,17 @@ import UIKit
 
         if let action = buttonAction {
             clickAction = action.clickAction.rawValue
-            params = action.keyVals ?? [String: String]()
+            if let keyVals = action.keyVals {
+                params = [String: Any]()
+                params?[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyVals
+            }
             url = action.url
         } else if let slideUp = slide {
             clickAction = slideUp.clickAction.rawValue
-            params = slideUp.keyVals ?? [String: String]()
+            if let keyVals = slideUp.keyVals {
+                params = [String: Any]()
+                params?[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyVals
+            }
             url = slideUp.url
         } else if let webP = webParams {
             params = webP
@@ -119,22 +125,25 @@ import UIKit
         }
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url ?? ""
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction
+        var clickActionType = CastledClickActionType.custom
         switch clickAction {
             case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .deepLink, kvPairs: params, userInfo: params ?? [String: String]())
+                clickActionType = .deepLink
             case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .richLanding, kvPairs: params, userInfo: params ?? [String: String]())
+                clickActionType = .richLanding
             case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .navigateToScreen, kvPairs: params, userInfo: params ?? [String: String]())
+                clickActionType = .navigateToScreen
             case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .requestForPush, kvPairs: params, userInfo: params ?? [String: String]())
+                clickActionType = .requestForPush
             case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .dismiss, kvPairs: params, userInfo: params ?? [String: String]())
+                clickActionType = .dismiss
             case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
+                clickActionType = .custom
             default:
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: .custom, kvPairs: params, userInfo: params ?? [String: String]())
+                clickActionType = .custom
         }
+        CastledButtonActionHandler.notificationClicked(withNotificationType: .inapp, action: clickActionType, kvPairs: params, userInfo: params ?? [String: String]())
+        Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: clickActionType, kvPairs: params, userInfo: params ?? [String: String]())
     }
 
     func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
@@ -281,7 +290,14 @@ import UIKit
                     if let vc = navigationController.topViewController {
                         return String(describing: type(of: vc))
                     }
-
+                } else if let tabBarController = currentViewController as? UITabBarController {
+                    if let selectedNavigationController = tabBarController.selectedViewController as? UINavigationController {
+                        if let vc = selectedNavigationController.topViewController {
+                            return String(describing: type(of: vc))
+                        }
+                    } else if let selectedViewController = tabBarController.selectedViewController {
+                        return String(describing: type(of: selectedViewController))
+                    }
                 } else {
                     return String(describing: type(of: currentViewController))
                 }

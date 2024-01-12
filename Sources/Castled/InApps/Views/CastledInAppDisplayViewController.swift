@@ -186,11 +186,15 @@ class CastledInAppDisplayViewController: UIViewController {
         super.touchesEnded(touches, with: event)
         if let inappObject = selectedInAppObject, inappObject.message?.type != CIMessageType.banner, let defaultAction = inappObject.message?.fs?.defaultClickAction ?? inappObject.message?.modal?.defaultClickAction, defaultAction != .none {
             let url = inappObject.message?.modal?.url ?? inappObject.message?.fs?.url ?? ""
-            var keyvals = inappObject.message?.modal?.keyVals ?? inappObject.message?.fs?.keyVals ?? [String: String]()
-            keyvals[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url
-            keyvals[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = defaultAction.rawValue
+            var params = [String: Any]()
+            params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url
+            params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = defaultAction.rawValue
+            if let keyvals = inappObject.message?.modal?.keyVals ?? inappObject.message?.fs?.keyVals {
+                params[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyvals
+            }
+
             CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)
-            CastledInApps.sharedInstance.performButtonActionFor(webParams: keyvals)
+            CastledInApps.sharedInstance.performButtonActionFor(webParams: params)
             hideInAppViewFromWindow(withAnimation: true)
         }
     }

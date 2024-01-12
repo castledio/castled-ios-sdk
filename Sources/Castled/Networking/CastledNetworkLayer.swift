@@ -66,7 +66,7 @@ import Foundation
 
     func createRequest(with endpoint: CastledNetworkRequest) -> URLRequest? {
         guard let url = constructURL(for: endpoint) else {
-            print("Invalid URL")
+            CastledLog.castledLog("Invalid URL", logLevel: CastledLogLevel.error)
             return nil
         }
 

@@ -39,7 +39,7 @@ class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
             do {
                 js = try String(contentsOf: jsPathURL, encoding: .utf8)
             } catch {
-                print("Unable to get the file.")
+                CastledLog.castledLog("Unable to get the file CastledBridge.js.", logLevel: CastledLogLevel.error)
             }
         }
         return js
@@ -70,7 +70,6 @@ class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
     // MARK: - Delegate method to handle the script message from JavaScript
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-//        print("Received event from JavaScript: \(message.body)")
 
         if message.name == messageHandler, let messageBody = message.body as? [String: Any] {
             // Here you can handle the JavaScript event data

@@ -2,17 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>com.castled.backgroundtask</string>
-	</array>
-	<key>CASTLED_EXCLUDED_INAPPS</key>
-	<array>
-		<string>SplashViewController</string>
-		<string>TutorialPageViewController</string>
-	</array>
-	<key>CastledSwizzlingDisabled</key>
-	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -32,6 +21,28 @@
 			</array>
 		</dict>
 	</dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.castled.backgroundtask</string>
+	</array>
+	<key>CASTLED_EXCLUDED_INAPPS</key>
+	<array>
+		<string>SplashViewController</string>
+		<string>TutorialPageViewController</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.castled</string>
+			</array>
+		</dict>
+	</array>
+	<key>CastledSwizzlingDisabled</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>processing</string>

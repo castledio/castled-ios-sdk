@@ -21,9 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         // Register the custom category
-        let notificationCategories = self.getNotificationCategories()
-        Castled.initialize(withConfig: config, delegate: self, andNotificationCategories: nil)
-      //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
+
+        Castled.initialize(withConfig: config, andDelegate: self)
+        Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
         registerForPush()
 
         if #available(iOS 13.0, *) {
@@ -36,13 +36,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).standardAppearance = navBarAppearance
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).scrollEdgeAppearance = navBarAppearance
         }
+
+        Castled.sharedInstance.setNotificationCategories(withItems: self.getNotificationCategories())
+        self.window?.makeKeyAndVisible()
+
         return true
     }
 
     func getNotificationCategories() -> Set<UNNotificationCategory> {
         // Create the custom actions
         let action1 = UNNotificationAction(identifier: "ACCEPT", title: "Accept", options: UNNotificationActionOptions.foreground)
-        let action2 = UNNotificationAction(identifier: "DECLINE", title: "Decline", options: [])
+        let action2 = UNNotificationAction(identifier: "DECLINE", title: "Decline", options: UNNotificationActionOptions.foreground)
 
         // Create the category with the custom actions
         let customCategory1 = UNNotificationCategory(identifier: "ACCEPT_DECLINE", actions: [action1, action2], intentIdentifiers: [], options: [])
@@ -138,32 +142,6 @@ extension AppDelegate: CastledNotificationDelegate {
                 }
             }
         })
-    }
-
-    func castled_userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("willPresent \(self.description) \(#function)")
-        print(notification.request.content.userInfo)
-        completionHandler([[.alert, .badge, .sound]])
-    }
-
-    func castled_userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("didReceive \(self.description) \(#function)")
-
-        completionHandler()
-    }
-
-    func castled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("didFailToRegisterForRemoteNotificationsWithError \(self.description) \(#function) \(error.localizedDescription)")
-    }
-
-    func castled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print("didRegisterForRemoteNotificationsWithDeviceToken \(self.description) \(#function) deviceTokenString \(deviceTokenString)")
-    }
-
-    func castled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("\(self.description) \(#function)")
-        completionHandler(.newData)
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
