@@ -49,7 +49,7 @@ Once you have your Swift package set up, adding Castled as a dependency is as ea
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/castledio/castled-ios-sdk", .upToNextMajor(from: "2.5.1"))
+    .package(url: "https://github.com/castledio/castled-ios-sdk", .upToNextMajor(from: "3.0.0"))
 ]
 ```
 ## 🎁 Examples
