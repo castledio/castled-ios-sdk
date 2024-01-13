@@ -82,7 +82,6 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // MARK: - Inbox related
 
     @objc func inboxTapped() {
-        Castled.sharedInstance.logout()
         // Handle the button tap here
         let style = CastledInboxDisplayConfig()
         style.inboxViewBackgroundColor = .white
