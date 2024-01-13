@@ -77,7 +77,9 @@ static NSString *userIdKey = @"userIdKey";
 
     }];
 //    [[Castled sharedInstance] setUserAttributesWithParams:@{@"fName":@"Antony",@"lName":@"Mathew",@"Age":@35}];
-//    [[Castled sharedInstance] logCustomAppEvent:self eventName:@"test_event" params:@{@"fName":@"Antony",@"lName":@"Mathew",@"Age":@35}];
+//    [[Castled sharedInstance] logCustomAppEventWithEventName:@"Test Event" params:@{@"Int": @100,
+//                                                                                   @"Date": [NSDate date],
+//                                                                                    @"Name": @"Antony"}];
 
 
 }

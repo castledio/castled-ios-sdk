@@ -17,7 +17,7 @@ import UserNotifications
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance = Castled()
     var inboxUnreadCountCallback: ((Int) -> Void)?
-    var instanceId = ""
+    var instanceId = CastledUserDefaults.getString(CastledUserDefaults.kCastledAppIddKey) ?? ""
     var delegate: CastledNotificationDelegate?
     var clientRootViewController: UIViewController?
     // Create a dispatch queue
@@ -97,7 +97,6 @@ import UserNotifications
     /**
      InApps : Function that allows to display custom inapp
      */
-    // TODO: update docs and other
     @objc public func logCustomAppEvent(eventName: String, params: [String: Any]) {
         CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: eventName, params: params, showLog: false)
         CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
@@ -105,6 +104,10 @@ import UserNotifications
 
     @objc public func setUserAttributes(params: [String: Any]) {
         CastledEventsTracker.shared.setUserAttributes(params: params)
+    }
+
+    @objc public func logout() {
+        CastledUserDefaults.clearAllFromPreference()
     }
 
     private func initialSetup() {
@@ -125,10 +128,11 @@ import UserNotifications
         CastledDeviceInfo.shared.updateDeviceInfo()
         CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
+        CastledUserDefaults.setString(CastledUserDefaults.kCastledAppIddKey, Castled.sharedInstance.instanceId)
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
     }
 
-    @objc public func setLaunchOptions(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+    @objc public func setLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if !Castled.sharedInstance.isCastledInitialized() {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
