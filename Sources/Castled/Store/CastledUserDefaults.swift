@@ -14,6 +14,7 @@ class CastledUserDefaults: NSObject {
     static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
     static var kCastledUserIdKey = "_castledUserId_"
     static var kCastledDeviceIddKey = "_castledDeviceId_"
+    static var kCastledAppIddKey = "_castledAppId_"
     static var kCastledDeviceInfoKey = "_castledDeviceInfo_"
     static var kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
@@ -32,10 +33,11 @@ class CastledUserDefaults: NSObject {
     lazy var deliveredPushIds: [String] = {
         CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
     }()
-   
+
     lazy var clickedPushIds: [String] = {
         CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
     }()
+
     override private init() {
         userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
         userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)
@@ -87,4 +89,25 @@ class CastledUserDefaults: NSObject {
         return userDefaults.object(forKey: key)
     }
 
+    static func clearAllFromPreference() {
+        // TODO: remove db
+        removeFor(kCastledIsTokenRegisteredKey)
+        removeFor(kCastledUserIdKey)
+        removeFor(kCastledDeviceIddKey)
+        removeFor(kCastledDeviceInfoKey)
+        removeFor(kCastledUserTokenKey)
+        removeFor(kCastledAPNsTokenKey)
+        removeFor(kCastledInAppsList)
+        removeFor(kCastledEnablePushNotificationKey)
+        removeFor(kCastledFailedItems)
+        removeFor(kCastledSavedInappConfigs)
+        removeFor(kCastledDeliveredPushIds)
+        removeFor(kCastledClickedPushIds)
+        removeFor(kCastledLastInappDisplayedTime)
+        removeFor(kCastledAppIddKey)
+        removeFor(kCastledClickedNotiContentIndx)
+        CastledUserDefaults.shared.userId = nil
+        CastledUserDefaults.shared.userToken = nil
+        CastledUserDefaults.shared.apnsToken = nil
+    }
 }

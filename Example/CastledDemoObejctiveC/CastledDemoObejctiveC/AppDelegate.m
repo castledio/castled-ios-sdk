@@ -43,7 +43,9 @@
         [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setStandardAppearance:navBarAppearance];
         [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setScrollEdgeAppearance:navBarAppearance];
     }
+
     [[Castled sharedInstance] setNotificationCategoriesWithItems:notificationCategories];
+    [[Castled sharedInstance] setLaunchOptions:launchOptions];
     [self registerForPush];
 
     

@@ -36,10 +36,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).standardAppearance = navBarAppearance
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).scrollEdgeAppearance = navBarAppearance
         }
-
-        Castled.sharedInstance.setNotificationCategories(withItems: self.getNotificationCategories())
+        let notificationCategories = self.getNotificationCategories()
+        Castled.sharedInstance.setNotificationCategories(withItems: notificationCategories)
         self.window?.makeKeyAndVisible()
-
+        Castled.sharedInstance.setLaunchOptions(launchOptions)
         return true
     }
 
