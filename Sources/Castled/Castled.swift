@@ -17,9 +17,10 @@ import UserNotifications
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance = Castled()
     var inboxUnreadCountCallback: ((Int) -> Void)?
-    var instanceId = CastledUserDefaults.getString(CastledUserDefaults.kCastledAppIddKey) ?? ""
+    var instanceId = CastledUserDefaults.getCastledAppId() ?? ""
     var delegate: CastledNotificationDelegate?
     var clientRootViewController: UIViewController?
+    private var isInitialized = false
     // Create a dispatch queue
     let castledDispatchQueue = DispatchQueue(label: "CastledQueue", attributes: .concurrent)
     let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
@@ -46,13 +47,15 @@ import UserNotifications
         if config.instanceId.isEmpty {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
+        print("Castled.sharedInstance.instanceId '\(Castled.sharedInstance.instanceId)'")
         Castled.sharedInstance.instanceId = config.instanceId
+        Castled.sharedInstance.isInitialized = true
         Castled.sharedInstance.delegate = delegate
         Castled.sharedInstance.initialSetup()
     }
 
     @objc public func isCastledInitialized() -> Bool {
-        return !instanceId.isEmpty
+        return isInitialized
     }
 
     /**
@@ -128,7 +131,7 @@ import UserNotifications
         CastledDeviceInfo.shared.updateDeviceInfo()
         CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
-        CastledUserDefaults.setString(CastledUserDefaults.kCastledAppIddKey, Castled.sharedInstance.instanceId)
+        CastledUserDefaults.setCastledAppId(Castled.sharedInstance.instanceId)
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
     }
 

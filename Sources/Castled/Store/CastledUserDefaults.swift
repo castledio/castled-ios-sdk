@@ -14,7 +14,7 @@ class CastledUserDefaults: NSObject {
     static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
     static var kCastledUserIdKey = "_castledUserId_"
     static var kCastledDeviceIddKey = "_castledDeviceId_"
-    static var kCastledAppIddKey = "_castledAppId_"
+    static var kCastledAppIddKey = "_castledAppid_"
     static var kCastledDeviceInfoKey = "_castledDeviceInfo_"
     static var kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
@@ -89,6 +89,17 @@ class CastledUserDefaults: NSObject {
         return userDefaults.object(forKey: key)
     }
 
+    static func getCastledAppId() -> String? {
+        if let stringValue = UserDefaults.standard.string(forKey: kCastledAppIddKey) {
+            return stringValue
+        }
+        return nil
+    }
+
+    static func setCastledAppId(_ appid: String) {
+        UserDefaults.standard.set(appid, forKey: kCastledAppIddKey)
+    }
+
     static func clearAllFromPreference() {
         // TODO: remove db
         removeFor(kCastledIsTokenRegisteredKey)
@@ -104,8 +115,8 @@ class CastledUserDefaults: NSObject {
         removeFor(kCastledDeliveredPushIds)
         removeFor(kCastledClickedPushIds)
         removeFor(kCastledLastInappDisplayedTime)
-        removeFor(kCastledAppIddKey)
         removeFor(kCastledClickedNotiContentIndx)
+        UserDefaults.standard.removeObject(forKey: kCastledAppIddKey)
         CastledUserDefaults.shared.userId = nil
         CastledUserDefaults.shared.userToken = nil
         CastledUserDefaults.shared.apnsToken = nil
