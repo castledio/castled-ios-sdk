@@ -211,6 +211,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
         })
     }
+    
 }
 
 // MARK: - Supporting Methods for CastledPusherExample
