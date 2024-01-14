@@ -67,6 +67,8 @@ class CastledButtonActionHandler {
     }
 
     private static func openURL(_ url: URL) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        DispatchQueue.main.async {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
     }
 }

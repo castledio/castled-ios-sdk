@@ -47,7 +47,6 @@ import UserNotifications
         if config.instanceId.isEmpty {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
         }
-        print("Castled.sharedInstance.instanceId '\(Castled.sharedInstance.instanceId)'")
         Castled.sharedInstance.instanceId = config.instanceId
         Castled.sharedInstance.isInitialized = true
         Castled.sharedInstance.delegate = delegate
