@@ -174,7 +174,7 @@ import UserNotifications
         }
     }
 
-    @objc func appBecomeActive() {
+    @objc public func appBecomeActive() {
         Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
         CastledUserEventsTracker.shared.setTheUserEventsFromBG()
         if CastledUserDefaults.shared.userId != nil {
@@ -182,7 +182,7 @@ import UserNotifications
         }
     }
 
-    public func logAppOpenedEventIfAny(showLog: Bool? = false) {
+    func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if CastledConfigs.sharedInstance.enableInApp == false {
             return
         }
