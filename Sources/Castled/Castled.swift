@@ -53,6 +53,28 @@ import UserNotifications
         Castled.sharedInstance.initialSetup()
     }
 
+    private func initialSetup() {
+        let config = CastledConfigs.sharedInstance
+        CastledLog.setLogLevel(config.logLevel)
+        #if !DEBUG
+        CastledLog.setLogLevel(CastledLogLevel.none)
+        #endif
+        if config.enablePush {
+            CastledSwizzler.enableSwizzlingForNotifications()
+        }
+        if config.enableInApp {
+            UIViewController.swizzleViewDidAppear()
+        }
+        CastledNetworkMonitor.shared.startMonitoring()
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        CastledDeviceInfo.shared.updateDeviceInfo()
+        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
+        setNotificationCategories(withItems: Set<UNNotificationCategory>())
+        CastledUserDefaults.setCastledAppId(Castled.sharedInstance.instanceId)
+        CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
+    }
+
     @objc public func isCastledInitialized() -> Bool {
         return isInitialized
     }
@@ -112,28 +134,6 @@ import UserNotifications
         CastledUserDefaults.clearAllFromPreference()
     }
 
-    private func initialSetup() {
-        let config = CastledConfigs.sharedInstance
-        CastledLog.setLogLevel(config.logLevel)
-        #if !DEBUG
-            CastledLog.setLogLevel(CastledLogLevel.none)
-        #endif
-        if config.enablePush {
-            CastledSwizzler.enableSwizzlingForNotifications()
-        }
-        if config.enableInApp {
-            UIViewController.swizzleViewDidAppear()
-        }
-        CastledNetworkMonitor.shared.startMonitoring()
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        CastledDeviceInfo.shared.updateDeviceInfo()
-        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
-        setNotificationCategories(withItems: Set<UNNotificationCategory>())
-        CastledUserDefaults.setCastledAppId(Castled.sharedInstance.instanceId)
-        CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
-    }
-
     @objc public func setLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if !Castled.sharedInstance.isCastledInitialized() {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
@@ -156,6 +156,13 @@ import UserNotifications
         categorySet.insert(getCastledCategory())
         UNUserNotificationCenter.current().setNotificationCategories([])
         UNUserNotificationCenter.current().setNotificationCategories(categorySet)
+    }
+
+    /**
+     Supporting method for react and other SDKs
+     */
+    public func logMessage(_ message: String, _ logLevel: CastledLogLevel) {
+        CastledLog.castledLog(message, logLevel: logLevel)
     }
 
     /**
