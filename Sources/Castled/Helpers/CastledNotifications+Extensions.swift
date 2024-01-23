@@ -119,7 +119,7 @@ public extension Castled {
         var pushActionType = CastledClickActionType.custom
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-            if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaults.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
+            if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaultsSuit.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
                let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             {
                 switch defaultAction {
@@ -134,7 +134,7 @@ public extension Castled {
                     default:
                         break
                 }
-                CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx)
+                CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
                 CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
                 Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
             } else {

@@ -8,7 +8,8 @@
 import Foundation
 
 class CastledUserDefaults: NSObject {
-    static let userDefaults = UserDefaults(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
+    private static let userDefaults = UserDefaults.standard
+    static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
 
     // Userdefault keys
     static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
@@ -69,10 +70,10 @@ class CastledUserDefaults: NSObject {
         userDefaults.synchronize()
     }
 
-    static func removeFor(_ key: String) {
+    static func removeFor(_ key: String, ud: UserDefaults = UserDefaults.standard) {
         // Remove value from UserDefaults
-        userDefaults.removeObject(forKey: key)
-        userDefaults.synchronize()
+        ud.removeObject(forKey: key)
+        ud.synchronize()
     }
 
     static func setObjectFor(_ key: String, _ data: Any) {
@@ -115,7 +116,7 @@ class CastledUserDefaults: NSObject {
         removeFor(kCastledDeliveredPushIds)
         removeFor(kCastledClickedPushIds)
         removeFor(kCastledLastInappDisplayedTime)
-        removeFor(kCastledClickedNotiContentIndx)
+        removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
         UserDefaults.standard.removeObject(forKey: kCastledAppIddKey)
         CastledUserDefaults.shared.userId = nil
         CastledUserDefaults.shared.userToken = nil

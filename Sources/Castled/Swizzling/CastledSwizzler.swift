@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 class CastledSwizzler {
+    static var isSwizzled = false
     static func enableSwizzlingForNotifications() {
         // Checking if swizzling has been disabled in plist by the developer
         let swizzzlingDisabled = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledSwzzlingDisableKey) as? Bool ?? false
-        if swizzzlingDisabled == true {
+        if swizzzlingDisabled || CastledSwizzler.isSwizzled {
             return
         }
-        //    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-
+        CastledSwizzler.isSwizzled = true
         let appDelegate = UIApplication.shared.delegate!
         self.swizzleImplementations(type(of: appDelegate), "application:didRegisterForRemoteNotificationsWithDeviceToken:")
         self.swizzleImplementations(type(of: appDelegate), "application:didFailToRegisterForRemoteNotificationsWithError:")
