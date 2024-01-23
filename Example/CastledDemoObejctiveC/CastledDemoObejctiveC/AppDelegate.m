@@ -6,8 +6,8 @@
 //
 
 #import "AppDelegate.h"
-#import <UserNotifications/UserNotifications.h>
 #import <Castled/Castled-Swift.h>
+#import <UserNotifications/UserNotifications.h>
 
 @interface AppDelegate ()<UIApplicationDelegate,UNUserNotificationCenterDelegate,CastledNotificationDelegate>
 {
@@ -16,36 +16,16 @@
 @end
 
 @implementation AppDelegate
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
 
-    CastledConfigs *config = [CastledConfigs initializeWithAppId:@"718c38e2e359d94367a2e0d35e1fd4df"];
-//    config.permittedBGIdentifier = @"";
+    //1. Configure config
+    CastledConfigs *config = [CastledConfigs initializeWithAppId:@"<App ID>"];
     config.enablePush = TRUE;
-    config.enableAppInbox = TRUE;
-//    config.enableTracking = TRUE;
-    config.enableInApp = TRUE;
-    config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
-    config.logLevel = CastledLogLevelDebug;
-    config.location = CastledLocationUS;
-    NSSet<UNNotificationCategory *> *notificationCategories = [self getNotificationCategories];
-  [Castled initializeWithConfig:config andDelegate:self];
-    if (@available(iOS 13.0, *)) {
-        UINavigationBarAppearance *navBarAppearance = [[UINavigationBarAppearance alloc] init];
-        [navBarAppearance configureWithOpaqueBackground];
-        navBarAppearance.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-        navBarAppearance.largeTitleTextAttributes = @{NSForegroundColorAttributeName: [UIColor whiteColor]};
-        navBarAppearance.backgroundColor = [UIColor linkColor];
-        [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+  
+    //2. Call Castled.initialize method
+   [Castled initializeWithConfig:config andDelegate:self];
 
-        [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setStandardAppearance:navBarAppearance];
-        [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[[UINavigationController class]]] setScrollEdgeAppearance:navBarAppearance];
-    }
-
-    [[Castled sharedInstance] setNotificationCategoriesWithItems:notificationCategories];
-    [[Castled sharedInstance] setLaunchOptions:launchOptions];
+    //3. Register Push
     [self registerForPush];
 
     
@@ -107,8 +87,9 @@
 /*************************************************************IMPPORTANT*************************************************************/
 //If you disabled the swizzling in plist you should call the required functions in the delegate methods
 
--(void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-
+/// Called when the application successfully registers with the Apple Push Notification service (APNs).
+/// If method swizzling is disabled, manually set the device token through the Castled SDK.
+-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSMutableString *deviceTokenString =[NSMutableString string];
     if (@available(iOS 13.0, *)) {
         deviceTokenString = [NSMutableString string];
@@ -127,7 +108,10 @@
 
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", deviceTokenString);
     [[Castled sharedInstance] setPushToken:deviceTokenString];
+
 }
+
+
 -(void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
     NSLog(@"failed to register for remote notifications: %@ %@", self.description, error.localizedDescription);
 }

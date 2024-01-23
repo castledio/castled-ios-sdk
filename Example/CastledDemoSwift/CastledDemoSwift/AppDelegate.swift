@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.location = CastledLocation.US
         config.logLevel = CastledLogLevel.debug
         // Register the custom category
-
         Castled.initialize(withConfig: config, andDelegate: self)
         Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
         registerForPush()
@@ -211,7 +210,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
         })
     }
-    
 }
 
 // MARK: - Supporting Methods for CastledPusherExample

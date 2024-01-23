@@ -20,9 +20,6 @@ extension Castled {
             if !response.success {
                 CastledLog.castledLog("Report InApp Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
-//            else {
-//                CastledLog.castledLog("Report InApp success : \(params)", logLevel: CastledLogLevel.info)
-//            }
             completion(response)
         })
     }
@@ -32,12 +29,7 @@ extension Castled {
      */
     static func reportInboxEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportInboxEvent(params: params, instanceId: Castled.sharedInstance.instanceId)
-
         Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
-//            if !response.success {
-//              //  CastledLog.castledLog("Report Inbox Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-//            }
-
             completion(response)
         })
     }
@@ -61,9 +53,6 @@ extension Castled {
     static func reportUserEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportUserEvent(params: params.last!)
         Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
-//            if !response.success {
-//                CastledLog.castledLog("Report User Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-//            }
             completion(response)
         })
     }

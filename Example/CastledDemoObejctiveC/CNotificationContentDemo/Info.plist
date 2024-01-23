@@ -11,6 +11,7 @@
 			<key>UNNotificationExtensionCategory</key>
 			<array>
 				<string>CASTLED_PUSH_TEMPLATE</string>
+				<string>ACCEPT_DECLINE</string>
 			</array>
 			<key>UNNotificationExtensionInitialContentSizeRatio</key>
 			<integer>1</integer>

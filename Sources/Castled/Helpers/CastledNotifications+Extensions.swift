@@ -64,8 +64,6 @@ public extension Castled {
                 completionHandler()
             }
         } else {
-            CastledLog.castledLog("userNotificationCenter didReceive  not implemented", logLevel: CastledLogLevel.info)
-
             completionHandler()
         }
     }
