@@ -202,7 +202,7 @@ public extension Castled {
     }
 
     internal func processAllDeliveredNotifications(shouldClear: Bool) {
-        if CastledConfigs.sharedInstance.enablePush == false {
+        if CastledConfigsUtils.enablePush == false {
             return
         }
         castledNotificationQueue.async {

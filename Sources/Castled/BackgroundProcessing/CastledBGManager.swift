@@ -10,7 +10,6 @@ import Foundation
 
 class CastledBGManager {
     static let sharedInstance = CastledBGManager()
-    private let castledConfig = CastledConfigs.sharedInstance
     private var isRegistered = false
     private var isExecuting = false
 
@@ -22,7 +21,7 @@ class CastledBGManager {
         if isRegistered { return }
         if #available(iOS 13.0, *) {
             isRegistered = true
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: castledConfig.permittedBGIdentifier, using: nil) { task in
+            BGTaskScheduler.shared.register(forTaskWithIdentifier: CastledConfigsUtils.permittedBGIdentifier, using: nil) { task in
                 self.handleBackgroundTask(task: task as! BGProcessingTask)
             }
             startBackgroundTask()
@@ -58,7 +57,7 @@ class CastledBGManager {
     }
 
     private func handleBackgroundTask(task: BGProcessingTask) {
-        if castledConfig.permittedBGIdentifier.isEmpty {
+        if CastledConfigsUtils.permittedBGIdentifier.isEmpty {
             return
         }
         expirationHandler = {
@@ -78,15 +77,15 @@ class CastledBGManager {
     }
 
     private func getNewTaskRequest() -> BGProcessingTaskRequest {
-        let taskRequest = BGProcessingTaskRequest(identifier: castledConfig.permittedBGIdentifier)
+        let taskRequest = BGProcessingTaskRequest(identifier: CastledConfigsUtils.permittedBGIdentifier)
         taskRequest.requiresExternalPower = true
         taskRequest.requiresNetworkConnectivity = true
-        taskRequest.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(max(castledConfig.inAppFetchIntervalSec, 15 * 60)))
+        taskRequest.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(max(CastledConfigsUtils.inAppFetchIntervalSec, 15 * 60)))
         return taskRequest
     }
 
     private func startBackgroundTask() {
-        if castledConfig.permittedBGIdentifier.isEmpty {
+        if CastledConfigsUtils.permittedBGIdentifier.isEmpty {
             return
         }
         if checkBackgroundProcessingCapability() {
@@ -108,7 +107,7 @@ class CastledBGManager {
             expirationHandler = nil
         }
         if #available(iOS 13.0, *) {
-            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: castledConfig.permittedBGIdentifier)
+            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: CastledConfigsUtils.permittedBGIdentifier)
         }
     }
 

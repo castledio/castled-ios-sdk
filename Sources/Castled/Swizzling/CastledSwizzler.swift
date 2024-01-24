@@ -24,7 +24,7 @@ class CastledSwizzler {
         self.swizzleImplementations(type(of: appDelegate), "userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")
         self.swizzleImplementations(type(of: appDelegate), "userNotificationCenter:willPresentNotification:withCompletionHandler:")
         self.swizzleImplementations(type(of: appDelegate), "application:didReceiveRemoteNotification:fetchCompletionHandler:")
-        self.swizzleImplementations(type(of: appDelegate), "application:openURL:options:")
+//        self.swizzleImplementations(type(of: appDelegate), "application:openURL:options:")
     }
 
     private class func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {

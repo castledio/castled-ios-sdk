@@ -9,13 +9,12 @@ import Foundation
 
 class CastledUserDefaults: NSObject {
     private static let userDefaults = UserDefaults.standard
-    static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigs.sharedInstance.appGroupId) ?? UserDefaults.standard
+    static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.appGroupId) ?? UserDefaults.standard
 
     // Userdefault keys
     static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
     static var kCastledUserIdKey = "_castledUserId_"
     static var kCastledDeviceIddKey = "_castledDeviceId_"
-    static var kCastledAppIddKey = "_castledAppid_"
     static var kCastledDeviceInfoKey = "_castledDeviceInfo_"
     static var kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
@@ -90,15 +89,18 @@ class CastledUserDefaults: NSObject {
         return userDefaults.object(forKey: key)
     }
 
-    static func getCastledAppId() -> String? {
-        if let stringValue = UserDefaults.standard.string(forKey: kCastledAppIddKey) {
-            return stringValue
-        }
-        return nil
+    static func setValueFor(_ key: String, _ data: Any) {
+        // Save the value in UserDefaults
+        userDefaults.setValue(data, forKey: key)
+        userDefaults.synchronize()
     }
 
-    static func setCastledAppId(_ appid: String) {
-        UserDefaults.standard.set(appid, forKey: kCastledAppIddKey)
+    static func getValueFor(_ key: String) -> Any? {
+        return userDefaults.value(forKey: key)
+    }
+
+    static func getSharedUserdefaults() -> UserDefaults {
+        return userDefaults
     }
 
     static func clearAllFromPreference() {
@@ -117,7 +119,6 @@ class CastledUserDefaults: NSObject {
         removeFor(kCastledClickedPushIds)
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
-        UserDefaults.standard.removeObject(forKey: kCastledAppIddKey)
         CastledUserDefaults.shared.userId = nil
         CastledUserDefaults.shared.userToken = nil
         CastledUserDefaults.shared.apnsToken = nil

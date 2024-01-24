@@ -37,11 +37,11 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         // Use the DateFormatter to convert the Date to a string
         let dateString = dateFormatter.string(from: date)
 //
-//        Castled.sharedInstance.logCustomAppEvent(self, eventName: "ios test_event \(dateString)", params: ["Int": 100,
-//                                                                                                            "Date": Date(),
-//                                                                                                            "Bool": false,
-//                                                                                                            "Name": "Antony"])
-//
+        Castled.sharedInstance.logCustomAppEvent(eventName: "ios test_event 3.2.0 \(dateString)", params: ["Int": 100,
+                                                                                                           "Date": Date(),
+                                                                                                           "Bool": false,
+                                                                                                           "Name": "Antony"])
+
 //        Castled.sharedInstance.setUserAttributes(params: ["Age": 100,
 //                                                           "DOB": Date(),
 //                                                           "LName": "Mathew",
