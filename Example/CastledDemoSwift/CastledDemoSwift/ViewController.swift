@@ -37,10 +37,10 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         // Use the DateFormatter to convert the Date to a string
         let dateString = dateFormatter.string(from: date)
 //
-        Castled.sharedInstance.logCustomAppEvent(eventName: "ios test_event 3.2.0 \(dateString)", params: ["Int": 100,
-                                                                                                           "Date": Date(),
-                                                                                                           "Bool": false,
-                                                                                                           "Name": "Antony"])
+//        Castled.sharedInstance.logCustomAppEvent(eventName: "ios test_event 3.2.0 \(dateString)", params: ["Int": 100,
+//                                                                                                           "Date": Date(),
+//                                                                                                           "Bool": false,
+//                                                                                                           "Name": "Antony"])
 
 //        Castled.sharedInstance.setUserAttributes(params: ["Age": 100,
 //                                                           "DOB": Date(),
@@ -106,6 +106,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     }
 
     func setUpInboxCallback() {
+        return;
         Castled.sharedInstance.observeUnreadCountChanges(listener: { _ in
             //   print("Inbox unread count is \(unreadCount)")
         })

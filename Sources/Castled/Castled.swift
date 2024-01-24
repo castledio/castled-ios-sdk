@@ -234,7 +234,7 @@ import UserNotifications
     /**
      Supporting method for react and other SDKs
      */
-    public static func reactInitialSetup() {
+    public static func initializeForCrossPlatform() {
         CastledSwizzler.enableSwizzlingForNotifications()
     }
 }
