@@ -8,16 +8,16 @@
 import Foundation
 
 class CastledConfigsUtils: NSObject {
-    static var kCastledAppIddKey = "_castledAppid_"
-    static var kCastledAppGroupId = "_castled_config_appgroup_id_"
-    static var kCastledEnableAppInbox = "_castled_config_enable_inbox_"
-    static var kCastledEnableInApp = "_castled_config_enable_innapp_"
-    static var kCastledEnableTracking = "_castled_config_enable_tracking_"
-    static var kCastledEnablePush = "_castled_config_enable_push_"
-    static var kCastledInAppFetchIntervalSec = "_castled_config_inapp_fetchInterval_"
-    static var kCastledlogLevel = "_castled_config_log_level_"
-    static var kCastledlocation = "_castled_config_location_"
-    static var kCastledpermittedBGIdentifier = "_castled_config_permitted_bg_identifier_"
+    static let kCastledAppIddKey = "_castledAppid_"
+    static let kCastledAppGroupId = "_castled_config_appgroup_id_"
+    static let kCastledEnableAppInbox = "_castled_config_enable_inbox_"
+    static let kCastledEnableInApp = "_castled_config_enable_innapp_"
+    static let kCastledEnableTracking = "_castled_config_enable_tracking_"
+    static let kCastledEnablePush = "_castled_config_enable_push_"
+    static let kCastledInAppFetchIntervalSec = "_castled_config_inapp_fetchInterval_"
+    static let kCastledlogLevel = "_castled_config_log_level_"
+    static let kCastledlocation = "_castled_config_location_"
+    static let kCastledpermittedBGIdentifier = "_castled_config_permitted_bg_identifier_"
 
     // var instanceId: String = ""
 

@@ -12,11 +12,11 @@ class CastledUserDefaults: NSObject {
     static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.appGroupId) ?? UserDefaults.standard
 
     // Userdefault keys
-    static var kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
-    static var kCastledUserIdKey = "_castledUserId_"
-    static var kCastledDeviceIddKey = "_castledDeviceId_"
-    static var kCastledDeviceInfoKey = "_castledDeviceInfo_"
-    static var kCastledUserTokenKey = "_castleduserToken_"
+    static let kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
+    static let kCastledUserIdKey = "_castledUserId_"
+    static let kCastledDeviceIddKey = "_castledDeviceId_"
+    static let kCastledDeviceInfoKey = "_castledDeviceInfo_"
+    static let kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
     static let kCastledInAppsList = "castled_inapps"
     static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
