@@ -98,7 +98,7 @@ extension Castled {
      Function to fetch all App Notification
      */
     static func fetchInAppNotifications(completion: @escaping (_ response: CastledResponse<[CastledInAppObject]>) -> Void) {
-        if !CastledConfigs.sharedInstance.enableInApp {
+        if !CastledConfigsUtils.enableInApp {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
@@ -132,7 +132,7 @@ extension Castled {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
 
             return
-        } else if !CastledConfigs.sharedInstance.enableAppInbox {
+        } else if !CastledConfigsUtils.enableAppInbox {
             completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
             return
         }

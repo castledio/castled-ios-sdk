@@ -11,7 +11,7 @@ class CastledEventsTracker: NSObject {
     static let shared = CastledEventsTracker()
     override private init() {}
     func trackEvent(eventName: String, params: [String: Any]) {
-        if !CastledConfigs.sharedInstance.enableTracking {
+        if !CastledConfigsUtils.enableTracking {
             return
         }
         guard let userId = CastledUserDefaults.shared.userId else {
@@ -35,7 +35,7 @@ class CastledEventsTracker: NSObject {
     }
 
     func setUserAttributes(params: [String: Any]) {
-        if !CastledConfigs.sharedInstance.enableTracking {
+        if !CastledConfigsUtils.enableTracking {
             CastledLog.castledLog("Set userAttributes failed: \(CastledExceptionMessages.trackingDisabled.rawValue)", logLevel: .error)
             return
         }

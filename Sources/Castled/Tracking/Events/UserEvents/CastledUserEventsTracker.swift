@@ -30,7 +30,7 @@ class CastledUserEventsTracker: NSObject {
 
     override private init() {}
     func updateUserEvents() {
-        if !CastledConfigs.sharedInstance.enableTracking {
+        if !CastledConfigsUtils.enableTracking {
             return
         }
         guard let userId = CastledUserDefaults.shared.userId else {

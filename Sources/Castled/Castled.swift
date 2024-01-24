@@ -17,7 +17,7 @@ import UserNotifications
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance = Castled()
     var inboxUnreadCountCallback: ((Int) -> Void)?
-    var instanceId = CastledUserDefaults.getCastledAppId() ?? ""
+    var instanceId = CastledConfigsUtils.appId ?? ""
     var delegate: CastledNotificationDelegate?
     var clientRootViewController: UIViewController?
     private var isInitialized = false
@@ -50,6 +50,7 @@ import UserNotifications
         Castled.sharedInstance.instanceId = config.instanceId
         Castled.sharedInstance.isInitialized = true
         Castled.sharedInstance.delegate = delegate
+        CastledConfigsUtils.saveTheConfigs()
         Castled.sharedInstance.initialSetup()
     }
 
@@ -71,7 +72,6 @@ import UserNotifications
         CastledDeviceInfo.shared.updateDeviceInfo()
         CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
-        CastledUserDefaults.setCastledAppId(Castled.sharedInstance.instanceId)
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
     }
 
@@ -159,13 +159,6 @@ import UserNotifications
     }
 
     /**
-     Supporting method for react and other SDKs
-     */
-    public func logMessage(_ message: String, _ logLevel: CastledLogLevel) {
-        CastledLog.castledLog(message, logLevel: logLevel)
-    }
-
-    /**
      Function that allows users to set the badge on the app icon manually.
      */
     func setBadge(to count: Int) {
@@ -189,7 +182,7 @@ import UserNotifications
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
-        if CastledConfigs.sharedInstance.enableInApp == false {
+        if CastledConfigsUtils.enableInApp == false {
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
@@ -223,9 +216,25 @@ import UserNotifications
         }
     }
 
-    func updateTheUserIdAndToken(_ userId: String, _ deviceToken: String) {
+    private func updateTheUserIdAndToken(_ userId: String, _ deviceToken: String) {
         Castled.sharedInstance.api_RegisterUser(userId: userId, apnsToken: deviceToken) { _ in
             Castled.sharedInstance.executeBGTasks()
         }
+    }
+
+    // MARK: - REACT AND OTHER SDK SUPPORT
+
+    /**
+     Supporting method for react and other SDKs
+     */
+    public func logMessage(_ message: String, _ logLevel: CastledLogLevel) {
+        CastledLog.castledLog(message, logLevel: logLevel)
+    }
+
+    /**
+     Supporting method for react and other SDKs
+     */
+    public static func initializeForCrossPlatform() {
+        CastledSwizzler.enableSwizzlingForNotifications()
     }
 }
