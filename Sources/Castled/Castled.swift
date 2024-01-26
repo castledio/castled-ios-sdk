@@ -49,7 +49,9 @@ import UserNotifications
         }
         Castled.sharedInstance.instanceId = config.instanceId
         Castled.sharedInstance.isInitialized = true
-        Castled.sharedInstance.delegate = delegate
+        if let castledDelegate = delegate {
+            Castled.sharedInstance.delegate = castledDelegate
+        }
         CastledConfigsUtils.saveTheConfigs()
         Castled.sharedInstance.initialSetup()
     }
@@ -236,5 +238,9 @@ import UserNotifications
      */
     public static func initializeForCrossPlatform() {
         CastledSwizzler.enableSwizzlingForNotifications()
+    }
+
+    public static func setDelegate(_ delegate: CastledNotificationDelegate) {
+        Castled.sharedInstance.delegate = delegate
     }
 }
