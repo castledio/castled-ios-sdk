@@ -12,6 +12,7 @@ import UserNotifications
 
 @objc public protocol CastledNotificationDelegate {
     @objc optional func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any])
+    @objc optional func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any])
 }
 
 @objc public class Castled: NSObject {
@@ -221,6 +222,23 @@ import UserNotifications
     private func updateTheUserIdAndToken(_ userId: String, _ deviceToken: String) {
         Castled.sharedInstance.api_RegisterUser(userId: userId, apnsToken: deviceToken) { _ in
             Castled.sharedInstance.executeBGTasks()
+        }
+    }
+
+    @objc public func promptForPushNotification() {
+        DispatchQueue.main.async {
+            if let appDelegate = UIApplication.shared.delegate as? UNUserNotificationCenterDelegate {
+                UNUserNotificationCenter.current().delegate = appDelegate
+                UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { granted, _ in
+                    if granted {
+                        DispatchQueue.main.async {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
+                    }
+                })
+            } else {
+                CastledLog.castledLog("AppDelegate does not conform to UNUserNotificationCenterDelegate. Please confirm to UIApplicationDelegate protocol. https://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#registering-push-notification", logLevel: .error)
+            }
         }
     }
 

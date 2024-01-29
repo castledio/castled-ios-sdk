@@ -12,6 +12,7 @@ class CastledConstants {
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CASTLED_EXCLUDED_INAPPS"
+    static let kCastledSkipAutoUrlOpeningKey = "CASTLED_SKIP_AUTO_URL_OPENING"
 
     enum PushNotification {
         static let customKey = "castled"
@@ -74,8 +75,10 @@ class CastledConstants {
                         return CastledClickActionType.dismiss
                     case .requestPushPermission:
                         return CastledClickActionType.requestForPush
-                    default:
+                    case .custom:
                         return CastledClickActionType.custom
+                    default:
+                        return CastledClickActionType.none
                 }
             }
         }

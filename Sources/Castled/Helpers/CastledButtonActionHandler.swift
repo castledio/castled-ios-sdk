@@ -9,14 +9,19 @@ import Foundation
 import UIKit
 
 class CastledButtonActionHandler {
-    static func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
+    static func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]?) {
+        let skipAutoOpening = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledSkipAutoUrlOpeningKey) as? Bool ?? false
+        if skipAutoOpening {
+            return
+        }
+
         switch action {
             case .deepLink:
-                if let details = kvPairs, let clickActionUrl = details["clickActionUrl"] as? String, let url = getDeepLinkUrlFrom(url: clickActionUrl, parameters: kvPairs) { CastledButtonActionHandler.openURL(url) }
+                if let details = kvPairs, let clickActionUrl = details["clickActionUrl"] as? String ?? details["url"] as? String, let url = getDeepLinkUrlFrom(url: clickActionUrl, parameters: kvPairs) { CastledButtonActionHandler.openURL(url) }
             case .navigateToScreen:
                 break
             case .richLanding:
-                if let details = kvPairs, let clickActionUrl = details["clickActionUrl"] as? String, let url = URL(string: clickActionUrl) { CastledButtonActionHandler.openURL(url) }
+                if let details = kvPairs, let clickActionUrl = details["clickActionUrl"] as? String ?? details["url"] as? String, let url = URL(string: clickActionUrl) { CastledButtonActionHandler.openURL(url) }
             case .requestForPush:
                 // TODO:
 

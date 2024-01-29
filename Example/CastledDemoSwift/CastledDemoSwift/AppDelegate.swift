@@ -134,18 +134,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
-        UNUserNotificationCenter.current().delegate = self
-        UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { granted, _ in
-            if granted {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
-            }
-        })
+        Castled.sharedInstance.promptForPushNotification()
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
-        print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************\(userInfo)")
+        // print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************\(userInfo)")
         switch action {
             case .deepLink:
                 if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {
@@ -175,6 +168,10 @@ extension AppDelegate: CastledNotificationDelegate {
             default:
                 break
         }
+    }
+
+    func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
+      //  print("didReceiveCastledRemoteNotification \(userInfo)")
     }
 }
 

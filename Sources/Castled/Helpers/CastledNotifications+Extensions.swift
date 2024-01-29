@@ -105,6 +105,7 @@ public extension Castled {
 
     @objc func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) {
         processCastledPushEvents(userInfo: notification.request.content.userInfo)
+        Castled.sharedInstance.delegate?.didReceiveCastledRemoteNotification?(withInfo: notification.request.content.userInfo)
     }
 
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
@@ -116,7 +117,7 @@ public extension Castled {
 
     internal func handleNotificationAction(response: UNNotificationResponse) {
         // Returning the same options we've requested
-        var pushActionType = CastledClickActionType.custom
+        var pushActionType = CastledClickActionType.none
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
             if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaultsSuit.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
