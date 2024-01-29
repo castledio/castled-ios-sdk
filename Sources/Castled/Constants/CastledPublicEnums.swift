@@ -33,6 +33,7 @@ import Foundation
     case requestForPush
     case dismiss
     case custom
+    case none
 }
 
 @objc public enum CastledNotificationType: Int {
