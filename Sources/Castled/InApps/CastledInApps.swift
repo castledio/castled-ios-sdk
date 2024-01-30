@@ -101,6 +101,7 @@ import UIKit
         var clickAction = CastledConstants.PushNotification.ClickActionType.custom.rawValue
         var params: [String: Any]?
         var url: String?
+        var buttonTitle = ""
 
         if let action = buttonAction {
             clickAction = action.clickAction.rawValue
@@ -109,6 +110,7 @@ import UIKit
                 params?[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyVals
             }
             url = action.url
+            buttonTitle = action.label
         } else if let slideUp = slide {
             clickAction = slideUp.clickAction.rawValue
             if let keyVals = slideUp.keyVals {
@@ -125,6 +127,8 @@ import UIKit
         }
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url ?? ""
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction
+        params?[CastledConstants.PushNotification.CustomProperties.Category.Action.buttonTitle] = buttonTitle
+
         var clickActionType = CastledClickActionType.custom
         switch clickAction {
             case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:

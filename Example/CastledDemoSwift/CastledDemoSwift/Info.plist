@@ -6,7 +6,7 @@
 	<array>
 		<string>com.castled.backgroundtask</string>
 	</array>
-	<key>CASTLED_EXCLUDED_INAPPS</key>
+	<key>CastledExcludedInppViews</key>
 	<array>
 		<string>SplashViewController</string>
 		<string>TutorialPageViewController</string>
@@ -24,7 +24,7 @@
 	</array>
 	<key>CastledSwizzlingDisabled</key>
 	<true/>
-	<key>CASTLED_SKIP_AUTO_URL_OPENING</key>
+	<key>CastledSkipLaunchURLHandling</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

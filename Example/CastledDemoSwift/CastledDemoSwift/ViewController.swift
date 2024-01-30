@@ -106,9 +106,9 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     }
 
     func setUpInboxCallback() {
-        return;
-        Castled.sharedInstance.observeUnreadCountChanges(listener: { _ in
-            //   print("Inbox unread count is \(unreadCount)")
+        //   return;
+        Castled.sharedInstance.observeUnreadCountChanges(listener: { unreadCount in
+            print("Inbox unread count is \(unreadCount)")
         })
 
         Castled.sharedInstance.getInboxItems(completion: { _, _, _ in
