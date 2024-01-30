@@ -11,8 +11,8 @@ class CastledConstants {
     // Plist Key for enable/ Disable swizzling
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
-    static let kCastledExcludedInAppViewControllers = "CASTLED_EXCLUDED_INAPPS"
-    static let kCastledSkipAutoUrlOpeningKey = "CASTLED_SKIP_AUTO_URL_OPENING"
+    static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
+    static let kCastledSkipAutoUrlOpeningKey = "CastledSkipUrlHandling"
 
     enum PushNotification {
         static let customKey = "castled"
@@ -41,6 +41,8 @@ class CastledConstants {
                     static let url = "url"
                     static let useWebView = "useWebview"
                     static let keyVals = "keyVals"
+                    static let buttonTitle = "buttonTitle"
+
                 }
             }
         }

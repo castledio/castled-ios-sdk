@@ -134,6 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
+        UNUserNotificationCenter.current().delegate = self
         Castled.sharedInstance.promptForPushNotification()
     }
 
@@ -171,7 +172,7 @@ extension AppDelegate: CastledNotificationDelegate {
     }
 
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
-      //  print("didReceiveCastledRemoteNotification \(userInfo)")
+        //  print("didReceiveCastledRemoteNotification \(userInfo)")
     }
 }
 
