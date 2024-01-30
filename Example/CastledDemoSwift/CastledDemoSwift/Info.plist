@@ -24,8 +24,8 @@
 	</array>
 	<key>CastledSwizzlingDisabled</key>
 	<true/>
-	<key>CastledSkipLaunchURLHandling</key>
-	<false/>
+	<key>CastledSkipUrlHandling</key>
+	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
