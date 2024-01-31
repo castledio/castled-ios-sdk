@@ -11,6 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CastledNotificationServiceObjC : UNNotificationServiceExtension
+
+@property (nonatomic,retain) NSString *appGroupId;
+
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent *contentToDeliver))contentHandler;
 - (void)serviceExtensionTimeWillExpire;
 

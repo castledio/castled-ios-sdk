@@ -22,13 +22,20 @@
 @end
 
 @implementation CastledNotificationServiceObjC
+@synthesize appGroupId;
 
 - (instancetype)init {
     self = [super init];
     if (self) {
         self.serviceExtension = [[CastledNotificationServiceExtension alloc] init];
+        self.serviceExtension.appGroupId = appGroupId;
+
     }
     return self;
+}
+- (void)setAppGroupId:(NSString *)appGroupId{
+    self.serviceExtension.appGroupId = appGroupId;
+
 }
 
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
