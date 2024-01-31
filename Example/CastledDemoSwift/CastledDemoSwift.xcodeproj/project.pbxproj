@@ -87,6 +87,7 @@
 		0A4350DE2A30E7B300890CE8 /* CastledDemoSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CastledDemoSwift.entitlements; sourceTree = "<group>"; };
 		0A5AA3732B1F5656006B2008 /* pexels-senuscape-1658967.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "pexels-senuscape-1658967.jpg"; sourceTree = "<group>"; };
 		0AA30F9D2B4E6885008CA421 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		0ABA79392B6A61CA007C2EE6 /* CNotificationServiceDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CNotificationServiceDemo.entitlements; sourceTree = "<group>"; };
 		0AC021792A30B9D300656DFD /* CastledDemoSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CastledDemoSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AC0217C2A30B9D300656DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0AC021802A30B9D300656DFD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -248,6 +249,7 @@
 		0AC021E72A30BBD400656DFD /* CNotificationServiceDemo */ = {
 			isa = PBXGroup;
 			children = (
+				0ABA79392B6A61CA007C2EE6 /* CNotificationServiceDemo.entitlements */,
 				0AC021E82A30BBD400656DFD /* NotificationService.swift */,
 				0AC021EA2A30BBD400656DFD /* Info.plist */,
 			);
@@ -961,6 +963,7 @@
 			baseConfigurationReference = D18F847C13F88E7A183615EB /* Pods-CNotificationServiceDemo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_ENTITLEMENTS = CNotificationServiceDemo/CNotificationServiceDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
@@ -989,6 +992,7 @@
 			baseConfigurationReference = 7EBD88FE895B19BA03C64954 /* Pods-CNotificationServiceDemo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_ENTITLEMENTS = CNotificationServiceDemo/CNotificationServiceDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;

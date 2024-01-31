@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.enableTracking = true
         config.location = CastledLocation.US
         config.logLevel = CastledLogLevel.debug
+        config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
         Castled.initialize(withConfig: config, andDelegate: self)
         Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)

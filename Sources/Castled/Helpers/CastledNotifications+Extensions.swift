@@ -58,7 +58,6 @@ public extension Castled {
                                                withCompletionHandler completionHandler: @escaping () -> Void)
     {
         Castled.sharedInstance.handleNotificationAction(response: response)
-
         if responds(to: #selector(swizzled_userNotificationCenter(_:didReceiveNotificationResponse:withCompletionHandler:))) {
             swizzled_userNotificationCenter(center, didReceiveNotificationResponse: response) {
                 completionHandler()
@@ -82,6 +81,7 @@ public extension Castled {
     }
 
     @objc func didReceiveRemoteNotification(inApplication application: UIApplication, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
         if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
             if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
@@ -106,6 +106,7 @@ public extension Castled {
     @objc func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) {
         processCastledPushEvents(userInfo: notification.request.content.userInfo)
         Castled.sharedInstance.delegate?.didReceiveCastledRemoteNotification?(withInfo: notification.request.content.userInfo)
+        CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(notification.request.content.userInfo)
     }
 
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
@@ -174,6 +175,7 @@ public extension Castled {
                 Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
             }
         }
+        CastledBadgeManager.shared.clearApplicationBadge()
     }
 
     internal func processCastledPushEvents(userInfo: [AnyHashable: Any], isOpened: Bool? = false, isDismissed: Bool? = false, actionLabel: String? = "", actionType: String? = "") {
@@ -211,6 +213,7 @@ public extension Castled {
                 let center = UNUserNotificationCenter.current()
                 center.getDeliveredNotifications { receivedNotifications in
                     var castledPushEvents = [[String: String]]()
+                    var castledNotifications = 0
                     for notification in receivedNotifications {
                         let content = notification.request.content
                         if let customCasledDict = content.userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
@@ -220,16 +223,15 @@ public extension Castled {
                                 let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
                                 castledPushEvents.append(contentsOf: params)
                             }
+                            castledNotifications += 1
                         }
                     }
                     if !castledPushEvents.isEmpty {
                         Castled.reportPushEvents(params: castledPushEvents) { _ in
                         }
                     }
-                    if shouldClear == true {
-                        DispatchQueue.main.async {
-                            center.removeAllDeliveredNotifications()
-                        }
+                    if castledNotifications == 0 {
+                        CastledBadgeManager.shared.clearApplicationBadge()
                     }
                 }
             }
