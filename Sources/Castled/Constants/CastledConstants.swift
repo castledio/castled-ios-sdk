@@ -17,6 +17,8 @@ class CastledConstants {
     enum PushNotification {
         static let customKey = "castled"
         static let apsKey = "aps"
+        static let badgeKey = "badge"
+
         enum ApsProperties {
             static let category = "category"
         }

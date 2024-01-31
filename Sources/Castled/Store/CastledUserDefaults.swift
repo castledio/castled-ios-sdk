@@ -19,6 +19,8 @@ class CastledUserDefaults: NSObject {
     static let kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
     static let kCastledInAppsList = "castled_inapps"
+    static let kCastledBadgeKey = "castled_application_badge"
+    static let kCastledLastBadgeIncrementTimeKey = "castled_last_badge_increment_timer"
     static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
     static let kCastledFailedItems = "_castledFailedItems_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
@@ -89,14 +91,14 @@ class CastledUserDefaults: NSObject {
         return userDefaults.object(forKey: key)
     }
 
-    static func setValueFor(_ key: String, _ data: Any) {
+    static func setValueFor(_ key: String, _ data: Any, ud: UserDefaults = UserDefaults.standard) {
         // Save the value in UserDefaults
-        userDefaults.setValue(data, forKey: key)
-        userDefaults.synchronize()
+        ud.setValue(data, forKey: key)
+        ud.synchronize()
     }
 
-    static func getValueFor(_ key: String) -> Any? {
-        return userDefaults.value(forKey: key)
+    static func getValueFor(_ key: String,ud: UserDefaults = UserDefaults.standard) -> Any? {
+        return ud.value(forKey: key)
     }
 
     static func getSharedUserdefaults() -> UserDefaults {

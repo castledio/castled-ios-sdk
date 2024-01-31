@@ -23,7 +23,8 @@ import UserNotifications
     var clientRootViewController: UIViewController?
     private var isInitialized = false
     // Create a dispatch queue
-    let castledDispatchQueue = DispatchQueue(label: "CastledQueue", attributes: .concurrent)
+    let castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
+    let castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", attributes: .concurrent)
     let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
     let castledEventsTrackingQueue = DispatchQueue(label: "CastledEventsTrackingQueue", attributes: .concurrent)
 
@@ -96,7 +97,7 @@ import UserNotifications
      Function that allows users to set the PushNotifiication token.
      */
     @objc public func setPushToken(_ token: String) {
-        castledDispatchQueue.async(flags: .barrier) {
+        castledProfileQueue.async(flags: .barrier) {
             let oldToken = CastledUserDefaults.shared.apnsToken ?? ""
             CastledUserDefaults.shared.apnsToken = token
             CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, token)
@@ -195,7 +196,7 @@ import UserNotifications
      Funtion which alllows to register the User & Token with Castled.
      */
     private func saveUserId(_ userId: String, _ userToken: String? = nil) {
-        castledDispatchQueue.async(flags: .barrier) {
+        castledProfileQueue.async(flags: .barrier) {
             let existingUserId = CastledUserDefaults.shared.userId
             CastledUserDefaults.setString(CastledUserDefaults.kCastledUserIdKey, userId)
             if let secureUserId = userToken {

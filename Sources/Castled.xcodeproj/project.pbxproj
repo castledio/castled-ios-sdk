@@ -16,6 +16,7 @@
 		0A0F97ED2ACBE84200BA05D0 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A0F97EC2ACBE84200BA05D0 /* Realm.framework */; platformFilter = ios; };
 		0A0F97F12ACC53FF00BA05D0 /* CExtensions+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0F97F02ACC53FF00BA05D0 /* CExtensions+Data.swift */; };
 		0A0F97F32ACC7E9900BA05D0 /* CastledInboxResponseConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0F97F22ACC7E9900BA05D0 /* CastledInboxResponseConverter.swift */; };
+		0A1855502B6A2DA7005C1681 /* CastledBadgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A18554F2B6A2DA7005C1681 /* CastledBadgeManager.swift */; };
 		0A1B4B782A7BB1E100D6430B /* CIFsDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */; };
 		0A1B4B792A7BB1E100D6430B /* CIHTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B762A7BB1E100D6430B /* CIHTMLView.swift */; };
 		0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B772A7BB1E100D6430B /* CIModalDefaultView.swift */; };
@@ -145,6 +146,7 @@
 		0A0F97EC2ACBE84200BA05D0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		0A0F97F02ACC53FF00BA05D0 /* CExtensions+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CExtensions+Data.swift"; sourceTree = "<group>"; };
 		0A0F97F22ACC7E9900BA05D0 /* CastledInboxResponseConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxResponseConverter.swift; sourceTree = "<group>"; };
+		0A18554F2B6A2DA7005C1681 /* CastledBadgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledBadgeManager.swift; sourceTree = "<group>"; };
 		0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIFsDefaultView.swift; sourceTree = "<group>"; };
 		0A1B4B762A7BB1E100D6430B /* CIHTMLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIHTMLView.swift; sourceTree = "<group>"; };
 		0A1B4B772A7BB1E100D6430B /* CIModalDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIModalDefaultView.swift; sourceTree = "<group>"; };
@@ -295,6 +297,14 @@
 				0A0E111F2A41F4C4004F247F /* CastledNotificationViewControllerObjC.m */,
 			);
 			path = ObjC;
+			sourceTree = "<group>";
+		};
+		0A18554E2B6A2D8C005C1681 /* Badge */ = {
+			isa = PBXGroup;
+			children = (
+				0A18554F2B6A2DA7005C1681 /* CastledBadgeManager.swift */,
+			);
+			path = Badge;
 			sourceTree = "<group>";
 		};
 		0A1B4B742A7BB15C00D6430B /* Templates */ = {
@@ -553,6 +563,7 @@
 				0A1DE5EC2A9DA1E800DB2E29 /* Inbox */,
 				0ABDE8B229FBF23400D3EF79 /* BackgroundProcessing */,
 				0A74B0852AF2B0A6003364CD /* Tracking */,
+				0A18554E2B6A2D8C005C1681 /* Badge */,
 			);
 			path = Castled;
 			sourceTree = "<group>";
@@ -949,6 +960,7 @@
 				0A4C765A2A7C25AD00F60D16 /* CIBannerDefaultView.swift in Sources */,
 				0AB5C59C291C27840027C36B /* CastledNetworkLayer.swift in Sources */,
 				0A79E22F2AA08E0B0087C3AF /* CastledInboxServices.swift in Sources */,
+				0A1855502B6A2DA7005C1681 /* CastledBadgeManager.swift in Sources */,
 				0AB5C59D291C27840027C36B /* CastledUserDefaults.swift in Sources */,
 				0A1B4B7C2A7BB1F300D6430B /* CastledInAppJSBridge.swift in Sources */,
 				0A74E08D29E6D615004F2610 /* CastledInApps.swift in Sources */,
