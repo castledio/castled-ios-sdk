@@ -26,7 +26,6 @@ import UIKit
             if let loadedInApps = try? decoder.decode([CastledInAppObject].self, from: savedItems) {
                 self.savedInApps.removeAll()
                 self.savedInApps.append(contentsOf: loadedInApps)
-                print("self.savedInAppsself.savedInApps \(self.savedInApps.count)")
             }
         }
     }

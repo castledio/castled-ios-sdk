@@ -51,7 +51,7 @@ class CastledSessionsManager {
                                CastledConstants.Sessions.sessionStartTime: currentStartTime,
                                CastledConstants.Sessions.sessionisFirstSession: isFirstLaunch,
                                CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
-        print("sessionDetails ------> \(sessionDetails)")
+        CastledLog.castledLog("sessionDetails ------> \(sessionDetails)", logLevel: .debug)
     }
 
     private func saveTheValues() {
