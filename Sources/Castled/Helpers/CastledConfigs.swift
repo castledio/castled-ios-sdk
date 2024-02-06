@@ -36,6 +36,10 @@ import Foundation
         false
     }()
 
+    @objc public lazy var enableSessionTracking: Bool = {
+        false
+    }()
+
     @objc public lazy var enableTracking: Bool = {
         false
     }()
@@ -48,6 +52,10 @@ import Foundation
         15 * 60
     }()
 
+    @objc public lazy var sessionTimeOutSec: Int = {
+        15 * 60
+    }()
+    
     @objc public lazy var logLevel: CastledLogLevel = {
         CastledLogLevel.debug
     }()

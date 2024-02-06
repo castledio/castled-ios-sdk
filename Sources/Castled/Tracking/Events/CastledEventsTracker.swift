@@ -26,7 +26,7 @@ class CastledEventsTracker: NSObject {
                                               "properties": stringDict,
                                               "timestamp": Date().string(),
                                               CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
-            Castled.reportCustomEvents(params: [trackParams]) { response in
+            CastledNetworkManager.reportCustomEvents(params: [trackParams]) { response in
                 if response.success {
                     CastledLog.castledLog("Log event '\(eventName)' success!! ", logLevel: CastledLogLevel.debug)
                 }
@@ -52,7 +52,7 @@ class CastledEventsTracker: NSObject {
                 "timestamp": Date().string(),
                 CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userProfileRequest.rawValue,
             ]
-            Castled.reportUserAttributes(params: trackParams) { response in
+            CastledNetworkManager.reportUserAttributes(params: trackParams) { response in
                 if response.success {
                     CastledLog.castledLog("Set user attributes success!!", logLevel: CastledLogLevel.debug)
                 }

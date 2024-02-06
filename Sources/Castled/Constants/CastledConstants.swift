@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CastledConstants {
+enum CastledConstants {
     // Plist Key for enable/ Disable swizzling
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
@@ -152,5 +152,19 @@ class CastledConstants {
         case productEventRequest = "prodEvent"
         case userEventRequest = "userEvent"
         case userProfileRequest = "userProf"
+        case sessionTracking = "session"
+        case logoutUser = "logout"
+    }
+
+    enum Sessions {
+        static let sessionType = "sessionType"
+        static let sessionStarted = "started"
+        static let sessionClosed = "closed"
+        static let sessionId = "sessionId"
+        static let sessionLastDuration = "lduration"
+        static let sessionNumberOfAppOpens = "numberOfAppOpens"
+        static let sessionisFirstSession = "isFirstSession"
+        static let sessionStartTime = "startTime"
+        static let sessionEndTime = "endTime"
     }
 }

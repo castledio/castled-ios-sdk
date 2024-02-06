@@ -13,12 +13,13 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     @IBOutlet weak var btnRegisterUser: UIButton!
     @IBOutlet weak var btnGotoSecondVC: UIButton!
     var mainWindow: UIWindow?
+    @IBOutlet weak var btnLogout: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Castled"
 
-        showRequiredViews()
+        self.showRequiredViews()
 
         // Do any additional setup after loading the view.
     }
@@ -49,34 +50,38 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     }
 
     func showRequiredViews() {
-        DispatchQueue.main.async { [weak self] in
-
-            if UserDefaults.standard.value(forKey: self?.userIdKey ?? "userIdKey") != nil {
-                self?.btnGotoSecondVC.isHidden = false
-                let largeConfig = UIImage.SymbolConfiguration(textStyle: .largeTitle)
-                self?.navigationItem.rightBarButtonItem = nil
-                let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self?.inboxTapped))
-                self?.navigationItem.rightBarButtonItem = inboxButton
-                self?.setUpInboxCallback()
-            }
-            else {
-                self?.btnGotoSecondVC.isHidden = true
-            }
-            self?.btnRegisterUser.isHidden = !(self?.btnGotoSecondVC.isHidden)!
+        if UserDefaults.standard.value(forKey: self.userIdKey ?? "userIdKey") != nil {
+            self.btnGotoSecondVC.isHidden = false
+            let largeConfig = UIImage.SymbolConfiguration(textStyle: .largeTitle)
+            self.navigationItem.rightBarButtonItem = nil
+            let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self.inboxTapped))
+            self.navigationItem.rightBarButtonItem = inboxButton
+            self.setUpInboxCallback()
         }
+        else {
+            self.btnGotoSecondVC.isHidden = true
+        }
+        self.btnRegisterUser.isHidden = !(self.btnGotoSecondVC.isHidden)
+        self.btnLogout.isHidden = !self.btnRegisterUser.isHidden
     }
 
     @IBAction func registerUserAction(_ sender: Any) {
-        registerUserAPI()
+        self.registerUserAPI()
     }
 
     // Function for registering the user with Castled
     func registerUserAPI() {
-        let userId = "antony@castled.io"
+        let userId = "support@castled.io"
         Castled.sharedInstance.setUserId(userId)
-        UserDefaults.standard.setValue(userId, forKey: userIdKey)
+        UserDefaults.standard.setValue(userId, forKey: self.userIdKey)
         UserDefaults.standard.synchronize()
-        showRequiredViews()
+        self.showRequiredViews()
+    }
+
+    @IBAction func logoutbtnCliked(_ sender: Any) {
+        Castled.sharedInstance.logout()
+        UserDefaults.standard.removeObject(forKey: "userIdKey")
+        self.showRequiredViews()
     }
 
     // MARK: - Inbox related

@@ -41,7 +41,7 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
         if inboxUnreadCount == 0 {
             showLoader = true
         }
-        Castled.fetchInboxItems { [weak self] response in
+        CastledNetworkManager.fetchInboxItems { [weak self] response in
             if !response.success {
                 CastledLog.castledLog("Fetch inbox items failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
 //                DispatchQueue.main.async {
