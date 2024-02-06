@@ -30,6 +30,7 @@ class CastledSessionsManager {
     }
 
     private func createNewSession() {
+        return;
         var sessionDetails = [[String: Any]]()
         if !sessionId.isEmpty {
             sessionDetails.append([CastledConstants.Sessions.sessionId: sessionId,
