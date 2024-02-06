@@ -36,7 +36,7 @@ class CastledDeviceInfo: NSObject {
                     } catch {
                         CastledLog.castledLog("Unable to Encode device info (\(error))", logLevel: CastledLogLevel.error)
                     }
-                    Castled.reportDeviceInfo(deviceInfo: deviceInfo) { _ in
+                    CastledNetworkManager.reportDeviceInfo(deviceInfo: deviceInfo) { _ in
                     }
                 }
             }

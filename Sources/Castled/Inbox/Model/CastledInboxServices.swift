@@ -80,7 +80,7 @@ class CastledInboxServices: NSObject {
     }
 
     private func updateInBoxEvents(savedEventTypes: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
-        Castled.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
+        CastledNetworkManager.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
             completion(response.success, response.errorMessage)
         })
     }

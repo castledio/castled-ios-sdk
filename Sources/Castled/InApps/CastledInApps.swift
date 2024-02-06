@@ -13,7 +13,7 @@ import UIKit
     private var pendingInApps = [CastledInAppObject]()
     static var sharedInstance = CastledInApps()
     var savedInApps = [CastledInAppObject]()
-    private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", qos: .background)
+    private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", attributes: .concurrent)
     private let castledInAppsPendinItemsQueue = DispatchQueue(label: "CastledInAppsPendingItemsQueue", attributes: .concurrent)
 
     override private init() {
@@ -21,7 +21,7 @@ import UIKit
     }
 
     func prefetchInApps() {
-        if let savedItems = CastledUserDefaults.getDataFor(CastledUserDefaults.kCastledInAppsList) {
+        if let savedItems = CastledStore.readFromFile(filename: CastledUserDefaults.kCastledInAppsList) {
             let decoder = JSONDecoder()
             if let loadedInApps = try? decoder.decode([CastledInAppObject].self, from: savedItems) {
                 self.savedInApps.removeAll()
@@ -52,7 +52,7 @@ import UIKit
                 json["actionUri"] = value
             }
             json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inappRequest.rawValue
-            Castled.reportInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
+            CastledNetworkManager.reportInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
                 if response.success {
                     // CastledLog.castledLog(response.result as Any)
                 } else {
@@ -158,7 +158,7 @@ import UIKit
             CastledLog.castledLog("Display Inapp: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
-        self.castledInAppsQueue.async { [self] in
+        self.castledInAppsQueue.async(flags: .barrier) { [self] in
             if self.savedInApps.isEmpty {
                 self.prefetchInApps()
             }
@@ -184,7 +184,7 @@ import UIKit
         DispatchQueue.main.async {
             var campaigns = events
             let currentTopVc = self.getTopViewController()
-            self.castledInAppsQueue.async {
+            self.castledInAppsQueue.async(flags: .barrier) {
                 if let satisiiedIndex = events.firstIndex(where: { item in
                     self.isSatisfiedWithGlobalIntervalBtwDisplays(inAppObj: item) && self.canShowInViewController(currentTopVc)
                 }) {

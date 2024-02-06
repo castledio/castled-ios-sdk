@@ -33,13 +33,10 @@ class CastledUserEventsTracker: NSObject {
         if !CastledConfigsUtils.enableTracking {
             return
         }
-        guard let userId = CastledUserDefaults.shared.userId else {
+        guard let userId = CastledUserDefaults.shared.userId, CastledConfigsUtils.enableTracking, isEventsPrefetched, !installationDate.isEmpty else {
             return
         }
 
-        if !isEventsPrefetched,!installationDate.isEmpty {
-            return
-        }
         return;
 
         Castled.sharedInstance.castledEventsTrackingQueue.async(flags: .barrier) {

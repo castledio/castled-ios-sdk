@@ -76,6 +76,23 @@ static NSString *userIdKey = @"userIdKey";
         NSLog(@"Inbox unread count is -- %ld", [[Castled sharedInstance] getInboxUnreadCount]);
 
     }];
+   
+    CastledUserAttributes *userAttributes = [[CastledUserAttributes alloc] init];
+    [userAttributes setFirstName:@"John"];
+    [userAttributes setLastName:@"Doe"];
+    [userAttributes setCity:@"Sanfrancisco"];
+    [userAttributes setCountry:@"US"];
+    [userAttributes setEmail:@"doe@email.com"];
+    [userAttributes setDOB:@"02-01-1995"];
+    [userAttributes setGender:@"M"];
+    [userAttributes setPhone:@"+13156227533"];
+
+    // Custom Attributes
+    [userAttributes setCustomAttribute:@"prime_member" :@(YES)];
+    [userAttributes setCustomAttribute:@"occupation" :@"artist"];
+
+    [[Castled sharedInstance] setUserAttributes:userAttributes];
+    
 //    [[Castled sharedInstance] setUserAttributesWithParams:@{@"fName":@"Antony",@"lName":@"Mathew",@"Age":@35}];
 //    [[Castled sharedInstance] logCustomAppEventWithEventName:@"Test Event" params:@{@"Int": @100,
 //                                                                                   @"Date": [NSDate date],

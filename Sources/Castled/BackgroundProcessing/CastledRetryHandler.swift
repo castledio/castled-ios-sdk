@@ -40,7 +40,7 @@ class CastledRetryHandler {
                         let savedEvents = value
                         self?.castledSemaphore.wait()
                         self?.castledGroup.enter()
-                        Castled.reportPushEvents(params: savedEvents, completion: { [weak self] _ in
+                        CastledNetworkManager.reportPushEvents(params: savedEvents, completion: { [weak self] _ in
                             self?.castledSemaphore.signal()
                             self?.castledGroup.leave()
                         })
@@ -49,7 +49,7 @@ class CastledRetryHandler {
                         let savedEvents = value
                         self?.castledSemaphore.wait()
                         self?.castledGroup.enter()
-                        Castled.reportInAppEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                        CastledNetworkManager.reportInAppEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
                             self?.castledSemaphore.signal()
                             self?.castledGroup.leave()
 
@@ -58,7 +58,7 @@ class CastledRetryHandler {
                         let savedEvents = value
                         self?.castledSemaphore.wait()
                         self?.castledGroup.enter()
-                        Castled.reportInboxEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                        CastledNetworkManager.reportInboxEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
                             self?.castledSemaphore.signal()
                             self?.castledGroup.leave()
                         })
@@ -68,7 +68,7 @@ class CastledRetryHandler {
                             for info in savedEvents {
                                 self?.castledSemaphore.wait()
                                 self?.castledGroup.enter()
-                                Castled.reportDeviceInfo(deviceInfo: info) { [weak self] (_: CastledResponse<[String: String]>) in
+                                CastledNetworkManager.reportDeviceInfo(deviceInfo: info) { [weak self] (_: CastledResponse<[String: String]>) in
                                     self?.castledSemaphore.signal()
                                     self?.castledGroup.leave()
                                 }
@@ -78,7 +78,7 @@ class CastledRetryHandler {
                         let savedEvents = value
                         self?.castledSemaphore.wait()
                         self?.castledGroup.enter()
-                        Castled.reportCustomEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                        CastledNetworkManager.reportCustomEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
                             self?.castledSemaphore.signal()
                             self?.castledGroup.leave()
                         })
@@ -86,21 +86,30 @@ class CastledRetryHandler {
                         let savedEvents = value
                         self?.castledSemaphore.wait()
                         self?.castledGroup.enter()
-                        Castled.reportUserEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                        CastledNetworkManager.reportUserEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
                             self?.castledSemaphore.signal()
                             self?.castledGroup.leave()
                         })
 
-                    case CastledConstants.CastledNetworkRequestType.userProfileRequest.rawValue:
+                    case CastledConstants.CastledNetworkRequestType.userAttributes.rawValue:
                         let savedEvents = value
                         for info in savedEvents {
                             self?.castledSemaphore.wait()
                             self?.castledGroup.enter()
-                            Castled.reportUserAttributes(params: info) { [weak self] (_: CastledResponse<[String: String]>) in
+                            CastledNetworkManager.reportUserAttributes(params: info) { [weak self] (_: CastledResponse<[String: String]>) in
                                 self?.castledSemaphore.signal()
                                 self?.castledGroup.leave()
                             }
                         }
+                    case CastledConstants.CastledNetworkRequestType.logoutUser.rawValue:
+                        let savedEvents = value
+                        self?.castledSemaphore.wait()
+                        self?.castledGroup.enter()
+                        if let params = savedEvents.first {
+                            CastledNetworkManager.logoutUser(params: params)
+                        }
+                        self?.castledSemaphore.signal()
+                        self?.castledGroup.leave()
 
                     default:
                         break
@@ -109,7 +118,7 @@ class CastledRetryHandler {
             if shouldCallRegister == true {
                 self?.castledSemaphore.wait()
                 self?.castledGroup.enter()
-                Castled.sharedInstance.api_RegisterUser(userId: CastledUserDefaults.shared.userId ?? "", apnsToken: pushToken ?? "") { _ in
+                CastledNetworkManager.api_RegisterUser(userId: CastledUserDefaults.shared.userId ?? "", apnsToken: pushToken ?? "") { _ in
                     self?.castledSemaphore.signal()
                     self?.castledGroup.leave()
                 }

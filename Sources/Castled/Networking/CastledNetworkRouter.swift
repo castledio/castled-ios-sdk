@@ -33,6 +33,7 @@ enum CastledNetworkRouter {
     case reportCustomEvent(params: [[String: Any]])
     case reportUserEvent(params: [String: Any])
     case reportUserAttributes(params: [String: Any])
+    case logoutUser(params: [String: Any], instanceId: String)
 
     var baseURL: String {
         return "https://\(CastledConfigsUtils.location.description).castled.io/"
@@ -103,13 +104,7 @@ enum CastledNetworkRouter {
                                          method: .post,
                                          parameters: ["events": params],
                                          headers: getHeaders())
-        case .reportUserEvent(let params):
-            return CastledNetworkRequest(baseURL: baseURL,
-                                         baseURLEndPoint: baseURLEndPoint,
-                                         path: "external/v1/collections/events/lists?apiSource=app",
-                                         method: .post,
-                                         parameters: params,
-                                         headers: getHeaders())
+
         case .reportUserAttributes(let params):
             return CastledNetworkRequest(baseURL: baseURL,
                                          baseURLEndPoint: baseURLEndPoint,
@@ -117,6 +112,20 @@ enum CastledNetworkRouter {
                                          method: .post,
                                          parameters: params,
                                          headers: getHeaders())
+        case .reportUserEvent(let params): // not using
+            return CastledNetworkRequest(baseURL: baseURL,
+                                         baseURLEndPoint: baseURLEndPoint,
+                                         path: "external/v1/collections/events/lists?apiSource=app",
+                                         method: .post,
+                                         parameters: params,
+                                         headers: getHeaders())
+        case .logoutUser(let params, let instanceId):
+            return CastledNetworkRequest(baseURL: baseURL,
+                                         baseURLEndPoint: baseURLEndPoint,
+                                         path: "v1/push/\(instanceId)/apns/logout",
+                                         method: .put,
+                                         parameters: params,
+                                         headers: nil)
         }
     }
 

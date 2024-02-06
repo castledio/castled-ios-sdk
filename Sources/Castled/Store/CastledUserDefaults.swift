@@ -8,9 +8,10 @@
 import Foundation
 
 class CastledUserDefaults: NSObject {
+    static let shared = CastledUserDefaults()
+
     private static let userDefaults = UserDefaults.standard
     static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.appGroupId) ?? UserDefaults.standard
-
     // Userdefault keys
     static let kCastledIsTokenRegisteredKey = "_castledIsTokenRegistered_"
     static let kCastledUserIdKey = "_castledUserId_"
@@ -18,17 +19,22 @@ class CastledUserDefaults: NSObject {
     static let kCastledDeviceInfoKey = "_castledDeviceInfo_"
     static let kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
-    static let kCastledInAppsList = "castled_inapps"
-    static let kCastledBadgeKey = "castled_application_badge"
-    static let kCastledLastBadgeIncrementTimeKey = "castled_last_badge_increment_timer"
+    static let kCastledBadgeKey = "_castledApplicationBadge_"
+    static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
     static var kCastledEnablePushNotificationKey = "_castledEnablePushNotification_"
     static let kCastledFailedItems = "_castledFailedItems_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
     static let kCastledClickedPushIds = "_castledClickedPushIds_"
     static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
-    static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
-    static let shared = CastledUserDefaults()
+    static let kCastledClickedNotiContentIndx = "_castledClickedNotiContentIndx_"
+    static let kCastledSessionId = "_castledSessionId_"
+    static let kCastledLastSessionEndTime = "_castledLastSessionEndTime_"
+    static let kCastledSessionDuration = "_castledSessionDuration_"
+    static let kCastledSessionStartTime = "_castledSessionStartTime_"
+    static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
+    static let kCastledInAppsList = "castled_inapps.txt"
+
     var userId: String?
     var userToken: String?
     var apnsToken: String?
@@ -97,7 +103,7 @@ class CastledUserDefaults: NSObject {
         ud.synchronize()
     }
 
-    static func getValueFor(_ key: String,ud: UserDefaults = UserDefaults.standard) -> Any? {
+    static func getValueFor(_ key: String, ud: UserDefaults = UserDefaults.standard) -> Any? {
         return ud.value(forKey: key)
     }
 
@@ -106,14 +112,11 @@ class CastledUserDefaults: NSObject {
     }
 
     static func clearAllFromPreference() {
-        // TODO: remove db
         removeFor(kCastledIsTokenRegisteredKey)
         removeFor(kCastledUserIdKey)
         removeFor(kCastledDeviceIddKey)
         removeFor(kCastledDeviceInfoKey)
         removeFor(kCastledUserTokenKey)
-        removeFor(kCastledAPNsTokenKey)
-        removeFor(kCastledInAppsList)
         removeFor(kCastledEnablePushNotificationKey)
         removeFor(kCastledFailedItems)
         removeFor(kCastledSavedInappConfigs)
@@ -121,8 +124,8 @@ class CastledUserDefaults: NSObject {
         removeFor(kCastledClickedPushIds)
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
+        CastledStore.removeFile(filename: CastledUserDefaults.kCastledInAppsList)
         CastledUserDefaults.shared.userId = nil
         CastledUserDefaults.shared.userToken = nil
-        CastledUserDefaults.shared.apnsToken = nil
     }
 }

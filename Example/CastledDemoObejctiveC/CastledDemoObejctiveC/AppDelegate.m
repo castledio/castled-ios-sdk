@@ -21,6 +21,7 @@
     //1. Configure config
     CastledConfigs *config = [CastledConfigs initializeWithAppId:@"718c38e2e359d94367a2e0d35e1fd4df"];
     config.enablePush = TRUE;
+    config.enableTracking  = TRUE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     //2. Call Castled.initialize method
    [Castled initializeWithConfig:config andDelegate:self];

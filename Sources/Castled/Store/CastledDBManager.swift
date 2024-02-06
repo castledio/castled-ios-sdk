@@ -10,7 +10,7 @@ import RealmSwift
 
 class CastledDBManager {
     static let shared = CastledDBManager()
-
+    private let dbName = "castled_db.realm"
     private init() {
         // Define a custom Realm configuration
         var config = Realm.Configuration()
@@ -20,7 +20,7 @@ class CastledDBManager {
 
         // Set the file URL to the app's Documents directory with a custom file name
         if let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let customURL = documentsURL.appendingPathComponent("castled_db.realm")
+            let customURL = documentsURL.appendingPathComponent(dbName)
             config.fileURL = customURL
             //  CastledLog.castledLog(config.fileURL as Any, logLevel: CastledLogLevel.info)
         }
@@ -32,5 +32,23 @@ class CastledDBManager {
     func getRealm() -> Realm {
         // Retrieve a Realm instance with the custom configuration
         return try! Realm()
+    }
+
+    func clearTables() {
+        do {
+            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let dbFilePath = documentDirectory.appendingPathComponent(dbName)
+            if FileManager.default.fileExists(atPath: dbFilePath.path) {
+                let realm = try Realm()
+                let objectsToDelete = realm.objects(CAppInbox.self)
+                try realm.write {
+                    // Delete all objects in the result set
+                    realm.delete(objectsToDelete)
+                }
+            }
+
+        } catch {
+
+        }
     }
 }

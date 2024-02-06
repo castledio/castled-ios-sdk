@@ -26,7 +26,7 @@ class CastledEventsTracker: NSObject {
                                               "properties": stringDict,
                                               "timestamp": Date().string(),
                                               CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
-            Castled.reportCustomEvents(params: [trackParams]) { response in
+            CastledNetworkManager.reportCustomEvents(params: [trackParams]) { response in
                 if response.success {
                     CastledLog.castledLog("Log event '\(eventName)' success!! ", logLevel: CastledLogLevel.debug)
                 }
@@ -34,7 +34,7 @@ class CastledEventsTracker: NSObject {
         }
     }
 
-    func setUserAttributes(params: [String: Any]) {
+    func setUserAttributes(_ attributes: CastledUserAttributes) {
         if !CastledConfigsUtils.enableTracking {
             CastledLog.castledLog("Set userAttributes failed: \(CastledExceptionMessages.trackingDisabled.rawValue)", logLevel: .error)
             return
@@ -45,17 +45,14 @@ class CastledEventsTracker: NSObject {
         }
         Castled.sharedInstance.castledEventsTrackingQueue.async {
             // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
-            let stringDict = params.compactMapValues { "\($0)" }
+            let stringDict = attributes.getAttributes().compactMapValues { "\($0)" }
             let trackParams: [String: Any] = [
                 "userId": userId,
                 "traits": stringDict,
                 "timestamp": Date().string(),
-                CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userProfileRequest.rawValue,
+                CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userAttributes.rawValue,
             ]
-            Castled.reportUserAttributes(params: trackParams) { response in
-                if response.success {
-                    CastledLog.castledLog("Set user attributes success!!", logLevel: CastledLogLevel.debug)
-                }
+            CastledNetworkManager.reportUserAttributes(params: trackParams) { _ in
             }
         }
     }

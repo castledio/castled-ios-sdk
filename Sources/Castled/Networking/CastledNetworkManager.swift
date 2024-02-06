@@ -1,14 +1,17 @@
 //
-//  CastledAPIs.swift
-//  CastledPusher
+//  CastledNetworkManager.swift
+//  Castled
 //
-//  Created by Antony Joe Mathew.
+//  Created by antony on 05/02/2024.
 //
 
 import Foundation
-import UIKit
 
-extension Castled {
+class CastledNetworkManager {
+    private static let shared = CastledNetworkManager()
+
+    private init() {}
+
     // MARK: - HELPER METHODS FOR REPORTING EVENTS
 
     /**
@@ -16,7 +19,7 @@ extension Castled {
      */
     static func reportInAppEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportInAppEvent(params: params, instanceId: Castled.sharedInstance.instanceId)
-        Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             if !response.success {
                 CastledLog.castledLog("Report InApp Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
@@ -29,7 +32,7 @@ extension Castled {
      */
     static func reportInboxEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportInboxEvent(params: params, instanceId: Castled.sharedInstance.instanceId)
-        Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             completion(response)
         })
     }
@@ -39,7 +42,7 @@ extension Castled {
      */
     static func reportCustomEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportCustomEvent(params: params)
-        Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             if !response.success {
                 CastledLog.castledLog("Report Custom Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
@@ -52,7 +55,7 @@ extension Castled {
      */
     static func reportUserEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportUserEvent(params: params.last!)
-        Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             completion(response)
         })
     }
@@ -62,7 +65,7 @@ extension Castled {
      */
     static func reportUserAttributes(params: [String: Any], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportUserAttributes(params: params)
-        Castled.sharedInstance.reportEvents(router: router, sendingParams: [params], type: [String: String].self, completion: { response in
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: [params], type: [String: String].self, completion: { response in
             if !response.success {
                 CastledLog.castledLog("Set User Attributes failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             } else {
@@ -77,7 +80,7 @@ extension Castled {
      */
     static func reportPushEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportPushEvents(params: params, instanceId: Castled.sharedInstance.instanceId)
-        Castled.sharedInstance.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             if !response.success {
                 CastledLog.castledLog("Report Push Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
@@ -87,7 +90,7 @@ extension Castled {
 
     static func reportDeviceInfo(deviceInfo: [String: String], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportDeviceInfo(deviceInfo: deviceInfo, userID: CastledUserDefaults.shared.userId!)
-        Castled.sharedInstance.reportEvents(router: router, sendingParams: [deviceInfo], type: [String: String].self, completion: { response in
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: [deviceInfo], type: [String: String].self, completion: { response in
             completion(response)
         })
     }
@@ -111,7 +114,7 @@ extension Castled {
                         // Create JSON Encoder
                         let encoder = JSONEncoder()
                         let data = try encoder.encode(response.result)
-                        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledInAppsList, data)
+                        CastledStore.writeToFile(data: data, filename: CastledUserDefaults.kCastledInAppsList)
                         CastledInApps.sharedInstance.prefetchInApps()
 
                     } catch {
@@ -156,7 +159,7 @@ extension Castled {
     /**
      Function to Register user with Castled
      */
-    func api_RegisterUser(userId uid: String, apnsToken token: String, completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+    static func api_RegisterUser(userId uid: String, apnsToken token: String, completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         if token.isEmpty {
             CastledLog.castledLog("Register User [\(uid)] failed: \(CastledExceptionMessages.emptyToken.rawValue)", logLevel: CastledLogLevel.error)
             completion(CastledResponse(error: CastledExceptionMessages.emptyToken.rawValue, statusCode: 999))
@@ -177,11 +180,25 @@ extension Castled {
             }
         }
     }
+
+    static func logoutUser(params: [String: Any]) {
+        Task {
+            let router: CastledNetworkRouter = .logoutUser(params: params, instanceId: Castled.sharedInstance.instanceId)
+            let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, request: router.request)
+            switch response {
+                case .success:
+                    CastledStore.deleteAllFailedItemsFromStore([params])
+
+                case .failure:
+                    CastledStore.insertAllFailedItemsToStore([params])
+            }
+        }
+    }
 }
 
 // MARK: - COMMON REPORT EVENT
 
-extension Castled {
+extension CastledNetworkManager {
     private func reportEvents<T: Any>(router: CastledNetworkRouter, sendingParams: [[String: Any]], type: T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void) {
         // sendingParams used for insert/ delete from failed items array for resending purpose
 

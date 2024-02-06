@@ -37,8 +37,8 @@ class CastledBGManager {
         let dispatchSemaphore = DispatchSemaphore(value: 1)
         dispatchGroup.enter()
         dispatchSemaphore.wait()
-        Castled.fetchInAppNotifications { [weak self] _ in
-            Castled.fetchInboxItems { _ in
+        CastledNetworkManager.fetchInAppNotifications { [weak self] _ in
+            CastledNetworkManager.fetchInboxItems { _ in
                 self?.retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
             }
         }
