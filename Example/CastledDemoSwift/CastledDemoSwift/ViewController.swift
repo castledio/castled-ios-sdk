@@ -43,10 +43,19 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 //                                                                                                           "Bool": false,
 //                                                                                                           "Name": "Antony"])
 
-//        Castled.sharedInstance.setUserAttributes(params: ["Age": 100,
-//                                                           "DOB": Date(),
-//                                                           "LName": "Mathew",
-//                                                           "FName": "Antony"])
+        let userAttributes = CastledUserAttributes()
+        userAttributes.setFirstName("John")
+        userAttributes.setLastName("Doe")
+        userAttributes.setCity("Sanfrancisco")
+        userAttributes.setCountry("US")
+        userAttributes.setEmail("doe@email.com")
+        userAttributes.setDOB("02-01-1995")
+        userAttributes.setGender("M")
+        userAttributes.setPhone("+13156227533")
+        // Custom Attributes
+        userAttributes.setCustomAttribute("prime_member", true)
+        userAttributes.setCustomAttribute("occupation", "artist")
+        Castled.sharedInstance.setUserAttributes(userAttributes)
     }
 
     func showRequiredViews() {

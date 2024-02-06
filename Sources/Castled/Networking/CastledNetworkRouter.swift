@@ -104,17 +104,18 @@ enum CastledNetworkRouter {
                                          method: .post,
                                          parameters: ["events": params],
                                          headers: getHeaders())
-        case .reportUserEvent(let params):
-            return CastledNetworkRequest(baseURL: baseURL,
-                                         baseURLEndPoint: baseURLEndPoint,
-                                         path: "external/v1/collections/events/lists?apiSource=app",
-                                         method: .post,
-                                         parameters: params,
-                                         headers: getHeaders())
+
         case .reportUserAttributes(let params):
             return CastledNetworkRequest(baseURL: baseURL,
                                          baseURLEndPoint: baseURLEndPoint,
                                          path: "external/v1/collections/users?apiSource=app",
+                                         method: .post,
+                                         parameters: params,
+                                         headers: getHeaders())
+        case .reportUserEvent(let params): // not using
+            return CastledNetworkRequest(baseURL: baseURL,
+                                         baseURLEndPoint: baseURLEndPoint,
+                                         path: "external/v1/collections/events/lists?apiSource=app",
                                          method: .post,
                                          parameters: params,
                                          headers: getHeaders())

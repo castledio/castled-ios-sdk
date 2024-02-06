@@ -39,6 +39,7 @@
 		0A446E272A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */; };
 		0A46C2BD2B6D070C00D40B17 /* CastledSessionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */; };
 		0A46C2BF2B711CC600D40B17 /* CastledNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2BE2B711CC600D40B17 /* CastledNetworkManager.swift */; };
+		0A46C2C32B72708700D40B17 /* CastledUserAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */; };
 		0A4C76582A7C258A00F60D16 /* CIBannerDefaultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */; };
 		0A4C765A2A7C25AD00F60D16 /* CIBannerDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C76592A7C25AD00F60D16 /* CIBannerDefaultView.swift */; };
 		0A5B30872AD5CAEE00A3EC4F /* CastledViewPagerDisplayConfigs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5B30832AD5CAED00A3EC4F /* CastledViewPagerDisplayConfigs.swift */; };
@@ -170,6 +171,7 @@
 		0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledInAppDisplayViewController.xib; sourceTree = "<group>"; };
 		0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsManager.swift; sourceTree = "<group>"; };
 		0A46C2BE2B711CC600D40B17 /* CastledNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNetworkManager.swift; sourceTree = "<group>"; };
+		0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledUserAttributes.swift; sourceTree = "<group>"; };
 		0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIBannerDefaultView.xib; sourceTree = "<group>"; };
 		0A4C76592A7C25AD00F60D16 /* CIBannerDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIBannerDefaultView.swift; sourceTree = "<group>"; };
 		0A5B30832AD5CAED00A3EC4F /* CastledViewPagerDisplayConfigs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledViewPagerDisplayConfigs.swift; sourceTree = "<group>"; };
@@ -442,6 +444,14 @@
 			path = Sessions;
 			sourceTree = "<group>";
 		};
+		0A46C2C12B72707B00D40B17 /* UserAttributes */ = {
+			isa = PBXGroup;
+			children = (
+				0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */,
+			);
+			path = UserAttributes;
+			sourceTree = "<group>";
+		};
 		0A5B30822AD5CADA00A3EC4F /* ViewPager */ = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +474,7 @@
 		0A74B0852AF2B0A6003364CD /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
+				0A46C2C12B72707B00D40B17 /* UserAttributes */,
 				0A74B0862AF2B0A6003364CD /* Device */,
 				0A74B0882AF2B0A6003364CD /* Events */,
 			);
@@ -939,6 +950,7 @@
 				0A05BC962ACDB702003D9961 /* CastledDBManager.swift in Sources */,
 				0A46C2BD2B6D070C00D40B17 /* CastledSessionsManager.swift in Sources */,
 				0AB5C59B291C27840027C36B /* CastledNetworkRouter.swift in Sources */,
+				0A46C2C32B72708700D40B17 /* CastledUserAttributes.swift in Sources */,
 				0AB5C59E291C27840027C36B /* CastledConstants.swift in Sources */,
 				0A652F9D2AFBE32200752467 /* CastledInbox+Extensions.swift in Sources */,
 				0AB5C59A291C27840027C36B /* CastledResponse.swift in Sources */,

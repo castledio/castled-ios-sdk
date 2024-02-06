@@ -44,7 +44,6 @@ enum CastledConstants {
                     static let useWebView = "useWebview"
                     static let keyVals = "keyVals"
                     static let buttonTitle = "buttonTitle"
-
                 }
             }
         }
@@ -151,7 +150,7 @@ enum CastledConstants {
         case deviceInfoRequest = "deviceInfo"
         case productEventRequest = "prodEvent"
         case userEventRequest = "userEvent"
-        case userProfileRequest = "userProf"
+        case userAttributes = "userAttrs"
         case sessionTracking = "session"
         case logoutUser = "logout"
     }

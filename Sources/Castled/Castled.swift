@@ -132,8 +132,8 @@ import UserNotifications
         CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
     }
 
-    @objc public func setUserAttributes(params: [String: Any]) {
-        CastledEventsTracker.shared.setUserAttributes(params: params)
+    @objc public func setUserAttributes(_ attributes: CastledUserAttributes) {
+        CastledEventsTracker.shared.setUserAttributes(attributes)
     }
 
     @objc public func logout() {
