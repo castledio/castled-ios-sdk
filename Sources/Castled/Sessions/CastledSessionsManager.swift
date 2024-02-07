@@ -21,6 +21,7 @@ class CastledSessionsManager {
     private init() {}
 
     func startCastledSession() {
+        return;
         Castled.sharedInstance.castledCommonQueue.async {
             if !self.isInCurrentSession() {
                 self.createNewSession()
@@ -30,7 +31,6 @@ class CastledSessionsManager {
     }
 
     private func createNewSession() {
-        return;
         var sessionDetails = [[String: Any]]()
         if !sessionId.isEmpty {
             sessionDetails.append([CastledConstants.Sessions.sessionId: sessionId,
@@ -63,23 +63,24 @@ class CastledSessionsManager {
     }
 
     private func isInCurrentSession() -> Bool {
-        return sessionId.isEmpty || (Date().timeIntervalSince1970 - lastSessionEndTime) <= CastledConfigsUtils.sessionTimeOutSec
+        return (Date().timeIntervalSince1970 - lastSessionEndTime) <= CastledConfigsUtils.sessionTimeOutSec
     }
 
     func didEnterBackground() {
         if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.enableSessionTracking {
             return
         }
-        let currentTime = Date().timeIntervalSince1970
-        sessionDuration += currentTime - currentStartTime
+        lastSessionEndTime = Date().timeIntervalSince1970
+        sessionDuration += lastSessionEndTime - currentStartTime
         CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledSessionDuration, sessionDuration)
-        CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledLastSessionEndTime, currentTime)
+        CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledLastSessionEndTime, lastSessionEndTime)
     }
 
     func didEnterForeground() {
         if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.enableSessionTracking {
             return
         }
+        currentStartTime = Date().timeIntervalSince1970
         startCastledSession()
     }
 

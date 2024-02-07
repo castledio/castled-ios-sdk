@@ -94,10 +94,11 @@ static NSString *userIdKey = @"userIdKey";
     [[Castled sharedInstance] setUserAttributes:userAttributes];
     
 //    [[Castled sharedInstance] setUserAttributesWithParams:@{@"fName":@"Antony",@"lName":@"Mathew",@"Age":@35}];
-//    [[Castled sharedInstance] logCustomAppEventWithEventName:@"Test Event" params:@{@"Int": @100,
-//                                                                                   @"Date": [NSDate date],
-//                                                                                    @"Name": @"Antony"}];
+    [[Castled sharedInstance] logCustomAppEvent:@"Test Event" params:@{@"Int": @100,
+                                                                       @"Date": [NSDate date],
+                                                                       @"Name": @"Antony"}];
 
+    
 
 }
 - (void)inboxTapped {
