@@ -20,7 +20,7 @@ class SecondViewController: UIViewController {
     }
 
     @IBAction func addToCartActiuonnn(_ sender: Any) {
-        Castled.sharedInstance.logCustomAppEvent(eventName: "added_to_cart", params: ["Int": 100, "Name": "Antony"])
+        Castled.sharedInstance.logCustomAppEvent("added_to_cart", params: ["Int": 100, "Date": "12-16-2000", "Name": "Antony"])
     }
 
     /*

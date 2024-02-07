@@ -127,7 +127,7 @@ import UserNotifications
     /**
      InApps : Function that allows to display custom inapp
      */
-    @objc public func logCustomAppEvent(eventName: String, params: [String: Any]) {
+    @objc public func logCustomAppEvent(_ eventName: String, params: [String: Any]) {
         CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: eventName, params: params, showLog: false)
         CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
     }

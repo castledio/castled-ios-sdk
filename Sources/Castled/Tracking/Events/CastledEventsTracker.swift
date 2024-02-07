@@ -19,7 +19,7 @@ class CastledEventsTracker: NSObject {
         }
         Castled.sharedInstance.castledEventsTrackingQueue.async {
             // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
-            let stringDict = params.compactMapValues { "\($0)" }
+            let stringDict = params.castledSerializedDictionary()
             let trackParams: [String: Any] = ["type": "track",
                                               "event": eventName,
                                               "userId": userId,
@@ -45,7 +45,7 @@ class CastledEventsTracker: NSObject {
         }
         Castled.sharedInstance.castledEventsTrackingQueue.async {
             // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
-            let stringDict = attributes.getAttributes().compactMapValues { "\($0)" }
+            let stringDict = attributes.getAttributes().castledSerializedDictionary()
             let trackParams: [String: Any] = [
                 "userId": userId,
                 "traits": stringDict,
