@@ -76,7 +76,7 @@ import Foundation
         case .post:
             return createPostRequestWithBody(url: url, castled_request: endpoint)
         case .put:
-            return createPutRequestWithBody(url: url, castled_request: endpoint)
+            return createPostRequestWithBody(url: url, castled_request: endpoint)
         }
     }
 
