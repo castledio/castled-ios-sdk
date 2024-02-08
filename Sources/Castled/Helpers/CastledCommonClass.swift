@@ -48,6 +48,7 @@ class CastledCommonClass {
                     CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction: action[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "",
                     CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl: action[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String ?? "",
                     CastledConstants.PushNotification.CustomProperties.Category.Action.buttonTitle: action[CastledConstants.PushNotification.CustomProperties.Category.Action.actionId] as? String ?? "",
+                    CastledConstants.PushNotification.inboxCopyEnabled: isInboxCopyEnabled(customDict: customDict as? [String: Any] ?? [:]),
 
                     CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: keyVals,
                     CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView: action[CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView] as? Bool ?? false
@@ -65,11 +66,19 @@ class CastledCommonClass {
         if let msgFramesString = customDict["msg_frames"] as? String,
            let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? [Any],
            detailsArray.count > index!,
-           let selectedCategory = detailsArray[index!] as? [String: Any]
+           var selectedCategory = detailsArray[index!] as? [String: Any]
         {
+            selectedCategory[CastledConstants.PushNotification.inboxCopyEnabled] = isInboxCopyEnabled(customDict: customDict)
             return selectedCategory
         }
         return nil
+    }
+
+    private static func isInboxCopyEnabled(customDict: [String: Any]) -> Bool {
+        if let i_cp = customDict["i_cp"] as? String, i_cp == "true" {
+            return true
+        }
+        return false
     }
 
     static func convertToArray(text: String) -> Any? {

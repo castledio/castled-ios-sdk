@@ -18,6 +18,7 @@ enum CastledConstants {
         static let customKey = "castled"
         static let apsKey = "aps"
         static let badgeKey = "badge"
+        static let inboxCopyEnabled = "inboxCopyEnabled"
 
         enum ApsProperties {
             static let category = "category"
