@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.enableInApp = true
         config.enableTracking = true
         config.enableSessionTracking = true
-        config.sessionTimeOutSec = 30
+        config.sessionTimeOutSec = 60
         config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
