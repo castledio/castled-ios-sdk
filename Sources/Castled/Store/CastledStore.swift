@@ -168,8 +168,11 @@ extension CastledStore {
         let filePath = documentsDirectory.appendingPathComponent(filename).path
 
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
-            return data
+            if FileManager.default.fileExists(atPath: filePath) {
+                let data = try Data(contentsOf: URL(fileURLWithPath: filePath))
+                return data
+            }
+            return nil
         } catch {
             return nil
         }

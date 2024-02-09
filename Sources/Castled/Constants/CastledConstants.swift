@@ -157,14 +157,15 @@ enum CastledConstants {
     }
 
     enum Sessions {
-        static let sessionType = "sessionType"
-        static let sessionStarted = "started"
-        static let sessionClosed = "closed"
+        static let sessionType = "sessionEventType"
+        static let sessionStarted = "session_started"
+        static let sessionClosed = "session_ended"
         static let sessionId = "sessionId"
-        static let sessionLastDuration = "lduration"
-        static let sessionNumberOfAppOpens = "numberOfAppOpens"
-        static let sessionisFirstSession = "isFirstSession"
-        static let sessionStartTime = "startTime"
-        static let sessionEndTime = "endTime"
+        static let sessionLastDuration = "duration"
+        static let sessionisFirstSession = "firstSession"
+        static let sessionTimeStamp = "timestamp"
+        static let userId = "userId"
+        static let properties = "properties"
+        static let deviceId = "deviceId"
     }
 }

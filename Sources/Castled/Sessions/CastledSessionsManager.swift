@@ -12,79 +12,122 @@ class CastledSessionsManager {
 
     lazy var sessionId = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionId) as? String ?? ""
     private lazy var sessionStartTime = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionStartTime) as? Double ?? Date().timeIntervalSince1970
-    private lazy var lastSessionEndTime = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledLastSessionEndTime) as? Double ?? 0
+    private lazy var sessionEndTime = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledLastSessionEndTime) as? Double ?? 0
     private lazy var
         sessionDuration = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionDuration) as? Double ?? 0
-    private lazy var isFirstLaunch = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledIsFirstSesion) ?? 1
+    private lazy var isFirstSession = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledIsFirstSesion) ?? true
     private var currentStartTime: Double = 0
 
     private init() {}
 
     func startCastledSession() {
-        return;
-        Castled.sharedInstance.castledCommonQueue.async {
+        Castled.sharedInstance.castledCommonQueue.async { [self] in
+            currentStartTime = Date().timeIntervalSince1970
             if !self.isInCurrentSession() {
                 self.createNewSession()
+                self.resetTheValuesForNewSession()
+                CastledLog.castledLog("starting new session with sessionId \(sessionId)", logLevel: .debug)
             }
-            self.saveTheValues()
+            else {
+                CastledLog.castledLog("resuming the session sessionId \(sessionId) sessionDuration \(sessionDuration) sec", logLevel: .debug)
+            }
         }
+    }
+
+    private func isInCurrentSession() -> Bool {
+        return sessionEndTime != 0.0 && ((Date().timeIntervalSince1970 - sessionEndTime) <= CastledConfigsUtils.sessionTimeOutSec)
     }
 
     private func createNewSession() {
         var sessionDetails = [[String: Any]]()
         if !sessionId.isEmpty {
-            sessionDetails.append([CastledConstants.Sessions.sessionId: sessionId,
+            let dateEnded = Date(timeIntervalSince1970: sessionEndTime == 0 ? Date().timeIntervalSince1970 : sessionEndTime)
+            sessionDetails.append([CastledConstants.Sessions.userId: CastledUserDefaults.shared.userId ?? "",
+                                   CastledConstants.Sessions.sessionId: sessionId,
                                    CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionClosed,
-                                   CastledConstants.Sessions.sessionLastDuration: sessionDuration,
-                                   CastledConstants.Sessions.sessionEndTime: lastSessionEndTime == 0 ? Date().timeIntervalSince1970 : lastSessionEndTime,
-                                   CastledConstants.Sessions.sessionStartTime: sessionStartTime,
+                                   CastledConstants.Sessions.sessionLastDuration: Int(min(sessionDuration, Double(Int.max))),
+                                   CastledConstants.Sessions.sessionTimeStamp: dateEnded.string(),
+                                   CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledDeviceInfo.shared.getDeviceId()],
                                    CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
-            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, 0)
+            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, false)
+            isFirstSession = false
         }
 
         sessionId = getSessionId()
         sessionDuration = 0
         sessionStartTime = Date().timeIntervalSince1970
         currentStartTime = sessionStartTime
+        sessionEndTime = sessionStartTime
+        let dateStarted = Date(timeIntervalSince1970: currentStartTime)
 
-        sessionDetails.append([CastledConstants.Sessions.sessionId: sessionId,
+        sessionDetails.append([CastledConstants.Sessions.userId: CastledUserDefaults.shared.userId ?? "",
+                               CastledConstants.Sessions.sessionId: sessionId,
                                CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionStarted,
-                               CastledConstants.Sessions.sessionStartTime: currentStartTime,
-                               CastledConstants.Sessions.sessionisFirstSession: isFirstLaunch,
+                               CastledConstants.Sessions.sessionTimeStamp: dateStarted.string(),
+                               CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
+                               CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledDeviceInfo.shared.getDeviceId()],
                                CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
         CastledLog.castledLog("sessionDetails ------> \(sessionDetails)", logLevel: .debug)
+        CastledNetworkManager.reportSessions(params: sessionDetails) { _ in
+        }
     }
 
-    private func saveTheValues() {
-        CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledSessionId, sessionId)
-        CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledSessionStartTime, currentStartTime)
-        CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledSessionDuration, 0)
-        CastledUserDefaults.removeFor(CastledUserDefaults.kCastledLastSessionEndTime)
-    }
-
-    private func isInCurrentSession() -> Bool {
-        return (Date().timeIntervalSince1970 - lastSessionEndTime) <= CastledConfigsUtils.sessionTimeOutSec
+    private func resetTheValuesForNewSession() {
+        let userDefaults = CastledUserDefaults.getUserDefaults()
+        userDefaults.setValue(sessionId, forKey: CastledUserDefaults.kCastledSessionId)
+        userDefaults.setValue(0, forKey: CastledUserDefaults.kCastledSessionDuration)
+        userDefaults.setValue(currentStartTime, forKey: CastledUserDefaults.kCastledSessionStartTime)
+        userDefaults.setValue(currentStartTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
+        userDefaults.synchronize()
     }
 
     func didEnterBackground() {
         if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.enableSessionTracking {
             return
         }
-        lastSessionEndTime = Date().timeIntervalSince1970
-        sessionDuration += lastSessionEndTime - currentStartTime
-        CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledSessionDuration, sessionDuration)
-        CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledLastSessionEndTime, lastSessionEndTime)
+
+        let application = UIApplication.shared
+        var backgroundTask: UIBackgroundTaskIdentifier?
+
+        // Start a background task to ensure enough time to save data
+        backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
+            application.endBackgroundTask(backgroundTask!)
+            backgroundTask = .invalid
+        }
+
+        sessionEndTime = Date().timeIntervalSince1970
+        sessionDuration += sessionEndTime - currentStartTime
+        let userDefaults = CastledUserDefaults.getUserDefaults()
+        userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
+        userDefaults.setValue(sessionEndTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
+        userDefaults.synchronize()
+        CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration)", logLevel: .debug)
+        application.endBackgroundTask(backgroundTask!)
+//        backgroundTask = .invalid
     }
 
     func didEnterForeground() {
         if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.enableSessionTracking {
             return
         }
-        currentStartTime = Date().timeIntervalSince1970
         startCastledSession()
     }
 
     private func getSessionId() -> String {
         return UUID().uuidString
+    }
+
+    func resetSessionDetails() {
+        let userDefaults = CastledUserDefaults.getUserDefaults()
+        userDefaults.removeObject(forKey: CastledUserDefaults.kCastledSessionId)
+        userDefaults.removeObject(forKey: CastledUserDefaults.kCastledSessionDuration)
+        userDefaults.removeObject(forKey: CastledUserDefaults.kCastledLastSessionEndTime)
+        userDefaults.removeObject(forKey: CastledUserDefaults.kCastledSessionStartTime)
+        userDefaults.removeObject(forKey: CastledUserDefaults.kCastledIsFirstSesion)
+        userDefaults.synchronize()
+        sessionId = ""
+        sessionEndTime = 0.0
+        sessionDuration = 0
+        isFirstSession = true
     }
 }
