@@ -88,8 +88,6 @@ class CastledSessionsManager {
 
         let application = UIApplication.shared
         var backgroundTask: UIBackgroundTaskIdentifier?
-
-        // Start a background task to ensure enough time to save data
         backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
             application.endBackgroundTask(backgroundTask!)
             backgroundTask = .invalid
