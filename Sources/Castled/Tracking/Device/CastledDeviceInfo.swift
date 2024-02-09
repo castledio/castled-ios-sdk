@@ -16,7 +16,7 @@ class CastledDeviceInfo: NSObject {
         }
         Castled.sharedInstance.castledEventsTrackingQueue.async(flags: .barrier) {
             self.checkNotificationPermissions { granted in
-                let deviceInfo = ["sdkVersion": self.getSDKVersion(),
+                var deviceInfo = ["sdkVersion": self.getSDKVersion(),
                                   "appVersion": self.getAppVersion(),
                                   "model": self.getModelIdentifier(),
                                   "make": self.getMake(),
@@ -29,6 +29,9 @@ class CastledDeviceInfo: NSObject {
                                   CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue]
 
                 if deviceInfo != self.fetchSavedDeviceInfo() {
+                    if CastledConfigsUtils.enableSessionTracking {
+                        deviceInfo[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
+                    }
                     do {
                         let encoder = JSONEncoder()
                         let data = try encoder.encode(deviceInfo)

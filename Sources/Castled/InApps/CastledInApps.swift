@@ -51,6 +51,9 @@ import UIKit
             if let value = actionUri {
                 json["actionUri"] = value
             }
+            if CastledConfigsUtils.enableSessionTracking {
+                json[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
+            }
             json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inappRequest.rawValue
             CastledNetworkManager.reportInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
                 if response.success {

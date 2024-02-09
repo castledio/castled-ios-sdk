@@ -34,6 +34,7 @@ enum CastledNetworkRouter {
     case reportUserEvent(params: [String: Any])
     case reportUserAttributes(params: [String: Any])
     case logoutUser(params: [String: Any], instanceId: String)
+    case reportSession(params: [[String: Any]])
 
     var baseURL: String {
         return "https://\(CastledConfigsUtils.location.description).castled.io/"
@@ -101,6 +102,14 @@ enum CastledNetworkRouter {
             return CastledNetworkRequest(baseURL: baseURL,
                                          baseURLEndPoint: baseURLEndPoint,
                                          path: "external/v1/collections/events/lists?apiSource=app",
+                                         method: .post,
+                                         parameters: ["events": params],
+                                         headers: getHeaders())
+
+        case .reportSession(let params):
+            return CastledNetworkRequest(baseURL: baseURL,
+                                         baseURLEndPoint: baseURLEndPoint,
+                                         path: "external/v1/collections/session-events/lists",
                                          method: .post,
                                          parameters: ["events": params],
                                          headers: getHeaders())

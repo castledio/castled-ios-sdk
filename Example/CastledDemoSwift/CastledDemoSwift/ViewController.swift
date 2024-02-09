@@ -82,7 +82,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 
     // Function for registering the user with Castled
     func registerUserAPI() {
-        let userId = "support@castled.io"
+        let userId = "antony@castled.io"
         Castled.sharedInstance.setUserId(userId)
         UserDefaults.standard.setValue(userId, forKey: self.userIdKey)
         UserDefaults.standard.synchronize()

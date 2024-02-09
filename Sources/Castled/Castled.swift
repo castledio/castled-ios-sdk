@@ -141,9 +141,13 @@ import UserNotifications
             DispatchQueue.main.async {
                 CastledUserDefaults.clearAllFromPreference()
                 CastledDBManager.shared.clearTables()
-                CastledNetworkManager.logoutUser(params: ["userId": userId,
-                                                          "token": CastledUserDefaults.shared.apnsToken ?? "",
-                                                          CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue])
+                if CastledConfigsUtils.enablePush {
+                    CastledNetworkManager.logoutUser(params: ["userId": userId,
+                                                              "token": CastledUserDefaults.shared.apnsToken ?? "",
+                                                              CastledConstants.Sessions.sessionId: CastledSessionsManager.shared.sessionId,
+                                                              CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue])
+                }
+
                 CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
             }
         }
@@ -226,7 +230,9 @@ import UserNotifications
 
             if userId != existingUserId {
                 CastledDeviceInfo.shared.updateDeviceInfo()
-                CastledUserEventsTracker.shared.updateUserEvents()
+                if CastledConfigsUtils.enableSessionTracking {
+                    CastledSessionsManager.shared.startCastledSession()
+                }
 
                 guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
                     Castled.sharedInstance.executeBGTasks()

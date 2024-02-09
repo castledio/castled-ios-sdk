@@ -20,12 +20,15 @@ class CastledEventsTracker: NSObject {
         Castled.sharedInstance.castledEventsTrackingQueue.async {
             // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
             let stringDict = params.castledSerializedDictionary()
-            let trackParams: [String: Any] = ["type": "track",
+            var trackParams: [String: Any] = ["type": "track",
                                               "event": eventName,
                                               "userId": userId,
                                               "properties": stringDict,
                                               "timestamp": Date().string(),
                                               CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
+            if CastledConfigsUtils.enableSessionTracking {
+                trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
+            }
             CastledNetworkManager.reportCustomEvents(params: [trackParams]) { response in
                 if response.success {
                     CastledLog.castledLog("Log event '\(eventName)' success!! ", logLevel: CastledLogLevel.debug)
@@ -46,12 +49,16 @@ class CastledEventsTracker: NSObject {
         Castled.sharedInstance.castledEventsTrackingQueue.async {
             // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
             let stringDict = attributes.getAttributes().castledSerializedDictionary()
-            let trackParams: [String: Any] = [
+            var trackParams: [String: Any] = [
                 "userId": userId,
                 "traits": stringDict,
                 "timestamp": Date().string(),
                 CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userAttributes.rawValue,
             ]
+
+            if CastledConfigsUtils.enableSessionTracking {
+                trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
+            }
             CastledNetworkManager.reportUserAttributes(params: trackParams) { _ in
             }
         }
