@@ -226,10 +226,12 @@ extension CastledNetworkManager {
             let api_response = await CastledNetworkLayer.shared.sendRequest(model: [String: String].self, request: router.request)
             switch api_response.success {
                 case true:
+                    print("✅✅✅✅✅ \(router.request.path)\(sendingParams)")
                     CastledStore.deleteAllFailedItemsFromStore(sendingParams)
                     completion(api_response as? CastledResponse<T> ?? CastledResponse(response: ["success": "1"] as! T))
 
                 case false:
+                    print("❌❌❌❌❌❌ \(router.request.path)\(api_response.errorMessage)")
                     CastledStore.insertAllFailedItemsToStore(sendingParams)
                     completion(api_response as? CastledResponse<T> ?? CastledResponse(error: api_response.errorMessage, statusCode: 999))
             }

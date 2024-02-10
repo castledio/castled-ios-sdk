@@ -17,11 +17,12 @@ class CastledSessionsManager {
         sessionDuration = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionDuration) as? Double ?? 0
     private lazy var isFirstSession = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledIsFirstSesion) ?? true
     private var currentStartTime: Double = 0
+    private let sessionTrackingQueue = DispatchQueue(label: "CastledSessionsTrackingQueue", attributes: .concurrent)
 
     private init() {}
 
     func startCastledSession() {
-        Castled.sharedInstance.castledCommonQueue.async { [self] in
+        sessionTrackingQueue.async(flags: .barrier) { [self] in
             currentStartTime = Date().timeIntervalSince1970
             if !self.isInCurrentSession() {
                 self.createNewSession()

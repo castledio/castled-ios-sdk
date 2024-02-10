@@ -98,9 +98,6 @@ class CastledInboxServices: NSObject {
                     "sourceContext": sourceContext] as [String: String]
         json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue
         json["btnLabel"] = title
-        if CastledConfigsUtils.enableSessionTracking {
-            json[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
-        }
         return json
     }
 }

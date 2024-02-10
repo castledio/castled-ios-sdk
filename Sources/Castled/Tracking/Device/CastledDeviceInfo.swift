@@ -9,6 +9,7 @@ import UIKit
 
 class CastledDeviceInfo: NSObject {
     static let shared = CastledDeviceInfo()
+
     override private init() {}
     func updateDeviceInfo() {
         guard CastledUserDefaults.shared.userId != nil else {
@@ -29,9 +30,6 @@ class CastledDeviceInfo: NSObject {
                                   CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue]
 
                 if deviceInfo != self.fetchSavedDeviceInfo() {
-                    if CastledConfigsUtils.enableSessionTracking {
-                        deviceInfo[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
-                    }
                     do {
                         let encoder = JSONEncoder()
                         let data = try encoder.encode(deviceInfo)
