@@ -66,11 +66,11 @@ class CastledNetworkManager {
     static func reportSessions(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         let router: CastledNetworkRouter = .reportSession(params: params)
         CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
-            if !response.success {
-                CastledLog.castledLog("Session tracking failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-            } else {
-                CastledLog.castledLog("Session tracking sucess", logLevel: CastledLogLevel.debug)
-            }
+//            if !response.success {
+//                CastledLog.castledLog("Session tracking failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+//            } else {
+//                CastledLog.castledLog("Session tracking sucess", logLevel: CastledLogLevel.debug)
+//            }
             completion(response)
         })
     }
@@ -226,12 +226,10 @@ extension CastledNetworkManager {
             let api_response = await CastledNetworkLayer.shared.sendRequest(model: [String: String].self, request: router.request)
             switch api_response.success {
                 case true:
-                    print("✅✅✅✅✅ \(router.request.path)\(sendingParams)")
                     CastledStore.deleteAllFailedItemsFromStore(sendingParams)
                     completion(api_response as? CastledResponse<T> ?? CastledResponse(response: ["success": "1"] as! T))
 
                 case false:
-                    print("❌❌❌❌❌❌ \(router.request.path)\(api_response.errorMessage)")
                     CastledStore.insertAllFailedItemsToStore(sendingParams)
                     completion(api_response as? CastledResponse<T> ?? CastledResponse(error: api_response.errorMessage, statusCode: 999))
             }

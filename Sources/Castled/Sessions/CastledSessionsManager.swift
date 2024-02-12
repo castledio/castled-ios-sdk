@@ -27,10 +27,7 @@ class CastledSessionsManager {
             if !self.isInCurrentSession() {
                 self.createNewSession()
                 self.resetTheValuesForNewSession()
-                CastledLog.castledLog("starting new session with sessionId \(sessionId)", logLevel: .debug)
-            }
-            else {
-                CastledLog.castledLog("resuming the session sessionId \(sessionId) sessionDuration \(sessionDuration) sec", logLevel: .debug)
+//                CastledLog.castledLog("starting new session with sessionId \(sessionId)", logLevel: .debug)
             }
         }
     }
@@ -68,7 +65,7 @@ class CastledSessionsManager {
                                CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
                                CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledDeviceInfo.shared.getDeviceId()],
                                CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
-        CastledLog.castledLog("sessionDetails ------> \(sessionDetails)", logLevel: .debug)
+//        CastledLog.castledLog("sessionDetails ------> \(sessionDetails)", logLevel: .debug)
         CastledNetworkManager.reportSessions(params: sessionDetails) { _ in
         }
     }
@@ -100,7 +97,7 @@ class CastledSessionsManager {
         userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
         userDefaults.setValue(sessionEndTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
         userDefaults.synchronize()
-        CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration)", logLevel: .debug)
+//        CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration)", logLevel: .debug)
         application.endBackgroundTask(backgroundTask!)
 //        backgroundTask = .invalid
     }
