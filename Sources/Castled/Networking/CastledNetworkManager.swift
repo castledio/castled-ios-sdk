@@ -61,6 +61,21 @@ class CastledNetworkManager {
     }
 
     /**
+     Funtion which alllows to report the Sessions with Castled.
+     */
+    static func reportSessions(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+        let router: CastledNetworkRouter = .reportSession(params: params)
+        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+//            if !response.success {
+//                CastledLog.castledLog("Session tracking failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+//            } else {
+//                CastledLog.castledLog("Session tracking sucess", logLevel: CastledLogLevel.debug)
+//            }
+            completion(response)
+        })
+    }
+
+    /**
      Funtion which alllows to set the user attributes..
      */
     static func reportUserAttributes(params: [String: Any], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
@@ -107,7 +122,7 @@ class CastledNetworkManager {
         }
         Task {
             let router: CastledNetworkRouter = .fetchInAppNotification(userID: CastledUserDefaults.shared.userId ?? "", instanceId: Castled.sharedInstance.instanceId)
-            let response = await CastledNetworkLayer.shared.sendRequestFoFetch(model: [CastledInAppObject].self, endpoint: router.request)
+            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInAppObject].self, request: router.request, isFetch: true)
             if response.success {
                 DispatchQueue.global().async {
                     do {
@@ -146,7 +161,7 @@ class CastledNetworkManager {
         }
         Task {
             let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: Castled.sharedInstance.instanceId)
-            let response = await CastledNetworkLayer.shared.sendRequestFoFetch(model: [CastledInboxItem].self, endpoint: router.request)
+            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItem].self, request: router.request, isFetch: true)
             if response.success {
                 CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
             }
@@ -154,7 +169,7 @@ class CastledNetworkManager {
         }
     }
 
-    // MARK: - REGISTER USER
+    // MARK: - USER LIFE CYCLE
 
     /**
      Function to Register user with Castled
@@ -167,16 +182,16 @@ class CastledNetworkManager {
         }
         Task {
             let router: CastledNetworkRouter = .registerUser(userID: uid, apnsToken: token, instanceId: Castled.sharedInstance.instanceId)
-            let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, request: router.request)
-            switch response {
-                case .success(let responsJSON):
+            let response = await CastledNetworkLayer.shared.sendRequest(model: [String: String].self, request: router.request)
+            switch response.success {
+                case true:
                     CastledLog.castledLog("'\(uid)' registered successfully...", logLevel: CastledLogLevel.debug)
                     CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, true)
-                    completion(CastledResponse(response: responsJSON as! [String: String]))
+                    completion(CastledResponse(response: response.result!))
 
-                case .failure(let error):
-                    CastledLog.castledLog("Register User '\(uid)' failed: \(error.localizedDescription)", logLevel: CastledLogLevel.error)
-                    completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
+                case false:
+                    CastledLog.castledLog("Register User '\(uid)' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+                    completion(CastledResponse(error: response.errorMessage, statusCode: 999))
             }
         }
     }
@@ -184,12 +199,12 @@ class CastledNetworkManager {
     static func logoutUser(params: [String: Any]) {
         Task {
             let router: CastledNetworkRouter = .logoutUser(params: params, instanceId: Castled.sharedInstance.instanceId)
-            let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, request: router.request)
-            switch response {
-                case .success:
+            let response = await CastledNetworkLayer.shared.sendRequest(model: [String: String].self, request: router.request)
+            switch response.success {
+                case true:
                     CastledStore.deleteAllFailedItemsFromStore([params])
 
-                case .failure:
+                case false:
                     CastledStore.insertAllFailedItemsToStore([params])
             }
         }
@@ -200,8 +215,6 @@ class CastledNetworkManager {
 
 extension CastledNetworkManager {
     private func reportEvents<T: Any>(router: CastledNetworkRouter, sendingParams: [[String: Any]], type: T.Type, completion: @escaping (_ response: CastledResponse<T>) -> Void) {
-        // sendingParams used for insert/ delete from failed items array for resending purpose
-
         if Castled.sharedInstance.instanceId.isEmpty {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
@@ -210,15 +223,15 @@ extension CastledNetworkManager {
             return
         }
         Task {
-            let response = await CastledNetworkLayer.shared.sendRequest(model: String.self, request: router.request)
-            switch response {
-                case .success(let responsJSON):
+            let api_response = await CastledNetworkLayer.shared.sendRequest(model: [String: String].self, request: router.request)
+            switch api_response.success {
+                case true:
                     CastledStore.deleteAllFailedItemsFromStore(sendingParams)
-                    completion(CastledResponse(response: responsJSON as! T))
+                    completion(api_response as? CastledResponse<T> ?? CastledResponse(response: ["success": "1"] as! T))
 
-                case .failure(let error):
+                case false:
                     CastledStore.insertAllFailedItemsToStore(sendingParams)
-                    completion(CastledResponse(error: error.localizedDescription, statusCode: 999))
+                    completion(api_response as? CastledResponse<T> ?? CastledResponse(error: api_response.errorMessage, statusCode: 999))
             }
         }
     }

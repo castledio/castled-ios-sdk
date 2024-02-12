@@ -9,6 +9,7 @@ import UIKit
 
 class CastledDeviceInfo: NSObject {
     static let shared = CastledDeviceInfo()
+
     override private init() {}
     func updateDeviceInfo() {
         guard CastledUserDefaults.shared.userId != nil else {
@@ -16,7 +17,7 @@ class CastledDeviceInfo: NSObject {
         }
         Castled.sharedInstance.castledEventsTrackingQueue.async(flags: .barrier) {
             self.checkNotificationPermissions { granted in
-                let deviceInfo = ["sdkVersion": self.getSDKVersion(),
+                var deviceInfo = ["sdkVersion": self.getSDKVersion(),
                                   "appVersion": self.getAppVersion(),
                                   "model": self.getModelIdentifier(),
                                   "make": self.getMake(),

@@ -45,9 +45,11 @@ extension Date {
         }
     }
 
-    func string(defaultFormat: String? = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") -> String {
+    func string(defaultFormat: String? = "yyyy-MM-dd'T'HH:mm:ss'Z'") -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = defaultFormat // Define your desired date format
+        dateFormatter.dateFormat = defaultFormat
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
         return dateFormatter.string(from: self)
     }
 }

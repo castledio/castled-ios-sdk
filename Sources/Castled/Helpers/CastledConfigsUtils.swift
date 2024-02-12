@@ -77,7 +77,7 @@ class CastledConfigsUtils: NSObject {
     }()
 
     static func saveTheConfigs() {
-        let userDefaults = CastledUserDefaults.getSharedUserdefaults()
+        let userDefaults = CastledUserDefaults.getUserDefaults()
         userDefaults.set(CastledConfigs.sharedInstance.appGroupId, forKey: kCastledAppGroupId)
         userDefaults.set(CastledConfigs.sharedInstance.permittedBGIdentifier, forKey: kCastledpermittedBGIdentifier)
         userDefaults.set(CastledConfigs.sharedInstance.enableAppInbox, forKey: kCastledEnableAppInbox)

@@ -107,7 +107,7 @@ class CastledUserDefaults: NSObject {
         return ud.value(forKey: key)
     }
 
-    static func getSharedUserdefaults() -> UserDefaults {
+    static func getUserDefaults() -> UserDefaults {
         return userDefaults
     }
 
@@ -125,6 +125,9 @@ class CastledUserDefaults: NSObject {
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
         CastledStore.removeFile(filename: CastledUserDefaults.kCastledInAppsList)
+        if CastledConfigsUtils.enableSessionTracking {
+            CastledSessionsManager.shared.resetSessionDetails()
+        }
         CastledUserDefaults.shared.userId = nil
         CastledUserDefaults.shared.userToken = nil
     }
