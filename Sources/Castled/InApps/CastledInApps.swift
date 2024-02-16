@@ -21,7 +21,7 @@ import UIKit
     }
 
     func prefetchInApps() {
-        if let savedItems = CastledStore.readFromFile(filename: CastledUserDefaults.kCastledInAppsList) {
+        if let savedItems = CastledUserDefaults.getDataFor(CastledUserDefaults.kCastledInAppsList) {
             let decoder = JSONDecoder()
             if let loadedInApps = try? decoder.decode([CastledInAppObject].self, from: savedItems) {
                 self.savedInApps.removeAll()

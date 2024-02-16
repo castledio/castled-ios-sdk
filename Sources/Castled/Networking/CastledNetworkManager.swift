@@ -125,15 +125,10 @@ class CastledNetworkManager {
             let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInAppObject].self, request: router.request, isFetch: true)
             if response.success {
                 DispatchQueue.global().async {
-                    do {
-                        // Create JSON Encoder
-                        let encoder = JSONEncoder()
-                        let data = try encoder.encode(response.result)
-                        CastledStore.writeToFile(data: data, filename: CastledUserDefaults.kCastledInAppsList)
+                    let encoder = JSONEncoder()
+                    if let data = try? encoder.encode(response.result) {
+                        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledInAppsList, data)
                         CastledInApps.sharedInstance.prefetchInApps()
-
-                    } catch {
-                        // CastledLog.castledLog("Unable to Encode response (\(error))", logLevel: CastledLogLevel.error)
                     }
                 }
             }
@@ -174,23 +169,23 @@ class CastledNetworkManager {
     /**
      Function to Register user with Castled
      */
-    static func api_RegisterUser(userId uid: String, apnsToken token: String, completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
-        if token.isEmpty {
-            CastledLog.castledLog("Register User [\(uid)] failed: \(CastledExceptionMessages.emptyToken.rawValue)", logLevel: CastledLogLevel.error)
-            completion(CastledResponse(error: CastledExceptionMessages.emptyToken.rawValue, statusCode: 999))
-            return
-        }
+    static func registerUser(params: [String: Any], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
         Task {
-            let router: CastledNetworkRouter = .registerUser(userID: uid, apnsToken: token, instanceId: Castled.sharedInstance.instanceId)
+            let router: CastledNetworkRouter = .registerUser(params: params, instanceId: Castled.sharedInstance.instanceId)
             let response = await CastledNetworkLayer.shared.sendRequest(model: [String: String].self, request: router.request)
             switch response.success {
                 case true:
-                    CastledLog.castledLog("'\(uid)' registered successfully...", logLevel: CastledLogLevel.debug)
-                    CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, true)
+                    if let uid = params[CastledConstants.PushNotification.userId] as? String {
+                        CastledLog.castledLog("'\(uid)' registered successfully...", logLevel: CastledLogLevel.debug)
+                    }
+                    CastledStore.deleteAllFailedItemsFromStore([params])
                     completion(CastledResponse(response: response.result!))
 
                 case false:
-                    CastledLog.castledLog("Register User '\(uid)' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+                    if let uid = params[CastledConstants.PushNotification.userId] as? String {
+                        CastledLog.castledLog("Register User '\(uid)' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+                    }
+                    CastledStore.insertAllFailedItemsToStore([params])
                     completion(CastledResponse(error: response.errorMessage, statusCode: 999))
             }
         }

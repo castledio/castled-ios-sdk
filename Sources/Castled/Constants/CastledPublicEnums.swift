@@ -51,6 +51,11 @@ import Foundation
     }
 }
 
+@objc public enum CastledPushTokenType: Int {
+    case apns
+    case fcm
+}
+
 @objc public enum CastledLogLevel: Int {
     case none
     case error

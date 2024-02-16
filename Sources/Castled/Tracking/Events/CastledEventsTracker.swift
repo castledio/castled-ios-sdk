@@ -17,7 +17,7 @@ class CastledEventsTracker: NSObject {
         guard let userId = CastledUserDefaults.shared.userId else {
             return
         }
-        Castled.sharedInstance.castledEventsTrackingQueue.async {
+        Castled.sharedInstance.castledCommonQueue.async {
             // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
             let stringDict = params.castledSerializedDictionary()
             var trackParams: [String: Any] = ["type": "track",
@@ -46,7 +46,7 @@ class CastledEventsTracker: NSObject {
             CastledLog.castledLog("Set userAttributes failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: .error)
             return
         }
-        Castled.sharedInstance.castledEventsTrackingQueue.async {
+        Castled.sharedInstance.castledCommonQueue.async {
             // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
             let stringDict = attributes.getAttributes().castledSerializedDictionary()
             var trackParams: [String: Any] = [

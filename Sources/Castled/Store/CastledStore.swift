@@ -9,8 +9,8 @@ import Foundation
 import RealmSwift
 
 @objc class CastledStore: NSObject {
-    static let castledStoreQueue = DispatchQueue(label: "com.castled.dbHandler")
-    static let castledFailedItemsOperations = DispatchQueue(label: "com.castled.failedItemsOperations", attributes: .concurrent)
+    static let castledStoreQueue = DispatchQueue(label: "CastledbHandler")
+    static let castledFailedItemsOperations = DispatchQueue(label: "CastledFailedItemsOperations", attributes: .concurrent)
 
     static var isInserting = false
 
@@ -19,6 +19,11 @@ import RealmSwift
             var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
             failedItems.append(contentsOf: items)
             failedItems = failedItems.removeDuplicates()
+            let maxmFailedItems = 5000
+            if failedItems.count > maxmFailedItems {
+                let numberOfElementsToRemove = failedItems.count - maxmFailedItems
+                failedItems.removeFirst(numberOfElementsToRemove)
+            }
             CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
         }
     }

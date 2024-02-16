@@ -23,7 +23,7 @@ enum HTTPMethod: String {
 }
 
 enum CastledNetworkRouter {
-    case registerUser(userID: String, apnsToken: String, instanceId: String)
+    case registerUser(params: [String: Any], instanceId: String)
     case fetchInAppNotification(userID: String, instanceId: String)
     case fetchInInboxItems(userID: String, instanceId: String)
     case reportPushEvents(params: [[String: Any]], instanceId: String)
@@ -46,12 +46,12 @@ enum CastledNetworkRouter {
 
     var request: CastledNetworkRequest {
         switch self {
-        case .registerUser(let userID, let apnsToken, let instanceId):
+        case .registerUser(let params, let instanceId):
             return CastledNetworkRequest(baseURL: baseURL,
                                          baseURLEndPoint: baseURLEndPoint,
                                          path: "v1/push/\(instanceId)/apns/register",
                                          method: .post,
-                                         parameters: ["userId": userID, "apnsToken": apnsToken],
+                                         parameters: params,
                                          headers: nil)
 
         case .reportPushEvents(let params, let instanceId):

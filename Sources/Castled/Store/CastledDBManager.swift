@@ -47,8 +47,6 @@ class CastledDBManager {
                 }
             }
 
-        } catch {
-
-        }
+        } catch {}
     }
 }
