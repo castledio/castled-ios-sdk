@@ -10,8 +10,7 @@ import UIKit
 
 class CastledButtonActionHandler {
     static func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]?) {
-        let skipAutoOpening = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledSkipAutoUrlOpeningKey) as? Bool ?? false
-        if skipAutoOpening {
+        if CastledConfigsUtils.configs.skipUrlHandling {
             return
         }
 

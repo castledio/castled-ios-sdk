@@ -20,13 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.enableInApp = true
         config.enableTracking = true
         config.enableSessionTracking = true
+        config.skipUrlHandling = false
         config.sessionTimeOutSec = 60
         config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
         Castled.initialize(withConfig: config, andDelegate: self)
-        Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
+//        Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
         registerForPush()
 
         if #available(iOS 13.0, *) {
@@ -39,9 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).standardAppearance = navBarAppearance
             UINavigationBar.appearance(whenContainedInInstancesOf: [UINavigationController.self]).scrollEdgeAppearance = navBarAppearance
         }
-        let notificationCategories = self.getNotificationCategories()
+        let notificationCategories = getNotificationCategories()
         Castled.sharedInstance.setNotificationCategories(withItems: notificationCategories)
-        self.window?.makeKeyAndVisible()
+        window?.makeKeyAndVisible()
         Castled.sharedInstance.setLaunchOptions(launchOptions)
         return true
     }
@@ -188,8 +189,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // If you disabled the swizzling in plist you should call the required functions in the delegate methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        Castled.sharedInstance.setPushToken(deviceTokenString)
-        print("APNs token \(deviceTokenString) \(self.description)")
+        Castled.sharedInstance.setPushToken(deviceTokenString, CastledPushTokenType.apns)
+        print("APNs token \(deviceTokenString) \(description)")
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -231,7 +232,7 @@ private extension AppDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController else { return }
 
-        self.presentViewController(vc)
+        presentViewController(vc)
     }
 
     func handleNavigateToScreen(screenName: String?) {
@@ -239,18 +240,18 @@ private extension AppDelegate {
         guard let vc = instantiateViewController(screenName: screenName) else {
             return
         }
-        self.presentViewController(vc)
+        presentViewController(vc)
     }
 
     func handleRichLanding(screenName: String?) {}
 
     func getVisibleViewController(from viewController: UIViewController) -> UIViewController {
         if let navigationController = viewController as? UINavigationController {
-            return self.getVisibleViewController(from: navigationController.visibleViewController ?? navigationController)
+            return getVisibleViewController(from: navigationController.visibleViewController ?? navigationController)
         } else if let tabBarController = viewController as? UITabBarController {
-            return self.getVisibleViewController(from: tabBarController.selectedViewController ?? tabBarController)
+            return getVisibleViewController(from: tabBarController.selectedViewController ?? tabBarController)
         } else if let presentedViewController = viewController.presentedViewController {
-            return self.getVisibleViewController(from: presentedViewController)
+            return getVisibleViewController(from: presentedViewController)
         } else {
             return viewController
         }

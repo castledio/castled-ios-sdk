@@ -12,13 +12,18 @@ enum CastledConstants {
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
-    static let kCastledSkipAutoUrlOpeningKey = "CastledSkipUrlHandling"
-
+ 
     enum PushNotification {
         static let customKey = "castled"
         static let apsKey = "aps"
         static let badgeKey = "badge"
         static let inboxCopyEnabled = "inboxCopyEnabled"
+        static let userId = "userId"
+
+        enum Token {
+            static let apnsToken = "apnsToken"
+            static let fcmToken = "fcmToken"
+        }
 
         enum ApsProperties {
             static let category = "category"
@@ -146,6 +151,7 @@ enum CastledConstants {
 
     enum CastledNetworkRequestType: String {
         case pushRequest = "push"
+        case userRegisterationRequest = "userRegn"
         case inappRequest = "inapp"
         case inboxRequest = "inbox"
         case deviceInfoRequest = "deviceInfo"

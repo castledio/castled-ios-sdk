@@ -30,34 +30,34 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         //        CastledConfigs.sharedInstance.enablePush = true
 
         /*   let dateFormatter = DateFormatter()
-                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // Customize the format as needed
+         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" // Customize the format as needed
 
-                 // Create a Date object representing the date you want to convert to a string
-                 let date = Date() // This represents the current date and time
+         // Create a Date object representing the date you want to convert to a string
+         let date = Date() // This represents the current date and time
 
-                 // Use the DateFormatter to convert the Date to a string
-                 let dateString = dateFormatter.string(from: date)
-         //
-                 Castled.sharedInstance.logCustomAppEvent("antony_event", params: ["IntValue": 200,
-                                                                                   "Date": Date(),
-                                                                                   "BoolValue": true,
-                                                                                   "Name": "Antony Joe Mathew"])
+         // Use the DateFormatter to convert the Date to a string
+         let dateString = dateFormatter.string(from: date)
 
-                 let userAttributes = CastledUserAttributes()
-                 userAttributes.setFirstName("Antony Joe Mathew 1")
-                 userAttributes.setLastName("Mathew")
-                 userAttributes.setCity("Sanfrancisco")
-                 userAttributes.setCountry("US")
-                 userAttributes.setEmail("doe@email.com")
-                 userAttributes.setDOB("02-01-1995")
-                 userAttributes.setGender("M")
-                 userAttributes.setPhone("+13156227533")
-                 // Custom Attributes
-                 userAttributes.setCustomAttribute("prime_member", true)
-                 userAttributes.setCustomAttribute("int", 500)
-                 userAttributes.setCustomAttribute("double", 500.01)
-                 userAttributes.setCustomAttribute("occupation", "artist")
-                 Castled.sharedInstance.setUserAttributes(userAttributes)*/
+         Castled.sharedInstance.logCustomAppEvent("antony_event", params: ["IntValue": 200,
+                                                                           //"Date": Date(),
+                                                                           "BoolValue": true,
+                                                                           "Name": "Antony Joe Mathew"])
+
+         let userAttributes = CastledUserAttributes()
+         userAttributes.setFirstName("Antony Joe Mathew 1")
+         userAttributes.setLastName("Mathew")
+         userAttributes.setCity("Sanfrancisco")
+         userAttributes.setCountry("US")
+         userAttributes.setEmail("doe@email.com")
+         userAttributes.setDOB("02-01-1995")
+         userAttributes.setGender("M")
+         userAttributes.setPhone("+13156227533")
+         // Custom Attributes
+         userAttributes.setCustomAttribute("prime_member", true)
+         userAttributes.setCustomAttribute("int", 500)
+         userAttributes.setCustomAttribute("double", 500.01)
+         userAttributes.setCustomAttribute("occupation", "artist")
+         Castled.sharedInstance.setUserAttributes(userAttributes)*/
     }
 
     func showRequiredViews() {

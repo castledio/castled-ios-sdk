@@ -21,12 +21,8 @@ class CastledRetryHandler {
         isResending = true
         CastledStore.castledStoreQueue.async { [weak self] in
             let failedItems = CastledStore.getAllFailedItemss()
-            var shouldCallRegister = false
-            let pushToken = CastledUserDefaults.shared.apnsToken
-            if pushToken != nil && CastledUserDefaults.shared.userId != nil && !CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey) {
-                shouldCallRegister = true
-            }
-            guard !failedItems.isEmpty || shouldCallRegister else {
+
+            guard !failedItems.isEmpty else {
                 completion?()
                 self?.isResending = false
                 return
@@ -118,19 +114,23 @@ class CastledRetryHandler {
                         }
                         self?.castledSemaphore.signal()
                         self?.castledGroup.leave()
+                    case CastledConstants.CastledNetworkRequestType.userRegisterationRequest.rawValue:
+                        if let savedEvents = value as? [[String: String]] {
+                            for info in savedEvents {
+                                self?.castledSemaphore.wait()
+                                self?.castledGroup.enter()
+                                CastledNetworkManager.registerUser(params: info) { _ in
+                                    self?.castledSemaphore.signal()
+                                    self?.castledGroup.leave()
+                                }
+                            }
+                        }
 
                     default:
                         break
                 }
             }
-            if shouldCallRegister == true {
-                self?.castledSemaphore.wait()
-                self?.castledGroup.enter()
-                CastledNetworkManager.api_RegisterUser(userId: CastledUserDefaults.shared.userId ?? "", apnsToken: pushToken ?? "") { _ in
-                    self?.castledSemaphore.signal()
-                    self?.castledGroup.leave()
-                }
-            }
+
             self?.castledGroup.notify(queue: .main) {
                 self?.isResending = false
                 completion?()

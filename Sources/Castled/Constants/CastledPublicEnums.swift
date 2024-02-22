@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc public enum CastledLocation: Int {
+@objc public enum CastledLocation: Int, Codable {
     case US
     case AP
     case INDIA
@@ -51,7 +51,12 @@ import Foundation
     }
 }
 
-@objc public enum CastledLogLevel: Int {
+@objc public enum CastledPushTokenType: Int {
+    case apns
+    case fcm
+}
+
+@objc public enum CastledLogLevel: Int, Codable {
     case none
     case error
     case info

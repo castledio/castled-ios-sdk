@@ -22,6 +22,8 @@
     CastledConfigs *config = [CastledConfigs initializeWithAppId:@"718c38e2e359d94367a2e0d35e1fd4df"];
     config.enablePush = TRUE;
     config.enableTracking  = TRUE;
+    config.enableSessionTracking = TRUE;
+    config.sessionTimeOutSec = 60;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     //2. Call Castled.initialize method
    [Castled initializeWithConfig:config andDelegate:self];
@@ -106,9 +108,7 @@
                                    stringByReplacingOccurrencesOfString:@" " withString:@""];
         deviceTokenString = [[NSMutableString alloc] initWithString:deviceToken1];
     }
-
-    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", deviceTokenString);
-    [[Castled sharedInstance] setPushToken:deviceTokenString];
+     [[Castled sharedInstance] setPushToken:deviceTokenString :CastledPushTokenTypeApns];
 
 }
 

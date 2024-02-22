@@ -24,9 +24,8 @@ import UserNotifications
     private var isInitialized = false
     // Create a dispatch queue
     let castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
+    let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .userInitiated)
     let castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", attributes: .concurrent)
-    let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .background)
-    let castledEventsTrackingQueue = DispatchQueue(label: "CastledEventsTrackingQueue", attributes: .concurrent)
 
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)
@@ -54,7 +53,7 @@ import UserNotifications
         if let castledDelegate = delegate {
             Castled.sharedInstance.delegate = castledDelegate
         }
-        CastledConfigsUtils.saveTheConfigs()
+        CastledConfigsUtils.saveTheConfigs(config: config)
         Castled.sharedInstance.initialSetup()
     }
 
@@ -76,7 +75,7 @@ import UserNotifications
         notificationCenter.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
 
         CastledDeviceInfo.shared.updateDeviceInfo()
-        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
+//        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
     }
@@ -98,17 +97,25 @@ import UserNotifications
     /**
      Function that allows users to set the PushNotifiication token.
      */
-    @objc public func setPushToken(_ token: String) {
+    @objc public func setPushToken(_ token: String, _ type: CastledPushTokenType = .apns) {
         castledProfileQueue.async(flags: .barrier) {
-            let oldToken = CastledUserDefaults.shared.apnsToken ?? ""
-            CastledUserDefaults.shared.apnsToken = token
-            CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, token)
-
-            if token != oldToken {
-                CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
-                if let uid = CastledUserDefaults.shared.userId {
-                    Castled.sharedInstance.updateTheUserIdAndToken(uid, token)
+            if type == .apns {
+                let oldToken = CastledUserDefaults.shared.apnsToken ?? ""
+                if token == oldToken {
+                    return
                 }
+                CastledUserDefaults.shared.apnsToken = token
+                CastledUserDefaults.setString(CastledUserDefaults.kCastledAPNsTokenKey, token)
+            } else {
+                let oldToken = CastledUserDefaults.shared.fcmToken ?? ""
+                if token == oldToken {
+                    return
+                }
+                CastledUserDefaults.shared.fcmToken = token
+                CastledUserDefaults.setString(CastledUserDefaults.kCastledFCMTokenKey, token)
+            }
+            if let uid = CastledUserDefaults.shared.userId {
+                Castled.sharedInstance.updateTheUserIdAndToken(uid, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
             }
         }
     }
@@ -141,11 +148,14 @@ import UserNotifications
             DispatchQueue.main.async {
                 CastledUserDefaults.clearAllFromPreference()
                 CastledDBManager.shared.clearTables()
-                if CastledConfigsUtils.enablePush {
-                    CastledNetworkManager.logoutUser(params: ["userId": userId,
-                                                              "token": CastledUserDefaults.shared.apnsToken ?? "",
-                                                              CastledConstants.Sessions.sessionId: CastledSessionsManager.shared.sessionId,
-                                                              CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue])
+                if CastledConfigsUtils.configs.enablePush {
+                    let params = [CastledConstants.PushNotification.userId: userId,
+                                  CastledConstants.PushNotification.Token.apnsToken: CastledUserDefaults.shared.apnsToken,
+                                  CastledConstants.PushNotification.Token.fcmToken: CastledUserDefaults.shared.fcmToken,
+                                  CastledConstants.Sessions.sessionId: CastledSessionsManager.shared.sessionId,
+                                  CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue]
+
+                    CastledNetworkManager.logoutUser(params: params.compactMapValues { $0 } as [String: Any])
                 }
 
                 CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
@@ -196,7 +206,7 @@ import UserNotifications
         if CastledUserDefaults.shared.userId != nil {
             Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
             CastledSessionsManager.shared.didEnterForeground()
-            CastledUserEventsTracker.shared.setTheUserEventsFromBG()
+//            CastledUserEventsTracker.shared.setTheUserEventsFromBG()
             Castled.sharedInstance.executeBGTasks(isFromBG: true)
         }
     }
@@ -208,7 +218,7 @@ import UserNotifications
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
-        if CastledConfigsUtils.enableInApp == false {
+        if CastledConfigsUtils.configs.enableInApp == false {
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
@@ -230,23 +240,26 @@ import UserNotifications
 
             if userId != existingUserId {
                 CastledDeviceInfo.shared.updateDeviceInfo()
-                if CastledConfigsUtils.enableSessionTracking {
+                if CastledConfigsUtils.configs.enableSessionTracking {
                     CastledSessionsManager.shared.startCastledSession()
                 }
 
-                guard let deviceToken = CastledUserDefaults.shared.apnsToken else {
+                if CastledUserDefaults.shared.apnsToken == nil && CastledUserDefaults.shared.fcmToken == nil {
                     Castled.sharedInstance.executeBGTasks()
                     return
                 }
-                CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledIsTokenRegisteredKey, false)
-                Castled.sharedInstance.updateTheUserIdAndToken(userId, deviceToken)
+
+                Castled.sharedInstance.updateTheUserIdAndToken(userId, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
             }
         }
     }
 
-    private func updateTheUserIdAndToken(_ userId: String, _ deviceToken: String) {
-        CastledNetworkManager.api_RegisterUser(userId: userId, apnsToken: deviceToken) { _ in
-            Castled.sharedInstance.executeBGTasks()
+    private func updateTheUserIdAndToken(_ userId: String, apns apnsToken: String?, fcm fcmToken: String?) {
+        let params = [CastledConstants.PushNotification.userId: userId,
+                      CastledConstants.PushNotification.Token.apnsToken: apnsToken,
+                      CastledConstants.PushNotification.Token.fcmToken: fcmToken,
+                      CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userRegisterationRequest.rawValue]
+        CastledNetworkManager.registerUser(params: params.compactMapValues { $0 } as [String: Any]) { _ in
         }
     }
 

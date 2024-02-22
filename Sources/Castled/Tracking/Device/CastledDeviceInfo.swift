@@ -15,9 +15,9 @@ class CastledDeviceInfo: NSObject {
         guard CastledUserDefaults.shared.userId != nil else {
             return
         }
-        Castled.sharedInstance.castledEventsTrackingQueue.async(flags: .barrier) {
+        Castled.sharedInstance.castledCommonQueue.async {
             self.checkNotificationPermissions { granted in
-                var deviceInfo = ["sdkVersion": self.getSDKVersion(),
+                let deviceInfo = ["sdkVersion": self.getSDKVersion(),
                                   "appVersion": self.getAppVersion(),
                                   "model": self.getModelIdentifier(),
                                   "make": self.getMake(),

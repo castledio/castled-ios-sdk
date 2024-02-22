@@ -59,9 +59,6 @@ class CastledInboxServices: NSObject {
                         CastledStore.resetUnreadUncountAfterCRUD(realm: realm)
                     }
                 }
-                catch let error as NSError {
-                    CastledLog.castledLog("in deltion \(error.localizedDescription)", logLevel: .error)
-                }
             }
 
             let eventType = "DELETED"

@@ -12,23 +12,23 @@ import UserNotifications
 public extension Castled {
     // MARK: - Notification Delegates Swizzled methods
 
-    @objc func swizzled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    @objc internal func swizzled_application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Castled.sharedInstance.setDeviceToken(deviceToken: deviceToken)
         if responds(to: #selector(swizzled_application(_:didRegisterForRemoteNotificationsWithDeviceToken:))) {
             self.swizzled_application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
         }
     }
 
-    @objc func swizzled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    @objc internal func swizzled_application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         CastledLog.castledLog("Failed to register: \(error)", logLevel: CastledLogLevel.error)
         if responds(to: #selector(swizzled_application(_:didFailToRegisterForRemoteNotificationsWithError:))) {
             swizzled_application(application, didFailToRegisterForRemoteNotificationsWithError: error)
         }
     }
 
-    @objc func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
-                                               willPresentNotification notification: UNNotification,
-                                               withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    @objc internal func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
+                                                        willPresentNotification notification: UNNotification,
+                                                        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
         Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
         if responds(to: #selector(swizzled_userNotificationCenter(_:willPresentNotification:withCompletionHandler:))) {
@@ -40,7 +40,7 @@ public extension Castled {
         }
     }
 
-    @objc func swizzled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    @objc internal func swizzled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { [self] _ in
             if self.responds(to: #selector(swizzled_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))) {
                 self.swizzled_application(application, didReceiveRemoteNotification: userInfo) { result in
@@ -53,9 +53,9 @@ public extension Castled {
         })
     }
 
-    @objc func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
-                                               didReceiveNotificationResponse response: UNNotificationResponse,
-                                               withCompletionHandler completionHandler: @escaping () -> Void)
+    @objc internal func swizzled_userNotificationCenter(_ center: UNUserNotificationCenter,
+                                                        didReceiveNotificationResponse response: UNNotificationResponse,
+                                                        withCompletionHandler completionHandler: @escaping () -> Void)
     {
         Castled.sharedInstance.handleNotificationAction(response: response)
         if responds(to: #selector(swizzled_userNotificationCenter(_:didReceiveNotificationResponse:withCompletionHandler:))) {
@@ -67,7 +67,7 @@ public extension Castled {
         }
     }
 
-    @objc func swizzled_application(_ application: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    @objc internal func swizzled_application(_ application: UIApplication, openURL url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         if responds(to: #selector(swizzled_application(_:openURL:options:))) {
             return swizzled_application(application, openURL: url, options: options)
         }
@@ -205,7 +205,7 @@ public extension Castled {
     }
 
     internal func processAllDeliveredNotifications(shouldClear: Bool) {
-        if CastledConfigsUtils.enablePush == false {
+        if CastledConfigsUtils.configs.enablePush == false {
             return
         }
         castledNotificationQueue.async {
