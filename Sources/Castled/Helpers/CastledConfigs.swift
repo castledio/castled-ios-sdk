@@ -28,7 +28,7 @@ import Foundation
 
     @objc public var enableAppInbox: Bool = false
     @objc public var enableInApp: Bool = false
-    @objc public var enableSessionTracking: Bool = false
+    @objc public var enableSessionTracking: Bool = true
     @objc public var enableTracking: Bool = false
     @objc public var enablePush: Bool = false
     @objc public var skipUrlHandling: Bool = false
@@ -67,7 +67,7 @@ import Foundation
         self.enablePush = try container.decodeIfPresent(Bool.self, forKey: .enablePush) ?? false
         self.enableAppInbox = try container.decodeIfPresent(Bool.self, forKey: .enableAppInbox) ?? false
         self.enableInApp = try container.decodeIfPresent(Bool.self, forKey: .enableInApp) ?? false
-        self.enableSessionTracking = try container.decodeIfPresent(Bool.self, forKey: .enableSessionTracking) ?? false
+        self.enableSessionTracking = try container.decodeIfPresent(Bool.self, forKey: .enableSessionTracking) ?? true
         self.enableTracking = try container.decodeIfPresent(Bool.self, forKey: .enableTracking) ?? false
         self.skipUrlHandling = try container.decodeIfPresent(Bool.self, forKey: .skipUrlHandling) ?? false
         self.inAppFetchIntervalSec = try container.decodeIfPresent(Int.self, forKey: .inAppFetchIntervalSec) ?? 15 * 60
