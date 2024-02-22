@@ -39,7 +39,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
          let dateString = dateFormatter.string(from: date)
 
          Castled.sharedInstance.logCustomAppEvent("antony_event", params: ["IntValue": 200,
-                                                                           "Date": Date(),
+                                                                           //"Date": Date(),
                                                                            "BoolValue": true,
                                                                            "Name": "Antony Joe Mathew"])
 

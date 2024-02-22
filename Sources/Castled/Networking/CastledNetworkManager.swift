@@ -116,7 +116,7 @@ class CastledNetworkManager {
      Function to fetch all App Notification
      */
     static func fetchInAppNotifications(completion: @escaping (_ response: CastledResponse<[CastledInAppObject]>) -> Void) {
-        if !CastledConfigsUtils.enableInApp {
+        if !CastledConfigsUtils.configs.enableInApp {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
             return
         }
@@ -145,7 +145,7 @@ class CastledNetworkManager {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
 
             return
-        } else if !CastledConfigsUtils.enableAppInbox {
+        } else if !CastledConfigsUtils.configs.enableAppInbox {
             completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
             return
         }

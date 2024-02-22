@@ -53,7 +53,7 @@ import UserNotifications
         if let castledDelegate = delegate {
             Castled.sharedInstance.delegate = castledDelegate
         }
-        CastledConfigsUtils.saveTheConfigs()
+        CastledConfigsUtils.saveTheConfigs(config: config)
         Castled.sharedInstance.initialSetup()
     }
 
@@ -148,11 +148,14 @@ import UserNotifications
             DispatchQueue.main.async {
                 CastledUserDefaults.clearAllFromPreference()
                 CastledDBManager.shared.clearTables()
-                if CastledConfigsUtils.enablePush {
-                    CastledNetworkManager.logoutUser(params: ["userId": userId,
-                                                              "token": CastledUserDefaults.shared.apnsToken ?? "",
-                                                              CastledConstants.Sessions.sessionId: CastledSessionsManager.shared.sessionId,
-                                                              CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue])
+                if CastledConfigsUtils.configs.enablePush {
+                    let params = [CastledConstants.PushNotification.userId: userId,
+                                  CastledConstants.PushNotification.Token.apnsToken: CastledUserDefaults.shared.apnsToken,
+                                  CastledConstants.PushNotification.Token.fcmToken: CastledUserDefaults.shared.fcmToken,
+                                  CastledConstants.Sessions.sessionId: CastledSessionsManager.shared.sessionId,
+                                  CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue]
+
+                    CastledNetworkManager.logoutUser(params: params.compactMapValues { $0 } as [String: Any])
                 }
 
                 CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
@@ -215,7 +218,7 @@ import UserNotifications
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
-        if CastledConfigsUtils.enableInApp == false {
+        if CastledConfigsUtils.configs.enableInApp == false {
             return
         }
         CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
@@ -237,7 +240,7 @@ import UserNotifications
 
             if userId != existingUserId {
                 CastledDeviceInfo.shared.updateDeviceInfo()
-                if CastledConfigsUtils.enableSessionTracking {
+                if CastledConfigsUtils.configs.enableSessionTracking {
                     CastledSessionsManager.shared.startCastledSession()
                 }
 

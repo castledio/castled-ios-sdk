@@ -11,7 +11,7 @@ class CastledUserDefaults: NSObject {
     static let shared = CastledUserDefaults()
 
     private static let userDefaults = UserDefaults.standard
-    static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.appGroupId) ?? UserDefaults.standard
+    static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.configs.appGroupId) ?? UserDefaults.standard
     // Userdefault keys
     static let kCastledUserIdKey = "_castledUserId_"
     static let kCastledDeviceIddKey = "_castledDeviceId_"
@@ -128,7 +128,7 @@ class CastledUserDefaults: NSObject {
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledInAppsList)
         removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
-        if CastledConfigsUtils.enableSessionTracking {
+        if CastledConfigsUtils.configs.enableSessionTracking {
             CastledSessionsManager.shared.resetSessionDetails()
         }
         CastledUserDefaults.shared.userId = nil

@@ -11,7 +11,7 @@ class CastledEventsTracker: NSObject {
     static let shared = CastledEventsTracker()
     override private init() {}
     func trackEvent(eventName: String, params: [String: Any]) {
-        if !CastledConfigsUtils.enableTracking {
+        if !CastledConfigsUtils.configs.enableTracking {
             return
         }
         guard let userId = CastledUserDefaults.shared.userId else {
@@ -26,7 +26,7 @@ class CastledEventsTracker: NSObject {
                                               "properties": stringDict,
                                               "timestamp": Date().string(),
                                               CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
-            if CastledConfigsUtils.enableSessionTracking {
+            if CastledConfigsUtils.configs.enableSessionTracking {
                 trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
             }
             CastledNetworkManager.reportCustomEvents(params: [trackParams]) { response in
@@ -38,7 +38,7 @@ class CastledEventsTracker: NSObject {
     }
 
     func setUserAttributes(_ attributes: CastledUserAttributes) {
-        if !CastledConfigsUtils.enableTracking {
+        if !CastledConfigsUtils.configs.enableTracking {
             CastledLog.castledLog("Set userAttributes failed: \(CastledExceptionMessages.trackingDisabled.rawValue)", logLevel: .error)
             return
         }
@@ -56,7 +56,7 @@ class CastledEventsTracker: NSObject {
                 CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userAttributes.rawValue,
             ]
 
-            if CastledConfigsUtils.enableSessionTracking {
+            if CastledConfigsUtils.configs.enableSessionTracking {
                 trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
             }
             CastledNetworkManager.reportUserAttributes(params: trackParams) { _ in

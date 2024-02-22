@@ -21,7 +21,7 @@ class CastledBGManager {
         if isRegistered { return }
         if #available(iOS 13.0, *) {
             isRegistered = true
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: CastledConfigsUtils.permittedBGIdentifier, using: nil) { task in
+            BGTaskScheduler.shared.register(forTaskWithIdentifier: CastledConfigsUtils.configs.permittedBGIdentifier, using: nil) { task in
                 self.handleBackgroundTask(task: task as! BGProcessingTask)
             }
             startBackgroundTask()
@@ -57,7 +57,7 @@ class CastledBGManager {
     }
 
     private func handleBackgroundTask(task: BGProcessingTask) {
-        if CastledConfigsUtils.permittedBGIdentifier.isEmpty {
+        if CastledConfigsUtils.configs.permittedBGIdentifier.isEmpty {
             return
         }
         expirationHandler = {
@@ -77,15 +77,15 @@ class CastledBGManager {
     }
 
     private func getNewTaskRequest() -> BGProcessingTaskRequest {
-        let taskRequest = BGProcessingTaskRequest(identifier: CastledConfigsUtils.permittedBGIdentifier)
+        let taskRequest = BGProcessingTaskRequest(identifier: CastledConfigsUtils.configs.permittedBGIdentifier)
         taskRequest.requiresExternalPower = true
         taskRequest.requiresNetworkConnectivity = true
-        taskRequest.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(max(CastledConfigsUtils.inAppFetchIntervalSec, 15 * 60)))
+        taskRequest.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(max(CastledConfigsUtils.configs.inAppFetchIntervalSec, 15 * 60)))
         return taskRequest
     }
 
     private func startBackgroundTask() {
-        if CastledConfigsUtils.permittedBGIdentifier.isEmpty {
+        if CastledConfigsUtils.configs.permittedBGIdentifier.isEmpty {
             return
         }
         if checkBackgroundProcessingCapability() {
@@ -107,7 +107,7 @@ class CastledBGManager {
             expirationHandler = nil
         }
         if #available(iOS 13.0, *) {
-            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: CastledConfigsUtils.permittedBGIdentifier)
+            BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: CastledConfigsUtils.configs.permittedBGIdentifier)
         }
     }
 

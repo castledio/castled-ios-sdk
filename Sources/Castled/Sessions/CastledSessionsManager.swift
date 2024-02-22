@@ -33,7 +33,7 @@ class CastledSessionsManager {
     }
 
     private func isInCurrentSession() -> Bool {
-        return sessionEndTime != 0.0 && ((Date().timeIntervalSince1970 - sessionEndTime) <= CastledConfigsUtils.sessionTimeOutSec)
+        return sessionEndTime != 0.0 && ((Date().timeIntervalSince1970 - sessionEndTime) <= Double(CastledConfigsUtils.configs.sessionTimeOutSec))
     }
 
     private func createNewSession() {
@@ -80,7 +80,7 @@ class CastledSessionsManager {
     }
 
     func didEnterBackground() {
-        if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.enableSessionTracking {
+        if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.configs.enableSessionTracking {
             return
         }
 
@@ -103,7 +103,7 @@ class CastledSessionsManager {
     }
 
     func didEnterForeground() {
-        if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.enableSessionTracking {
+        if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.configs.enableSessionTracking {
             return
         }
         startCastledSession()

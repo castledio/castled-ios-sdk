@@ -23,8 +23,6 @@
 		</dict>
 	</array>
 	<key>CastledSwizzlingDisabled</key>
-	<false/>
-	<key>CastledSkipUrlHandling</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

@@ -37,7 +37,7 @@ enum CastledNetworkRouter {
     case reportSession(params: [[String: Any]])
 
     var baseURL: String {
-        return "https://\(CastledConfigsUtils.location.description).castled.io/"
+        return "https://\(CastledConfigsUtils.configs.location.description).castled.io/"
     }
 
     var baseURLEndPoint: String {

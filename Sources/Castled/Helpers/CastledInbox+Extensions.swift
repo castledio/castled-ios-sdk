@@ -42,7 +42,7 @@ public extension Castled {
                 CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: .error)
                 return
             }
-            else if !CastledConfigsUtils.enableAppInbox {
+            else if !CastledConfigsUtils.configs.enableAppInbox {
                 completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
                 CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: .error)
                 return

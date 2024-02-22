@@ -154,7 +154,7 @@ import UIKit
         guard let _ = CastledUserDefaults.shared.userId,!isCurrentlyDisplaying else {
             return
         }
-        if CastledConfigsUtils.enableInApp == false {
+        if CastledConfigsUtils.configs.enableInApp == false {
             CastledLog.castledLog("Display Inapp: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
