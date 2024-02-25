@@ -23,7 +23,7 @@
 		</dict>
 	</array>
 	<key>CastledSwizzlingDisabled</key>
-	<true/>
+	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
