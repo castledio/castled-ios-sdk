@@ -41,14 +41,13 @@ public extension Castled {
     }
 
     @objc internal func swizzled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { [self] _ in
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { [self] response in
             if self.responds(to: #selector(swizzled_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))) {
                 self.swizzled_application(application, didReceiveRemoteNotification: userInfo) { result in
                     completionHandler(result)
                 }
             } else {
-                completionHandler(.newData)
-                return
+                completionHandler(response)
             }
         })
     }
@@ -76,7 +75,7 @@ public extension Castled {
 
     @objc internal func setDeviceToken(deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        CastledLog.castledLog("deviceTokenString  \(deviceTokenString)", logLevel: CastledLogLevel.debug)
+        CastledLog.castledLog("APNs token \(deviceTokenString)", logLevel: CastledLogLevel.debug)
         Castled.sharedInstance.setPushToken(deviceTokenString)
     }
 
@@ -96,22 +95,19 @@ public extension Castled {
                 if !params.isEmpty {
                     CastledNetworkManager.reportPushEvents(params: params) { response in
                         completionHandler(response.success ? .newData : .failed)
-                        application.endBackgroundTask(backgroundTask!)
+                        if let backgroundTask = backgroundTask {
+                            application.endBackgroundTask(backgroundTask)
+                        }
                     }
-                } else {
-                    // probabily  send test
-                    completionHandler(.noData)
-                    application.endBackgroundTask(backgroundTask!)
+                    return
                 }
-
-            } else {
-                completionHandler(.noData)
-                application.endBackgroundTask(backgroundTask!)
             }
-        } else {
-            // not from castled
-            completionHandler(.noData)
-            application.endBackgroundTask(backgroundTask!)
+        }
+
+        // not from castled or  send test
+        completionHandler(.noData)
+        if let backgroundTask = backgroundTask {
+            application.endBackgroundTask(backgroundTask)
         }
     }
 

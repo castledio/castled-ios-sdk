@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
+        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
         config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.enableSessionTracking = true
         config.skipUrlHandling = false
         config.sessionTimeOutSec = 60
-        config.location = CastledLocation.TEST
+        config.location = CastledLocation.US
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
@@ -208,12 +208,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler([.alert, .badge, .sound])
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { _ in
-            completionHandler(.newData)
+    /*   func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+         Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { response in
+             completionHandler(response)
 
-        })
-    }
+         })
+     }*/
 }
 
 // MARK: - Supporting Methods for CastledPusherExample

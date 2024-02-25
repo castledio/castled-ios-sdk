@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A42A7A52B8BB08C004FF805 /* Bell.caf in Resources */ = {isa = PBXBuildFile; fileRef = 0A42A7A42B8BB08C004FF805 /* Bell.caf */; };
 		0A4350D92A30E74E00890CE8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A4350D82A30E74E00890CE8 /* Main.storyboard */; };
 		0A4350DC2A30E75A00890CE8 /* DeeplinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */; };
 		0A4350DD2A30E75A00890CE8 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */; };
@@ -81,6 +82,7 @@
 
 /* Begin PBXFileReference section */
 		0A392EC92A553B7400D1F4DD /* CNotificationContentDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CNotificationContentDemo.entitlements; sourceTree = "<group>"; };
+		0A42A7A42B8BB08C004FF805 /* Bell.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bell.caf; sourceTree = "<group>"; };
 		0A4350D82A30E74E00890CE8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkViewController.swift; sourceTree = "<group>"; };
 		0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				0AC021802A30B9D300656DFD /* ViewController.swift */,
 				0A4350DA2A30E75A00890CE8 /* DeeplinkViewController.swift */,
 				0A4350DB2A30E75A00890CE8 /* SecondViewController.swift */,
+				0A42A7A42B8BB08C004FF805 /* Bell.caf */,
 				0A4350D82A30E74E00890CE8 /* Main.storyboard */,
 				0AC021852A30B9D300656DFD /* Assets.xcassets */,
 				0AC021872A30B9D300656DFD /* LaunchScreen.storyboard */,
@@ -440,6 +443,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A4350D92A30E74E00890CE8 /* Main.storyboard in Resources */,
+				0A42A7A52B8BB08C004FF805 /* Bell.caf in Resources */,
 				0AC021892A30B9D300656DFD /* LaunchScreen.storyboard in Resources */,
 				0AC021862A30B9D300656DFD /* Assets.xcassets in Resources */,
 				0A5AA3742B1F5656006B2008 /* pexels-senuscape-1658967.jpg in Resources */,

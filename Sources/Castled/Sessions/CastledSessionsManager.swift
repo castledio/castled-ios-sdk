@@ -27,7 +27,9 @@ class CastledSessionsManager {
             if !self.isInCurrentSession() {
                 self.createNewSession()
                 self.resetTheValuesForNewSession()
-//                CastledLog.castledLog("starting new session with sessionId \(sessionId)", logLevel: .debug)
+                //  CastledLog.castledLog("New session started '\(sessionId)'", logLevel: CastledLogLevel.debug)
+            } else {
+                // CastledLog.castledLog("Resuming session '\(sessionId)'", logLevel: CastledLogLevel.debug)
             }
         }
     }
