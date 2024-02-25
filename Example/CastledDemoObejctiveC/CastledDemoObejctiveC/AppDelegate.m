@@ -24,6 +24,7 @@
     config.enableTracking  = TRUE;
     config.enableSessionTracking = TRUE;
     config.sessionTimeOutSec = 60;
+    config.skipUrlHandling = TRUE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     //2. Call Castled.initialize method
    [Castled initializeWithConfig:config andDelegate:self];

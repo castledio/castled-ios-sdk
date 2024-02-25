@@ -81,6 +81,12 @@ public extension Castled {
     }
 
     @objc func didReceiveRemoteNotification(inApplication application: UIApplication, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let application = UIApplication.shared
+        var backgroundTask: UIBackgroundTaskIdentifier?
+        backgroundTask = application.beginBackgroundTask(withName: "com.castled.bgpush") {
+            application.endBackgroundTask(backgroundTask!)
+            backgroundTask = .invalid
+        }
         CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
         if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
             if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
@@ -88,18 +94,24 @@ public extension Castled {
                 let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
                 let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
                 if !params.isEmpty {
-                    CastledNetworkManager.reportPushEvents(params: params) { _ in
-                        completionHandler(.newData)
+                    CastledNetworkManager.reportPushEvents(params: params) { response in
+                        completionHandler(response.success ? .newData : .failed)
+                        application.endBackgroundTask(backgroundTask!)
                     }
                 } else {
-                    completionHandler(.newData)
+                    // probabily  send test
+                    completionHandler(.noData)
+                    application.endBackgroundTask(backgroundTask!)
                 }
 
             } else {
-                completionHandler(.newData)
+                completionHandler(.noData)
+                application.endBackgroundTask(backgroundTask!)
             }
         } else {
-            completionHandler(.newData)
+            // not from castled
+            completionHandler(.noData)
+            application.endBackgroundTask(backgroundTask!)
         }
     }
 
