@@ -36,6 +36,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                 if customCasledDict[CastledNotificationServiceExtension.kNotificationId] is String {
                     defer {
                         contentHandler(bestAttemptContent ?? request.content)
+                        contentHandler(request.content)
                     }
                     guard let urlString = customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] as? String,
                           let fileUrl = URL(string: urlString)
@@ -55,7 +56,6 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                     setApplicationBadge()
                 }
             }
-            contentHandler(request.content)
         }
     }
 

@@ -26,9 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
+        registerForPush()
+
         Castled.initialize(withConfig: config, andDelegate: self)
 //        Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
-        registerForPush()
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
