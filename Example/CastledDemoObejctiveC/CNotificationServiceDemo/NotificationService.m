@@ -12,7 +12,7 @@
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
     self.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     [super didReceiveNotificationRequest:request withContentHandler:contentHandler];
-}
+ }
 
 - (void)serviceExtensionTimeWillExpire {
 

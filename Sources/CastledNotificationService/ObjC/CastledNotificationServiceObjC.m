@@ -40,6 +40,8 @@
 
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
     [_serviceExtension didReceiveNotificationRequest:request withContentHandler:contentHandler];
+    self.contentHandler = _serviceExtension.contentHandler;
+    self.bestAttemptContent = _serviceExtension.bestAttemptContent;
 }
 
 - (void)serviceExtensionTimeWillExpire {

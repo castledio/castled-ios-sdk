@@ -12,7 +12,7 @@ enum CastledConstants {
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
- 
+
     enum PushNotification {
         static let customKey = "castled"
         static let apsKey = "aps"
@@ -50,6 +50,7 @@ enum CastledConstants {
                     static let useWebView = "useWebview"
                     static let keyVals = "keyVals"
                     static let buttonTitle = "buttonTitle"
+                    static let label = "label"
                 }
             }
         }

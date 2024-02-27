@@ -10,21 +10,20 @@ import UIKit
 
 class CastledButtonActionHandler {
     static func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]?) {
-        if CastledConfigsUtils.configs.skipUrlHandling {
-            return
+        let clickAction = CastledButtonActionUtils.getButtonActionFrom(type: action, kvPairs: kvPairs)
+        if type != .inbox { Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: type, buttonAction: clickAction, userInfo: userInfo ?? [AnyHashable: Any]())
+            Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: type, action: action, kvPairs: kvPairs, userInfo: userInfo ?? [AnyHashable: Any]())
         }
 
         switch action {
             case .deepLink:
-                if let details = kvPairs, let clickActionUrl = details["clickActionUrl"] as? String ?? details["url"] as? String, let url = getDeepLinkUrlFrom(url: clickActionUrl, parameters: kvPairs) { CastledButtonActionHandler.openURL(url) }
+                if let clickActionUrl = clickAction.actionUri, let url = getDeepLinkUrlFrom(url: clickActionUrl, parameters: kvPairs) { CastledButtonActionHandler.openURL(url) }
             case .navigateToScreen:
                 break
             case .richLanding:
-                if let details = kvPairs, let clickActionUrl = details["clickActionUrl"] as? String ?? details["url"] as? String, let url = URL(string: clickActionUrl) { CastledButtonActionHandler.openURL(url) }
+                if let clickActionUrl = clickAction.actionUri, let url = URL(string: clickActionUrl) { CastledButtonActionHandler.openURL(url) }
             case .requestForPush:
-                // TODO:
-
-                break
+                Castled.sharedInstance.promptForPushNotification()
             case .dismiss:
                 // TODO:
 
@@ -71,6 +70,9 @@ class CastledButtonActionHandler {
     }
 
     private static func openURL(_ url: URL) {
+        if CastledConfigsUtils.configs.skipUrlHandling {
+            return
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }

@@ -125,8 +125,34 @@ static NSString *userIdKey = @"userIdKey";
     [self.navigationController pushViewController:inboxViewController animated:YES];
 }
 
+- (void)didSelectedInboxWith:(CastledButtonAction *)buttonAction inboxItem:(CastledInboxItem *)inboxItem{
+    
+    NSLog(@"didSelectedInboxWith ----button title '%@' uri '%@' kvPairs  %@ item %@",buttonAction.buttonTitle,buttonAction.actionUri,buttonAction.keyVals,inboxItem);
+    switch (buttonAction.actionType) {
+        case CastledClickActionTypeDeepLink:
+
+            break;
+        case CastledClickActionTypeNavigateToScreen:
+
+            break;
+        case CastledClickActionTypeRichLanding:
+
+            break;
+        case CastledClickActionTypeRequestForPush:
+
+            break;
+        case CastledClickActionTypeDismiss:
+
+            break;
+        case CastledClickActionTypeCustom:
+
+            break;
+        default:
+            break;
+    }
+}
 - (void)didSelectedInboxWith:(CastledClickActionType)action :(NSDictionary * _Nullable)kvPairs :(CastledInboxItem * _Nonnull)inboxItem {
-    NSLog(@"didSelectedInboxWith ----kvPairs  %@ item %@",kvPairs,inboxItem);
+ //   NSLog(@"didSelectedInboxWith ----kvPairs  %@ item %@",kvPairs,inboxItem);
     switch (action) {
         case CastledClickActionTypeDeepLink:
 

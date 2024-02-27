@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+import UserNotifications
 
 class CastledBadgeManager {
     static let shared = CastledBadgeManager()
