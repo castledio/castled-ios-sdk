@@ -136,6 +136,26 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 
     // MARK: - Inbox delegate
 
+    func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem) {
+        print("didSelectedInboxWith title '\(buttonAction.buttonTitle ?? "")' uri '\(buttonAction.actionUri)'kvPairs \(buttonAction.keyVals) inboxItem\(inboxItem)")
+        switch buttonAction.actionType {
+            case .deepLink:
+                break
+            case .navigateToScreen:
+                break
+            case .richLanding:
+                break
+            case .requestForPush:
+                break
+            case .dismiss:
+                break
+            case .custom:
+                break
+            default:
+                break
+        }
+    }
+
     func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
         switch action {
             case .deepLink:

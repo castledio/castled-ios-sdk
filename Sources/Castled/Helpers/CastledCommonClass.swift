@@ -49,7 +49,6 @@ class CastledCommonClass {
                     CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl: action[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String ?? "",
                     CastledConstants.PushNotification.CustomProperties.Category.Action.buttonTitle: action[CastledConstants.PushNotification.CustomProperties.Category.Action.actionId] as? String ?? "",
                     CastledConstants.PushNotification.inboxCopyEnabled: isInboxCopyEnabled(customDict: customDict as? [String: Any] ?? [:]),
-
                     CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: keyVals,
                     CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView: action[CastledConstants.PushNotification.CustomProperties.Category.Action.useWebView] as? Bool ?? false
                 ]

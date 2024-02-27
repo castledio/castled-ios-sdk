@@ -21,14 +21,16 @@
     //1. Configure config
     CastledConfigs *config = [CastledConfigs initializeWithAppId:@"718c38e2e359d94367a2e0d35e1fd4df"];
     config.enablePush = TRUE;
+    config.enableInApp = TRUE;
+    config.enableAppInbox = TRUE;
     config.enableTracking  = TRUE;
     config.enableSessionTracking = TRUE;
     config.sessionTimeOutSec = 60;
-    config.skipUrlHandling = TRUE;
+    config.skipUrlHandling = FALSE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     //2. Call Castled.initialize method
    [Castled initializeWithConfig:config andDelegate:self];
-
+    [[Castled sharedInstance] setNotificationCategoriesWithItems:[self getNotificationCategories]];
     //3. Register Push
     [self registerForPush];
 
@@ -133,21 +135,71 @@
     completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound);
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    NSLog(@"didReceiveRemoteNotification with completionHandler: %@ %@", self.description, userInfo);
-    [[Castled sharedInstance] didReceiveRemoteNotificationInApplication:application withInfo:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult) {
-        completionHandler(UIBackgroundFetchResultNewData);
 
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [[Castled sharedInstance] didReceiveRemoteNotificationInApplication:application withInfo:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult result) {
+        completionHandler(result);
     }];
 }
-
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
     // Your implementation goes here
 
     return YES; // Return YES if the URL was handled successfully, or NO if not.
 }
 #pragma mark - CastledNotification Delegate Methods
+- (void)notificationClickedWithNotificationType:(CastledNotificationType)type buttonAction:(CastledButtonAction *)buttonAction userInfo:(NSDictionary *)userInfo{
+        /*
+         CastledNotificationType
+            0 .push
+            1 .inapp
+         */
+        NSLog(@"CastledNotificationType: %ld\nbuttonTitle: %@\nactionUri:%@\nkeyVals: %@\ninboxCopyEnabled: %@\nButtonActionType: %ld",
+          (long)type,
+          buttonAction.buttonTitle ?: @"",
+          buttonAction.actionUri ?: @"",
+          buttonAction.keyVals ?: @{},
+          buttonAction.inboxCopyEnabled ? @"YES" : @"NO",
+          (long)buttonAction.actionType);
+    
+        switch (buttonAction.actionType) {
+            case CastledClickActionTypeDeepLink:
+                {
+                    NSString *value = buttonAction.actionUri;
+                    NSURL *url = [NSURL URLWithString:value];
+                    if (url) {
+                        [self handleDeepLinkWithURL:url];
+                    }
+                }
+                break;
+                
+            case CastledClickActionTypeNavigateToScreen:
+                    {
+                        NSString *screenName = buttonAction.actionUri;
+                        [self handleNavigateToScreenWithScreenName:screenName];
+                    }
+                    break;
 
+            case CastledClickActionTypeRichLanding:
+                    // TODO:
+                    break;
+
+            case CastledClickActionTypeRequestForPush:
+                    // TODO:
+                    break;
+
+            case CastledClickActionTypeDismiss:
+                    // TODO:
+                    break;
+
+            case CastledClickActionTypeCustom:
+                    // TODO:
+                    break;
+
+            default:
+                    break;
+    }
+    
+}
 - (void)notificationClickedWithNotificationType:(CastledNotificationType)type
                                          action:(CastledClickActionType)action
                                         kvPairs:(NSDictionary<id, id> * _Nullable)kvPairs

@@ -143,18 +143,22 @@ extension AppDelegate: CastledNotificationDelegate {
         Castled.sharedInstance.promptForPushNotification()
     }
 
-    func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
-        let inboxCopyEnabled = kvPairs?["inboxCopyEnabled"] as? Bool ?? false
+    func notificationClicked(withNotificationType type: CastledNotificationType, buttonAction: CastledButtonAction, userInfo: [AnyHashable: Any]) {
+        /*
+         CastledNotificationType
+            0 .push
+            1 .inapp
+         */
+        print("CastledNotificationType: \(type.rawValue)\nbuttonTitle: \(buttonAction.buttonTitle ?? "")\nactionUri:\(buttonAction.actionUri ?? "")\nkeyVals: \(buttonAction.keyVals)\ninboxCopyEnabled: \(buttonAction.inboxCopyEnabled)\nButtonActionType: \(buttonAction.actionType)")
 
-        print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************inboxCopyEnabled \(inboxCopyEnabled)")
-        switch action {
+        switch buttonAction.actionType {
             case .deepLink:
-                if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {
+                if let urlString = buttonAction.actionUri, let url = URL(string: urlString) {
                     handleDeepLink(url: url)
                 }
 
             case .navigateToScreen:
-                if let details = kvPairs, let screenName = details["clickActionUrl"] as? String {
+                if let screenName = buttonAction.actionUri {
                     handleNavigateToScreen(screenName: screenName)
                 }
             case .richLanding:
@@ -177,6 +181,41 @@ extension AppDelegate: CastledNotificationDelegate {
                 break
         }
     }
+
+    /* func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
+         let inboxCopyEnabled = kvPairs?["inboxCopyEnabled"] as? Bool ?? false
+
+         print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************inboxCopyEnabled \(inboxCopyEnabled)")
+         switch action {
+             case .deepLink:
+                 if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {
+                     handleDeepLink(url: url)
+                 }
+
+             case .navigateToScreen:
+                 if let details = kvPairs, let screenName = details["clickActionUrl"] as? String {
+                     handleNavigateToScreen(screenName: screenName)
+                 }
+             case .richLanding:
+                 // TODO:
+
+                 break
+             case .requestForPush:
+                 // TODO:
+
+                 break
+             case .dismiss:
+                 // TODO:
+
+                 break
+             case .custom:
+                 // TODO:
+
+                 break
+             default:
+                 break
+         }
+     }*/
 
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
         //  print("didReceiveCastledRemoteNotification \(userInfo)")
@@ -209,12 +248,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler([.alert, .badge, .sound])
     }
 
-    /*   func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-         Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { response in
-             completionHandler(response)
+    // MARK: - Handling Remote Notifications in the Background
 
-         })
-     }*/
+    /// This method is called when a remote notification is received and the app is running in the background.
+    /// It is crucial to inform the Castled SDK about the notification for proper processing.
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { result in
+            completionHandler(result)
+        })
+    }
 }
 
 // MARK: - Supporting Methods for CastledPusherExample

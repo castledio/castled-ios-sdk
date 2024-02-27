@@ -25,8 +25,8 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
         }
     }
 
-    var contentHandler: ((UNNotificationContent) -> Void)?
-    var bestAttemptContent: UNMutableNotificationContent?
+    @objc public var contentHandler: ((UNNotificationContent) -> Void)?
+    @objc public var bestAttemptContent: UNMutableNotificationContent?
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler

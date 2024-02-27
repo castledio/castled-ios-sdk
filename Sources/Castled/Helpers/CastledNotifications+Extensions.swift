@@ -127,6 +127,7 @@ public extension Castled {
     internal func handleNotificationAction(response: UNNotificationResponse) {
         // Returning the same options we've requested
         var pushActionType = CastledClickActionType.none
+        var clickedParams: [AnyHashable: Any]?
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
             if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaultsSuit.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
@@ -145,16 +146,13 @@ public extension Castled {
                         break
                 }
                 CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
-                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: defaultActionDetails, userInfo: userInfo)
+                clickedParams = defaultActionDetails
             } else {
-                // handle other actions
-                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
+                // not from castled
             }
             processCastledPushEvents(userInfo: userInfo, isOpened: true)
         } else if response.actionIdentifier == UNNotificationDismissActionIdentifier {
-            Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: .dismiss, kvPairs: nil, userInfo: userInfo)
+            pushActionType = CastledClickActionType.dismiss
             processCastledPushEvents(userInfo: userInfo, isDismissed: true, actionType: CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue)
         } else {
             if let actionDetails: [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
@@ -176,13 +174,13 @@ public extension Castled {
                     default:
                         break
                 }
-                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: actionDetails, userInfo: userInfo)
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: actionDetails, userInfo: userInfo)
+                clickedParams = actionDetails
+
             } else {
-                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
-                Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .push, action: pushActionType, kvPairs: nil, userInfo: userInfo)
+                // not from castled
             }
         }
+        CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: clickedParams, userInfo: userInfo)
         CastledBadgeManager.shared.clearApplicationBadge()
     }
 

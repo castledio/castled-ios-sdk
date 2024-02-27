@@ -34,6 +34,25 @@ import Foundation
     case dismiss
     case custom
     case none
+
+    public var stringValue: String {
+        switch self {
+            case .deepLink:
+                return CastledConstants.PushNotification.ClickActionType.deepLink.rawValue
+            case .navigateToScreen:
+                return CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue
+            case .richLanding:
+                return CastledConstants.PushNotification.ClickActionType.richLanding.rawValue
+            case .requestForPush:
+                return CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue
+            case .dismiss:
+                return CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue
+            case .custom:
+                return CastledConstants.PushNotification.ClickActionType.custom.rawValue
+            default:
+                return CastledConstants.PushNotification.ClickActionType.none.rawValue
+        }
+    }
 }
 
 @objc public enum CastledNotificationType: Int {

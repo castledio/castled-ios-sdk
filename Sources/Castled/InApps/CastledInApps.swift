@@ -147,7 +147,6 @@ import UIKit
                 clickActionType = .custom
         }
         CastledButtonActionHandler.notificationClicked(withNotificationType: .inapp, action: clickActionType, kvPairs: params, userInfo: params ?? [String: String]())
-        Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: .inapp, action: clickActionType, kvPairs: params, userInfo: params ?? [String: String]())
     }
 
     func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
