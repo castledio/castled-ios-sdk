@@ -251,6 +251,7 @@ import UserNotifications
                 }
 
                 Castled.sharedInstance.updateTheUserIdAndToken(userId, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
+                Castled.sharedInstance.executeBGTasks()
             }
         }
     }
