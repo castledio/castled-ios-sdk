@@ -175,4 +175,9 @@ enum CastledConstants {
         static let properties = "properties"
         static let deviceId = "deviceId"
     }
+
+    enum Request {
+        static let AUTH_KEY = "Auth-Key"
+        static let APP_ID = "App-Id"
+    }
 }
