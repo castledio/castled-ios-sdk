@@ -191,9 +191,10 @@ import UIKit
         }
     }
 
-    private func updateReadStatus() {
+    func updateReadStatus() {
         if !readItems.isEmpty {
             CastledStore.saveInboxIdsRead(readItems: readItems)
+            readItems.removeAll()
         }
     }
 

@@ -10,7 +10,17 @@ import UserNotifications
 
 class NotificationService: CastledNotificationServiceExtension {
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        appGroupId = "group.com.castled.CastledPushDemo.Castled"
+        appGroupId = "<your_app_group_id>"
+        // calling super to make sure Castled implementation is called.
         super.didReceive(request, withContentHandler: contentHandler)
+    }
+
+    override func serviceExtensionTimeWillExpire() {
+        // This method is called right before the extension is terminated by the system.
+        // Take this opportunity to provide your "best attempt" at modified content.
+        // If you don't make any changes, the original push payload will be used by default.
+        if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
+            contentHandler(bestAttemptContent)
+        }
     }
 }

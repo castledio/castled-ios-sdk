@@ -167,7 +167,7 @@
                     NSString *value = buttonAction.actionUri;
                     NSURL *url = [NSURL URLWithString:value];
                     if (url) {
-                        [self handleDeepLinkWithURL:url];
+                       // [self handleDeepLinkWithURL:url];
                     }
                 }
                 break;
@@ -175,7 +175,7 @@
             case CastledClickActionTypeNavigateToScreen:
                     {
                         NSString *screenName = buttonAction.actionUri;
-                        [self handleNavigateToScreenWithScreenName:screenName];
+                        //[self handleNavigateToScreenWithScreenName:screenName];
                     }
                     break;
 

@@ -14,22 +14,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
+        let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
         config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
         config.enableTracking = true
         config.enableSessionTracking = true
         config.skipUrlHandling = false
-        config.sessionTimeOutSec = 60
-        config.location = CastledLocation.US
+        config.sessionTimeOutSec = 30
+        config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
         registerForPush()
 
         Castled.initialize(withConfig: config, andDelegate: self)
-//        Castled.sharedInstance.setUserId("antony@castled.io", userToken: nil)
+        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -154,12 +154,12 @@ extension AppDelegate: CastledNotificationDelegate {
         switch buttonAction.actionType {
             case .deepLink:
                 if let urlString = buttonAction.actionUri, let url = URL(string: urlString) {
-                    handleDeepLink(url: url)
+                    // handleDeepLink(url: url)
                 }
 
             case .navigateToScreen:
                 if let screenName = buttonAction.actionUri {
-                    handleNavigateToScreen(screenName: screenName)
+                    // handleNavigateToScreen(screenName: screenName)
                 }
             case .richLanding:
                 // TODO:

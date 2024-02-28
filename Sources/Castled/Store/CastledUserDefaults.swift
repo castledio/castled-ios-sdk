@@ -132,6 +132,6 @@ class CastledUserDefaults: NSObject {
             CastledSessionsManager.shared.resetSessionDetails()
         }
         CastledUserDefaults.shared.userId = nil
-        CastledUserDefaults.shared.userToken = nil
+//        CastledUserDefaults.shared.userToken = nil
     }
 }

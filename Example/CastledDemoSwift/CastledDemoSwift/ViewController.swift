@@ -83,7 +83,8 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // Function for registering the user with Castled
     func registerUserAPI() {
         let userId = "antony@castled.io"
-        Castled.sharedInstance.setUserId(userId)
+        Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
+
         UserDefaults.standard.setValue(userId, forKey: self.userIdKey)
         UserDefaults.standard.synchronize()
         self.showRequiredViews()
@@ -137,7 +138,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // MARK: - Inbox delegate
 
     func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem) {
-        print("didSelectedInboxWith title '\(buttonAction.buttonTitle ?? "")' uri '\(buttonAction.actionUri)'kvPairs \(buttonAction.keyVals) inboxItem\(inboxItem)")
+        print("didSelectedInboxWith title '\(buttonAction.buttonTitle ?? "")' uri '\(buttonAction.actionUri ?? "")'kvPairs \(buttonAction.keyVals) inboxItem\(inboxItem)")
         switch buttonAction.actionType {
             case .deepLink:
                 break

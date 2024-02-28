@@ -72,6 +72,9 @@
 		0AA24EF72B18B9D500FD0878 /* CExtensions+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA24EF62B18B9D500FD0878 /* CExtensions+Colors.swift */; };
 		0AA24F242B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA24F232B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift */; };
 		0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */; };
+		0AB2C6B52B8EEE400042E178 /* CastledButtonActionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB2C6B42B8EEE400042E178 /* CastledButtonActionUtils.swift */; };
+		0AB2C6B72B8F0FB10042E178 /* CExtensions+URLRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB2C6B62B8F0FB10042E178 /* CExtensions+URLRequest.swift */; };
+		0AB2C6B92B8F10970042E178 /* CastledNetworkRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB2C6B82B8F10970042E178 /* CastledNetworkRequest+Extensions.swift */; };
 		0AB5C554291C222C0027C36B /* Castled.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB5C553291C222C0027C36B /* Castled.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0AB5C599291C27840027C36B /* CastledExceptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58C291C27830027C36B /* CastledExceptions.swift */; };
 		0AB5C59A291C27840027C36B /* CastledResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB5C58D291C27830027C36B /* CastledResponse.swift */; };
@@ -205,6 +208,9 @@
 		0AA24EF62B18B9D500FD0878 /* CExtensions+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CExtensions+Colors.swift"; sourceTree = "<group>"; };
 		0AA24F232B19D80A00FD0878 /* CastledTriggerParamsConditionEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledTriggerParamsConditionEvaluator.swift; sourceTree = "<group>"; };
 		0AABC7672A0827D500B0926C /* CastledPublicEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledPublicEnums.swift; sourceTree = "<group>"; };
+		0AB2C6B42B8EEE400042E178 /* CastledButtonActionUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledButtonActionUtils.swift; sourceTree = "<group>"; };
+		0AB2C6B62B8F0FB10042E178 /* CExtensions+URLRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CExtensions+URLRequest.swift"; sourceTree = "<group>"; };
+		0AB2C6B82B8F10970042E178 /* CastledNetworkRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CastledNetworkRequest+Extensions.swift"; sourceTree = "<group>"; };
 		0AB5C550291C222C0027C36B /* Castled.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Castled.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB5C553291C222C0027C36B /* Castled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Castled.h; sourceTree = "<group>"; };
 		0AB5C58C291C27830027C36B /* CastledExceptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledExceptions.swift; sourceTree = "<group>"; };
@@ -596,6 +602,7 @@
 			isa = PBXGroup;
 			children = (
 				0AB5C58C291C27830027C36B /* CastledExceptions.swift */,
+				0AB2C6B82B8F10970042E178 /* CastledNetworkRequest+Extensions.swift */,
 				0AB5C58D291C27830027C36B /* CastledResponse.swift */,
 				0AB5C58E291C27830027C36B /* CastledNetworkRouter.swift */,
 				0AB5C58F291C27830027C36B /* CastledNetworkLayer.swift */,
@@ -626,6 +633,7 @@
 		0AB5C595291C27830027C36B /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0AB2C6B42B8EEE400042E178 /* CastledButtonActionUtils.swift */,
 				0ACA959A2B8D945E00165C41 /* CastledConfigsUtils.swift */,
 				0A7C51AF2AD1C20E001B2CE4 /* CastledLog.swift */,
 				12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */,
@@ -637,6 +645,7 @@
 				0A652F9A2AFBE2EC00752467 /* CExtensions+String.swift */,
 				0AA24EF62B18B9D500FD0878 /* CExtensions+Colors.swift */,
 				0AFA8DAE2B34034E00DF4DBE /* CExtensions+Bundle.swift */,
+				0AB2C6B62B8F0FB10042E178 /* CExtensions+URLRequest.swift */,
 				0ACCAC022B4D5ABE00C0E9B8 /* CastledButtonActionHandler.swift */,
 				0AFA8DB22B3403F500DF4DBE /* CExtensions+View.swift */,
 			);
@@ -956,6 +965,7 @@
 				0A5B30872AD5CAEE00A3EC4F /* CastledViewPagerDisplayConfigs.swift in Sources */,
 				0AA24EF72B18B9D500FD0878 /* CExtensions+Colors.swift in Sources */,
 				0A5B30892AD5CAEE00A3EC4F /* CastledViewPager.swift in Sources */,
+				0AB2C6B72B8F0FB10042E178 /* CExtensions+URLRequest.swift in Sources */,
 				0A1DE60A2A9F488B00DB2E29 /* CExtensions+DecodingContainer.swift in Sources */,
 				0A9E8BFB2AA61CC000BB654D /* CastledInboxConfig.swift in Sources */,
 				0AABC7682A0827D500B0926C /* CastledPublicEnums.swift in Sources */,
@@ -963,6 +973,7 @@
 				0A46C2BD2B6D070C00D40B17 /* CastledSessionsManager.swift in Sources */,
 				0AB5C59B291C27840027C36B /* CastledNetworkRouter.swift in Sources */,
 				0A46C2C32B72708700D40B17 /* CastledUserAttributes.swift in Sources */,
+				0AB2C6B52B8EEE400042E178 /* CastledButtonActionUtils.swift in Sources */,
 				0AB5C59E291C27840027C36B /* CastledConstants.swift in Sources */,
 				0A652F9D2AFBE32200752467 /* CastledInbox+Extensions.swift in Sources */,
 				0AB5C59A291C27840027C36B /* CastledResponse.swift in Sources */,
@@ -988,6 +999,7 @@
 				0A1B4B782A7BB1E100D6430B /* CIFsDefaultView.swift in Sources */,
 				0A7C51B02AD1C20E001B2CE4 /* CastledLog.swift in Sources */,
 				0A79E22D2AA0873C0087C3AF /* CastledInboxType.swift in Sources */,
+				0AB2C6B92B8F10970042E178 /* CastledNetworkRequest+Extensions.swift in Sources */,
 				0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */,
 				0A5B308A2AD5CAEE00A3EC4F /* CastledPagerTabView.swift in Sources */,
 				0A1DE5F82A9DA24B00DB2E29 /* CastledInboxCell.swift in Sources */,
