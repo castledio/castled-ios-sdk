@@ -117,6 +117,7 @@ import UserNotifications
             }
             if let uid = CastledUserDefaults.shared.userId {
                 Castled.sharedInstance.updateTheUserIdAndToken(uid, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
+                CastledDeviceInfo.shared.updateDeviceInfo()
             }
         }
     }
@@ -240,19 +241,21 @@ import UserNotifications
             CastledUserDefaults.shared.userToken = userToken
 
             if userId != existingUserId {
-                CastledDeviceInfo.shared.updateDeviceInfo()
-                if CastledConfigsUtils.configs.enableSessionTracking {
-                    CastledSessionsManager.shared.startCastledSession()
+                if CastledUserDefaults.shared.apnsToken != nil || CastledUserDefaults.shared.fcmToken != nil {
+                    Castled.sharedInstance.updateTheUserIdAndToken(userId, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
                 }
-
-                if CastledUserDefaults.shared.apnsToken == nil && CastledUserDefaults.shared.fcmToken == nil {
-                    Castled.sharedInstance.executeBGTasks()
-                    return
-                }
-
-                Castled.sharedInstance.updateTheUserIdAndToken(userId, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
-                Castled.sharedInstance.executeBGTasks()
+                self.didSetUserId()
             }
+        }
+    }
+
+    private func didSetUserId() {
+        DispatchQueue.main.async {
+            CastledDeviceInfo.shared.updateDeviceInfo()
+            if CastledConfigsUtils.configs.enableSessionTracking {
+                CastledSessionsManager.shared.startCastledSession()
+            }
+            Castled.sharedInstance.executeBGTasks()
         }
     }
 

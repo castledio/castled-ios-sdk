@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         config.enableTracking = true
         config.enableSessionTracking = true
         config.skipUrlHandling = false
-        config.sessionTimeOutSec = 10
+        config.sessionTimeOutSec = 30
         config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         registerForPush()
 
         Castled.initialize(withConfig: config, andDelegate: self)
-       // Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
+        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
 
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
