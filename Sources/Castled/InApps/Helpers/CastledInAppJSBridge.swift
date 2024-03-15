@@ -46,31 +46,12 @@ class CastledInAppJSBridge: NSObject, WKScriptMessageHandler {
     }
 
     private func getClickActionFrom(_ action: String) -> CastledClickActionType {
-        var clickAction: CastledClickActionType = .custom
-        switch action {
-            case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
-                clickAction = .deepLink
-            case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
-                clickAction = .richLanding
-            case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
-                clickAction = .navigateToScreen
-
-            case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
-                clickAction = .requestForPush
-            case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
-                clickAction = .dismiss
-            case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
-                clickAction = .custom
-            default:
-                clickAction = .custom
-        }
-        return clickAction
+        return action.getCastledClickActionType()
     }
 
     // MARK: - Delegate method to handle the script message from JavaScript
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-
         if message.name == messageHandler, let messageBody = message.body as? [String: Any] {
             // Here you can handle the JavaScript event data
 //            if   let clickAction = messageBody["clickAction"]  as? String{

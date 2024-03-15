@@ -130,22 +130,7 @@ import UIKit
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.buttonTitle] = buttonTitle
 
         var clickActionType = CastledClickActionType.custom
-        switch clickAction {
-            case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
-                clickActionType = .deepLink
-            case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
-                clickActionType = .richLanding
-            case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
-                clickActionType = .navigateToScreen
-            case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
-                clickActionType = .requestForPush
-            case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
-                clickActionType = .dismiss
-            case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
-                clickActionType = .custom
-            default:
-                clickActionType = .custom
-        }
+        clickActionType = clickAction.getCastledClickActionType()
         CastledButtonActionHandler.notificationClicked(withNotificationType: .inapp, action: clickActionType, kvPairs: params, userInfo: params ?? [String: String]())
     }
 
