@@ -106,7 +106,9 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         style.navigationBarTitle = "Castled Inbox"
         style.navigationBarButtonTintColor = .white
         style.loaderTintColor = .blue
-        style.hideCloseButton = false
+        //  Optional
+        //  style.hideBackButton = true
+        //  style.backButtonImage = UIImage(named: 'back_image')
 
         // for catgory tabs
 //        style.showCategoriesTab = true
@@ -117,9 +119,9 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 //        style.tabBarIndicatorBackgroundColor = .red
         let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController.modalPresentationStyle = .fullScreen
-        // present(inboxViewController, animated: true)
+        present(inboxViewController, animated: true)
         // navigationController?.setNavigationBarHidden(true, animated: false)
-        navigationController?.pushViewController(inboxViewController, animated: true)
+        // navigationController?.pushViewController(inboxViewController, animated: true)
     }
 
     func setUpInboxCallback() {
@@ -138,7 +140,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // MARK: - Inbox delegate
 
     func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem) {
-        print("didSelectedInboxWith title '\(buttonAction.buttonTitle ?? "")' uri '\(buttonAction.actionUri ?? "")'kvPairs \(buttonAction.keyVals) inboxItem\(inboxItem)")
+        print("didSelectedInboxWith type \(buttonAction.actionType) title '\(buttonAction.buttonTitle ?? "")' uri '\(buttonAction.actionUri ?? "")'kvPairs \(buttonAction.keyVals) inboxItem\(inboxItem)")
         switch buttonAction.actionType {
             case .deepLink:
                 break

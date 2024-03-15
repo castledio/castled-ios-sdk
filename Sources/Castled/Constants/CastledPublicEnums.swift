@@ -33,6 +33,7 @@ import Foundation
     case requestForPush
     case dismiss
     case custom
+    case defaultAction
     case none
 
     public var stringValue: String {
@@ -49,6 +50,8 @@ import Foundation
                 return CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue
             case .custom:
                 return CastledConstants.PushNotification.ClickActionType.custom.rawValue
+            case .defaultAction:
+                return CastledConstants.PushNotification.ClickActionType.defaultAction.rawValue
             default:
                 return CastledConstants.PushNotification.ClickActionType.none.rawValue
         }

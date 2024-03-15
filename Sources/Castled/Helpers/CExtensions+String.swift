@@ -24,4 +24,25 @@ extension String {
 
         return attrString
     }
+
+    func getCastledClickActionType() -> CastledClickActionType {
+        var pushActionType = CastledClickActionType.none
+        switch self {
+            case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
+                pushActionType = CastledClickActionType.deepLink
+            case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
+                pushActionType = CastledClickActionType.navigateToScreen
+            case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
+                pushActionType = CastledClickActionType.richLanding
+            case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
+                pushActionType = CastledClickActionType.dismiss
+            case CastledConstants.PushNotification.ClickActionType.requestPushPermission.rawValue:
+                pushActionType = CastledClickActionType.requestForPush
+            case CastledConstants.PushNotification.ClickActionType.custom.rawValue:
+                pushActionType = CastledClickActionType.custom
+            default:
+                break
+        }
+        return pushActionType
+    }
 }

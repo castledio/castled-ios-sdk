@@ -26,7 +26,7 @@ import UserNotifications
     // Create a dispatch queue
     let castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
     let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .userInitiated)
-    let castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", attributes: .concurrent)
+    let castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", qos: .userInitiated, attributes: .concurrent)
 
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)

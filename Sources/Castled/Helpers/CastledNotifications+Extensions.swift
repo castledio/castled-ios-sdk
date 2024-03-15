@@ -133,18 +133,7 @@ public extension Castled {
             if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaultsSuit.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
                let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             {
-                switch defaultAction {
-                    case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
-                        pushActionType = CastledClickActionType.deepLink
-                    case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
-                        pushActionType = CastledClickActionType.navigateToScreen
-                    case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
-                        pushActionType = CastledClickActionType.richLanding
-                    case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
-                        pushActionType = CastledClickActionType.dismiss
-                    default:
-                        break
-                }
+                pushActionType = defaultAction.getCastledClickActionType()
                 CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
                 clickedParams = defaultActionDetails
             } else {
@@ -158,22 +147,8 @@ public extension Castled {
             if let actionDetails: [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
                let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             {
-                switch clickAction {
-                    case CastledConstants.PushNotification.ClickActionType.deepLink.rawValue:
-                        pushActionType = CastledClickActionType.deepLink
-                        processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.deepLink.rawValue)
-                    case CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue:
-                        pushActionType = CastledClickActionType.navigateToScreen
-                        processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.navigateToScreen.rawValue)
-                    case CastledConstants.PushNotification.ClickActionType.richLanding.rawValue:
-                        pushActionType = CastledClickActionType.richLanding
-                        processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.richLanding.rawValue)
-                    case CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue:
-                        pushActionType = CastledClickActionType.dismiss
-                        processCastledPushEvents(userInfo: userInfo, isDismissed: true, actionLabel: response.actionIdentifier, actionType: CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue)
-                    default:
-                        break
-                }
+                pushActionType = clickAction.getCastledClickActionType()
+                processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: clickAction)
                 clickedParams = actionDetails
 
             } else {

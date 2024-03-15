@@ -64,33 +64,6 @@ enum CastledConstants {
             case requestPushPermission = "REQUEST_PUSH_PERMISSION" // this is for inapp
             case custom = "CUSTOM" // this is for inapp
             case none = "NONE" // this is for inapp
-
-            init(stringValue: String) {
-                if let actionType = ClickActionType(rawValue: stringValue) {
-                    self = actionType
-                } else {
-                    self = .custom
-                }
-            }
-
-            func getCastledClickActionType() -> CastledClickActionType {
-                switch self {
-                    case .navigateToScreen:
-                        return CastledClickActionType.navigateToScreen
-                    case .deepLink:
-                        return CastledClickActionType.deepLink
-                    case .richLanding:
-                        return CastledClickActionType.richLanding
-                    case .discardNotification:
-                        return CastledClickActionType.dismiss
-                    case .requestPushPermission:
-                        return CastledClickActionType.requestForPush
-                    case .custom:
-                        return CastledClickActionType.custom
-                    default:
-                        return CastledClickActionType.none
-                }
-            }
         }
     }
 

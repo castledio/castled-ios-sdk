@@ -109,8 +109,10 @@ static NSString *userIdKey = @"userIdKey";
     style.navigationBarTitle = @"Castled Inbox";
     style.navigationBarButtonTintColor = [UIColor whiteColor];
     style.loaderTintColor = [UIColor blueColor];
-    style.hideCloseButton = YES;
-
+    
+    //  Optional
+    //  style.hideBackButton = YES;
+   //  style.backButtonImage = [UIImage imageNamed:@"back-button-100"];
 
     style.showCategoriesTab = YES;
     style.tabBarDefaultTextColor = [UIColor greenColor];
@@ -120,9 +122,9 @@ static NSString *userIdKey = @"userIdKey";
     style.tabBarIndicatorBackgroundColor = [UIColor redColor];
 
     UIViewController *inboxViewController = [[Castled sharedInstance] getInboxViewControllerWithUIConfigs:style andDelegate:self];
-    // inboxViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    // [self presentViewController:inboxViewController animated:YES completion:nil];
-    [self.navigationController pushViewController:inboxViewController animated:YES];
+     inboxViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:inboxViewController animated:YES completion:nil];
+    //[self.navigationController pushViewController:inboxViewController animated:YES];
 }
 
 - (void)didSelectedInboxWith:(CastledButtonAction *)buttonAction inboxItem:(CastledInboxItem *)inboxItem{

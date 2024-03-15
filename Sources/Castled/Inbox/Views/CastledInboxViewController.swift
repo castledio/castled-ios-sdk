@@ -60,18 +60,22 @@ import UIKit
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.compactAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationItem.setHidesBackButton(true, animated: false)
 
-            if !inboxConfig!.hideCloseButton {
-                let closeButton = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonTapped(_:)))
-                navigationItem.rightBarButtonItem = closeButton
+            if !inboxConfig!.hideBackButton {
+                let closeButton = UIBarButtonItem(image: getBackButtonImage(), style: .plain, target: self, action: #selector(closeButtonTapped(_:)))
+                navigationItem.leftBarButtonItem = closeButton
             }
+
         } else {
             viewTopBar.backgroundColor = inboxConfig!.navigationBarBackgroundColor
             modifyTopBarHeight()
             lblTitle.text = inboxConfig!.navigationBarTitle
             btnClose.tintColor = inboxConfig!.navigationBarButtonTintColor
             lblTitle.textColor = inboxConfig!.navigationBarButtonTintColor
-            btnClose.isHidden = inboxConfig!.hideCloseButton
+            btnClose.isHidden = inboxConfig!.hideBackButton
+            btnClose.setImage(getBackButtonImage(), for: .normal)
+            btnClose.imageView?.contentMode = .scaleAspectFit
         }
     }
 
@@ -230,6 +234,11 @@ import UIKit
 
     func getCurrentPageIndex() -> Int {
         return viewPager?.getCurrentPageIndex() ?? 0
+    }
+
+    private func getBackButtonImage() -> UIImage {
+        let backImage = inboxConfig?.backButtonImage?.withRenderingMode(.alwaysOriginal) ?? UIImage(named: "castled_back_left", in: Bundle.resourceBundle(for: Castled.self), compatibleWith: nil)!.withRenderingMode(.alwaysTemplate)
+        return backImage
     }
 }
 

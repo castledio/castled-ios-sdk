@@ -16,8 +16,12 @@ import UIKit
         .black
     }()
 
-    @objc public lazy var hideCloseButton: Bool = {
+    @objc public lazy var hideBackButton: Bool = {
         false
+    }()
+
+    @objc public lazy var backButtonImage: UIImage? = {
+        nil
     }()
 
     @objc public lazy var inboxViewBackgroundColor: UIColor = {
