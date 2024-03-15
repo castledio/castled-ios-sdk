@@ -129,7 +129,7 @@ import UIKit
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = clickAction
         params?[CastledConstants.PushNotification.CustomProperties.Category.Action.buttonTitle] = buttonTitle
 
-        var clickActionType = clickAction.getCastledClickActionType()
+        let clickActionType = clickAction.getCastledClickActionType()
         CastledButtonActionHandler.notificationClicked(withNotificationType: .inapp, action: clickActionType, kvPairs: params, userInfo: params ?? [String: String]())
     }
 
