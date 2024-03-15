@@ -106,8 +106,9 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         style.navigationBarTitle = "Castled Inbox"
         style.navigationBarButtonTintColor = .white
         style.loaderTintColor = .blue
+        //  Optional
         //  style.hideBackButton = true
-        //  style.backButtonImage = UIImage(named: "castled_close_icon_inverted")
+        //  style.backButtonImage = UIImage(named: 'back_image')
 
         // for catgory tabs
 //        style.showCategoriesTab = true

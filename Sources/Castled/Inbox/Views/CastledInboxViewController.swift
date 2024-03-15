@@ -237,8 +237,8 @@ import UIKit
     }
 
     private func getBackButtonImage() -> UIImage {
-        let backImage = inboxConfig?.backButtonImage ?? UIImage(named: "castled_back_left", in: Bundle.resourceBundle(for: Castled.self), compatibleWith: nil)
-        return backImage!.withRenderingMode(.alwaysOriginal)
+        let backImage = inboxConfig?.backButtonImage?.withRenderingMode(.alwaysOriginal) ?? UIImage(named: "castled_back_left", in: Bundle.resourceBundle(for: Castled.self), compatibleWith: nil)!.withRenderingMode(.alwaysTemplate)
+        return backImage
     }
 }
 
