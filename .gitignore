@@ -96,6 +96,7 @@ iOSInjectionProject/
 Pods/
 
 # Exclude SDWebImage framework
+Sources/SDWebImage.framework
 Frameworks/SDWebImage.framework
 Sources/CastledNotificationContent/SDWebImage.framework
 
