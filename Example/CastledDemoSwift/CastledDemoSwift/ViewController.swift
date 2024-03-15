@@ -106,7 +106,8 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         style.navigationBarTitle = "Castled Inbox"
         style.navigationBarButtonTintColor = .white
         style.loaderTintColor = .blue
-        style.hideCloseButton = false
+        //  style.hideBackButton = true
+        //  style.backButtonImage = UIImage(named: "castled_close_icon_inverted")
 
         // for catgory tabs
 //        style.showCategoriesTab = true
@@ -117,7 +118,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 //        style.tabBarIndicatorBackgroundColor = .red
         let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController.modalPresentationStyle = .fullScreen
-        // present(inboxViewController, animated: true)
+        present(inboxViewController, animated: true)
         // navigationController?.setNavigationBarHidden(true, animated: false)
         navigationController?.pushViewController(inboxViewController, animated: true)
     }

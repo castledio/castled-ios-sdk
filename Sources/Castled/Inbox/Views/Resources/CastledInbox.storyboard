@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="103"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUM-uq-yPw">
-                                        <rect key="frame" x="45" y="59" width="303" height="44"/>
+                                        <rect key="frame" x="60" y="59" width="273" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="2pK-tb-ipX"/>
                                         </constraints>
@@ -28,15 +28,14 @@
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="close" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcY-2N-vyu">
-                                        <rect key="frame" x="333" y="59" width="44" height="44"/>
+                                    <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcY-2N-vyu">
+                                        <rect key="frame" x="16" y="65" width="44" height="32"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="D3R-SX-VYk"/>
-                                            <constraint firstAttribute="width" secondItem="JcY-2N-vyu" secondAttribute="height" multiplier="1:1" id="LkM-xy-vqW"/>
+                                            <constraint firstAttribute="height" constant="32" id="EzE-SR-crZ"/>
                                         </constraints>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <buttonConfiguration key="configuration" style="plain"/>
+                                        <state key="normal" image="castled_back_left"/>
                                         <connections>
                                             <action selector="closeButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="QOV-Ad-Oat"/>
                                         </connections>
@@ -44,12 +43,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="OUM-uq-yPw" secondAttribute="trailing" constant="45" id="AZR-bC-j9n"/>
-                                    <constraint firstAttribute="bottom" secondItem="JcY-2N-vyu" secondAttribute="bottom" id="H0M-bo-RS7"/>
+                                    <constraint firstItem="JcY-2N-vyu" firstAttribute="leading" secondItem="ZwY-dP-i9d" secondAttribute="leading" constant="16" id="7bw-Bd-NrN"/>
                                     <constraint firstAttribute="height" constant="103" id="Km8-4t-fIi"/>
                                     <constraint firstAttribute="bottom" secondItem="OUM-uq-yPw" secondAttribute="bottom" id="M3S-eP-ypj"/>
-                                    <constraint firstItem="OUM-uq-yPw" firstAttribute="leading" secondItem="ZwY-dP-i9d" secondAttribute="leading" constant="45" id="cnJ-SM-WEV"/>
-                                    <constraint firstAttribute="trailing" secondItem="JcY-2N-vyu" secondAttribute="trailing" constant="16" id="mlx-I7-qdX"/>
+                                    <constraint firstAttribute="trailing" secondItem="OUM-uq-yPw" secondAttribute="trailing" constant="60" id="QjI-R2-uje"/>
+                                    <constraint firstItem="OUM-uq-yPw" firstAttribute="leading" secondItem="JcY-2N-vyu" secondAttribute="trailing" id="kkf-4y-fP2"/>
+                                    <constraint firstItem="JcY-2N-vyu" firstAttribute="centerY" secondItem="OUM-uq-yPw" secondAttribute="centerY" id="tu8-83-UZK"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -126,4 +125,7 @@
             <point key="canvasLocation" x="48" y="-2"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="castled_back_left" width="24" height="24"/>
+    </resources>
 </document>
