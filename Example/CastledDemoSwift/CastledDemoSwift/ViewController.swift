@@ -121,7 +121,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         inboxViewController.modalPresentationStyle = .fullScreen
         present(inboxViewController, animated: true)
         // navigationController?.setNavigationBarHidden(true, animated: false)
-        navigationController?.pushViewController(inboxViewController, animated: true)
+        // navigationController?.pushViewController(inboxViewController, animated: true)
     }
 
     func setUpInboxCallback() {
@@ -140,7 +140,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // MARK: - Inbox delegate
 
     func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem) {
-        print("didSelectedInboxWith title '\(buttonAction.buttonTitle ?? "")' uri '\(buttonAction.actionUri ?? "")'kvPairs \(buttonAction.keyVals) inboxItem\(inboxItem)")
+        print("didSelectedInboxWith type \(buttonAction.actionType) title '\(buttonAction.buttonTitle ?? "")' uri '\(buttonAction.actionUri ?? "")'kvPairs \(buttonAction.keyVals) inboxItem\(inboxItem)")
         switch buttonAction.actionType {
             case .deepLink:
                 break
