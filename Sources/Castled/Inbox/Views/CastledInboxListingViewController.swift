@@ -63,6 +63,7 @@ class CastledInboxListingViewController: UIViewController {
         refreshControl.tintColor = inboxConfig!.loaderTintColor
         view.backgroundColor = inboxConfig!.inboxViewBackgroundColor
         lblNoUpdates.text = inboxConfig!.emptyMessageViewText
+        lblNoUpdates.textColor = inboxConfig!.emptyMessageViewTextColor
     }
 
     private func populateInboxItems() {
