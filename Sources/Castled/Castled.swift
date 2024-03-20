@@ -72,8 +72,8 @@ import UserNotifications
         }
         CastledNetworkMonitor.shared.startMonitoring()
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
 
         CastledDeviceInfo.shared.updateDeviceInfo()
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()

@@ -116,9 +116,9 @@ class CastledViewPager: NSObject {
     func removeChildViews() {
         pageController?.delegate = nil
         pageController?.dataSource = nil
-        pageController?.willMove(toParent: nil)
+        pageController?.willMove(toParentViewController: nil)
         pageController?.view.removeFromSuperview()
-        pageController?.removeFromParent()
+        pageController?.removeFromParentViewController()
 
         _ = tabBarViews.map({ $0.removeFromSuperview() })
         constraintTabIndicatorLeading?.isActive = false
@@ -132,10 +132,9 @@ class CastledViewPager: NSObject {
 
     private func setupPageViewController() {
         let pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        controller?.addChild(pageController)
-
+        controller?.addChildViewController(pageController)
         setupForAutolayout(view: pageController.view, inView: parentView)
-        pageController.didMove(toParent: controller)
+        pageController.didMove(toParentViewController: controller)
         self.pageController = pageController
 
         self.pageController?.dataSource = self
@@ -190,8 +189,7 @@ class CastledViewPager: NSObject {
         scrollTabContainer.layer.shadowOpacity = 0.3
         scrollTabContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
         scrollTabContainer.layer.shadowRadius = 2
-
-        parentView.bringSubviewToFront(scrollTabContainer)
+        parentView.bringSubview(toFront: scrollTabContainer)
     }
 
     private func setupTabs() {

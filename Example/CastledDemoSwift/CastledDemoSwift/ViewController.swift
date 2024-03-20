@@ -111,12 +111,14 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         //  style.backButtonImage = UIImage(named: 'back_image')
 
         // for catgory tabs
-//        style.showCategoriesTab = true
-//        style.tabBarDefaultTextColor = .green
-//        style.tabBarSelectedTextColor = .brown
-//        style.tabBarDefaultBackgroundColor = .purple
-//        style.tabBarSelectedBackgroundColor = .lightGray
-//        style.tabBarIndicatorBackgroundColor = .red
+        style.showCategoriesTab = true
+        style.tabBarDefaultTextColor = .green
+        style.tabBarSelectedTextColor = .brown
+        style.tabBarDefaultBackgroundColor = .purple
+        style.tabBarSelectedBackgroundColor = .lightGray
+        style.tabBarIndicatorBackgroundColor = .red
+        style.emptyMessageViewTextColor = .yellow
+        style.emptyMessageViewText = "No updates"
         let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController.modalPresentationStyle = .fullScreen
         present(inboxViewController, animated: true)

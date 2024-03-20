@@ -84,7 +84,7 @@ public extension Castled {
         var backgroundTask: UIBackgroundTaskIdentifier?
         backgroundTask = application.beginBackgroundTask(withName: "com.castled.bgpush") {
             application.endBackgroundTask(backgroundTask!)
-            backgroundTask = .invalid
+            backgroundTask = UIBackgroundTaskInvalid
         }
         CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
         if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {

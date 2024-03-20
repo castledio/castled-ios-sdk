@@ -77,7 +77,7 @@ class CastledInAppDisplayViewController: UIViewController {
         let inAppParentView = view!
         inAppParentView.frame = window.bounds
         window.backgroundColor = .clear
-        window.windowLevel = .normal
+        window.windowLevel = UIWindowLevelNormal
         window.isHidden = false
         window.makeKeyAndVisible()
         window.rootViewController = self
@@ -126,9 +126,9 @@ class CastledInAppDisplayViewController: UIViewController {
     func removeAllViews() {
         inAppWindow?.rootViewController = nil
         // inAppView?.viewContainer?.removeFromSuperview()
-        willMove(toParent: nil)
+        willMove(toParentViewController: nil)
         view.removeFromSuperview()
-        removeFromParent()
+        removeFromParentViewController()
         inAppWindow?.removeFromSuperview()
         inAppWindow = nil
     }

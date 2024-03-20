@@ -91,7 +91,7 @@ class CastledSessionsManager {
         var backgroundTask: UIBackgroundTaskIdentifier?
         backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
             application.endBackgroundTask(backgroundTask!)
-            backgroundTask = .invalid
+            backgroundTask = UIBackgroundTaskInvalid
         }
 
         sessionEndTime = Date().timeIntervalSince1970

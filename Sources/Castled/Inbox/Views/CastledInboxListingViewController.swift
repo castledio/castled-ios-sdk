@@ -46,7 +46,7 @@ class CastledInboxListingViewController: UIViewController {
     }
 
     private func setupTableView() {
-        tblView.rowHeight = UITableView.automaticDimension
+        tblView.rowHeight = UITableViewAutomaticDimension
         tblView.estimatedRowHeight = 600
         tblView.register(UINib(nibName: CastledInboxCell.castledInboxImageAndTitleCell, bundle: Bundle.resourceBundle(for: Self.self)), forCellReuseIdentifier: CastledInboxCell.castledInboxImageAndTitleCell)
         tblView.refreshControl = refreshControl
@@ -158,7 +158,7 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
         if indexPath.row < inboxItems!.count && inboxItems![indexPath.row].inboxType == .other {
             return 0
         }
-        return UITableView.automaticDimension
+        return UITableViewAutomaticDimension
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -15,10 +15,8 @@ extension Dictionary where Key == String, Value: Any {
                     return jsonString
                 }
             }
-
-        } catch {
-            CastledLog.castledLog("Error converting dictionary to JSON string: \(error)", logLevel: .error)
         }
+
         return nil
     }
 

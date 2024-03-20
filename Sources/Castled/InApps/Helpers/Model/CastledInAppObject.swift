@@ -31,16 +31,16 @@ struct CastledInAppObject: Codable, Equatable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.teamID = (try? container.decodeIfPresent(Int.self, forKey: .teamID)) ?? 0
-        self.notificationID = (try? container.decodeIfPresent(Int.self, forKey: .notificationID)) ?? 0
-        self.priority = (try? container.decodeIfPresent(String.self, forKey: .priority)) ?? "HIGH"
-        self.sourceContext = (try? container.decodeIfPresent(String.self, forKey: .sourceContext)) ?? ""
-        self.message = (try? container.decodeIfPresent(CIMessage.self, forKey: .message))
-        self.displayConfig = (try? container.decodeIfPresent(CIDisplayConfig.self, forKey: .displayConfig))
-        self.trigger = (try? container.decodeIfPresent(CITrigger.self, forKey: .trigger))
-        self.startTs = (try? container.decodeIfPresent(Int64.self, forKey: .startTs)) ?? 0
-        self.endTs = (try? container.decodeIfPresent(Int64.self, forKey: .endTs)) ?? 0
-        self.ttl = (try? container.decodeIfPresent(String.self, forKey: .ttl)) ?? ""
+        self.teamID = ((try? container.decodeIfPresent(Int.self, forKey: .teamID)) ?? 0) ?? 0
+        self.notificationID = ((try? container.decodeIfPresent(Int.self, forKey: .notificationID)) ?? 0) ?? 0
+        self.priority = ((try? container.decodeIfPresent(String.self, forKey: .priority)) ?? "HIGH") ?? "HIGH"
+        self.sourceContext = ((try? container.decodeIfPresent(String.self, forKey: .sourceContext)) ?? "") ?? ""
+        self.message = (try? container.decodeIfPresent(CIMessage.self, forKey: .message)) ?? nil
+        self.displayConfig = (try? container.decodeIfPresent(CIDisplayConfig.self, forKey: .displayConfig)) ?? nil
+        self.trigger = (try? container.decodeIfPresent(CITrigger.self, forKey: .trigger)) ?? nil
+        self.startTs = ((try? container.decodeIfPresent(Int64.self, forKey: .startTs)) ?? 0) ?? 0
+        self.endTs = ((try? container.decodeIfPresent(Int64.self, forKey: .endTs)) ?? 0) ?? 0
+        self.ttl = ((try? container.decodeIfPresent(String.self, forKey: .ttl)) ?? "") ?? ""
     }
 }
 
@@ -123,22 +123,22 @@ struct CIModalPresentation: Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
-        self.html = (try? container.decodeIfPresent(String.self, forKey: .html)) ?? ""
-        self.imageURL = (try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? ""
-        self.title = (try? container.decodeIfPresent(String.self, forKey: .title)) ?? ""
-        self.titleFontColor = (try? container.decodeIfPresent(String.self, forKey: .titleFontColor)) ?? ""
-        self.titleFontSize = (try? container.decodeIfPresent(Int.self, forKey: .titleFontSize)) ?? 20
-        self.titleBgColor = (try? container.decodeIfPresent(String.self, forKey: .titleBgColor)) ?? ""
-        self.body = (try? container.decodeIfPresent(String.self, forKey: .body)) ?? ""
-        self.bodyFontColor = (try? container.decodeIfPresent(String.self, forKey: .bodyFontColor)) ?? ""
-        self.bodyFontSize = (try? container.decodeIfPresent(Int.self, forKey: .bodyFontSize)) ?? 18
-        self.bodyBgColor = (try? container.decodeIfPresent(String.self, forKey: .bodyBgColor)) ?? ""
-        self.screenOverlayColor = (try? container.decodeIfPresent(String.self, forKey: .screenOverlayColor)) ?? ""
-        self.actionButtons = (try? container.decodeIfPresent([CIActionButton].self, forKey: .actionButtons)) ?? []
-        self.defaultClickAction = (try? container.decodeIfPresent(CastledConstants.PushNotification.ClickActionType.self, forKey: .defaultClickAction)) ?? CastledConstants.PushNotification.ClickActionType.none
-        self.url = (try? container.decodeIfPresent(String.self, forKey: .url)) ?? ""
-        self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals))
+        self.type = ((try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template) ?? .default_template
+        self.html = ((try? container.decodeIfPresent(String.self, forKey: .html)) ?? "") ?? ""
+        self.imageURL = ((try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? "") ?? ""
+        self.title = ((try? container.decodeIfPresent(String.self, forKey: .title)) ?? "") ?? ""
+        self.titleFontColor = ((try? container.decodeIfPresent(String.self, forKey: .titleFontColor)) ?? "") ?? ""
+        self.titleFontSize = ((try? container.decodeIfPresent(Int.self, forKey: .titleFontSize)) ?? 20) ?? 20
+        self.titleBgColor = ((try? container.decodeIfPresent(String.self, forKey: .titleBgColor)) ?? "") ?? ""
+        self.body = ((try? container.decodeIfPresent(String.self, forKey: .body)) ?? "") ?? ""
+        self.bodyFontColor = ((try? container.decodeIfPresent(String.self, forKey: .bodyFontColor)) ?? "") ?? ""
+        self.bodyFontSize = ((try? container.decodeIfPresent(Int.self, forKey: .bodyFontSize)) ?? 18) ?? 18
+        self.bodyBgColor = ((try? container.decodeIfPresent(String.self, forKey: .bodyBgColor)) ?? "") ?? ""
+        self.screenOverlayColor = ((try? container.decodeIfPresent(String.self, forKey: .screenOverlayColor)) ?? "") ?? ""
+        self.actionButtons = ((try? container.decodeIfPresent([CIActionButton].self, forKey: .actionButtons)) ?? []) ?? []
+        self.defaultClickAction = ((try? container.decodeIfPresent(CastledConstants.PushNotification.ClickActionType.self, forKey: .defaultClickAction)) ?? CastledConstants.PushNotification.ClickActionType.none) ?? CastledConstants.PushNotification.ClickActionType.none
+        self.url = ((try? container.decodeIfPresent(String.self, forKey: .url)) ?? "") ?? ""
+        self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals)) ?? nil
     }
 }
 
@@ -164,23 +164,22 @@ struct CIFullScreenPresentation: Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = (try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template
-        self.html = (try? container.decodeIfPresent(String.self, forKey: .html)) ?? ""
-        self.imageURL = (try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? ""
-        self.title = (try? container.decodeIfPresent(String.self, forKey: .title)) ?? ""
-        self.titleFontColor = (try? container.decodeIfPresent(String.self, forKey: .titleFontColor)) ?? ""
-        self.titleFontSize = (try? container.decodeIfPresent(Int.self, forKey: .titleFontSize)) ?? 20
-        self.titleBgColor = (try? container.decodeIfPresent(String.self, forKey: .titleBgColor)) ?? ""
-        self.body = (try? container.decodeIfPresent(String.self, forKey: .body)) ?? ""
-        self.bodyFontColor = (try? container.decodeIfPresent(String.self, forKey: .bodyFontColor)) ?? ""
-        self.bodyFontSize = (try? container.decodeIfPresent(Int.self, forKey: .bodyFontSize)) ?? 18
-        self.bodyBgColor = (try? container.decodeIfPresent(String.self, forKey: .bodyBgColor)) ?? ""
-        self.screenOverlayColor = (try? container.decodeIfPresent(String.self, forKey: .screenOverlayColor)) ?? ""
-        self.actionButtons = (try? container.decodeIfPresent([CIActionButton].self, forKey: .actionButtons)) ?? []
-
-        self.defaultClickAction = (try? container.decodeIfPresent(CastledConstants.PushNotification.ClickActionType.self, forKey: .defaultClickAction)) ?? CastledConstants.PushNotification.ClickActionType.none
+        self.type = ((try? container.decodeIfPresent(CITemplateType.self, forKey: .type)) ?? .default_template) ?? .default_template
+        self.html = ((try? container.decodeIfPresent(String.self, forKey: .html)) ?? "") ?? ""
+        self.imageURL = ((try? container.decodeIfPresent(String.self, forKey: .imageURL)) ?? "") ?? ""
+        self.title = ((try? container.decodeIfPresent(String.self, forKey: .title)) ?? "") ?? ""
+        self.titleFontColor = ((try? container.decodeIfPresent(String.self, forKey: .titleFontColor)) ?? "") ?? ""
+        self.titleFontSize = ((try? container.decodeIfPresent(Int.self, forKey: .titleFontSize)) ?? 20) ?? 20
+        self.titleBgColor = ((try? container.decodeIfPresent(String.self, forKey: .titleBgColor)) ?? "") ?? ""
+        self.body = ((try? container.decodeIfPresent(String.self, forKey: .body)) ?? "") ?? ""
+        self.bodyFontColor = ((try? container.decodeIfPresent(String.self, forKey: .bodyFontColor)) ?? "") ?? ""
+        self.bodyFontSize = ((try? container.decodeIfPresent(Int.self, forKey: .bodyFontSize)) ?? 18) ?? 18
+        self.bodyBgColor = ((try? container.decodeIfPresent(String.self, forKey: .bodyBgColor)) ?? "") ?? ""
+        self.screenOverlayColor = ((try? container.decodeIfPresent(String.self, forKey: .screenOverlayColor)) ?? "") ?? ""
+        self.actionButtons = ((try? container.decodeIfPresent([CIActionButton].self, forKey: .actionButtons)) ?? []) ?? []
+        self.defaultClickAction = ((try? container.decodeIfPresent(CastledConstants.PushNotification.ClickActionType.self, forKey: .defaultClickAction)) ?? CastledConstants.PushNotification.ClickActionType.none) ?? CastledConstants.PushNotification.ClickActionType.none
         self.url = (try? container.decodeIfPresent(String.self, forKey: .url)) ?? ""
-        self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals))
+        self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals)) ?? nil
     }
 }
 
@@ -214,10 +213,10 @@ struct CITrigger: Codable {
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = (try? container.decodeIfPresent(String.self, forKey: .type)) ?? ""
-        self.eventID = (try? container.decodeIfPresent(String.self, forKey: .eventID)) ?? ""
-        self.eventName = (try? container.decodeIfPresent(String.self, forKey: .eventName)) ?? ""
-        self.eventFilter = (try? container.decodeIfPresent(CIEventFilter.self, forKey: .eventFilter))
+        self.type = ((try? container.decodeIfPresent(String.self, forKey: .type)) ?? "") ?? ""
+        self.eventID = ((try? container.decodeIfPresent(String.self, forKey: .eventID)) ?? "") ?? ""
+        self.eventName = ((try? container.decodeIfPresent(String.self, forKey: .eventName)) ?? "") ?? ""
+        self.eventFilter = (try? container.decodeIfPresent(CIEventFilter.self, forKey: .eventFilter)) ?? nil
     }
 }
 
