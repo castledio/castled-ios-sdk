@@ -10,14 +10,14 @@ import UIKit
 import UserNotifications
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
         config.enableAppInbox = true
         config.enablePush = true
-        config.enableInApp = false
+        config.enableInApp = true
         config.enableTracking = true
         config.enableSessionTracking = true
         config.skipUrlHandling = false
@@ -149,17 +149,17 @@ extension AppDelegate: CastledNotificationDelegate {
             0 .push
             1 .inapp
          */
-        print("CastledNotificationType: \(type.rawValue)\nbuttonTitle: \(buttonAction.buttonTitle ?? "")\nactionUri:\(buttonAction.actionUri ?? "")\nkeyVals: \(buttonAction.keyVals)\ninboxCopyEnabled: \(buttonAction.inboxCopyEnabled)\nButtonActionType: \(buttonAction.actionType)")
+        print("***** Castled Notificiation Clicked *****\nCastledNotificationType: \(type.rawValue)\nbuttonTitle: '\(buttonAction.buttonTitle ?? "")'\nactionUri:\(buttonAction.actionUri ?? "")\nkeyVals: \(buttonAction.keyVals)\ninboxCopyEnabled: \(buttonAction.inboxCopyEnabled)\nButtonActionType: \(buttonAction.actionType)")
 
         switch buttonAction.actionType {
             case .deepLink:
                 if let urlString = buttonAction.actionUri, let url = URL(string: urlString) {
-                    // handleDeepLink(url: url)
+                    //  handleDeepLink(url: url)
                 }
 
             case .navigateToScreen:
                 if let screenName = buttonAction.actionUri {
-                    // handleNavigateToScreen(screenName: screenName)
+                    handleNavigateToScreen(screenName: screenName)
                 }
             case .richLanding:
                 // TODO:
@@ -218,13 +218,13 @@ extension AppDelegate: CastledNotificationDelegate {
      }*/
 
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
-        //  print("didReceiveCastledRemoteNotification \(userInfo)")
+        print("***** Castled Notificiation Received *****\n \(userInfo)\n")
     }
 }
 
 // MARK: - Push Notification Delegate Methods
 
-extension AppDelegate: UNUserNotificationCenterDelegate {
+extension AppDelegate {
     /*************************************************************IMPPORTANT*************************************************************/
     // If you disabled the swizzling in plist you should call the required functions in the delegate methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -247,8 +247,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
         completionHandler([.alert, .badge, .sound])
     }
-
-    // MARK: - Handling Remote Notifications in the Background
 
     /// This method is called when a remote notification is received and the app is running in the background.
     /// It is crucial to inform the Castled SDK about the notification for proper processing.

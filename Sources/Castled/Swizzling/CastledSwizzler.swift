@@ -10,45 +10,27 @@ import Foundation
 import UIKit
 
 class CastledSwizzler {
-    static var isSwizzled = false
-    static func enableSwizzlingForNotifications() {
-        // Checking if swizzling has been disabled in plist by the developer
-        let swizzzlingDisabled = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledSwzzlingDisableKey) as? Bool ?? false
-        if swizzzlingDisabled || CastledSwizzler.isSwizzled {
-            return
-        }
-        CastledSwizzler.isSwizzled = true
-        if let appDelegate = UIApplication.shared.delegate {
-            self.swizzleImplementations(type(of: appDelegate), "application:didRegisterForRemoteNotificationsWithDeviceToken:")
-            self.swizzleImplementations(type(of: appDelegate), "application:didFailToRegisterForRemoteNotificationsWithError:")
-            self.swizzleImplementations(type(of: appDelegate), "userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")
-            self.swizzleImplementations(type(of: appDelegate), "userNotificationCenter:willPresentNotification:withCompletionHandler:")
-            self.swizzleImplementations(type(of: appDelegate), "application:didReceiveRemoteNotification:fetchCompletionHandler:")
-            //        self.swizzleImplementations(type(of: appDelegate), "application:openURL:options:")
-        }
-    }
+    static let swizzzlingDisabled = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledSwzzlingDisableKey) as? Bool ?? false
 
-    private class func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {
-        let defaultSelector = Selector(methodSelector)
-        let swizzledSelector = Selector("swizzled_" + methodSelector)
-        if let swizzledMethod = class_getInstanceMethod(Castled.self, swizzledSelector) {
+    class func swizzleImplementations(originalSelector: Selector, originalClass: AnyObject.Type, swizzledSelector: Selector, swizzlinglClass: AnyObject.Type) {
+        if let swizzledMethod = class_getInstanceMethod(swizzlinglClass, swizzledSelector) {
             let updatedImplementaiton = method_getImplementation(swizzledMethod)
             let methodTypeEncoding = method_getTypeEncoding(swizzledMethod)
-            let isOriginalMethodExists = class_getInstanceMethod(className, defaultSelector) != nil
+            let isOriginalMethodExists = class_getInstanceMethod(originalClass, originalSelector) != nil
             if isOriginalMethodExists {
-                if let defaultMethod = class_getInstanceMethod(className, defaultSelector) {
+                if let defaultMethod = class_getInstanceMethod(originalClass, originalSelector) {
                     let defaultImplementation = method_getImplementation(defaultMethod)
                     if updatedImplementaiton == defaultImplementation {
                         return
                     }
-                    class_addMethod(className, swizzledSelector, updatedImplementaiton, methodTypeEncoding)
-                    if let swizzledMethod = class_getInstanceMethod(className, swizzledSelector) {
+                    class_addMethod(originalClass, swizzledSelector, updatedImplementaiton, methodTypeEncoding)
+                    if let swizzledMethod = class_getInstanceMethod(originalClass, swizzledSelector) {
                         method_exchangeImplementations(defaultMethod, swizzledMethod)
                     }
                 }
 
             } else {
-                class_addMethod(className, defaultSelector, updatedImplementaiton, methodTypeEncoding)
+                class_addMethod(originalClass, originalSelector, updatedImplementaiton, methodTypeEncoding)
             }
         }
     }

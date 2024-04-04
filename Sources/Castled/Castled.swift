@@ -64,9 +64,7 @@ import UserNotifications
         #if !DEBUG
         CastledLog.setLogLevel(CastledLogLevel.none)
         #endif
-        if config.enablePush {
-            CastledSwizzler.enableSwizzlingForNotifications()
-        }
+
         if config.enableInApp {
             UIViewController.swizzleViewDidAppear()
         }
@@ -268,20 +266,19 @@ import UserNotifications
         }
     }
 
+    private func registerForAPNsToken() {
+        DispatchQueue.main.async {
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+    }
+
     @objc public func promptForPushNotification() {
         DispatchQueue.main.async {
-            if let appDelegate = UIApplication.shared.delegate as? UNUserNotificationCenterDelegate {
-                UNUserNotificationCenter.current().delegate = appDelegate
-                UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { granted, _ in
-                    if granted {
-                        DispatchQueue.main.async {
-                            UIApplication.shared.registerForRemoteNotifications()
-                        }
-                    }
-                })
-            } else {
-                CastledLog.castledLog("AppDelegate does not conform to UNUserNotificationCenterDelegate. Please confirm to UIApplicationDelegate protocol. https://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#registering-push-notification", logLevel: .error)
-            }
+            UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { [self] granted, _ in
+                if granted {
+                    registerForAPNsToken()
+                }
+            })
         }
     }
 
@@ -297,10 +294,6 @@ import UserNotifications
     /**
      Supporting method for react and other SDKs
      */
-    public static func initializeForCrossPlatform() {
-        CastledSwizzler.enableSwizzlingForNotifications()
-    }
-
     public static func setDelegate(_ delegate: CastledNotificationDelegate) {
         Castled.sharedInstance.delegate = delegate
     }

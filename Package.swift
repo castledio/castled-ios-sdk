@@ -12,13 +12,16 @@ let package = Package(
     products: [
         .library(
             name: "Castled",
-            targets: ["Castled"]),
+            targets: ["Castled"]
+        ),
         .library(
             name: "CastledNotificationContent",
-            targets: ["CastledNotificationContent"]),
+            targets: ["CastledNotificationContent"]
+        ),
         .library(
             name: "CastledNotificationService",
-            targets: ["CastledNotificationService"])
+            targets: ["CastledNotificationService"]
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1"),
@@ -27,8 +30,17 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "CastledObjC",
+            path: "Sources/CastledObjC",
+            publicHeadersPath: ".",
+            linkerSettings: [
+                .linkedFramework("AVFoundation")
+            ]
+        ),
+        .target(
             name: "Castled",
-             dependencies: [
+            dependencies: [
+                "CastledObjC",
                 "SDWebImage",
                 .product(name: "RealmSwift", package: "realm-cocoa")
             ],
@@ -44,10 +56,11 @@ let package = Package(
                 .linkedFramework("UserNotifications")
             ]
         ),
+
         .target(
             name: "CastledNotificationContent",
             dependencies: [
-                "SDWebImage",
+                "SDWebImage"
             ], path: "Sources/CastledNotificationContent/Swift",
             resources: [
                 .process("ContentAssets.xcassets")
@@ -58,14 +71,14 @@ let package = Package(
                 .linkedFramework("UserNotifications"),
                 .linkedFramework("UserNotificationsUI")
             ]
-            
+
         ),
         .target(
             name: "CastledNotificationService",
             path: "Sources/CastledNotificationService/Swift",
             linkerSettings: [
-                .linkedFramework("AVFoundation")]
-            
+                .linkedFramework("AVFoundation")
+            ]
         )
     ]
 )

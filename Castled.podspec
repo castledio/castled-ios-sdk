@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "Castled"
-  spec.version      = '3.4.3'
+  spec.version      = '3.5.0'
   spec.summary      = "iOS SDK for Castled Push and InApp support"
   spec.description  = <<-DESC
   Castled SDK library providing support for push and in app notifications and event handling.
@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
 
   spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
-  spec.source_files = 'Sources/Castled/**/*.{h,m,swift}'
+  spec.source_files = 'Sources/Castled/**/*.{h,m,swift}', 'Sources/CastledObjC/**/*.{h,m,swift}'
   spec.resource_bundles = {
     "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib,js}']
   }
