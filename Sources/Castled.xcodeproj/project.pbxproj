@@ -67,8 +67,8 @@
 		0A8F25AA29E5AE4E00FBD9E0 /* CastledInAppObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */; };
 		0A99E8882BBA82C3005E9F7E /* CastledAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99E8872BBA82C3005E9F7E /* CastledAppDelegate.swift */; };
 		0A99E88A2BBA905A005E9F7E /* CastledNotificationDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99E8892BBA905A005E9F7E /* CastledNotificationDelegates.swift */; };
-		0A99E88E2BBEEA01005E9F7E /* CastledApplicationLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A99E88C2BBEEA01005E9F7E /* CastledApplicationLoader.h */; };
-		0A99E88F2BBEEA01005E9F7E /* CastledApplicationLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A99E88D2BBEEA01005E9F7E /* CastledApplicationLoader.m */; };
+		0A99E9292BC053A8005E9F7E /* CastledApplicationLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A99E9282BC053A8005E9F7E /* CastledApplicationLoader.m */; };
+		0A99E92A2BC053A8005E9F7E /* CastledApplicationLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A99E9272BC053A8005E9F7E /* CastledApplicationLoader.h */; };
 		0A9C266E2A42413100ADB960 /* CastledNotificationMediaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9C26672A42413100ADB960 /* CastledNotificationMediaObject.swift */; };
 		0A9C26712A42413100ADB960 /* ContentAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A9C266C2A42413100ADB960 /* ContentAssets.xcassets */; };
 		0A9C26722A42413100ADB960 /* CastledNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9C266D2A42413100ADB960 /* CastledNotificationViewController.swift */; };
@@ -208,8 +208,8 @@
 		0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppObject.swift; sourceTree = "<group>"; };
 		0A99E8872BBA82C3005E9F7E /* CastledAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledAppDelegate.swift; sourceTree = "<group>"; };
 		0A99E8892BBA905A005E9F7E /* CastledNotificationDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationDelegates.swift; sourceTree = "<group>"; };
-		0A99E88C2BBEEA01005E9F7E /* CastledApplicationLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledApplicationLoader.h; sourceTree = "<group>"; };
-		0A99E88D2BBEEA01005E9F7E /* CastledApplicationLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastledApplicationLoader.m; sourceTree = "<group>"; };
+		0A99E9272BC053A8005E9F7E /* CastledApplicationLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledApplicationLoader.h; sourceTree = "<group>"; };
+		0A99E9282BC053A8005E9F7E /* CastledApplicationLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CastledApplicationLoader.m; sourceTree = "<group>"; };
 		0A9C26672A42413100ADB960 /* CastledNotificationMediaObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNotificationMediaObject.swift; sourceTree = "<group>"; };
 		0A9C266C2A42413100ADB960 /* ContentAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ContentAssets.xcassets; sourceTree = "<group>"; };
 		0A9C266D2A42413100ADB960 /* CastledNotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNotificationViewController.swift; sourceTree = "<group>"; };
@@ -538,11 +538,11 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		0A99E88B2BBEE9CD005E9F7E /* CastledObjC */ = {
+		0A99E9262BC0539C005E9F7E /* CastledObjC */ = {
 			isa = PBXGroup;
 			children = (
-				0A99E88C2BBEEA01005E9F7E /* CastledApplicationLoader.h */,
-				0A99E88D2BBEEA01005E9F7E /* CastledApplicationLoader.m */,
+				0A99E9272BC053A8005E9F7E /* CastledApplicationLoader.h */,
+				0A99E9282BC053A8005E9F7E /* CastledApplicationLoader.m */,
 			);
 			path = CastledObjC;
 			sourceTree = "<group>";
@@ -584,7 +584,7 @@
 		0AB5C546291C222C0027C36B = {
 			isa = PBXGroup;
 			children = (
-				0A99E88B2BBEE9CD005E9F7E /* CastledObjC */,
+				0A99E9262BC0539C005E9F7E /* CastledObjC */,
 				0A0F97EC2ACBE84200BA05D0 /* Realm.framework */,
 				0A23C0042AC20E1B00F8772A /* SDWebImage.framework */,
 				0A0F97EA2ACBE66E00BA05D0 /* RealmSwift.framework */,
@@ -780,8 +780,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A99E88E2BBEEA01005E9F7E /* CastledApplicationLoader.h in Headers */,
 				0AB5C554291C222C0027C36B /* Castled.h in Headers */,
+				0A99E92A2BC053A8005E9F7E /* CastledApplicationLoader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -989,6 +989,7 @@
 				0A6A93E129E7F53C0083249E /* CastledInAppDisplaySettings.swift in Sources */,
 				0ABA759A2A7D634700CD0734 /* CastledDismissButton.swift in Sources */,
 				0A1DE6002A9DA27400DB2E29 /* CastledInboxItem.swift in Sources */,
+				0A99E9292BC053A8005E9F7E /* CastledApplicationLoader.m in Sources */,
 				0AB5C599291C27840027C36B /* CastledExceptions.swift in Sources */,
 				0ACA95972B8D919500165C41 /* CastledButtonClickAction.swift in Sources */,
 				0A5B308C2AD5CC1800A3EC4F /* CastledInboxListingViewController.swift in Sources */,
@@ -996,7 +997,6 @@
 				0A1DE6062A9F47BD00DB2E29 /* CExtensions+Date.swift in Sources */,
 				0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */,
 				0ABDE8B629FBFEB500D3EF79 /* CastledRetryHandler.swift in Sources */,
-				0A99E88F2BBEEA01005E9F7E /* CastledApplicationLoader.m in Sources */,
 				0A5B30872AD5CAEE00A3EC4F /* CastledViewPagerDisplayConfigs.swift in Sources */,
 				0AA24EF72B18B9D500FD0878 /* CExtensions+Colors.swift in Sources */,
 				0A5B30892AD5CAEE00A3EC4F /* CastledViewPager.swift in Sources */,

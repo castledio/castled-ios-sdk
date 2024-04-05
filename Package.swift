@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -12,7 +12,7 @@ let package = Package(
     products: [
         .library(
             name: "Castled",
-            targets: ["Castled"]
+            targets: ["Castled", "CastledObjC"]
         ),
         .library(
             name: "CastledNotificationContent",
@@ -26,21 +26,11 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1"),
         .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.43.0")
-
     ],
     targets: [
         .target(
-            name: "CastledObjC",
-            path: "Sources/CastledObjC",
-            publicHeadersPath: ".",
-            linkerSettings: [
-                .linkedFramework("AVFoundation")
-            ]
-        ),
-        .target(
             name: "Castled",
             dependencies: [
-                "CastledObjC",
                 "SDWebImage",
                 .product(name: "RealmSwift", package: "realm-cocoa")
             ],
@@ -49,11 +39,24 @@ let package = Package(
                 .process("InApps/Views/CastledAssets.xcassets"),
                 .process("InApps/Views/Resources"),
                 .process("Inbox/Views/Resources")
-            ],
-            linkerSettings: [
+            ], linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit"),
                 .linkedFramework("UserNotifications")
+            ]
+        ),
+        .target(
+            name: "CastledObjC",
+            dependencies: [
+                "Castled"
+            ],
+            path: "Sources/CastledObjC",
+            publicHeadersPath: ".",
+            cSettings: [
+                .define("SWIFT_PACKAGE")
+            ],
+            linkerSettings: [
+                .linkedFramework("AVFoundation")
             ]
         ),
 
@@ -61,7 +64,8 @@ let package = Package(
             name: "CastledNotificationContent",
             dependencies: [
                 "SDWebImage"
-            ], path: "Sources/CastledNotificationContent/Swift",
+            ],
+            path: "Sources/CastledNotificationContent/Swift",
             resources: [
                 .process("ContentAssets.xcassets")
             ],
@@ -71,7 +75,6 @@ let package = Package(
                 .linkedFramework("UserNotifications"),
                 .linkedFramework("UserNotificationsUI")
             ]
-
         ),
         .target(
             name: "CastledNotificationService",

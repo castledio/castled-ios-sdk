@@ -16,7 +16,7 @@ import UserNotifications
     @objc optional func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any])
 }
 
-@objc public class Castled: NSObject {
+public class Castled: NSObject {
     @objc public static var sharedInstance = Castled()
     var inboxUnreadCountCallback: ((Int) -> Void)?
     var instanceId = CastledConfigsUtils.appId ?? ""

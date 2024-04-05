@@ -6,6 +6,7 @@
 //
 
 import Castled
+
 import UIKit
 
 class ViewController: UIViewController, CastledInboxViewControllerDelegate {

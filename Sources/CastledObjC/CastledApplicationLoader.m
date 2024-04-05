@@ -8,14 +8,14 @@
 #import "CastledApplicationLoader.h"
 #if __has_include("Castled-Swift.h")
 #import "Castled-Swift.h"
-#else
+#elif __has_include(<Castled/Castled-Swift.h>)
 #import <Castled/Castled-Swift.h>
 #endif
- @implementation CastledApplicationLoader
+@implementation CastledApplicationLoader
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-       [[CastledAppDelegate shared] setApplicationDelegatesWithSourceClass:[self class]];
+         [[CastledAppDelegate shared] setApplicationDelegatesWithSourceClass:[self class]];
      });
 }
 
