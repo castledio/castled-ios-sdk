@@ -12,13 +12,14 @@ extension UIViewController {
     @objc func _tracked_viewwDidAppear(_ animated: Bool) {
         if !(String(describing: type(of: self)).hasPrefix("CastledInApp")), CastledUserDefaults.shared.userId != nil {
             Castled.sharedInstance.logAppPageViewedEvent(self)
-            _tracked_viewwDidAppear(animated)
+            if responds(to: #selector(_tracked_viewwDidAppear(_:))) {
+                _tracked_viewwDidAppear(animated)
+            }
         }
     }
 
     static func swizzleViewDidAppear() {
-        let swizzzlingDisabled = Bundle.main.object(forInfoDictionaryKey: CastledConstants.kCastledSwzzlingDisableKey) as? Bool ?? false
-        if swizzzlingDisabled == true {
+        if CastledSwizzler.swizzzlingDisabled {
             return
         }
         let originalSelector = #selector(UIViewController.viewDidAppear)
