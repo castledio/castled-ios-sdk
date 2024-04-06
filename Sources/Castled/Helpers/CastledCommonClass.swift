@@ -115,6 +115,6 @@ class CastledCommonClass {
             // 'version' contains the CFBundleShortVersionString value
             return version
         }
-        return "0.0.0"
+        return ""
     }
 }
