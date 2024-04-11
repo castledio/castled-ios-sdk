@@ -51,12 +51,13 @@ class CastledInboxServices: NSObject {
 
     func reportInboxItemsDeleted(inboxObject: CastledInboxItem) {
         backgroundQueue.async { [self] in
-            let realm = CastledDBManager.shared.getRealm()
-            if let existingItem = realm.object(ofType: CAppInbox.self, forPrimaryKey: inboxObject.messageId) {
-                do {
-                    try? realm.write {
-                        existingItem.isDeleted = true
-                        CastledStore.resetUnreadUncountAfterCRUD(realm: realm)
+            if let realm = CastledDBManager.shared.getRealm() {
+                if let existingItem = realm.object(ofType: CAppInbox.self, forPrimaryKey: inboxObject.messageId) {
+                    do {
+                        try? realm.write {
+                            existingItem.isDeleted = true
+                            CastledStore.resetUnreadUncountAfterCRUD(realm: realm)
+                        }
                     }
                 }
             }

@@ -20,11 +20,11 @@ class CastledInboxListingViewController: UIViewController {
 
     weak var inboxViewController: CastledInboxViewController?
     var currentCategory: String?
-    private lazy var realm: Realm = {
+    private lazy var realm: Realm? = {
         inboxViewController?.viewModel.realm
         // CastledDBManager.shared.getRealm()
 
-    }()!
+    }()
 
     var inboxItems: Results<CAppInbox>?
     override func viewDidLoad() {
@@ -68,7 +68,7 @@ class CastledInboxListingViewController: UIViewController {
 
     private func populateInboxItems() {
         let predicate = currentIndex == 0 ? "isDeleted == false" : "isDeleted == false && tag == '\(currentCategory ?? "")'"
-        inboxItems = realm.objects(CAppInbox.self)
+        inboxItems = realm?.objects(CAppInbox.self)
             .filter(predicate)
             .sorted(by: [
                 SortDescriptor(keyPath: "isPinned", ascending: false),
@@ -77,32 +77,36 @@ class CastledInboxListingViewController: UIViewController {
     }
 
     private func addRealmObservers() {
-        notificationToken = inboxItems?.observe { [weak self] changes in
-            if self?.currentIndex == self?.inboxViewController?.getCurrentPageIndex() {
-                switch changes {
-                    case .initial:
-                        // Initial data is loaded
-                        self?.tblView.reloadData()
-                    case .update(_, let deletions, let insertions, let modifications):
+        if let _ = inboxItems {
+            notificationToken = inboxItems!.observe { [weak self] changes in
+                if self?.currentIndex == self?.inboxViewController?.getCurrentPageIndex() {
+                    switch changes {
+                        case .initial:
+                            // Initial data is loaded
+                            self?.tblView.reloadData()
+                        case .update(_, let deletions, let insertions, let modifications):
 
-                        // Data has been updated, handle deletions, insertions, and modifications
-                        self?.tblView.beginUpdates()
-                        self?.tblView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
-                        self?.tblView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
-                        self?.tblView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
-                        self?.tblView.endUpdates()
-                        if !deletions.isEmpty || !insertions.isEmpty {
-                            self?.inboxViewController?.updateViewPagerAfterDBChanges()
-                        }
-                    case .error(let error):
-                        // Handle error
-                        CastledLog.castledLog("Inbox listing Error: \(error)", logLevel: CastledLogLevel.error)
-                }
+                            // Data has been updated, handle deletions, insertions, and modifications
+                            self?.tblView.beginUpdates()
+                            self?.tblView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+                            self?.tblView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+                            self?.tblView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+                            self?.tblView.endUpdates()
+                            if !deletions.isEmpty || !insertions.isEmpty {
+                                self?.inboxViewController?.updateViewPagerAfterDBChanges()
+                            }
+                        case .error(let error):
+                            // Handle error
+                            CastledLog.castledLog("Inbox listing Error: \(error)", logLevel: CastledLogLevel.error)
+                    }
 
-                DispatchQueue.main.async {
-                    self?.showRequiredViews()
+                    DispatchQueue.main.async {
+                        self?.showRequiredViews()
+                    }
                 }
             }
+        } else {
+            showRequiredViews()
         }
     }
 
@@ -112,7 +116,7 @@ class CastledInboxListingViewController: UIViewController {
     }
 
     private func showRequiredViews() {
-        lblNoUpdates.isHidden = !inboxItems!.isEmpty
+        lblNoUpdates.isHidden = !(inboxItems?.isEmpty ?? true)
         showOrHideLoader(showLoader: inboxViewController?.viewModel.showLoader ?? false)
         setErrorTextWith(title: inboxViewController?.viewModel.errorMessage)
     }
