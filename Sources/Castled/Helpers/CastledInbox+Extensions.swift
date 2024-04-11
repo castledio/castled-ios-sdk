@@ -53,15 +53,21 @@ public extension Castled {
                 return
             }
             do {
-                let backgroundRealm = CastledDBManager.shared.getRealm()
-                let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self).filter("isDeleted == false")
+                if let backgroundRealm = CastledDBManager.shared.getRealm() {
+                    let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self).filter("isDeleted == false")
 
-                let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
-                    let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
-                    return inboxItem
+                    let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
+                        let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
+                        return inboxItem
+                    }
+                    DispatchQueue.main.async {
+                        completion(true, liveInboxItems, nil)
+                    }
                 }
-                DispatchQueue.main.async {
-                    completion(true, liveInboxItems, nil)
+                else {
+                    DispatchQueue.main.async {
+                        completion(true, [], nil)
+                    }
                 }
             }
         }

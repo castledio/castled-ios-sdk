@@ -124,11 +124,11 @@ import UIKit
         viewModel.didLoadNextPage()
     }
 
-    private func getCategories(realm: Realm) -> [String] {
-        let uniqueCategories = Set(realm.objects(CAppInbox.self)
+    private func getCategories(realm: Realm?) -> [String] {
+        let uniqueCategories = Set(realm?.objects(CAppInbox.self)
             .filter("tag != '' && isDeleted == false")
             .distinct(by: ["tag"])
-            .compactMap { $0.tag }).sorted()
+            .compactMap { $0.tag } ?? []).sorted()
         return uniqueCategories
     }
 

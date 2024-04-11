@@ -29,9 +29,9 @@ class CastledDBManager {
         Realm.Configuration.defaultConfiguration = config
     }
 
-    func getRealm() -> Realm {
+    func getRealm() -> Realm? {
         // Retrieve a Realm instance with the custom configuration
-        return try! Realm()
+        return try? Realm()
     }
 
     func clearTables() {
