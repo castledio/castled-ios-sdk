@@ -64,7 +64,6 @@ import UserNotifications
         #if !DEBUG
         CastledLog.setLogLevel(CastledLogLevel.none)
         #endif
-
         if config.enableInApp {
             UIViewController.swizzleViewDidAppear()
         }
@@ -77,6 +76,7 @@ import UserNotifications
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
+        checkAndRegisterForAPNsToken()
     }
 
     @objc public func isCastledInitialized() -> Bool {
@@ -241,6 +241,8 @@ import UserNotifications
             if userId != existingUserId {
                 if CastledUserDefaults.shared.apnsToken != nil || CastledUserDefaults.shared.fcmToken != nil {
                     Castled.sharedInstance.updateTheUserIdAndToken(userId, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
+                } else {
+                    Castled.sharedInstance.checkAndRegisterForAPNsToken()
                 }
                 self.didSetUserId()
             }
@@ -266,6 +268,12 @@ import UserNotifications
         }
     }
 
+    private func checkAndRegisterForAPNsToken() {
+        if CastledConfigs.sharedInstance.enablePush {
+            Castled.sharedInstance.registerForAPNsToken()
+        }
+    }
+
     private func registerForAPNsToken() {
         DispatchQueue.main.async {
             UIApplication.shared.registerForRemoteNotifications()
@@ -277,6 +285,7 @@ import UserNotifications
             UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { [self] granted, _ in
                 if granted {
                     registerForAPNsToken()
+                } else { CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
                 }
             })
         }

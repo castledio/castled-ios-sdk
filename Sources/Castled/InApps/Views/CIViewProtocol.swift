@@ -55,8 +55,7 @@ extension CIViewProtocol {
                 alignment = NSTextAlignment.left
             }
 
-            lblTitle.attributedText = inAppDisplaySettings!.title.getAttributedStringFrom(textColr: inAppDisplaySettings!.titleFontColor,
-                                                                                          font: inAppDisplaySettings!.titleFont.withSize(CGFloat(inAppDisplaySettings!.titleFontSize)), alignment: alignment)
+            lblTitle.attributedText = inAppDisplaySettings!.title.getAttributedStringFrom(textColr: inAppDisplaySettings!.titleFontColor, font: inAppDisplaySettings!.titleFont.withSize(CGFloat(inAppDisplaySettings!.titleFontSize)), alignment: alignment)
         }
         if let lblBody = lblBody {
             lblBody.numberOfLines = 5
@@ -101,16 +100,27 @@ extension CIViewProtocol {
         }
         if let imgMedia = imgMedia {
             imgMedia.loadImage(from: inAppDisplaySettings?.imageUrl)
+            addDefaultClickAction(view: imgMedia.superview!)
         }
         if let viewMainContainer = viewInppContainer {
             viewMainContainer.layer.cornerRadius = 10
         }
         if let viewTitleContainer = viewTitleContainer {
             viewTitleContainer.backgroundColor = inAppDisplaySettings?.titleBgColor
+            addDefaultClickAction(view: viewTitleContainer)
         }
         if let viewDetailContainer = viewBodyContainer {
             viewDetailContainer.backgroundColor = inAppDisplaySettings?.bodyBgColor
             viewButtonContainer?.backgroundColor = viewDetailContainer.backgroundColor
+            addDefaultClickAction(view: viewDetailContainer)
+        }
+    }
+
+    private func addDefaultClickAction(view: UIView) {
+        if let parentVC = parentContainerVC {
+            let tapGesture = UITapGestureRecognizer(target: parentVC, action: #selector(parentVC.touchesEndedOnContainerView(_:)))
+            tapGesture.numberOfTapsRequired = 1
+            view.addGestureRecognizer(tapGesture)
         }
     }
 }
