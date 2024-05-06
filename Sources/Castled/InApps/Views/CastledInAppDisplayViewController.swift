@@ -20,6 +20,7 @@ class CastledInAppDisplayViewController: UIViewController {
     private var inAppWindow: CastledTouchThroughWindow?
     var selectedInAppObject: CastledInAppObject?
     private var isSlideUpInApp = false
+    private var isDefaultActionTriggered = false
     private var autoDismissalWorkItem: DispatchWorkItem?
     var inAppView: (any CIViewProtocol)?
     override func viewDidLoad() {
@@ -56,7 +57,7 @@ class CastledInAppDisplayViewController: UIViewController {
         containerView?.isHidden = false
         isSlideUpInApp = containerView == viewBannerContainer
         inAppWindow?.shouldPassThrough = isSlideUpInApp // for enabling touch only for banner
-
+        isDefaultActionTriggered = false
         // required properties for population
         inAppView?.parentContainerVC = self
         inAppView?.viewParentContainer = containerView
@@ -150,12 +151,18 @@ class CastledInAppDisplayViewController: UIViewController {
 
         } else {
             var buttonParentView = containerView
+            var trailingAnchor = 5
+            var topAnchor = -5
+
             if let childContainer = inAppView?.viewChildViewsContainer {
+                // modal
+                trailingAnchor = 0
+                topAnchor = 0
                 buttonParentView = childContainer
                 childContainer.superview!.addSubview(dismissView)
             }
-            dismissView.trailingAnchor.constraint(equalTo: buttonParentView.trailingAnchor, constant: 0).isActive = true
-            dismissView.topAnchor.constraint(equalTo: buttonParentView.topAnchor, constant: 0).isActive = true
+            dismissView.trailingAnchor.constraint(equalTo: buttonParentView.trailingAnchor, constant: CGFloat(trailingAnchor)).isActive = true
+            dismissView.topAnchor.constraint(equalTo: buttonParentView.topAnchor, constant: CGFloat(topAnchor)).isActive = true
         }
         let action = DismissViewActions(dismissBtnClickedAction: dismissButtonClicked)
         dismissView.initialiseActions(actions: action)
@@ -182,20 +189,24 @@ class CastledInAppDisplayViewController: UIViewController {
         hideInAppViewFromWindow(withAnimation: true)
     }
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesEnded(touches, with: event)
-        if let inappObject = selectedInAppObject, inappObject.message?.type != CIMessageType.banner, let defaultAction = inappObject.message?.fs?.defaultClickAction ?? inappObject.message?.modal?.defaultClickAction, defaultAction != .none {
-            let url = inappObject.message?.modal?.url ?? inappObject.message?.fs?.url ?? ""
-            var params = [String: Any]()
-            params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url
-            params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = defaultAction.rawValue
-            if let keyvals = inappObject.message?.modal?.keyVals ?? inappObject.message?.fs?.keyVals {
-                params[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyvals
-            }
+    @objc func touchesEndedOnContainerView(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended, !isDefaultActionTriggered {
+            // Tap gesture ended
+            if let inappObject = selectedInAppObject, inappObject.message?.type != CIMessageType.banner, let defaultAction = inappObject.message?.fs?.defaultClickAction ?? inappObject.message?.modal?.defaultClickAction, defaultAction != .none {
+                isDefaultActionTriggered = true
 
-            CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)
-            CastledInApps.sharedInstance.performButtonActionFor(webParams: params)
-            hideInAppViewFromWindow(withAnimation: true)
+                let url = inappObject.message?.modal?.url ?? inappObject.message?.fs?.url ?? ""
+                var params = [String: Any]()
+                params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] = url
+                params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] = defaultAction.rawValue
+                if let keyvals = inappObject.message?.modal?.keyVals ?? inappObject.message?.fs?.keyVals {
+                    params[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyvals
+                }
+
+                CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)
+                CastledInApps.sharedInstance.performButtonActionFor(webParams: params)
+                hideInAppViewFromWindow(withAnimation: true)
+            }
         }
     }
 }
