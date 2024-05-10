@@ -280,7 +280,7 @@ import UserNotifications
         }
     }
 
-    @objc public func promptForPushNotification() {
+    @objc public func requestPushPermission() {
         DispatchQueue.main.async {
             UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { [self] granted, _ in
                 if granted {
