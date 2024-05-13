@@ -8,9 +8,6 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-#ifdef SWIFT_PACKAGE
-@import Castled;
-#endif
 
 @interface CastledApplicationLoader : NSObject
 - (instancetype)init NS_UNAVAILABLE;

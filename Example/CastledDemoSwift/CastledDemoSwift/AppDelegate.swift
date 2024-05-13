@@ -140,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
         UNUserNotificationCenter.current().delegate = self
-        Castled.sharedInstance.promptForPushNotification()
+        Castled.sharedInstance.requestPushPermission()
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, buttonAction: CastledButtonAction, userInfo: [AnyHashable: Any]) {

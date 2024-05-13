@@ -10,7 +10,10 @@
 #import "Castled-Swift.h"
 #elif __has_include(<Castled/Castled-Swift.h>)
 #import <Castled/Castled-Swift.h>
+#elif SWIFT_PACKAGE
+@import Castled;
 #endif
+
 @implementation CastledApplicationLoader
 + (void)load {
     static dispatch_once_t onceToken;
