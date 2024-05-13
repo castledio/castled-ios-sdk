@@ -6,7 +6,6 @@
 //
 
 import Castled
-
 import UIKit
 
 class ViewController: UIViewController, CastledInboxViewControllerDelegate {
@@ -100,8 +99,6 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     // MARK: - Inbox related
 
     @objc func inboxTapped() {
-        Castled.sharedInstance.promptForPushNotification()
-
         // Handle the button tap here
         let style = CastledInboxDisplayConfig()
         style.inboxViewBackgroundColor = .white
