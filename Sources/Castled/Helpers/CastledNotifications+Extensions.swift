@@ -16,8 +16,16 @@ public extension Castled {
         Castled.sharedInstance.setPushToken(deviceTokenString)
     }
 
-    @objc func didReceiveRemoteNotification(inApplication application: UIApplication, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let application = UIApplication.shared
+    @objc func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any]) {
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: UIApplication.shared, withInfo: userInfo) { result in
+            print("didReceiveRemoteNotification result----- \(result)")
+        }
+    }
+
+    internal func didReceiveRemoteNotification(inApplication application: UIApplication?, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        guard let application = application else {
+            return
+        }
         var backgroundTask: UIBackgroundTaskIdentifier?
         backgroundTask = application.beginBackgroundTask(withName: "com.castled.bgpush") {
             application.endBackgroundTask(backgroundTask!)

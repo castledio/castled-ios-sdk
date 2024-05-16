@@ -36,7 +36,7 @@ class CastledRetryHandler {
                         let savedEvents = value
                         self?.castledSemaphore.wait()
                         self?.castledGroup.enter()
-                        CastledNetworkManager.reportPushEvents(params: savedEvents, completion: { [weak self] _ in
+                        CastledNetworkManager.reportPushEvents(params: savedEvents, isRetry: true, completion: { [weak self] _ in
                             self?.castledSemaphore.signal()
                             self?.castledGroup.leave()
                         })

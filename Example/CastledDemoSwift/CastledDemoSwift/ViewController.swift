@@ -122,6 +122,10 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         present(inboxViewController, animated: true)
         // navigationController?.setNavigationBarHidden(true, animated: false)
         // navigationController?.pushViewController(inboxViewController, animated: true)
+        Castled.sharedInstance.logCustomAppEvent("antony_event_both", params: ["IntValue": 200,
+                                                                               // "Date": Date(),
+                                                                               "BoolValue": true,
+                                                                               "Name": "Antony Joe Mathew"])
     }
 
     func setUpInboxCallback() {

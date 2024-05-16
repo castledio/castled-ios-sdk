@@ -269,7 +269,7 @@ import UserNotifications
     }
 
     private func checkAndRegisterForAPNsToken() {
-        if CastledConfigs.sharedInstance.enablePush {
+        if CastledConfigs.sharedInstance.enablePush, CastledUserDefaults.shared.apnsToken == nil {
             Castled.sharedInstance.registerForAPNsToken()
         }
     }

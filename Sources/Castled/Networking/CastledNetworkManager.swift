@@ -93,13 +93,26 @@ class CastledNetworkManager {
     /**
      Funtion which alllows to report push Notifification events like OPENED,ACKNOWLEDGED etc.. with Castled.
      */
-    static func reportPushEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+    static func reportPushEvents(params: [[String: Any]], isRetry: Bool? = false, completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+        let application = UIApplication.shared
+        var backgroundTask: UIBackgroundTaskIdentifier?
+        backgroundTask = application.beginBackgroundTask(withName: "com.castled.pushsending") {
+            application.endBackgroundTask(backgroundTask!)
+            backgroundTask = .invalid
+        }
         let router: CastledNetworkRouter = .reportPushEvents(params: params, instanceId: Castled.sharedInstance.instanceId)
+        if isRetry ?? false == false {
+            // saving this for push to ensure that data won't be lost in case of a weak network connection. This will mainly occur when the action is rich landing or other apps by deeplinking
+            CastledStore.insertAllSendingItemsToStore(params)
+        }
         CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
             if !response.success {
                 CastledLog.castledLog("Report Push Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
             completion(response)
+            if let backgroundTask = backgroundTask {
+                application.endBackgroundTask(backgroundTask)
+            }
         })
     }
 
@@ -185,7 +198,7 @@ class CastledNetworkManager {
                     if let uid = params[CastledConstants.PushNotification.userId] as? String {
                         CastledLog.castledLog("Register User '\(uid)' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
                     }
-                    CastledStore.insertAllFailedItemsToStore([params])
+                    CastledStore.insertAllSendingItemsToStore([params])
                     completion(CastledResponse(error: response.errorMessage, statusCode: 999))
             }
         }
@@ -200,7 +213,7 @@ class CastledNetworkManager {
                     CastledStore.deleteAllFailedItemsFromStore([params])
 
                 case false:
-                    CastledStore.insertAllFailedItemsToStore([params])
+                    CastledStore.insertAllSendingItemsToStore([params])
             }
         }
     }
@@ -225,7 +238,7 @@ extension CastledNetworkManager {
                     completion(api_response as? CastledResponse<T> ?? CastledResponse(response: ["success": "1"] as! T))
 
                 case false:
-                    CastledStore.insertAllFailedItemsToStore(sendingParams)
+                    CastledStore.insertAllSendingItemsToStore(sendingParams)
                     completion(api_response as? CastledResponse<T> ?? CastledResponse(error: api_response.errorMessage, statusCode: 999))
             }
         }
