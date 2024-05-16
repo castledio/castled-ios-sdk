@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-class CastledCommonClass {
+public class CastledCommonClass {
     static func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
             do {
@@ -85,7 +85,7 @@ class CastledCommonClass {
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 
-    static func hexStringToUIColor(hex: String) -> UIColor? {
+    public static func hexStringToUIColor(hex: String) -> UIColor? {
         return UIColor(hexString: hex)
     }
 

@@ -8,7 +8,7 @@ import Castled
 import Foundation
 import UIKit
 
-@objc public class CastledInboxItemOld: NSObject, Codable {
+@objc public class CastledInboxItem: NSObject, Codable {
     public var actionButtons: [[String: Any]]
     public var addedDate: Date
     public var aspectRatio: CGFloat
@@ -17,7 +17,7 @@ import UIKit
     public var containerBGColor: UIColor
     public var dateTextColor: UIColor
     public var imageUrl: String
-    public var inboxType: OldCastledInboxType
+    public var inboxType: CastledInboxType
     public var isRead: Bool
     public var isPinned: Bool
     public var message: [String: Any]
@@ -65,14 +65,14 @@ import UIKit
             (self.message["contents"] as? [[String: Any]] ?? []).first?["url"] as? String ?? ""
         self.title = (self.message["title"] as? String) ?? ""
         self.body = (self.message["body"] as? String) ?? ""
-        self.inboxType = OldCastledInboxType(rawValue: (self.message["type"] as? String) ?? "OTHER") ?? .other
+        self.inboxType = CastledInboxType(rawValue: (self.message["type"] as? String) ?? "OTHER") ?? .other
         self.titleTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["titleFontColor"] as? String) ?? "") ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.bodyTextColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bodyFontColor"] as? String) ?? "") ?? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.dateTextColor = self.bodyTextColor
         self.containerBGColor = CastledCommonClass.hexStringToUIColor(hex: (self.message["bgColor"] as? String) ?? "") ?? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
 
-    static func == (lhs: CastledInboxItemOld, rhs: CastledInboxItemOld) -> Bool {
+    static func == (lhs: CastledInboxItem, rhs: CastledInboxItem) -> Bool {
         return lhs.sourceContext == rhs.sourceContext
     }
 

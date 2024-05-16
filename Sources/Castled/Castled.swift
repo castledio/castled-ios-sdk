@@ -306,4 +306,8 @@ import UserNotifications
     public static func setDelegate(_ delegate: CastledNotificationDelegate) {
         Castled.sharedInstance.delegate = delegate
     }
+
+    public func getCastledConfig() -> CastledConfigs {
+        return CastledConfigsUtils.configs
+    }
 }

@@ -6,6 +6,7 @@
 //
 
 import Castled
+import CastledInbox
 import UIKit
 
 class ViewController: UIViewController, CastledInboxViewControllerDelegate {
@@ -117,7 +118,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 //        style.tabBarDefaultBackgroundColor = .purple
 //        style.tabBarSelectedBackgroundColor = .lightGray
 //        style.tabBarIndicatorBackgroundColor = .red
-        let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
+        let inboxViewController = CastledInbox.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController.modalPresentationStyle = .fullScreen
         present(inboxViewController, animated: true)
         // navigationController?.setNavigationBarHidden(true, animated: false)

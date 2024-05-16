@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 enum CastledInboxResponseConverter {
-    static func convertToInbox(inboxItem: CastledInboxItemOld, realm: Realm? = nil) -> CAppInbox? {
+    static func convertToInbox(inboxItem: CastledInboxItem, realm: Realm? = nil) -> CAppInbox? {
         let appinbox: CAppInbox
         if let existingItem = realm?.object(ofType: CAppInbox.self, forPrimaryKey: inboxItem.messageId) {
             if existingItem.updatedTime == inboxItem.updatedTime {
@@ -44,8 +44,8 @@ enum CastledInboxResponseConverter {
         return appinbox
     }
 
-    static func convertToInboxItem(appInbox: CAppInbox) -> CastledInboxItemOld {
-        let inboxItem = CastledInboxItemOld()
+    static func convertToInboxItem(appInbox: CAppInbox) -> CastledInboxItem {
+        let inboxItem = CastledInboxItem()
         inboxItem.messageId = appInbox.messageId
         inboxItem.teamID = appInbox.teamID
         inboxItem.startTs = appInbox.startTs

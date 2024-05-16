@@ -7,14 +7,15 @@
 
 import Foundation
 
-enum CastledConstants {
+public enum CastledConstants {
     // Plist Key for enable/ Disable swizzling
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
+    public static let CastledNetworkRequestTypeKey = "castled_request_type"
 
-    enum PushNotification {
+    public enum PushNotification {
         static let customKey = "castled"
         static let apsKey = "aps"
         static let badgeKey = "badge"
@@ -56,7 +57,7 @@ enum CastledConstants {
             }
         }
 
-        enum ClickActionType: String, Codable {
+        public enum ClickActionType: String, Codable {
             case navigateToScreen = "NAVIGATE_TO_SCREEN"
             case deepLink = "DEEP_LINKING"
             case richLanding = "RICH_LANDING"
@@ -87,7 +88,6 @@ enum CastledConstants {
         case viewed = "VIEWED" // this is for inapp
     }
 
-    static let CastledNetworkRequestTypeKey = "castled_request_type"
     enum InAppsConfigKeys: String {
         case inAppNotificationId = "nid"
         case inAppCurrentDisplayCounter = "dc"
@@ -124,7 +124,7 @@ enum CastledConstants {
         }
     }
 
-    enum CastledNetworkRequestType: String {
+    public enum CastledNetworkRequestType: String {
         case pushRequest = "push"
         case userRegisterationRequest = "userRegn"
         case inappRequest = "inapp"

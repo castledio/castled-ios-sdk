@@ -5,11 +5,13 @@
 //  Created by antony on 10/10/2023.
 //
 
+import Castled
 import RealmSwift
 import UIKit
 
 class CastledInboxListingViewController: UIViewController {
     var currentIndex = 0
+    var inboxConfig: CastledInboxDisplayConfig?
     private let refreshControl = UIRefreshControl()
 
     @IBOutlet private weak var tblView: UITableView!
@@ -17,7 +19,7 @@ class CastledInboxListingViewController: UIViewController {
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
     private var notificationToken: NotificationToken?
 
-    weak var inboxViewController: OldCastledInboxViewController?
+    weak var inboxViewController: CastledInboxViewController?
     var currentCategory: String?
     private lazy var realm: Realm? = {
         inboxViewController?.viewModel.realm
@@ -56,7 +58,14 @@ class CastledInboxListingViewController: UIViewController {
         inboxViewController?.viewModel.didLoadNextPage()
     }
 
-    private func setUpDisplayConfigs() {}
+    private func setUpDisplayConfigs() {
+        tblView.backgroundColor = .clear
+        indicatorView.color = inboxConfig!.loaderTintColor
+        refreshControl.tintColor = inboxConfig!.loaderTintColor
+        view.backgroundColor = inboxConfig!.inboxViewBackgroundColor
+        lblNoUpdates.text = inboxConfig!.emptyMessageViewText
+        lblNoUpdates.textColor = inboxConfig!.emptyMessageViewTextColor
+    }
 
     private func populateInboxItems() {
         let predicate = currentIndex == 0 ? "isDeleted == false" : "isDeleted == false && tag == '\(currentCategory ?? "")'"
@@ -174,11 +183,12 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = inboxItems![indexPath.row].messageDictionary
-        if let defaultClickAction = item["defaultClickAction"] as? String {
-            didSelectedInboxWith(["clickAction": defaultClickAction,
-                                  "url": (item["url"] as? String) ?? "",
-                                  CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: item[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] ?? [String: Any]()], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItems![indexPath.row]))
-        }
+        // FIXME: do the needful
+        /*  if let defaultClickAction = item["defaultClickAction"] as? String {
+             didSelectedInboxWith(["clickAction": defaultClickAction,
+                                   "url": (item["url"] as? String) ?? "",
+                                   CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: item[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] ?? [String: Any]()], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItems![indexPath.row]))
+         }*/
     }
 
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -190,17 +200,32 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
             let item = self.inboxItems![indexPath.row]
             let message_id = item.messageId
             self.inboxViewController?.readItems.removeAll { $0 == message_id }
-            Castled.sharedInstance.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
+            // FIXME: do the needful
+
+            //  Castled.sharedInstance.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
 
         })
-        let trashImage = UIImage(named: "castled_swipe_delete_filled", in: Bundle.resourceBundle(for: OldCastledInboxViewController.self), compatibleWith: nil)
+        let trashImage = UIImage(named: "castled_swipe_delete_filled", in: Bundle.resourceBundle(for: CastledInboxViewController.self), compatibleWith: nil)
         // deleteAction.image = trashImage
         deleteAction.image = UIGraphicsImageRenderer(size: CGSize(width: 35, height: 35)).image { _ in
             trashImage?.draw(in: CGRect(x: 0, y: 0, width: 35, height: 35))
         }
-        deleteAction.backgroundColor = .systemRed
+        deleteAction.backgroundColor = UIColor.systemRed
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
-    public func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItemOld) {}
+    public func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
+        // FIXME: do the needful
+        /* let title = (kvPairs?["label"] as? String) ?? ""
+         let actionType = ((kvPairs?["clickAction"] as? String) ?? "").getCastledClickActionType()
+         if actionType != .none {
+             Castled.sharedInstance.logInboxItemClicked(inboxItem, buttonTitle: title)
+         }
+         inboxViewController?.updateReadStatus()
+         CastledButtonActionHandler.notificationClicked(withNotificationType: .inbox, action: actionType, kvPairs: kvPairs, userInfo: nil)
+         inboxViewController!.delegate?.didSelectedInboxWith?(CastledButtonActionUtils.getButtonActionFrom(type: actionType, kvPairs: kvPairs), inboxItem: inboxItem)
+         guard (inboxViewController!.delegate?.didSelectedInboxWith?(actionType, kvPairs, inboxItem)) != nil else {
+             return
+         }*/
+    }
 }

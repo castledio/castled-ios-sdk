@@ -1,15 +1,32 @@
 //
-//  Castled+Inbox.swift
-//  Castled
+//  CastledInbox.swift
+//  CastledInbox
 //
-//  Created by antony on 31/08/2023.
+//  Created by antony on 16/05/2024.
 //
 
+import Castled
 import Foundation
 import RealmSwift
 import UIKit
 
-public extension Castled {
+@objc public class CastledInbox: NSObject {
+    @objc public static var sharedInstance = CastledInbox()
+
+    var inboxUnreadCountCallback: ((Int) -> Void)?
+    let castledConfig = Castled.sharedInstance.getCastledConfig()
+
+    lazy var inboxUnreadCount: Int = {
+        CastledStore.getInboxUnreadCount(realm: CastledDBManager.shared.getRealm())
+
+    }() {
+        didSet {
+            inboxUnreadCountCallback?(inboxUnreadCount)
+        }
+    }
+
+    override private init() {}
+
     /**
      Inbox : Function that will returns the unread message count
      */
@@ -23,18 +40,28 @@ public extension Castled {
     }
 
     /**
+     Inbox : Function that will returns the Inbox ViewController
+     */
+    @objc public func getInboxViewController(withUIConfigs config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxViewControllerDelegate) -> CastledInboxViewController {
+        let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: CastledInbox.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
+        castledInboxVC.inboxConfig = config ?? CastledInboxDisplayConfig()
+        castledInboxVC.delegate = delegate
+        return castledInboxVC
+    }
+
+    /**
      Inbox : Function to get inbox items array
      */
-    @objc func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItemOld]?, _ errorMessage: String?) -> Void) {
+    @objc func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?, _ errorMessage: String?) -> Void) {
         CastledStore.castledStoreQueue.async {
-            if Castled.sharedInstance.instanceId.isEmpty {
+            if CastledInbox.sharedInstance.castledConfig.instanceId.isEmpty {
                 completion(false, [], CastledExceptionMessages.notInitialised.rawValue)
-                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: .error)
+                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
                 return
             }
-            else if !CastledConfigsUtils.configs.enableAppInbox {
+            else if !CastledInbox.sharedInstance.castledConfig.enableAppInbox {
                 completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
-                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: .error)
+                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: CastledLogLevel.error)
                 return
             }
             guard let _ = CastledUserDefaults.shared.userId else {
@@ -46,7 +73,7 @@ public extension Castled {
                 if let backgroundRealm = CastledDBManager.shared.getRealm() {
                     let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self).filter("isDeleted == false")
 
-                    let liveInboxItems: [CastledInboxItemOld] = cachedInboxObjects.map {
+                    let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
                         let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
                         return inboxItem
                     }
@@ -66,21 +93,21 @@ public extension Castled {
     /**
      Inbox : Function to mark inbox items as read
      */
-    @objc func logInboxItemsRead(_ inboxItems: [CastledInboxItemOld]) {
+    @objc func logInboxItemsRead(_ inboxItems: [CastledInboxItem]) {
         CastledInboxServices().reportInboxItemsRead(inboxItems: inboxItems, changeReadStatus: true)
     }
 
     /**
      Inbox : Function to mark inbox item as clicked
      */
-    @objc func logInboxItemClicked(_ inboxItem: CastledInboxItemOld, buttonTitle: String?) {
+    @objc func logInboxItemClicked(_ inboxItem: CastledInboxItem, buttonTitle: String?) {
         CastledInboxServices().reportInboxItemsClicked(inboxObject: inboxItem, buttonTitle: buttonTitle)
     }
 
     /**
      Inbox : Function to delete an inbox item
      */
-    @objc func deleteInboxItem(_ inboxItem: CastledInboxItemOld) {
+    @objc func deleteInboxItem(_ inboxItem: CastledInboxItem) {
         CastledInboxServices().reportInboxItemsDeleted(inboxObject: inboxItem)
     }
 
@@ -100,19 +127,19 @@ public extension Castled {
                 // Check if the topmost view controller is a UINavigationController
                 if let navigationController = currentViewController as? UINavigationController {
                     // Check if the top view controller of the navigation stack is a CastledInboxViewController
-                    if let inboxViewController = navigationController.topViewController as? OldCastledInboxViewController {
+                    if let inboxViewController = navigationController.topViewController as? CastledInboxViewController {
                         // Pop to the root view controller of the navigation stack
                         inboxViewController.removeObservers()
                         inboxViewController.navigationController?.popViewController(animated: true)
                     }
                 }
                 else if let tabBarController = currentViewController as? UITabBarController {
-                    if let selectedNavigationController = tabBarController.selectedViewController as? UINavigationController, let inboxViewController = selectedNavigationController.topViewController as? OldCastledInboxViewController {
+                    if let selectedNavigationController = tabBarController.selectedViewController as? UINavigationController, let inboxViewController = selectedNavigationController.topViewController as? CastledInboxViewController {
                         inboxViewController.removeObservers()
                         inboxViewController.navigationController?.popViewController(animated: true)
                     }
                 }
-                else if let inboxViewController = currentViewController as? OldCastledInboxViewController {
+                else if let inboxViewController = currentViewController as? CastledInboxViewController {
                     // Dismiss the CastledInboxViewController if it's not embedded in a UINavigationController
                     inboxViewController.removeObservers()
                     inboxViewController.dismiss(animated: true, completion: nil)

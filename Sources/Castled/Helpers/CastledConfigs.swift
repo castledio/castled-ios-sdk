@@ -9,7 +9,7 @@ import Foundation
 
 @objc public class CastledConfigs: NSObject, Codable {
     private static var sharedConfig: CastledConfigs?
-    var instanceId: String = ""
+    public var instanceId: String = ""
 
     // MARK: - initialization method
 

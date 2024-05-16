@@ -6,6 +6,8 @@ target 'CastledDemoSwift' do
 
   # Pods for CastledDemo
   pod 'Castled', :path => '../../'
+  pod 'CastledInbox', :path => '../../'
+
   # Custom test target name
   target 'CastledDemoSwiftTests' do
     inherit! :search_paths  

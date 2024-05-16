@@ -5,6 +5,7 @@
 //  Created by antony on 03/10/2023.
 //
 
+import Castled
 import Foundation
 import RealmSwift
 import UIKit
@@ -24,7 +25,7 @@ class CAppInbox: Object {
     @Persisted var tag: String
     @Persisted var addedDate: Date
     @Persisted var aspectRatio: Float
-    @Persisted var inboxType: OldCastledInboxType
+    @Persisted var inboxType: CastledInboxType
     @Persisted var bodyTextColor: String
     @Persisted var containerBGColor: String
     @Persisted var dateTextColor: String

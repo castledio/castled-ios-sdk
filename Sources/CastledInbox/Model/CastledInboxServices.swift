@@ -5,11 +5,12 @@
 //  Created by antony on 31/08/2023.
 //
 
+import Castled
 import UIKit
 
 class CastledInboxServices: NSObject {
     private let backgroundQueue = DispatchQueue(label: "CastledInboxQueue", qos: .background)
-    func reportInboxItemsRead(inboxItems: [CastledInboxItemOld], changeReadStatus: Bool) {
+    func reportInboxItemsRead(inboxItems: [CastledInboxItem], changeReadStatus: Bool) {
         if inboxItems.isEmpty {
             return
         }
@@ -35,7 +36,7 @@ class CastledInboxServices: NSObject {
         }
     }
 
-    func reportInboxItemsClicked(inboxObject: CastledInboxItemOld, buttonTitle: String?) {
+    func reportInboxItemsClicked(inboxObject: CastledInboxItem, buttonTitle: String?) {
         backgroundQueue.async { [self] in
             let eventType = "CLICKED"
             self.updateInBoxEvents(savedEventTypes: [self.getSendingParametersFrom(eventType, inboxObject, buttonTitle ?? "")]) { success, error in
@@ -49,7 +50,7 @@ class CastledInboxServices: NSObject {
         }
     }
 
-    func reportInboxItemsDeleted(inboxObject: CastledInboxItemOld) {
+    func reportInboxItemsDeleted(inboxObject: CastledInboxItem) {
         backgroundQueue.async { [self] in
             if let realm = CastledDBManager.shared.getRealm() {
                 if let existingItem = realm.object(ofType: CAppInbox.self, forPrimaryKey: inboxObject.messageId) {
@@ -78,12 +79,12 @@ class CastledInboxServices: NSObject {
     }
 
     private func updateInBoxEvents(savedEventTypes: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
-        CastledNetworkManager.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
+      /*  CastledNetworkManager.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
             completion(response.success, response.errorMessage)
-        })
+        })*/
     }
 
-    private func getSendingParametersFrom(_ eventType: String, _ inboxObject: CastledInboxItemOld, _ title: String) -> [String: String] {
+    private func getSendingParametersFrom(_ eventType: String, _ inboxObject: CastledInboxItem, _ title: String) -> [String: String] {
         let teamId = "\(inboxObject.teamID)"
         let sourceContext = inboxObject.sourceContext
         let timezone = TimeZone.current

@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension Data {
-    func objectFromData<T>() -> T? where T: Any {
+public extension Data {
+    func objectFromCastledData<T>() -> T? where T: Any {
         do {
             let decodedData = try JSONSerialization.jsonObject(with: self, options: []) as? T
             return decodedData

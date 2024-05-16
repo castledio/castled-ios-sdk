@@ -9,15 +9,8 @@ import Combine
 import RealmSwift
 import UIKit
 
-@objc public protocol CastledInboxViewControllerDelegate {
-    @objc optional func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem)
-    @objc optional func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
-}
-
-@objc public class CastledInboxViewController: UIViewController {
-    @objc public var delegate: CastledInboxViewControllerDelegate?
+@objc public class OldCastledInboxViewController: UIViewController {
     @IBOutlet weak var lblTitle: UILabel!
-    var inboxConfig: CastledInboxDisplayConfig?
     @IBOutlet weak var viewTopBar: UIView!
     @IBOutlet weak var constraintTopBarHeight: NSLayoutConstraint!
     @IBOutlet weak var btnClose: UIButton!
@@ -45,39 +38,7 @@ import UIKit
         updateReadStatus()
     }
 
-    private func setupViews() {
-        view.backgroundColor = inboxConfig!.inboxViewBackgroundColor
-
-        if navigationController != nil, navigationController?.isNavigationBarHidden == false {
-            navigationItem.title = inboxConfig!.navigationBarTitle
-            viewTopBar.isHidden = true
-            constraintTopBarHeight.constant = 0
-            let appearance = UINavigationBarAppearance()
-            appearance.backgroundColor = inboxConfig!.navigationBarBackgroundColor
-            appearance.titleTextAttributes = [.foregroundColor: inboxConfig!.navigationBarButtonTintColor]
-            appearance.largeTitleTextAttributes = [.foregroundColor: inboxConfig!.navigationBarButtonTintColor]
-            navigationController?.navigationBar.tintColor = inboxConfig!.navigationBarButtonTintColor
-            navigationController?.navigationBar.standardAppearance = appearance
-            navigationController?.navigationBar.compactAppearance = appearance
-            navigationController?.navigationBar.scrollEdgeAppearance = appearance
-            navigationItem.setHidesBackButton(true, animated: false)
-
-            if !inboxConfig!.hideBackButton {
-                let closeButton = UIBarButtonItem(image: getBackButtonImage(), style: .plain, target: self, action: #selector(closeButtonTapped(_:)))
-                navigationItem.leftBarButtonItem = closeButton
-            }
-
-        } else {
-            viewTopBar.backgroundColor = inboxConfig!.navigationBarBackgroundColor
-            modifyTopBarHeight()
-            lblTitle.text = inboxConfig!.navigationBarTitle
-            btnClose.tintColor = inboxConfig!.navigationBarButtonTintColor
-            lblTitle.textColor = inboxConfig!.navigationBarButtonTintColor
-            btnClose.isHidden = inboxConfig!.hideBackButton
-            btnClose.setImage(getBackButtonImage(), for: .normal)
-            btnClose.imageView?.contentMode = .scaleAspectFit
-        }
-    }
+    private func setupViews() {}
 
     private func modifyTopBarHeight() {
         let window = UIApplication.shared.windows.first
@@ -132,68 +93,11 @@ import UIKit
         return uniqueCategories
     }
 
-    private func setupTopCategories() {
-        topCategories.append(CastledInboxViewController.ALL_STRING)
-        let tabDisplayConfig = CastledViewPagerDisplayConfigs()
-        tabDisplayConfig.hideTabBar = !inboxConfig!.showCategoriesTab
-        if inboxConfig!.showCategoriesTab {
-            topCategories.append(contentsOf: getCategories(realm: viewModel.realm))
-            tabDisplayConfig.hideTabBar = topCategories.count == 1 ? true : false
-        }
-        tabDisplayConfig.tabBarDefaultTextColor = inboxConfig!.tabBarDefaultTextColor
-        tabDisplayConfig.tabBarSelectedTextColor = inboxConfig!.tabBarSelectedTextColor
-        tabDisplayConfig.tabBarDefaultColor = inboxConfig!.tabBarDefaultBackgroundColor
-        tabDisplayConfig.tabBarSelectedColor = inboxConfig!.tabBarSelectedBackgroundColor
-        tabDisplayConfig.tabBarIndicatorBackgroundColor = inboxConfig!.tabBarIndicatorBackgroundColor
-        tabDisplayConfig.viewTopAlignmentView = viewTopBar
-        createTabViews(tabDisplayConfig: tabDisplayConfig)
-    }
+    private func setupTopCategories() {}
 
-    private func createTabViews(tabDisplayConfig: CastledViewPagerDisplayConfigs) {
-        for (index, item) in topCategories.enumerated() {
-            let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxListingViewController") as! CastledInboxListingViewController
-            castledInboxVC.currentCategory = item
-            castledInboxVC.currentIndex = index
-            castledInboxVC.inboxConfig = inboxConfig
-            castledInboxVC.inboxViewController = self
-            listingViewControllers.append(castledInboxVC)
-        }
-        viewPager = CastledViewPager(viewController: self)
-        viewPager?.setDataSource(dataSource: self)
-        viewPager?.setDelegate(delegate: self)
-        viewPager?.setDisplayConfigs(config: tabDisplayConfig)
-        viewPager?.setupViews()
-    }
+    private func createTabViews(tabDisplayConfig: CastledViewPagerDisplayConfigs) {}
 
-    func updateViewPagerAfterDBChanges() {
-        if !inboxConfig!.showCategoriesTab {
-            return
-        }
-        CastledStore.castledStoreQueue.async { [weak self] in
-            var currentCategories = [CastledInboxViewController.ALL_STRING]
-            currentCategories.append(contentsOf: self?.getCategories(realm: CastledDBManager.shared.getRealm()) ?? [])
-            if currentCategories != self?.topCategories {
-                DispatchQueue.main.async { [weak self] in
-                    self?.topCategories.removeAll()
-                    self?.topCategories.append(contentsOf: currentCategories)
-                    let tabDisplayConfig = self?.viewPager?.configs
-                    tabDisplayConfig!.hideTabBar = self?.topCategories.count == 1 ? true : false
-                    var lastIndex = self?.getCurrentPageIndex() ?? 0
-                    if lastIndex >= currentCategories.count {
-                        lastIndex = 0
-                    }
-                    self?.currentPageIndex = lastIndex
-                    self?.viewPager?.removeChildViews()
-                    self?.viewPager?.setDelegate(delegate: nil)
-                    self?.listingViewControllers.forEach { $0.removeObservers() }
-                    self?.listingViewControllers.removeAll()
-
-                    self?.viewPager = nil
-                    self?.createTabViews(tabDisplayConfig: tabDisplayConfig!)
-                }
-            }
-        }
-    }
+    func updateViewPagerAfterDBChanges() {}
 
     func updateReadStatus() {
         if !readItems.isEmpty {
@@ -235,14 +139,9 @@ import UIKit
     func getCurrentPageIndex() -> Int {
         return viewPager?.getCurrentPageIndex() ?? 0
     }
-
-    private func getBackButtonImage() -> UIImage {
-        let backImage = inboxConfig?.backButtonImage?.withRenderingMode(.alwaysOriginal) ?? UIImage(named: "castled_back_left", in: Bundle.resourceBundle(for: Castled.self), compatibleWith: nil)!.withRenderingMode(.alwaysTemplate)
-        return backImage
-    }
 }
 
-extension CastledInboxViewController: CastledViewPagerDataSource {
+extension OldCastledInboxViewController: CastledViewPagerDataSource {
     func numberOfPagesInViewPager() -> Int {
         return listingViewControllers.count
     }
@@ -260,6 +159,6 @@ extension CastledInboxViewController: CastledViewPagerDataSource {
     }
 }
 
-extension CastledInboxViewController: CastledViewPagerDelegate {
+extension OldCastledInboxViewController: CastledViewPagerDelegate {
     func didMoveToControllerAtIndex(index: Int) {}
 }

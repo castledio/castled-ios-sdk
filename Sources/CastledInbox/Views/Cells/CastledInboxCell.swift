@@ -5,11 +5,12 @@
 //  Created by antony on 28/08/2023.
 //
 
+import Castled
 import SDWebImage
 import UIKit
 
 @objc protocol CastledInboxCellDelegate {
-    @objc func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItemOld)
+    @objc func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
 }
 
 class CastledInboxCell: UITableViewCell {
@@ -49,7 +50,7 @@ class CastledInboxCell: UITableViewCell {
         viewContainer.layer.cornerRadius = 10
         viewContainer.layer.masksToBounds = true
 
-      //  applyShadow(radius: viewContainer.layer.cornerRadius)
+        applyShadow(radius: viewContainer.layer.cornerRadius)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -64,6 +65,7 @@ class CastledInboxCell: UITableViewCell {
         lblTitle.textColor = inboxObj.colorTitle
         lblTime.textColor = inboxObj.colorBody
         lblTitle.text = inboxObj.title
+        // FIXME: do the needful
         lblDescription.attributedText = inboxObj.body.getAttributedStringFrom(textColr: inboxObj.colorBody, font: lblDescription.font, alignment: NSTextAlignment.left)
         lblTime.text = inboxObj.addedDate.timeAgo()
         viewIsRead.superview?.isHidden = inboxObj.isRead

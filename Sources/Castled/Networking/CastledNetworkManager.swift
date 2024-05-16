@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class CastledNetworkManager {
     private static let shared = CastledNetworkManager()
@@ -153,7 +154,7 @@ class CastledNetworkManager {
     /**
      Function to fetch all Inbox Items
      */
-    static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItem]>) -> Void) {
+    static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItemOld]>) -> Void) {
         if Castled.sharedInstance.instanceId.isEmpty {
             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
 
@@ -169,7 +170,7 @@ class CastledNetworkManager {
         }
         Task {
             let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: Castled.sharedInstance.instanceId)
-            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItem].self, request: router.request, isFetch: true)
+            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItemOld].self, request: router.request, isFetch: true)
             if response.success {
                 CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
             }

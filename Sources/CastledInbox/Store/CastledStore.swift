@@ -5,6 +5,7 @@
 //  Created by Antony Joe Mathew.
 //
 
+import Castled
 import Foundation
 import RealmSwift
 
@@ -62,7 +63,7 @@ import RealmSwift
             .count ?? 0
     }
 
-    static func deleteInboxItem(inboxItem: CastledInboxItemOld) {
+    static func deleteInboxItem(inboxItem: CastledInboxItem) {
         if let realm = CastledDBManager.shared.getRealm() {
             if let existingItem = realm.object(ofType: CAppInbox.self, forPrimaryKey: inboxItem.messageId) {
                 do {
@@ -75,7 +76,7 @@ import RealmSwift
         }
     }
 
-    static func saveInboxItemsRead(readItems: [CastledInboxItemOld]) {
+    static func saveInboxItemsRead(readItems: [CastledInboxItem]) {
         let inboxItemIds = Set(readItems.map { $0.messageId })
         DispatchQueue.main.async {
             if let realm = CastledDBManager.shared.getRealm() {
@@ -116,10 +117,10 @@ import RealmSwift
     }
 
     static func resetUnreadUncountAfterCRUD(realm: Realm) {
-        Castled.sharedInstance.inboxUnreadCount = getInboxUnreadCount(realm: realm)
+        CastledInbox.sharedInstance.inboxUnreadCount = getInboxUnreadCount(realm: realm)
     }
 
-    static func refreshInboxItems(liveInboxResponse: [CastledInboxItemOld]) {
+    static func refreshInboxItems(liveInboxResponse: [CastledInboxItem]) {
         if CastledStore.isInserting {
             return
         }
