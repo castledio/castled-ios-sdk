@@ -6,9 +6,10 @@
 //
 
 import Foundation
+@_spi(CastledInternal)
 
-enum CastledButtonActionUtils {
-    static func getButtonActionFrom(type: CastledClickActionType, kvPairs: [AnyHashable: Any]?) -> CastledButtonAction {
+public enum CastledButtonActionUtils {
+    public static func getButtonActionFrom(type: CastledClickActionType, kvPairs: [AnyHashable: Any]?) -> CastledButtonAction {
         let action = CastledButtonAction()
         action.actionType = type
         if let kvPairs = kvPairs {

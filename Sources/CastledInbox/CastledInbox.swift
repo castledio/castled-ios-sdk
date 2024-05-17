@@ -29,8 +29,12 @@ import UIKit
     override private init() {}
 
     @objc public func initializeAppInbox() {
-        if CastledInbox.sharedInstance.castledConfig.instanceId.isEmpty {
+        if !Castled.sharedInstance.isCastledInitialized() {
             CastledLog.castledLog("Inbox initialization failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            return
+        }
+        else if isInitilized {
+            CastledLog.castledLog("Inbox module already initilized! \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
         isInitilized = true
@@ -43,7 +47,7 @@ import UIKit
      */
     @objc public func observeUnreadCountChanges(listener: @escaping (Int) -> Void) {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         inboxUnreadCountCallback = listener
@@ -52,7 +56,7 @@ import UIKit
 
     @objc public func getInboxUnreadCount() -> Int {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return 0
         }
         return inboxUnreadCount
@@ -63,7 +67,7 @@ import UIKit
      */
     @objc public func getInboxViewController(withUIConfigs config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxViewControllerDelegate) -> CastledInboxViewController {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
             // throw fatal error
         }
         let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: CastledInbox.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
@@ -77,7 +81,9 @@ import UIKit
      */
     @objc public func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?, _ errorMessage: String?) -> Void) {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            completion(false, [], CastledExceptionMessages.inboxNotInitialised.rawValue)
+
             // completion also
             return
         }
@@ -103,7 +109,7 @@ import UIKit
      */
     @objc public func logInboxItemsRead(_ inboxItems: [CastledInboxItem]) {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInboxServices().reportInboxItemsRead(inboxItems: inboxItems, changeReadStatus: true)
@@ -114,7 +120,7 @@ import UIKit
      */
     @objc public func logInboxItemClicked(_ inboxItem: CastledInboxItem, buttonTitle: String?) {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInboxServices().reportInboxItemsClicked(inboxObject: inboxItem, buttonTitle: buttonTitle)
@@ -125,7 +131,7 @@ import UIKit
      */
     @objc public func deleteInboxItem(_ inboxItem: CastledInboxItem) {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledInboxServices().reportInboxItemsDeleted(inboxObject: inboxItem)
@@ -136,7 +142,7 @@ import UIKit
      */
     @objc public func dismissInboxViewController() {
         if !isInitilized {
-            // FIXME: do the needful
+            CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

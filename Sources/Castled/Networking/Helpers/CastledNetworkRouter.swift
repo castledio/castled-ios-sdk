@@ -20,14 +20,7 @@ enum CastledNetworkRouter {
     case logoutUser(params: [String: Any], instanceId: String)
     case reportSession(params: [[String: Any]])
 
-    var baseURL: String {
-        return "https://\(CastledConfigsUtils.configs.location.description).castled.io/"
-    }
-
-    var baseURLEndPoint: String {
-        return "backend/"
-    }
-
+    
     var request: CastledNetworkRequest {
         switch self {
         case .registerUser(let params, let instanceId):

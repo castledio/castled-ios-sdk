@@ -36,11 +36,6 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener {
         refreshInbox()
     }
 
-    func onStoreUserIdSet(_ userId: String) {
-        CastledInbox.sharedInstance.userId = userId
-        refreshInbox()
-    }
-
     func fetchInboxItems() async {
         print("fetchInboxItems \(Thread.current)")
         do {
@@ -60,4 +55,11 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener {
             isMakingApiCall = false
         }
     }
+
+    func onStoreUserIdSet(_ userId: String) {
+        CastledInbox.sharedInstance.userId = userId
+        refreshInbox()
+    }
+
+    func onUserLoggedOut() {}
 }

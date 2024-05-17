@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@_spi(CastledInternal)
 
 public enum CastledConstants {
     // Plist Key for enable/ Disable swizzling
@@ -31,7 +32,7 @@ public enum CastledConstants {
             static let category = "category"
         }
 
-        enum CustomProperties {
+        public enum CustomProperties {
             static let notificationId = "castled_notification_id"
             static let teamId = "team_id"
             static let sourceContext = "source_context"
@@ -39,18 +40,18 @@ public enum CastledConstants {
             static let mediaURL = "media_url"
             static let categoryActions = "category_actions"
             static let keyValuePair = "key_vals"
-            enum Category {
+            public enum Category {
                 static let type = "type"
                 static let name = "name"
                 static let actionComponents = "actionComponents"
 
-                enum Action {
+                public enum Action {
                     static let actionId = "actionId"
                     static let clickAction = "clickAction"
                     static let clickActionUrl = "clickActionUrl"
                     static let url = "url"
                     static let useWebView = "useWebview"
-                    static let keyVals = "keyVals"
+                    public static let keyVals = "keyVals"
                     static let buttonTitle = "buttonTitle"
                     static let label = "label"
                 }

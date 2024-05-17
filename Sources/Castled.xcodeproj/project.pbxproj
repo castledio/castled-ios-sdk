@@ -114,6 +114,7 @@
 		0ACE7AAB2BF754A80003F596 /* CExtensions+DecodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACE7AAA2BF754A80003F596 /* CExtensions+DecodingContainer.swift */; };
 		0ACE7AAD2BF754E60003F596 /* CExtensions+NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACE7AAC2BF754E50003F596 /* CExtensions+NSLayoutConstraint.swift */; };
 		0ACE7AAF2BF755470003F596 /* CExtensions+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACE7AAE2BF755470003F596 /* CExtensions+View.swift */; };
+		0ACE7AB12BF7BE920003F596 /* CastledNetworkRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACE7AB02BF7BE920003F596 /* CastledNetworkRequestHandler.swift */; };
 		0AD586A42AF79ADB00965E2E /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0AD586A32AF79ADB00965E2E /* CastledBridge.js */; };
 		0ADBF14E2A437C810018F110 /* CastledMediasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */; };
 		0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */; };
@@ -264,6 +265,7 @@
 		0ACE7AAA2BF754A80003F596 /* CExtensions+DecodingContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CExtensions+DecodingContainer.swift"; sourceTree = "<group>"; };
 		0ACE7AAC2BF754E50003F596 /* CExtensions+NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CExtensions+NSLayoutConstraint.swift"; sourceTree = "<group>"; };
 		0ACE7AAE2BF755470003F596 /* CExtensions+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CExtensions+View.swift"; sourceTree = "<group>"; };
+		0ACE7AB02BF7BE920003F596 /* CastledNetworkRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNetworkRequestHandler.swift; sourceTree = "<group>"; };
 		0AD586A32AF79ADB00965E2E /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = CastledBridge.js; sourceTree = "<group>"; };
 		0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediasViewController.swift; sourceTree = "<group>"; };
 		0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -677,6 +679,7 @@
 			children = (
 				0ACE7A962BF731680003F596 /* Core */,
 				0ACE7A972BF731870003F596 /* Helpers */,
+				0ACE7AB02BF7BE920003F596 /* CastledNetworkRequestHandler.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1172,6 +1175,7 @@
 				0A7B3DB12AFD51540055C968 /* CIViewProtocol.swift in Sources */,
 				0A31CFC12BB5468900901A50 /* CastledNotificationCenter.swift in Sources */,
 				0ACE7AA32BF7525C0003F596 /* CExtensions+Array.swift in Sources */,
+				0ACE7AB12BF7BE920003F596 /* CastledNetworkRequestHandler.swift in Sources */,
 				0A652F9B2AFBE2EC00752467 /* CExtensions+String.swift in Sources */,
 				0ACCAC032B4D5ABE00C0E9B8 /* CastledButtonActionHandler.swift in Sources */,
 				0A652F992AFB3A2700752467 /* CIModalImageBodyAndButtons.swift in Sources */,

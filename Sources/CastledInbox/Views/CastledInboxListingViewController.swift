@@ -183,12 +183,11 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = inboxItems![indexPath.row].messageDictionary
-        // FIXME: do the needful
-        /*  if let defaultClickAction = item["defaultClickAction"] as? String {
-             didSelectedInboxWith(["clickAction": defaultClickAction,
-                                   "url": (item["url"] as? String) ?? "",
-                                   CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: item[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] ?? [String: Any]()], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItems![indexPath.row]))
-         }*/
+        if let defaultClickAction = item["defaultClickAction"] as? String {
+            didSelectedInboxWith(["clickAction": defaultClickAction,
+                                  "url": (item["url"] as? String) ?? "",
+                                  CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals: item[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] ?? [String: Any]()], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItems![indexPath.row]))
+        }
     }
 
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -200,9 +199,7 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
             let item = self.inboxItems![indexPath.row]
             let message_id = item.messageId
             self.inboxViewController?.readItems.removeAll { $0 == message_id }
-            // FIXME: do the needful
-
-            //  Castled.sharedInstance.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
+            CastledInbox.sharedInstance.deleteInboxItem(CastledInboxResponseConverter.convertToInboxItem(appInbox: item))
 
         })
         let trashImage = UIImage(named: "castled_swipe_delete_filled", in: Bundle.resourceBundle(for: CastledInboxViewController.self), compatibleWith: nil)
@@ -215,17 +212,16 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
     }
 
     public func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
-        // FIXME: do the needful
-        /* let title = (kvPairs?["label"] as? String) ?? ""
-         let actionType = ((kvPairs?["clickAction"] as? String) ?? "").getCastledClickActionType()
-         if actionType != .none {
-             Castled.sharedInstance.logInboxItemClicked(inboxItem, buttonTitle: title)
-         }
-         inboxViewController?.updateReadStatus()
-         CastledButtonActionHandler.notificationClicked(withNotificationType: .inbox, action: actionType, kvPairs: kvPairs, userInfo: nil)
-         inboxViewController!.delegate?.didSelectedInboxWith?(CastledButtonActionUtils.getButtonActionFrom(type: actionType, kvPairs: kvPairs), inboxItem: inboxItem)
-         guard (inboxViewController!.delegate?.didSelectedInboxWith?(actionType, kvPairs, inboxItem)) != nil else {
-             return
-         }*/
+        let title = (kvPairs?["label"] as? String) ?? ""
+        let actionType = ((kvPairs?["clickAction"] as? String) ?? "").getCastledClickActionType()
+        if actionType != .none {
+            CastledInbox.sharedInstance.logInboxItemClicked(inboxItem, buttonTitle: title)
+        }
+        inboxViewController?.updateReadStatus()
+        CastledButtonActionHandler.notificationClicked(withNotificationType: .inbox, action: actionType, kvPairs: kvPairs, userInfo: nil)
+        inboxViewController!.delegate?.didSelectedInboxWith?(CastledButtonActionUtils.getButtonActionFrom(type: actionType, kvPairs: kvPairs), inboxItem: inboxItem)
+        guard (inboxViewController!.delegate?.didSelectedInboxWith?(actionType, kvPairs, inboxItem)) != nil else {
+            return
+        }
     }
 }

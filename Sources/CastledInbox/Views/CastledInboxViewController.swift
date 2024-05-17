@@ -210,8 +210,7 @@ import UIKit
         } else if let navigationController = navigationController {
             navigationController.popViewController(animated: true)
         } else {
-            // FIXME: do the needful
-            // Castled.sharedInstance.dismissInboxViewController()
+            CastledInbox.sharedInstance.dismissInboxViewController()
         }
     }
 

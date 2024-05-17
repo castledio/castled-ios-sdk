@@ -6,11 +6,12 @@
 //
 
 import Foundation
-@_spi(CastledInternal) import Castled
+@_spi(CastledInternal)
 
 public enum CastledExceptionMessages: String {
     case common = "We are not able to perform this request.Please check your internet connection and try again."
     case notInitialised = "Kindly initialize the Castled SDK with proper Appid in the Appdelegate."
+    case inboxNotInitialised = "Initialize the CastledInbox module using 'CastledInbox.sharedInstance.initializeAppInbox()' in the Appdelegate."
     case emptyToken = "Kindly allow the permission for push notification from the settings Or pass a valid APNs token in the api call."
     case iOS13Less = "Sorry for the inconvenience. Currently we are supporting iOS 13 and above."
     case paramsMisMatch = "Unable to create the request. Please check the params or url."

@@ -10,4 +10,5 @@ import Foundation
 
 public protocol CastledPreferenceStoreListener: AnyObject {
     func onStoreUserIdSet(_ userId: String)
+    func onUserLoggedOut()
 }
