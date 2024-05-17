@@ -74,7 +74,7 @@
         <!--Castled Inbox Listing View Controller-->
         <scene sceneID="bzb-gB-r37">
             <objects>
-                <viewController storyboardIdentifier="CastledInboxListingViewController" id="V0y-Z2-bXd" customClass="CastledInboxListingViewController" customModule="Castled" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CastledInboxListingViewController" id="V0y-Z2-bXd" customClass="CastledInboxListingViewController" customModule="CastledInbox" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P2h-07-MwK">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
