@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RealmSwift
 import UIKit
 import UserNotifications
 
@@ -18,7 +17,7 @@ import UserNotifications
 
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance = Castled()
-    var inboxUnreadCountCallback: ((Int) -> Void)?
+
     var instanceId = CastledConfigsUtils.appId ?? ""
     var delegate: CastledNotificationDelegate?
     var clientRootViewController: UIViewController?
@@ -30,15 +29,6 @@ import UserNotifications
 
     // Create a semaphore
     private let castledSemaphore = DispatchSemaphore(value: 1)
-
-    lazy var inboxUnreadCount: Int = {
-        CastledStore.getInboxUnreadCount(realm: CastledDBManager.shared.getRealm())
-
-    }() {
-        didSet {
-            inboxUnreadCountCallback?(inboxUnreadCount)
-        }
-    }
 
     override private init() {}
 
@@ -147,7 +137,8 @@ import UserNotifications
         if let userId = CastledUserDefaults.shared.userId {
             DispatchQueue.main.async {
                 CastledUserDefaults.clearAllFromPreference()
-                CastledDBManager.shared.clearTables()
+                // FIXME: do the needful
+                //  CastledDBManager.shared.clearTables()
                 if CastledConfigsUtils.configs.enablePush {
                     let params = [CastledConstants.PushNotification.userId: userId,
                                   CastledConstants.PushNotification.Token.apnsToken: CastledUserDefaults.shared.apnsToken,

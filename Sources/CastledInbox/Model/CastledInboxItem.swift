@@ -4,7 +4,7 @@
 //
 //  Created by antony on 28/08/2023.
 //
-import Castled
+@_spi(CastledInternal) import Castled
 import Foundation
 import UIKit
 

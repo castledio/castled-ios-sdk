@@ -5,9 +5,9 @@
 //  Created by antony on 10/10/2023.
 //
 
-import Castled
 import RealmSwift
 import UIKit
+@_spi(CastledInternal) import Castled
 
 class CastledInboxListingViewController: UIViewController {
     var currentIndex = 0

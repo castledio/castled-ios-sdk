@@ -5,7 +5,7 @@
 //  Created by antony on 03/10/2023.
 //
 
-import Castled
+@_spi(CastledInternal) import Castled
 import Foundation
 import RealmSwift
 import UIKit

@@ -5,7 +5,7 @@
 //  Created by antony on 31/08/2023.
 //
 
-import Castled
+@_spi(CastledInternal) import Castled
 import UIKit
 
 class CastledInboxServices: NSObject {
@@ -79,9 +79,9 @@ class CastledInboxServices: NSObject {
     }
 
     private func updateInBoxEvents(savedEventTypes: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
-      /*  CastledNetworkManager.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
-            completion(response.success, response.errorMessage)
-        })*/
+        /*  CastledNetworkManager.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
+             completion(response.success, response.errorMessage)
+         })*/
     }
 
     private func getSendingParametersFrom(_ eventType: String, _ inboxObject: CastledInboxItem, _ title: String) -> [String: String] {

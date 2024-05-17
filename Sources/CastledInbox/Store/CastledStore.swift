@@ -5,7 +5,7 @@
 //  Created by Antony Joe Mathew.
 //
 
-import Castled
+@_spi(CastledInternal) import Castled
 import Foundation
 import RealmSwift
 
@@ -51,8 +51,9 @@ import RealmSwift
 
     // MARK: - DB
 
-    static func getInboxUnreadCount(realm: Realm?) -> Int {
-        realm?.objects(CAppInbox.self)
+    static func getInboxUnreadCount(realm: Realm? = nil) -> Int {
+        let realmObject = realm ?? CastledDBManager.shared.getRealm()
+        return realmObject?.objects(CAppInbox.self)
             .filter("isRead == false")
             .count ?? 0
     }

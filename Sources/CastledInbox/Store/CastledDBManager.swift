@@ -49,4 +49,21 @@ class CastledDBManager {
 
         } catch {}
     }
+
+    func getLiveInboxItems() -> [CastledInboxItem] {
+        do {
+            if let backgroundRealm = CastledDBManager.shared.getRealm() {
+                let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self).filter("isDeleted == false")
+
+                let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
+                    let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
+                    return inboxItem
+                }
+                return liveInboxItems
+
+            } else {
+                return []
+            }
+        }
+    }
 }

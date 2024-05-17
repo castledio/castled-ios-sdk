@@ -5,19 +5,15 @@
 //  Created by antony on 16/05/2024.
 //
 
-import Castled
+@_spi(CastledInternal) import Castled
 import Foundation
-import RealmSwift
 import UIKit
 
 @objc public class CastledInbox: NSObject {
     @objc public static var sharedInstance = CastledInbox()
 
-    var inboxUnreadCountCallback: ((Int) -> Void)?
-    let castledConfig = Castled.sharedInstance.getCastledConfig()
-
     lazy var inboxUnreadCount: Int = {
-        CastledStore.getInboxUnreadCount(realm: CastledDBManager.shared.getRealm())
+        CastledStore.getInboxUnreadCount()
 
     }() {
         didSet {
@@ -25,17 +21,40 @@ import UIKit
         }
     }
 
+    var userId = ""
+    var inboxUnreadCountCallback: ((Int) -> Void)?
+    let castledConfig = Castled.sharedInstance.getCastledConfig()
+    private var isInitilized = false
+
     override private init() {}
+
+    @objc public func initializeAppInbox() {
+        if CastledInbox.sharedInstance.castledConfig.instanceId.isEmpty {
+            CastledLog.castledLog("Inbox initialization failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            return
+        }
+        isInitilized = true
+        CastledInboxController.sharedInstance.initialize()
+        CastledLog.castledLog("Inbox module initilized!", logLevel: CastledLogLevel.info)
+    }
 
     /**
      Inbox : Function that will returns the unread message count
      */
-    @objc func observeUnreadCountChanges(listener: @escaping (Int) -> Void) {
+    @objc public func observeUnreadCountChanges(listener: @escaping (Int) -> Void) {
+        if !isInitilized {
+            // FIXME: do the needful
+            return
+        }
         inboxUnreadCountCallback = listener
         inboxUnreadCountCallback?(inboxUnreadCount)
     }
 
-    @objc func getInboxUnreadCount() -> Int {
+    @objc public func getInboxUnreadCount() -> Int {
+        if !isInitilized {
+            // FIXME: do the needful
+            return 0
+        }
         return inboxUnreadCount
     }
 
@@ -43,6 +62,10 @@ import UIKit
      Inbox : Function that will returns the Inbox ViewController
      */
     @objc public func getInboxViewController(withUIConfigs config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxViewControllerDelegate) -> CastledInboxViewController {
+        if !isInitilized {
+            // FIXME: do the needful
+            // throw fatal error
+        }
         let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: CastledInbox.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
         castledInboxVC.inboxConfig = config ?? CastledInboxDisplayConfig()
         castledInboxVC.delegate = delegate
@@ -52,40 +75,25 @@ import UIKit
     /**
      Inbox : Function to get inbox items array
      */
-    @objc func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?, _ errorMessage: String?) -> Void) {
+    @objc public func getInboxItems(completion: @escaping (_ success: Bool, _ items: [CastledInboxItem]?, _ errorMessage: String?) -> Void) {
+        if !isInitilized {
+            // FIXME: do the needful
+            // completion also
+            return
+        }
         CastledStore.castledStoreQueue.async {
-            if CastledInbox.sharedInstance.castledConfig.instanceId.isEmpty {
-                completion(false, [], CastledExceptionMessages.notInitialised.rawValue)
-                CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
-                return
-            }
-            else if !CastledInbox.sharedInstance.castledConfig.enableAppInbox {
+            if !CastledInbox.sharedInstance.castledConfig.enableAppInbox {
                 completion(false, [], CastledExceptionMessages.appInboxDisabled.rawValue)
                 CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: CastledLogLevel.error)
                 return
             }
-            guard let _ = CastledUserDefaults.shared.userId else {
+            if CastledInbox.sharedInstance.userId.isEmpty {
                 CastledLog.castledLog("GetInboxItems failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: .error)
                 completion(false, [], CastledExceptionMessages.userNotRegistered.rawValue)
                 return
             }
-            do {
-                if let backgroundRealm = CastledDBManager.shared.getRealm() {
-                    let cachedInboxObjects = backgroundRealm.objects(CAppInbox.self).filter("isDeleted == false")
-
-                    let liveInboxItems: [CastledInboxItem] = cachedInboxObjects.map {
-                        let inboxItem = CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
-                        return inboxItem
-                    }
-                    DispatchQueue.main.async {
-                        completion(true, liveInboxItems, nil)
-                    }
-                }
-                else {
-                    DispatchQueue.main.async {
-                        completion(true, [], nil)
-                    }
-                }
+            DispatchQueue.main.async {
+                completion(true, CastledDBManager.shared.getLiveInboxItems(), nil)
             }
         }
     }
@@ -93,28 +101,44 @@ import UIKit
     /**
      Inbox : Function to mark inbox items as read
      */
-    @objc func logInboxItemsRead(_ inboxItems: [CastledInboxItem]) {
+    @objc public func logInboxItemsRead(_ inboxItems: [CastledInboxItem]) {
+        if !isInitilized {
+            // FIXME: do the needful
+            return
+        }
         CastledInboxServices().reportInboxItemsRead(inboxItems: inboxItems, changeReadStatus: true)
     }
 
     /**
      Inbox : Function to mark inbox item as clicked
      */
-    @objc func logInboxItemClicked(_ inboxItem: CastledInboxItem, buttonTitle: String?) {
+    @objc public func logInboxItemClicked(_ inboxItem: CastledInboxItem, buttonTitle: String?) {
+        if !isInitilized {
+            // FIXME: do the needful
+            return
+        }
         CastledInboxServices().reportInboxItemsClicked(inboxObject: inboxItem, buttonTitle: buttonTitle)
     }
 
     /**
      Inbox : Function to delete an inbox item
      */
-    @objc func deleteInboxItem(_ inboxItem: CastledInboxItem) {
+    @objc public func deleteInboxItem(_ inboxItem: CastledInboxItem) {
+        if !isInitilized {
+            // FIXME: do the needful
+            return
+        }
         CastledInboxServices().reportInboxItemsDeleted(inboxObject: inboxItem)
     }
 
     /**
      Inbox : Function to dismiss CastledInboxViewController
      */
-    @objc func dismissInboxViewController() {
+    @objc public func dismissInboxViewController() {
+        if !isInitilized {
+            // FIXME: do the needful
+            return
+        }
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = scene.windows.first(where: { $0.isKeyWindow })
         {

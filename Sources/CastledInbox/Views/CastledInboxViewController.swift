@@ -5,10 +5,10 @@
 //  Created by antony on 28/08/2023.
 //
 
-import Castled
 import Combine
 import RealmSwift
 import UIKit
+@_spi(CastledInternal) import Castled
 
 @objc public protocol CastledInboxViewControllerDelegate {
     @objc optional func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem)
@@ -152,7 +152,7 @@ import UIKit
 
     private func createTabViews(tabDisplayConfig: CastledViewPagerDisplayConfigs) {
         for (index, item) in topCategories.enumerated() {
-            let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: Castled.self)).instantiateViewController(identifier: "CastledInboxListingViewController") as! CastledInboxListingViewController
+            let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: CastledInbox.self)).instantiateViewController(identifier: "CastledInboxListingViewController") as! CastledInboxListingViewController
             castledInboxVC.currentCategory = item
             castledInboxVC.currentIndex = index
             castledInboxVC.inboxConfig = inboxConfig
@@ -210,7 +210,8 @@ import UIKit
         } else if let navigationController = navigationController {
             navigationController.popViewController(animated: true)
         } else {
-            Castled.sharedInstance.dismissInboxViewController()
+            // FIXME: do the needful
+            // Castled.sharedInstance.dismissInboxViewController()
         }
     }
 
@@ -238,7 +239,7 @@ import UIKit
     }
 
     private func getBackButtonImage() -> UIImage {
-        let backImage = inboxConfig?.backButtonImage?.withRenderingMode(.alwaysOriginal) ?? UIImage(named: "castled_back_left", in: Bundle.resourceBundle(for: Castled.self), compatibleWith: nil)!.withRenderingMode(.alwaysTemplate)
+        let backImage = inboxConfig?.backButtonImage?.withRenderingMode(.alwaysOriginal) ?? UIImage(named: "castled_back_left", in: Bundle.resourceBundle(for: CastledInbox.self), compatibleWith: nil)!.withRenderingMode(.alwaysTemplate)
         return backImage
     }
 }

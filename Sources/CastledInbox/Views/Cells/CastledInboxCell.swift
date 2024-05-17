@@ -5,9 +5,9 @@
 //  Created by antony on 28/08/2023.
 //
 
-import Castled
 import SDWebImage
 import UIKit
+@_spi(CastledInternal) import Castled
 
 @objc protocol CastledInboxCellDelegate {
     @objc func didSelectedInboxWith(_ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)

@@ -6,9 +6,11 @@
 //
 
 import Foundation
+@_spi(CastledInternal)
 
-class CastledUserDefaults: NSObject {
-    static let shared = CastledUserDefaults()
+public class CastledUserDefaults: NSObject {
+    public static let shared = CastledUserDefaults()
+    private var observers: [CastledPreferenceStoreListener] = []
 
     private static let userDefaults = UserDefaults.standard
     static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.configs.appGroupId) ?? UserDefaults.standard
@@ -21,7 +23,7 @@ class CastledUserDefaults: NSObject {
     static let kCastledFCMTokenKey = "_castledFCMToken_"
     static let kCastledBadgeKey = "_castledApplicationBadge_"
     static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
-    static let kCastledFailedItems = "_castledFailedItems_"
+    public static let kCastledFailedItems = "_castledFailedItems_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
     static let kCastledClickedPushIds = "_castledClickedPushIds_"
@@ -34,7 +36,14 @@ class CastledUserDefaults: NSObject {
     static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
     static let kCastledInAppsList = "_castledInappsList_"
 
-    var userId: String?
+    public var userId: String? {
+        didSet {
+            if let userId = userId {
+                notifyObservers(userId)
+            }
+        }
+    }
+
     var userToken: String?
     lazy var deliveredPushIds: [String] = {
         CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
@@ -88,7 +97,7 @@ class CastledUserDefaults: NSObject {
         ud.synchronize()
     }
 
-    static func setObjectFor(_ key: String, _ data: Any) {
+    public static func setObjectFor(_ key: String, _ data: Any) {
         // Save the value in UserDefaults
         userDefaults.set(data, forKey: key)
         userDefaults.synchronize()
@@ -98,7 +107,7 @@ class CastledUserDefaults: NSObject {
         return userDefaults.data(forKey: key)
     }
 
-    static func getObjectFor(_ key: String) -> Any? {
+    public static func getObjectFor(_ key: String) -> Any? {
         return userDefaults.object(forKey: key)
     }
 
@@ -133,5 +142,18 @@ class CastledUserDefaults: NSObject {
         }
         CastledUserDefaults.shared.userId = nil
 //        CastledUserDefaults.shared.userToken = nil
+    }
+
+    public func addObserver(_ observer: CastledPreferenceStoreListener) {
+        if let userId = userId {
+            observer.onStoreUserIdSet(userId)
+        }
+        observers.append(observer)
+    }
+
+    private func notifyObservers(_ userid: String) {
+        for observer in observers {
+            observer.onStoreUserIdSet(userid)
+        }
     }
 }
