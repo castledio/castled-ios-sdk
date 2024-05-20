@@ -136,7 +136,7 @@ class CastledNetworkManager {
         }
         Task {
             let router: CastledNetworkRouter = .fetchInAppNotification(userID: CastledUserDefaults.shared.userId ?? "", instanceId: Castled.sharedInstance.instanceId)
-            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInAppObject].self, request: router.request, isFetch: true)
+            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInAppObject].self, request: router.request, shouldDecodeResponse: true)
             if response.success {
                 DispatchQueue.global().async {
                     let encoder = JSONEncoder()
@@ -151,38 +151,36 @@ class CastledNetworkManager {
         }
     }
 
-    /*     //FIXME: do the needful
-
-      /**
-          Function to fetch all Inbox Items
-          */
-         static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItemOld]>) -> Void) {
-             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
-             return;
-             if Castled.sharedInstance.instanceId.isEmpty {
-                 completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
-
-                 return
-             } else if !CastledConfigsUtils.configs.enableAppInbox {
-                 completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
-                 return
-             }
-             guard let userId = CastledUserDefaults.shared.userId else {
-                 completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
-
-                 return
-             }
-     //        Task {
-     //            let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: Castled.sharedInstance.instanceId)
-     //            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItemOld].self, request: router.request, isFetch: true)
-     //            if response.success {
-     //                CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
-     //            }
-     //            completion(response)
-     //        }
-         }
+/*     //FIXME: do the needful
+  /**
+     Function to fetch all Inbox Items
      */
+    static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItemOld]>) -> Void) {
+        completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+        return;
+        if Castled.sharedInstance.instanceId.isEmpty {
+            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
 
+            return
+        } else if !CastledConfigsUtils.configs.enableAppInbox {
+            completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
+            return
+        }
+        guard let userId = CastledUserDefaults.shared.userId else {
+            completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
+
+            return
+        }
+//        Task {
+//            let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: Castled.sharedInstance.instanceId)
+//            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItemOld].self, request: router.request, isFetch: true)
+//            if response.success {
+//                CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
+//            }
+//            completion(response)
+//        }
+    }
+*/
     // MARK: - USER LIFE CYCLE
 
     /**

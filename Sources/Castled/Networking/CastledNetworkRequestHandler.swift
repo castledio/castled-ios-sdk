@@ -8,6 +8,10 @@
 import Foundation
 @_spi(CastledInternal)
 
-public protocol CastledNetworkRequestHandler {
-    static func sendRequest(_ requests: [CastledNetworkRequest]) async
+public protocol CastledNetworkRequestHandler: Codable {
+    static func handleRequest(
+        requests: [CastledNetworkRequest],
+        onSuccess: @escaping ([CastledNetworkRequest]) -> Void,
+        onError: @escaping ([CastledNetworkRequest]) -> Void
+    )
 }

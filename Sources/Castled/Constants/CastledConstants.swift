@@ -70,6 +70,10 @@ public enum CastledConstants {
         }
     }
 
+    public enum EventsReporting {
+        public static let events = "events"
+    }
+
     enum CastledPushCustomPropertyKeys {
         static let castledNotificationId = "castled_notification_id"
         static let teamId = "team_id"

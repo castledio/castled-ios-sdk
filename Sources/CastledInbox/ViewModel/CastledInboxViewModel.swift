@@ -7,7 +7,6 @@
 
 import Combine
 import Foundation
-import RealmSwift
 
 struct CastledInboxViewModelActions {}
 
@@ -26,7 +25,7 @@ protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxV
 final class CastledInboxViewModel: DefaultCastledInboxViewModel {
     let realm = CastledDBManager.shared.getRealm()
     lazy var inboxUnreadCount: Int = {
-        CastledStore.getIAllnboxItemsCount(realm: CastledDBManager.shared.getRealm())
+        CastledStore.getIAllnboxItemsCount()
 
     }()
 
@@ -41,6 +40,7 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
         if inboxUnreadCount == 0 {
             showLoader = true
         }
+        // FIXME:
         /* CastledNetworkManager.fetchInboxItems { [weak self] response in
                      if !response.success {
                          CastledLog.castledLog("Fetch inbox items failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)

@@ -24,6 +24,7 @@ public class CastledUserDefaults: NSObject {
     static let kCastledBadgeKey = "_castledApplicationBadge_"
     static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
     public static let kCastledFailedItems = "_castledFailedItems_"
+    public static let kCastledFailedRequests = "_castledFailedRequests_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
     static let kCastledClickedPushIds = "_castledClickedPushIds_"
@@ -109,6 +110,28 @@ public class CastledUserDefaults: NSObject {
 
     public static func getObjectFor(_ key: String) -> Any? {
         return userDefaults.object(forKey: key)
+    }
+
+    public static func getObjectFor<T: Decodable>(_ key: String, as type: T.Type) -> T? {
+        guard let data = userDefaults.data(forKey: key) else {
+            return nil
+        }
+        let decoder = JSONDecoder()
+        do {
+            let object = try decoder.decode(T.self, from: data)
+            return object
+        } catch {
+            return nil
+        }
+    }
+
+    public static func setObject<T: Encodable>(_ object: T, as type: T.Type, forKey key: String) {
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(object)
+            userDefaults.set(data, forKey: key)
+            userDefaults.synchronize()
+        } catch {}
     }
 
     static func setValueFor(_ key: String, _ data: Any, ud: UserDefaults = UserDefaults.standard) {

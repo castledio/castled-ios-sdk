@@ -25,35 +25,14 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener {
         print("refreshInbox \(Thread.current)")
         if !CastledInbox.sharedInstance.userId.isEmpty, !isMakingApiCall {
             isMakingApiCall = true
-
-            Task {
-                await fetchInboxItems()
+            CastledInboxRepository.fetchInboxItems {
+                self.isMakingApiCall = false
             }
         }
     }
 
     @objc public func appBecomeActive() {
         refreshInbox()
-    }
-
-    func fetchInboxItems() async {
-        print("fetchInboxItems \(Thread.current)")
-        do {
-            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItem].self, request: CastledInboxApi.getFetchRequest(), isFetch: true)
-            if response.success {
-                CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
-            }
-            isMakingApiCall = false
-
-            // Handle the response
-            print("Inbox Response:", response.result)
-            print("after result \(Thread.current)")
-
-        } catch {
-            // Handle any errors
-            print("Error:", error)
-            isMakingApiCall = false
-        }
     }
 
     func onStoreUserIdSet(_ userId: String) {

@@ -58,8 +58,9 @@ import RealmSwift
             .count ?? 0
     }
 
-    static func getIAllnboxItemsCount(realm: Realm?) -> Int {
-        realm?.objects(CAppInbox.self)
+    static func getIAllnboxItemsCount() -> Int {
+        let realm = CastledDBManager.shared.getRealm()
+        return realm?.objects(CAppInbox.self)
             .filter("isDeleted == false")
             .count ?? 0
     }

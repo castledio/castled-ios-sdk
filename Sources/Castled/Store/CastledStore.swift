@@ -46,6 +46,43 @@ import Foundation
         }
         return result
     }
+
+    static func getAllFailedRequests() -> [CastledNetworkRequest] {
+        var result: [CastledNetworkRequest]!
+        CastledStore.castledFailedItemsOperations.sync {
+            if let failedItems: [CastledNetworkRequest] = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) {
+                result = failedItems
+            } else {
+                result = [CastledNetworkRequest]()
+            }
+        }
+        return result
+    }
+
+    static func deleteFailedRequests(_ items: [CastledNetworkRequest]) {
+        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
+            var failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
+            let idsToRemove = Set(items.map { $0.requestId })
+            let updatedRequests = failedItems.filter { !idsToRemove.contains($0.requestId) }
+            print("deleteFailedRequests \(updatedRequests)")
+            CastledUserDefaults.setObject(updatedRequests, as: [CastledNetworkRequest].self, forKey: CastledUserDefaults.kCastledFailedRequests)
+        }
+    }
+
+    static func enqueFailedRequest(_ request: CastledNetworkRequest) {
+        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
+            var failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
+            failedItems.append(request)
+            // FIXME: do the needfull
+            // failedItems = failedItems.removeDuplicates()
+            let maxmFailedItems = 5000
+            if failedItems.count > maxmFailedItems {
+                let numberOfElementsToRemove = failedItems.count - maxmFailedItems
+                failedItems.removeFirst(numberOfElementsToRemove)
+            }
+            CastledUserDefaults.setObject(failedItems, as: [CastledNetworkRequest].self, forKey: CastledUserDefaults.kCastledFailedRequests)
+        }
+    }
 }
 
 extension CastledStore {

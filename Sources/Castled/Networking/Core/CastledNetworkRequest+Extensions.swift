@@ -8,13 +8,9 @@
 import Foundation
 
 extension CastledNetworkRequest {
-    var BASE_URL: String {
-        return "https://\(CastledConfigsUtils.configs.location.description).castled.io/backend/"
-    }
-
-    private func createGetRequestWithURLComponents(url: URL, castled_request: CastledNetworkRequest) -> URLRequest? {
+    private func createGetRequestWithURLComponents(url: URL) -> URLRequest? {
         var components = URLComponents(string: url.absoluteString)!
-        if let parameters = castled_request.parameters {
+        if let parameters = parameters {
             var queryItems: [URLQueryItem] = []
             for (key, value) in parameters {
                 let queryItem = URLQueryItem(name: key, value: "\(value)")
@@ -24,18 +20,18 @@ extension CastledNetworkRequest {
         }
         components.percentEncodedQuery = components.percentEncodedQuery?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         var request = URLRequest(url: components.url ?? url)
-        request.httpMethod = castled_request.method.rawValue
+        request.httpMethod = method.rawValue
         request.setAuthHeaders()
         return request
     }
 
-    private func createPostAndPutRequestWithBody(url: URL, castled_request: CastledNetworkRequest) -> URLRequest? {
+    private func createPostAndPutRequestWithBody(url: URL) -> URLRequest? {
         var request = URLRequest(url: url)
-        request.httpMethod = castled_request.method.rawValue
+        request.httpMethod = method.rawValue
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
-        if let requestBody = getParameterBody(with: castled_request.parameters!) {
+        if let requestBody = getParameterBody(with: parameters!) {
             request.httpBody = requestBody
         }
         request.setAuthHeaders()
@@ -49,22 +45,17 @@ extension CastledNetworkRequest {
         return httpBody
     }
 
-    private func constructURL(for endpoint: CastledNetworkRequest) -> URL? {
-        let urlString = BASE_URL + endpoint.path
-        return URL(string: urlString)
-    }
-
-    func createRequest(with endpoint: CastledNetworkRequest) -> URLRequest? {
-        guard let url = constructURL(for: endpoint) else {
+    func createRequest(with path: String) -> URLRequest? {
+        guard let url = URL(string: CastledNetworkLayer.shared.BASE_URL + path) else {
             CastledLog.castledLog("Invalid URL", logLevel: CastledLogLevel.error)
             return nil
         }
 
-        switch endpoint.method {
+        switch method {
             case .get:
-                return createGetRequestWithURLComponents(url: url, castled_request: endpoint)
+                return createGetRequestWithURLComponents(url: url)
             case .post, .put:
-                return createPostAndPutRequestWithBody(url: url, castled_request: endpoint)
+                return createPostAndPutRequestWithBody(url: url)
         }
     }
 }
