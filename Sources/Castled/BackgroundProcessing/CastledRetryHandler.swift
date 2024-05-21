@@ -47,22 +47,24 @@ class CastledRetryHandler {
                         })
 
                     case CastledConstants.CastledNetworkRequestType.inappRequest.rawValue:
-                        let savedEvents = value
-                        self?.castledSemaphore.wait()
-                        self?.castledGroup.enter()
-                        CastledNetworkManager.reportInAppEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
-                            self?.castledSemaphore.signal()
-                            self?.castledGroup.leave()
+                        /* let savedEvents = value
+                         self?.castledSemaphore.wait()
+                         self?.castledGroup.enter()
+                         CastledNetworkManager.reportInAppEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                             self?.castledSemaphore.signal()
+                             self?.castledGroup.leave()
 
-                        })
+                         })*/
+                        break
                     case CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue:
-                        let savedEvents = value
-                        self?.castledSemaphore.wait()
-                        self?.castledGroup.enter()
-                        CastledNetworkManager.reportInboxEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
-                            self?.castledSemaphore.signal()
-                            self?.castledGroup.leave()
-                        })
+                        /*  let savedEvents = value
+                         self?.castledSemaphore.wait()
+                         self?.castledGroup.enter()
+                         CastledNetworkManager.reportInboxEvents(params: savedEvents, completion: { [weak self] (_: CastledResponse<[String: String]>) in
+                             self?.castledSemaphore.signal()
+                             self?.castledGroup.leave()
+                         })*/
+                        break
 
                     case CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue:
                         if let savedEvents = value as? [[String: String]] {

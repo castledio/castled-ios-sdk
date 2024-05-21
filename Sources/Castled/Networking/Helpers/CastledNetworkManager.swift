@@ -18,25 +18,15 @@ class CastledNetworkManager {
     /**
      Funtion which alllows to report the Events for InApp with Castled.
      */
-    static func reportInAppEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
-        let router: CastledNetworkRouter = .reportInAppEvent(params: params, instanceId: Castled.sharedInstance.instanceId)
-        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
-            if !response.success {
-                CastledLog.castledLog("Report InApp Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-            }
-            completion(response)
-        })
-    }
-
-    /**
-     Funtion which alllows to report the Events for InApp with Castled.
-     */
-    static func reportInboxEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
-        let router: CastledNetworkRouter = .reportInboxEvent(params: params, instanceId: Castled.sharedInstance.instanceId)
-        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
-            completion(response)
-        })
-    }
+    /*  static func reportInAppEvents(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+         let router: CastledNetworkRouter = .reportInAppEvent(params: params, instanceId: Castled.sharedInstance.instanceId)
+         CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+             if !response.success {
+                 CastledLog.castledLog("Report InApp Events failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+             }
+             completion(response)
+         })
+     }*/
 
     /**
      Funtion which alllows to report the Events for InApp with Castled.
@@ -126,61 +116,65 @@ class CastledNetworkManager {
 
     // MARK: - HELPER METHODS FOR FETCHING ITEMS
 
-    /**
+    /*  /**
      Function to fetch all App Notification
      */
     static func fetchInAppNotifications(completion: @escaping (_ response: CastledResponse<[CastledInAppObject]>) -> Void) {
-        if !CastledConfigsUtils.configs.enableInApp {
-            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
-            return
-        }
-        Task {
-            let router: CastledNetworkRouter = .fetchInAppNotification(userID: CastledUserDefaults.shared.userId ?? "", instanceId: Castled.sharedInstance.instanceId)
-            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInAppObject].self, request: router.request, shouldDecodeResponse: true)
-            if response.success {
-                DispatchQueue.global().async {
-                    let encoder = JSONEncoder()
-                    if let data = try? encoder.encode(response.result) {
-                        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledInAppsList, data)
-                        CastledInApps.sharedInstance.prefetchInApps()
-                    }
-                }
-            }
+        completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
+        //FIXME: do the needful
 
-            completion(response)
-        }
+         if !CastledConfigsUtils.configs.enableInApp {
+             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+             return
+         }
+         Task {
+             let router: CastledNetworkRouter = .fetchInAppNotification(userID: CastledUserDefaults.shared.userId ?? "", instanceId: Castled.sharedInstance.instanceId)
+             let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInAppObject].self, request: router.request, shouldDecodeResponse: true)
+             if response.success {
+                 DispatchQueue.global().async {
+                     let encoder = JSONEncoder()
+                     if let data = try? encoder.encode(response.result) {
+                         CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledInAppsList, data)
+                         CastledInApps.sharedInstance.prefetchInApps()
+                     }
+                 }
+             }
+
+             completion(response)
+         }
     }
-
-/*     //FIXME: do the needful
-  /**
-     Function to fetch all Inbox Items
      */
-    static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItemOld]>) -> Void) {
-        completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
-        return;
-        if Castled.sharedInstance.instanceId.isEmpty {
-            completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+    /*     //FIXME: do the needful
+       /**
+          Function to fetch all Inbox Items
+          */
+         static func fetchInboxItems(completion: @escaping (_ response: CastledResponse<[CastledInboxItemOld]>) -> Void) {
+             completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
+             return;
+             if Castled.sharedInstance.instanceId.isEmpty {
+                 completion(CastledResponse(error: CastledExceptionMessages.notInitialised.rawValue, statusCode: 999))
 
-            return
-        } else if !CastledConfigsUtils.configs.enableAppInbox {
-            completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
-            return
-        }
-        guard let userId = CastledUserDefaults.shared.userId else {
-            completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
+                 return
+             } else if !CastledConfigsUtils.configs.enableAppInbox {
+                 completion(CastledResponse(error: CastledExceptionMessages.appInboxDisabled.rawValue, statusCode: 999))
+                 return
+             }
+             guard let userId = CastledUserDefaults.shared.userId else {
+                 completion(CastledResponse(error: CastledExceptionMessages.userNotRegistered.rawValue, statusCode: 999))
 
-            return
-        }
-//        Task {
-//            let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: Castled.sharedInstance.instanceId)
-//            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItemOld].self, request: router.request, isFetch: true)
-//            if response.success {
-//                CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
-//            }
-//            completion(response)
-//        }
-    }
-*/
+                 return
+             }
+     //        Task {
+     //            let router: CastledNetworkRouter = .fetchInInboxItems(userID: userId, instanceId: Castled.sharedInstance.instanceId)
+     //            let response = await CastledNetworkLayer.shared.sendRequest(model: [CastledInboxItemOld].self, request: router.request, isFetch: true)
+     //            if response.success {
+     //                CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
+     //            }
+     //            completion(response)
+     //        }
+         }
+     */
+
     // MARK: - USER LIFE CYCLE
 
     /**

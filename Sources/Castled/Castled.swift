@@ -54,9 +54,12 @@ import UserNotifications
         #if !DEBUG
         CastledLog.setLogLevel(CastledLogLevel.none)
         #endif
+        CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
+
         if config.enableInApp {
-            UIViewController.swizzleViewDidAppear()
+            CastledInApp.sharedInstance.initializeAppInApp()
         }
+
         CastledNetworkMonitor.shared.startMonitoring()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -65,7 +68,6 @@ import UserNotifications
         CastledDeviceInfo.shared.updateDeviceInfo()
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
-        CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
         checkAndRegisterForAPNsToken()
     }
 
@@ -118,14 +120,14 @@ import UserNotifications
             CastledLog.castledLog("Log page viewed \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
-        CastledInApps.sharedInstance.logAppEvent(context: viewContoller, eventName: CIEventType.page_viewed.rawValue, params: ["name": String(describing: type(of: viewContoller))], showLog: false)
+        CastledInApp.sharedInstance.logAppPageViewedEvent(viewContoller)
     }
 
     /**
      InApps : Function that allows to display custom inapp
      */
     @objc public func logCustomAppEvent(_ eventName: String, params: [String: Any]) {
-        CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: eventName, params: params, showLog: false)
+        CastledInApp.sharedInstance.logCustomAppEvent(eventName, params: params)
         CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
     }
 
@@ -212,7 +214,7 @@ import UserNotifications
         if CastledConfigsUtils.configs.enableInApp == false {
             return
         }
-        CastledInApps.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
+        CastledInApp.sharedInstance.logAppOpenedEventIfAny(showLog: showLog)
     }
 
     /**

@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-@objc class CastledInApps: NSObject {
+@objc class CastledInAppsDisplayController: NSObject {
     var isCurrentlyDisplaying = false
     private var pendingInApps = [CastledInAppObject]()
-    static var sharedInstance = CastledInApps()
+    static var sharedInstance = CastledInAppsDisplayController()
     var savedInApps = [CastledInAppObject]()
     private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", attributes: .concurrent)
     private let castledInAppsPendinItemsQueue = DispatchQueue(label: "CastledInAppsPendingItemsQueue", attributes: .concurrent)
@@ -52,49 +52,17 @@ import UIKit
                 json["actionUri"] = value
             }
             json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inappRequest.rawValue
-            CastledNetworkManager.reportInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
-                if response.success {
-                    // CastledLog.castledLog(response.result as Any)
-                } else {
-                    // CastledLog.castledLog("Error in updating inapp event ")
-                }
-            })
-        }
-    }
 
-    /**
-     Button action handling
-     */
-
-    private func getDeepLinkUrlFrom(url: String, parameters: [String: String]?) -> URL? {
-        // Define the base URL for your deep link
-        guard let baseURL = URL(string: url) else {
-            CastledLog.castledLog("Error:❌❌❌ Invalid Deeplink URL provided", logLevel: CastledLogLevel.error)
-            return nil
+            CastledInAppRepository.reportInappEvents(params: [json])
+            // FIXME: do the needful
+            /* CastledNetworkManager.reportInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
+                 if response.success {
+                     // CastledLog.castledLog(response.result as Any)
+                 } else {
+                     // CastledLog.castledLog("Error in updating inapp event ")
+                 }
+             })*/
         }
-        var queryString = ""
-        // Create a dictionary of query parameters
-        if let params = parameters {
-            // Convert the query parameters to a query string
-            queryString = params.map { key, value in
-                "\(key)=\(value)"
-            }.joined(separator: "&")
-        }
-        // Construct the final deep link URL with query parameters
-        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
-        components.query = queryString
-
-        if let deepLinkURL = components.url {
-            // deepLinkURL now contains the complete deep link URL with query parameters
-            return deepLinkURL
-        } else {
-            CastledLog.castledLog("Error:❌❌❌ Invalid Deeplink URL provided", logLevel: CastledLogLevel.error)
-        }
-        return nil
-    }
-
-    private func openURL(_ url: URL) {
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 
     func performButtonActionFor(buttonAction: CIActionButton? = nil, slide: CIBannerPresentation? = nil, webParams: [String: Any]? = nil) {

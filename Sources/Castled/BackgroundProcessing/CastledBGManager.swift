@@ -37,9 +37,8 @@ class CastledBGManager {
         let dispatchSemaphore = DispatchSemaphore(value: 1)
         dispatchGroup.enter()
         dispatchSemaphore.wait()
-        CastledNetworkManager.fetchInAppNotifications { [weak self] _ in
-            self?.retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
-        }
+        retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
+
         dispatchGroup.notify(queue: .main) { [weak self] in
             self?.isExecuting = false
             completion()

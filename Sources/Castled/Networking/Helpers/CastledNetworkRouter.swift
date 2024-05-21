@@ -9,10 +9,10 @@ import Foundation
 
 enum CastledNetworkRouter {
     case registerUser(params: [String: Any], instanceId: String)
-    case fetchInAppNotification(userID: String, instanceId: String)
+    // case fetchInAppNotification(userID: String, instanceId: String)
     case reportPushEvents(params: [[String: Any]], instanceId: String)
-    case reportInAppEvent(params: [[String: Any]], instanceId: String)
-    case reportInboxEvent(params: [[String: Any]], instanceId: String)
+    // case reportInAppEvent(params: [[String: Any]], instanceId: String)
+    // case reportInboxEvent(params: [[String: Any]], instanceId: String)
     case reportDeviceInfo(deviceInfo: [String: String], userID: String)
     case reportCustomEvent(params: [[String: Any]])
     case reportUserEvent(params: [String: Any])
@@ -20,7 +20,6 @@ enum CastledNetworkRouter {
     case logoutUser(params: [String: Any], instanceId: String)
     case reportSession(params: [[String: Any]])
 
-    
     var request: CastledNetworkRequest {
         switch self {
         case .registerUser(let params, let instanceId):
@@ -37,25 +36,25 @@ enum CastledNetworkRouter {
                 method: .post,
                 parameters: ["events": params])
 
-        case .fetchInAppNotification(let userID, let instanceId):
+     /*   case .fetchInAppNotification(let userID, let instanceId):
             return CastledNetworkRequest(
                 type: "",
                 path: "v1/inapp/\(instanceId)/ios/campaigns",
                 method: .get,
-                parameters: ["user": userID])
+                parameters: ["user": userID])*/
 
-        case .reportInAppEvent(let params, let instanceId):
-            return CastledNetworkRequest(
-                type: "",
-                path: "v1/inapp/\(instanceId)/ios/event",
-                method: .post,
-                parameters: ["events": params])
-        case .reportInboxEvent(let params, let instanceId):
-            return CastledNetworkRequest(
-                type: "",
-                path: "v1/app-inbox/\(instanceId)/ios/event",
-                method: .post,
-                parameters: ["events": params])
+        /*  case .reportInAppEvent(let params, let instanceId):
+         return CastledNetworkRequest(
+             type: "",
+             path: "v1/inapp/\(instanceId)/ios/event",
+             method: .post,
+             parameters: ["events": params])*/
+        /* case .reportInboxEvent(let params, let instanceId):
+         return CastledNetworkRequest(
+             type: "",
+             path: "v1/app-inbox/\(instanceId)/ios/event",
+             method: .post,
+             parameters: ["events": params])*/
         case .reportDeviceInfo(let deviceInfo, let userID):
             return CastledNetworkRequest(
                 type: "",
