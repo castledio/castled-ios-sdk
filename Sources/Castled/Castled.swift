@@ -56,16 +56,18 @@ import UserNotifications
         #endif
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
 
+        CastledDeviceInfo.sharedInstance.initializeDeviceInfo()
         if config.enableInApp {
             CastledInApp.sharedInstance.initializeAppInApp()
+        }
+        if config.enableSessionTracking {
+            CastledSessions.sharedInstance.initializeSessions()
         }
 
         CastledNetworkMonitor.shared.startMonitoring()
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
 
-        CastledDeviceInfo.shared.updateDeviceInfo()
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
         checkAndRegisterForAPNsToken()
@@ -107,7 +109,7 @@ import UserNotifications
             }
             if let uid = CastledUserDefaults.shared.userId {
                 Castled.sharedInstance.updateTheUserIdAndToken(uid, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
-                CastledDeviceInfo.shared.updateDeviceInfo()
+                CastledDeviceInfo.sharedInstance.updateDeviceInfo()
             }
         }
     }
@@ -198,15 +200,8 @@ import UserNotifications
     @objc public func appBecomeActive() {
         if CastledUserDefaults.shared.userId != nil {
             Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
-            CastledSessionsManager.shared.didEnterForeground()
 //            CastledUserEventsTracker.shared.setTheUserEventsFromBG()
             Castled.sharedInstance.executeBGTasks(isFromBG: true)
-        }
-    }
-
-    @objc public func didEnterBackground() {
-        if CastledUserDefaults.shared.userId != nil {
-            CastledSessionsManager.shared.didEnterBackground()
         }
     }
 
@@ -244,10 +239,6 @@ import UserNotifications
 
     private func didSetUserId() {
         DispatchQueue.main.async {
-            CastledDeviceInfo.shared.updateDeviceInfo()
-            if CastledConfigsUtils.configs.enableSessionTracking {
-                CastledSessionsManager.shared.startCastledSession()
-            }
             Castled.sharedInstance.executeBGTasks()
         }
     }

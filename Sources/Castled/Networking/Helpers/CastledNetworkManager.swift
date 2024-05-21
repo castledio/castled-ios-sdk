@@ -54,17 +54,17 @@ class CastledNetworkManager {
     /**
      Funtion which alllows to report the Sessions with Castled.
      */
-    static func reportSessions(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
-        let router: CastledNetworkRouter = .reportSession(params: params)
-        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
-//            if !response.success {
-//                CastledLog.castledLog("Session tracking failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-//            } else {
-//                CastledLog.castledLog("Session tracking sucess", logLevel: CastledLogLevel.debug)
-//            }
-            completion(response)
-        })
-    }
+    /*  static func reportSessions(params: [[String: Any]], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+             let router: CastledNetworkRouter = .reportSession(params: params)
+             CastledNetworkManager.shared.reportEvents(router: router, sendingParams: params, type: [String: String].self, completion: { response in
+     //            if !response.success {
+     //                CastledLog.castledLog("Session tracking failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+     //            } else {
+     //                CastledLog.castledLog("Session tracking sucess", logLevel: CastledLogLevel.debug)
+     //            }
+                 completion(response)
+             })
+         }*/
 
     /**
      Funtion which alllows to set the user attributes..
@@ -107,12 +107,14 @@ class CastledNetworkManager {
         })
     }
 
-    static func reportDeviceInfo(deviceInfo: [String: String], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
-        let router: CastledNetworkRouter = .reportDeviceInfo(deviceInfo: deviceInfo, userID: CastledUserDefaults.shared.userId!)
-        CastledNetworkManager.shared.reportEvents(router: router, sendingParams: [deviceInfo], type: [String: String].self, completion: { response in
-            completion(response)
-        })
-    }
+    /*
+     static func reportDeviceInfo(deviceInfo: [String: String], completion: @escaping (_ response: CastledResponse<[String: String]>) -> Void) {
+         let router: CastledNetworkRouter = .reportDeviceInfo(deviceInfo: deviceInfo, userID: CastledUserDefaults.shared.userId!)
+         CastledNetworkManager.shared.reportEvents(router: router, sendingParams: [deviceInfo], type: [String: String].self, completion: { response in
+             completion(response)
+         })
+     }
+     */
 
     // MARK: - HELPER METHODS FOR FETCHING ITEMS
 

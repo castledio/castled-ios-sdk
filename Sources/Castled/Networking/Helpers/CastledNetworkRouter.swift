@@ -13,12 +13,12 @@ enum CastledNetworkRouter {
     case reportPushEvents(params: [[String: Any]], instanceId: String)
     // case reportInAppEvent(params: [[String: Any]], instanceId: String)
     // case reportInboxEvent(params: [[String: Any]], instanceId: String)
-    case reportDeviceInfo(deviceInfo: [String: String], userID: String)
+    // case reportDeviceInfo(deviceInfo: [String: String], userID: String)
     case reportCustomEvent(params: [[String: Any]])
     case reportUserEvent(params: [String: Any])
     case reportUserAttributes(params: [String: Any])
     case logoutUser(params: [String: Any], instanceId: String)
-    case reportSession(params: [[String: Any]])
+    // case reportSession(params: [[String: Any]])
 
     var request: CastledNetworkRequest {
         switch self {
@@ -55,12 +55,12 @@ enum CastledNetworkRouter {
              path: "v1/app-inbox/\(instanceId)/ios/event",
              method: .post,
              parameters: ["events": params])*/
-        case .reportDeviceInfo(let deviceInfo, let userID):
-            return CastledNetworkRequest(
-                type: "",
-                path: "external/v1/collections/devices",
-                method: .post,
-                parameters: ["type": "track", "deviceInfo": deviceInfo, "userId": userID])
+        /*  case .reportDeviceInfo(let deviceInfo, let userID):
+         return CastledNetworkRequest(
+             type: "",
+             path: "external/v1/collections/devices",
+             method: .post,
+             parameters: ["type": "track", "deviceInfo": deviceInfo, "userId": userID])*/
         case .reportCustomEvent(let params):
             return CastledNetworkRequest(
                 type: "",
@@ -68,12 +68,12 @@ enum CastledNetworkRouter {
                 method: .post,
                 parameters: ["events": params])
 
-        case .reportSession(let params):
+       /* case .reportSession(let params):
             return CastledNetworkRequest(
                 type: "",
                 path: "external/v1/collections/session-events/lists",
                 method: .post,
-                parameters: ["events": params])
+                parameters: ["events": params])*/
 
         case .reportUserAttributes(let params):
             return CastledNetworkRequest(

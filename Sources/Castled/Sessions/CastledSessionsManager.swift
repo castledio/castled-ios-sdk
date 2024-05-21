@@ -43,12 +43,12 @@ class CastledSessionsManager {
         var sessionDetails = [[String: Any]]()
         if !sessionId.isEmpty {
             let dateEnded = Date(timeIntervalSince1970: sessionEndTime == 0 ? Date().timeIntervalSince1970 : sessionEndTime)
-            sessionDetails.append([CastledConstants.Sessions.userId: CastledUserDefaults.shared.userId ?? "",
+            sessionDetails.append([CastledConstants.Sessions.userId: CastledSessions.sharedInstance.userId,
                                    CastledConstants.Sessions.sessionId: sessionId,
                                    CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionClosed,
                                    CastledConstants.Sessions.sessionLastDuration: Int(min(sessionDuration, Double(Int.max))),
                                    CastledConstants.Sessions.sessionTimeStamp: dateEnded.string(),
-                                   CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledDeviceInfo.shared.getDeviceId()],
+                                   CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()],
                                    CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
             CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, false)
             isFirstSession = false
@@ -61,16 +61,16 @@ class CastledSessionsManager {
         sessionEndTime = sessionStartTime
         let dateStarted = Date(timeIntervalSince1970: currentStartTime)
 
-        sessionDetails.append([CastledConstants.Sessions.userId: CastledUserDefaults.shared.userId ?? "",
+        sessionDetails.append([CastledConstants.Sessions.userId: CastledSessions.sharedInstance.userId,
                                CastledConstants.Sessions.sessionId: sessionId,
                                CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionStarted,
                                CastledConstants.Sessions.sessionTimeStamp: dateStarted.string(),
                                CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
-                               CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledDeviceInfo.shared.getDeviceId()],
+                               CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()],
                                CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
 //        CastledLog.castledLog("sessionDetails ------> \(sessionDetails)", logLevel: .debug)
-        CastledNetworkManager.reportSessions(params: sessionDetails) { _ in
-        }
+
+        CastledSessions.sharedInstance.reportSessionEvents(params: sessionDetails)
     }
 
     private func resetTheValuesForNewSession() {
@@ -83,7 +83,7 @@ class CastledSessionsManager {
     }
 
     func didEnterBackground() {
-        if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.configs.enableSessionTracking {
+        if CastledSessions.sharedInstance.userId.isEmpty {
             return
         }
 
@@ -106,7 +106,7 @@ class CastledSessionsManager {
     }
 
     func didEnterForeground() {
-        if CastledUserDefaults.shared.userId == nil || !CastledConfigsUtils.configs.enableSessionTracking {
+        if CastledSessions.sharedInstance.userId.isEmpty {
             return
         }
         startCastledSession()

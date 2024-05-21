@@ -61,7 +61,7 @@ import Foundation
 
     static func deleteFailedRequests(_ items: [CastledNetworkRequest]) {
         CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
-            var failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
+            let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
             let idsToRemove = Set(items.map { $0.requestId })
             let updatedRequests = failedItems.filter { !idsToRemove.contains($0.requestId) }
             print("deleteFailedRequests \(updatedRequests)")

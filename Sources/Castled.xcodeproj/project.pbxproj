@@ -99,6 +99,13 @@
 		0AB9BE9A2BFC5FC900DB7744 /* CastledInAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BE992BFC5FC900DB7744 /* CastledInAppController.swift */; };
 		0AB9BE9D2BFC5FE500DB7744 /* CastledInAppRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BE9C2BFC5FE500DB7744 /* CastledInAppRepository.swift */; };
 		0AB9BE9F2BFC5FF600DB7744 /* CastledInAppRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BE9E2BFC5FF600DB7744 /* CastledInAppRequestHandler.swift */; };
+		0AB9BEA12BFC78CD00DB7744 /* CastledSessions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BEA02BFC78CD00DB7744 /* CastledSessions.swift */; };
+		0AB9BEA32BFC78E400DB7744 /* CastledSessionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BEA22BFC78E400DB7744 /* CastledSessionsController.swift */; };
+		0AB9BEA82BFC792800DB7744 /* CastledSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BEA72BFC792800DB7744 /* CastledSessionRepository.swift */; };
+		0AB9BEAA2BFC793A00DB7744 /* CastledSessionsRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BEA92BFC793A00DB7744 /* CastledSessionsRequestHandler.swift */; };
+		0AB9BEAC2BFC840C00DB7744 /* CastledDeviceInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BEAB2BFC840C00DB7744 /* CastledDeviceInfoController.swift */; };
+		0AB9BEAF2BFC842300DB7744 /* CastledDeviceInfoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BEAE2BFC842300DB7744 /* CastledDeviceInfoRepository.swift */; };
+		0AB9BEB12BFC842F00DB7744 /* CastledDeviceInfoRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9BEB02BFC842F00DB7744 /* CastledDeviceInfoRequestHandler.swift */; };
 		0ABA75862A7CED8100CD0734 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ABA75852A7CED8100CD0734 /* SDWebImage.framework */; };
 		0ABA759A2A7D634700CD0734 /* CastledDismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABA75992A7D634700CD0734 /* CastledDismissButton.swift */; };
 		0ABA759C2A7D742200CD0734 /* CastledDismissButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0ABA759B2A7D742200CD0734 /* CastledDismissButton.xib */; };
@@ -257,6 +264,13 @@
 		0AB9BE992BFC5FC900DB7744 /* CastledInAppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppController.swift; sourceTree = "<group>"; };
 		0AB9BE9C2BFC5FE500DB7744 /* CastledInAppRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppRepository.swift; sourceTree = "<group>"; };
 		0AB9BE9E2BFC5FF600DB7744 /* CastledInAppRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppRequestHandler.swift; sourceTree = "<group>"; };
+		0AB9BEA02BFC78CD00DB7744 /* CastledSessions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessions.swift; sourceTree = "<group>"; };
+		0AB9BEA22BFC78E400DB7744 /* CastledSessionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsController.swift; sourceTree = "<group>"; };
+		0AB9BEA72BFC792800DB7744 /* CastledSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionRepository.swift; sourceTree = "<group>"; };
+		0AB9BEA92BFC793A00DB7744 /* CastledSessionsRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsRequestHandler.swift; sourceTree = "<group>"; };
+		0AB9BEAB2BFC840C00DB7744 /* CastledDeviceInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDeviceInfoController.swift; sourceTree = "<group>"; };
+		0AB9BEAE2BFC842300DB7744 /* CastledDeviceInfoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDeviceInfoRepository.swift; sourceTree = "<group>"; };
+		0AB9BEB02BFC842F00DB7744 /* CastledDeviceInfoRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDeviceInfoRequestHandler.swift; sourceTree = "<group>"; };
 		0ABA75852A7CED8100CD0734 /* SDWebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDWebImage.framework; sourceTree = SOURCE_ROOT; };
 		0ABA75992A7D634700CD0734 /* CastledDismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledDismissButton.swift; sourceTree = "<group>"; };
 		0ABA759B2A7D742200CD0734 /* CastledDismissButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledDismissButton.xib; sourceTree = "<group>"; };
@@ -434,7 +448,10 @@
 		0A46C2BB2B6D06DB00D40B17 /* Sessions */ = {
 			isa = PBXGroup;
 			children = (
+				0AB9BEA02BFC78CD00DB7744 /* CastledSessions.swift */,
+				0AB9BEA22BFC78E400DB7744 /* CastledSessionsController.swift */,
 				0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */,
+				0AB9BEA62BFC791000DB7744 /* SessionsApi */,
 			);
 			path = Sessions;
 			sourceTree = "<group>";
@@ -470,6 +487,8 @@
 			isa = PBXGroup;
 			children = (
 				0A74B0872AF2B0A6003364CD /* CastledDeviceInfo.swift */,
+				0AB9BEAB2BFC840C00DB7744 /* CastledDeviceInfoController.swift */,
+				0AB9BEAD2BFC841200DB7744 /* CastledDeviceInfoApi */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -739,6 +758,24 @@
 				0AB9BE9E2BFC5FF600DB7744 /* CastledInAppRequestHandler.swift */,
 			);
 			path = CastledInAppApi;
+			sourceTree = "<group>";
+		};
+		0AB9BEA62BFC791000DB7744 /* SessionsApi */ = {
+			isa = PBXGroup;
+			children = (
+				0AB9BEA72BFC792800DB7744 /* CastledSessionRepository.swift */,
+				0AB9BEA92BFC793A00DB7744 /* CastledSessionsRequestHandler.swift */,
+			);
+			path = SessionsApi;
+			sourceTree = "<group>";
+		};
+		0AB9BEAD2BFC841200DB7744 /* CastledDeviceInfoApi */ = {
+			isa = PBXGroup;
+			children = (
+				0AB9BEAE2BFC842300DB7744 /* CastledDeviceInfoRepository.swift */,
+				0AB9BEB02BFC842F00DB7744 /* CastledDeviceInfoRequestHandler.swift */,
+			);
+			path = CastledDeviceInfoApi;
 			sourceTree = "<group>";
 		};
 		0ABDE8B229FBF23400D3EF79 /* BackgroundProcessing */ = {
@@ -1197,6 +1234,7 @@
 				0A8F25AA29E5AE4E00FBD9E0 /* CastledInAppObject.swift in Sources */,
 				0AB5C5A2291C27840027C36B /* Castled.swift in Sources */,
 				0AB9BE9A2BFC5FC900DB7744 /* CastledInAppController.swift in Sources */,
+				0AB9BEAA2BFC793A00DB7744 /* CastledSessionsRequestHandler.swift in Sources */,
 				0A1B4B792A7BB1E100D6430B /* CIHTMLView.swift in Sources */,
 				0AE9DAF12AC42DBB00FE975C /* CastledNetworkMonitor.swift in Sources */,
 				0A99E8882BBA82C3005E9F7E /* CastledAppDelegate.swift in Sources */,
@@ -1208,6 +1246,7 @@
 				0A46C2BF2B711CC600D40B17 /* CastledNetworkManager.swift in Sources */,
 				12C72C4F2947986300B6B3DC /* CastledInAppDisplayViewController.swift in Sources */,
 				0A7B3DB12AFD51540055C968 /* CIViewProtocol.swift in Sources */,
+				0AB9BEB12BFC842F00DB7744 /* CastledDeviceInfoRequestHandler.swift in Sources */,
 				0A31CFC12BB5468900901A50 /* CastledNotificationCenter.swift in Sources */,
 				0ACE7AA32BF7525C0003F596 /* CExtensions+Array.swift in Sources */,
 				0ACE7AB12BF7BE920003F596 /* CastledNetworkRequestHandler.swift in Sources */,
@@ -1218,7 +1257,9 @@
 				0ABDE8BE29FC41F400D3EF79 /* CastledConfigs.swift in Sources */,
 				0AE9DAEA2AC3E4AC00FE975C /* CastledStore.swift in Sources */,
 				0ACE7A932BF720D60003F596 /* CastledPreferenceStoreListener.swift in Sources */,
+				0AB9BEA32BFC78E400DB7744 /* CastledSessionsController.swift in Sources */,
 				0A1B4B782A7BB1E100D6430B /* CIFsDefaultView.swift in Sources */,
+				0AB9BEAF2BFC842300DB7744 /* CastledDeviceInfoRepository.swift in Sources */,
 				0A7C51B02AD1C20E001B2CE4 /* CastledLog.swift in Sources */,
 				0AB2C6B92B8F10970042E178 /* CastledNetworkRequest+Extensions.swift in Sources */,
 				0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */,
@@ -1228,10 +1269,12 @@
 				0AB5C59D291C27840027C36B /* CastledUserDefaults.swift in Sources */,
 				0ACE7AAD2BF754E60003F596 /* CExtensions+NSLayoutConstraint.swift in Sources */,
 				0A1B4B7C2A7BB1F300D6430B /* CastledInAppJSBridge.swift in Sources */,
+				0AB9BEA82BFC792800DB7744 /* CastledSessionRepository.swift in Sources */,
 				0A74E08D29E6D615004F2610 /* CastledInAppsDisplayController.swift in Sources */,
 				0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */,
 				0A652F982AFB3A2700752467 /* CIModalTextAndButtons.swift in Sources */,
 				0A652FA12AFBE38F00752467 /* CIFsImageAndButtons.swift in Sources */,
+				0AB9BEAC2BFC840C00DB7744 /* CastledDeviceInfoController.swift in Sources */,
 				0ACE7AA72BF7537B0003F596 /* CExtensions+Dictionary.swift in Sources */,
 				12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */,
 				0AB5C59F291C27840027C36B /* CastledSwizzler.swift in Sources */,
@@ -1241,6 +1284,7 @@
 				0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */,
 				0AC493F92AF3723F007E5967 /* CastledEventsTracker.swift in Sources */,
 				0ACA959B2B8D945F00165C41 /* CastledConfigsUtils.swift in Sources */,
+				0AB9BEA12BFC78CD00DB7744 /* CastledSessions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

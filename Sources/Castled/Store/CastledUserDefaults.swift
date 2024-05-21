@@ -160,9 +160,7 @@ public class CastledUserDefaults: NSObject {
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledInAppsList)
         removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
-        if CastledConfigsUtils.configs.enableSessionTracking {
-            CastledSessionsManager.shared.resetSessionDetails()
-        }
+
         CastledUserDefaults.shared.userId = nil
 //        CastledUserDefaults.shared.userToken = nil
     }

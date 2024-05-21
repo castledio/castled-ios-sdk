@@ -123,6 +123,9 @@ public class CastledNetworkLayer: NSObject {
                 print("insert failed items to store..............................................")
             } else {
                 print("api successs \(api_response.success).............................................. path \(path)")
+                if !api_response.success {
+                    print("api failed \(request).............................................. ")
+                }
             }
 
             completion(api_response)
