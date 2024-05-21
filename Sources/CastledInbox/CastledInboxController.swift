@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 @_spi(CastledInternal) import Castled
 
-class CastledInboxController: NSObject, CastledPreferenceStoreListener {
+class CastledInboxController: NSObject, CastledPreferenceStoreListener, CastledLifeCycleListener {
     static var sharedInstance = CastledInboxController()
     private var isMakingApiCall = false
     private var isStarted = false
@@ -17,8 +17,7 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener {
 
     func initialize() {
         CastledUserDefaults.shared.addObserver(self)
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        CastledLifeCycleManager.sharedInstance.addObserver(self)
     }
 
     private func refreshInbox() {
@@ -31,7 +30,7 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener {
         }
     }
 
-    @objc public func appBecomeActive() {
+    func appBecomeActive() {
         refreshInbox()
     }
 

@@ -136,7 +136,7 @@ public enum CastledConstants {
         case inboxRequest = "inbox"
         case deviceInfoRequest = "deviceInfo"
         case productEventRequest = "prodEvent"
-        case userEventRequest = "userEvent"
+//        case userEventRequest = "userEvent"
         case userAttributes = "userAttrs"
         case sessionTracking = "session"
         case logoutUser = "logout"

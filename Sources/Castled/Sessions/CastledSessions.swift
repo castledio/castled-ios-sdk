@@ -19,13 +19,16 @@ class CastledSessions: NSObject {
         if isInitilized {
             return
         }
-        isInitilized = true
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue] = CastledSessionsRequestHandler.self
         CastledSessionsController.sharedInstance.initialize()
+        isInitilized = true
         CastledLog.castledLog("Sessions module initilized!", logLevel: CastledLogLevel.info)
     }
 
     func reportSessionEvents(params: [[String: Any]]) {
+        if userId.isEmpty {
+            return
+        }
         CastledSessionRepository.reportSessionEvents(params: params)
     }
 }

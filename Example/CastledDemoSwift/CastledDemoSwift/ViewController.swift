@@ -61,6 +61,24 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
          Castled.sharedInstance.setUserAttributes(userAttributes)*/
     }
 
+    func logUserAttributes() {
+        let userAttributes = CastledUserAttributes()
+        userAttributes.setFirstName("Antony Joe Mathew 1")
+        userAttributes.setLastName("Mathew")
+        userAttributes.setCity("Sanfrancisco")
+        userAttributes.setCountry("US")
+        userAttributes.setEmail("doe@email.com")
+        userAttributes.setDOB("02-01-1995")
+        userAttributes.setGender("M")
+        userAttributes.setPhone("+13156227533")
+        // Custom Attributes
+        userAttributes.setCustomAttribute("prime_member", true)
+        userAttributes.setCustomAttribute("int", 500)
+        userAttributes.setCustomAttribute("double", 500.01)
+        userAttributes.setCustomAttribute("occupation", "artist")
+        Castled.sharedInstance.setUserAttributes(userAttributes)
+    }
+
     func showRequiredViews() {
         if UserDefaults.standard.value(forKey: self.userIdKey ?? "userIdKey") != nil {
             self.btnGotoSecondVC.isHidden = false
@@ -127,6 +145,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
                                                                                // "Date": Date(),
                                                                                "BoolValue": true,
                                                                                "Name": "Antony Joe Mathew"])
+        logUserAttributes()
     }
 
     func setUpInboxCallback() {

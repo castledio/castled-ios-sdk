@@ -8,59 +8,52 @@
 import UIKit
 
 class CastledEventsTracker: NSObject {
-    static let shared = CastledEventsTracker()
+    static let sharedInstance = CastledEventsTracker()
+    var userId = ""
+    private var isInitilized = false
+
     override private init() {}
-    func trackEvent(eventName: String, params: [String: Any]) {
-        if !CastledConfigsUtils.configs.enableTracking {
+    func initializeEventsTracking() {
+        if !Castled.sharedInstance.isCastledInitialized() {
+            CastledLog.castledLog("Events tracking initialization failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
-        guard let userId = CastledUserDefaults.shared.userId else {
+        else if isInitilized {
+            CastledLog.castledLog("Events tracking already initilized! \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            return
+        }
+        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.userAttributes.rawValue] = CastledEventsRequestHandler.self
+        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue] = CastledEventsRequestHandler.self
+
+        CastledEventsController.sharedInstance.initialize()
+        isInitilized = true
+    }
+
+    func trackEvent(eventName: String, params: [String: Any]) {
+        if !isInitilized {
+            CastledLog.castledLog("Events tracking failed: \(CastledExceptionMessages.trackingDisabled.rawValue)", logLevel: .error)
+            return
+        }
+        if CastledEventsTracker.sharedInstance.userId.isEmpty {
+            CastledLog.castledLog("Events tracking failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: .error)
             return
         }
         Castled.sharedInstance.castledCommonQueue.async {
-            // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
-            let stringDict = params.serializedDictionary()
-            var trackParams: [String: Any] = ["type": "track",
-                                              "event": eventName,
-                                              "userId": userId,
-                                              "properties": stringDict,
-                                              "timestamp": Date().string(),
-                                              CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
-            if CastledConfigsUtils.configs.enableSessionTracking {
-                trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
-            }
-            CastledNetworkManager.reportCustomEvents(params: [trackParams]) { response in
-                if response.success {
-                    CastledLog.castledLog("Log event '\(eventName)' success!! ", logLevel: CastledLogLevel.debug)
-                }
-            }
+            CastledEventsController.sharedInstance.trackEvent(eventName: eventName, params: params)
         }
     }
 
     func setUserAttributes(_ attributes: CastledUserAttributes) {
-        if !CastledConfigsUtils.configs.enableTracking {
+        if !isInitilized {
             CastledLog.castledLog("Set userAttributes failed: \(CastledExceptionMessages.trackingDisabled.rawValue)", logLevel: .error)
             return
         }
-        guard let userId = CastledUserDefaults.shared.userId else {
+        if CastledEventsTracker.sharedInstance.userId.isEmpty {
             CastledLog.castledLog("Set userAttributes failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: .error)
             return
         }
         Castled.sharedInstance.castledCommonQueue.async {
-            // converting to [String:String], otherwise it will crash for the dates and other non supported non serialized items
-            let stringDict = attributes.getAttributes().serializedDictionary()
-            var trackParams: [String: Any] = [
-                "userId": userId,
-                "traits": stringDict,
-                "timestamp": Date().string(),
-                CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userAttributes.rawValue,
-            ]
-
-            if CastledConfigsUtils.configs.enableSessionTracking {
-                trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
-            }
-            CastledNetworkManager.reportUserAttributes(params: trackParams) { _ in
-            }
+            CastledEventsController.sharedInstance.setUserAttributes(attributes)
         }
     }
 }

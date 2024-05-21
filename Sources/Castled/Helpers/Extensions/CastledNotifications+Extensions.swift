@@ -38,12 +38,13 @@ public extension Castled {
                 let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
                 let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
                 if !params.isEmpty {
-                    CastledNetworkManager.reportPushEvents(params: params) { response in
-                        completionHandler(response.success ? .newData : .failed)
+                    CastledPushNotification.sharedInstance.reportPushEvents(params: params) { success in
+                        completionHandler(success ? .newData : .failed)
                         if let backgroundTask = backgroundTask {
                             application.endBackgroundTask(backgroundTask)
                         }
                     }
+
                     return
                 }
             }
@@ -122,7 +123,7 @@ public extension Castled {
 
                     let params = Castled.sharedInstance.getPushPayload(event: event, teamID: teamID ?? "", sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType)
                     if !params.isEmpty {
-                        CastledNetworkManager.reportPushEvents(params: params) { _ in
+                        CastledPushNotification.sharedInstance.reportPushEvents(params: params) { _ in
                         }
                     }
                 }
@@ -153,7 +154,7 @@ public extension Castled {
                         }
                     }
                     if !castledPushEvents.isEmpty {
-                        CastledNetworkManager.reportPushEvents(params: castledPushEvents) { _ in
+                        CastledPushNotification.sharedInstance.reportPushEvents(params: castledPushEvents) { _ in
                         }
                     }
                     if castledNotifications == 0 {

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CastledInAppController: NSObject, CastledPreferenceStoreListener {
+class CastledInAppController: NSObject, CastledPreferenceStoreListener, CastledLifeCycleListener {
     static var sharedInstance = CastledInAppController()
     private var isMakingApiCall = false
     private var isStarted = false
@@ -16,27 +16,29 @@ class CastledInAppController: NSObject, CastledPreferenceStoreListener {
 
     func initialize() {
         CastledUserDefaults.shared.addObserver(self)
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        CastledLifeCycleManager.sharedInstance.addObserver(self)
     }
 
-    private func refreshInapps() {
+    private func refreshInapps(isFromBG: Bool) {
         print("refreshInapps \(Thread.current)")
         if !CastledInApp.sharedInstance.userId.isEmpty, !isMakingApiCall {
             isMakingApiCall = true
             CastledInAppRepository.fetchInAppItems {
                 self.isMakingApiCall = false
+                if isFromBG {
+                    CastledInApp.sharedInstance.logAppOpenedEventIfAny()
+                }
             }
         }
     }
 
-    @objc public func appBecomeActive() {
-        refreshInapps()
+    func appBecomeActive() {
+        refreshInapps(isFromBG: true)
     }
 
     func onStoreUserIdSet(_ userId: String) {
         CastledInApp.sharedInstance.userId = userId
-        refreshInapps()
+        refreshInapps(isFromBG: false)
     }
 
     func onUserLoggedOut() {}

@@ -13,7 +13,6 @@ enum CastledSessionRepository {
     static func getEventsRequest(params: [[String: Any]]) -> CastledNetworkRequest {
         return CastledNetworkRequest(
             type: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue,
-            path: CastledSessionRepository.eventsPath,
             method: .post,
             parameters: [CastledConstants.EventsReporting.events: params])
     }

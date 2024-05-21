@@ -40,7 +40,7 @@ public class CastledUserDefaults: NSObject {
     public var userId: String? {
         didSet {
             if let userId = userId {
-                notifyObservers(userId)
+                notifyUserIdObservers(userId)
             }
         }
     }
@@ -160,7 +160,7 @@ public class CastledUserDefaults: NSObject {
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledInAppsList)
         removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
-
+        CastledUserDefaults.shared.notifyLogout()
         CastledUserDefaults.shared.userId = nil
 //        CastledUserDefaults.shared.userToken = nil
     }
@@ -172,9 +172,15 @@ public class CastledUserDefaults: NSObject {
         observers.append(observer)
     }
 
-    private func notifyObservers(_ userid: String) {
+    private func notifyUserIdObservers(_ userid: String) {
         for observer in observers {
             observer.onStoreUserIdSet(userid)
+        }
+    }
+
+    private func notifyLogout() {
+        for observer in observers {
+            observer.onUserLoggedOut()
         }
     }
 }

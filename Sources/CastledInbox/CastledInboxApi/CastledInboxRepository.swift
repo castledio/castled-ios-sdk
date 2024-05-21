@@ -13,13 +13,12 @@ enum CastledInboxRepository {
     static let eventsPath = "v1/app-inbox/\(CastledInbox.sharedInstance.castledConfig.instanceId)/ios/event"
 
     static func getFetchRequest() -> CastledNetworkRequest {
-        return CastledNetworkRequest(type: "", path: CastledInboxRepository.fetchPath, method: .get, parameters: ["user": CastledInbox.sharedInstance.userId])
+        return CastledNetworkRequest(type: "", method: .get, parameters: ["user": CastledInbox.sharedInstance.userId])
     }
 
     static func getEventsRequest(params: [[String: Any]]) -> CastledNetworkRequest {
         return CastledNetworkRequest(
             type: CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue,
-            path: CastledInboxRepository.eventsPath,
             method: .post,
             parameters: [CastledConstants.EventsReporting.events: params])
     }

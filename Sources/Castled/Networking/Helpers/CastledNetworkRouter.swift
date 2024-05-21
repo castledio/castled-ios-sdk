@@ -14,9 +14,9 @@ enum CastledNetworkRouter {
     // case reportInAppEvent(params: [[String: Any]], instanceId: String)
     // case reportInboxEvent(params: [[String: Any]], instanceId: String)
     // case reportDeviceInfo(deviceInfo: [String: String], userID: String)
-    case reportCustomEvent(params: [[String: Any]])
-    case reportUserEvent(params: [String: Any])
-    case reportUserAttributes(params: [String: Any])
+    // case reportCustomEvent(params: [[String: Any]])
+    //  case reportUserEvent(params: [String: Any])
+    // case reportUserAttributes(params: [String: Any])
     case logoutUser(params: [String: Any], instanceId: String)
     // case reportSession(params: [[String: Any]])
 
@@ -25,14 +25,14 @@ enum CastledNetworkRouter {
         case .registerUser(let params, let instanceId):
             return CastledNetworkRequest(
                 type: "",
-                path: "v1/push/\(instanceId)/apns/register",
+                // path: "v1/push/\(instanceId)/apns/register",
                 method: .post,
                 parameters: params)
 
         case .reportPushEvents(let params, let instanceId):
             return CastledNetworkRequest(
                 type: "",
-                path: "v1/push/\(instanceId)/event",
+                //   path: "v1/push/\(instanceId)/event",
                 method: .post,
                 parameters: ["events": params])
 
@@ -61,12 +61,12 @@ enum CastledNetworkRouter {
              path: "external/v1/collections/devices",
              method: .post,
              parameters: ["type": "track", "deviceInfo": deviceInfo, "userId": userID])*/
-        case .reportCustomEvent(let params):
+     /*   case .reportCustomEvent(let params):
             return CastledNetworkRequest(
                 type: "",
                 path: "external/v1/collections/events/lists?apiSource=app",
                 method: .post,
-                parameters: ["events": params])
+                parameters: ["events": params])*/
 
        /* case .reportSession(let params):
             return CastledNetworkRequest(
@@ -75,22 +75,22 @@ enum CastledNetworkRouter {
                 method: .post,
                 parameters: ["events": params])*/
 
-        case .reportUserAttributes(let params):
-            return CastledNetworkRequest(
-                type: "",
-                path: "external/v1/collections/users?apiSource=app",
-                method: .post,
-                parameters: params)
-        case .reportUserEvent(let params): // not using
-            return CastledNetworkRequest(
-                type: "",
-                path: "external/v1/collections/events/lists?apiSource=app",
-                method: .post,
-                parameters: params)
+        /*  case .reportUserAttributes(let params):
+             return CastledNetworkRequest(
+                 type: "",
+                 path: "external/v1/collections/users?apiSource=app",
+                 method: .post,
+                 parameters: params)
+         case .reportUserEvent(let params): // not using
+             return CastledNetworkRequest(
+                 type: "",
+                 path: "external/v1/collections/events/lists?apiSource=app",
+                 method: .post,
+                 parameters: params)*/
         case .logoutUser(let params, let instanceId):
             return CastledNetworkRequest(
                 type: "",
-                path: "v1/push/\(instanceId)/apns/logout",
+                //   path: "v1/push/\(instanceId)/apns/logout",
                 method: .put,
                 parameters: params)
         }

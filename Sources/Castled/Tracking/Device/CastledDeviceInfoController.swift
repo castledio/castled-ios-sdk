@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CastledDeviceInfoController: NSObject, CastledPreferenceStoreListener {
+class CastledDeviceInfoController: NSObject, CastledPreferenceStoreListener, CastledLifeCycleListener {
     static var sharedInstance = CastledDeviceInfoController()
     private var isMakingApiCall = false
     private var isStarted = false
@@ -16,11 +16,10 @@ class CastledDeviceInfoController: NSObject, CastledPreferenceStoreListener {
 
     func initialize() {
         CastledUserDefaults.shared.addObserver(self)
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        CastledLifeCycleManager.sharedInstance.addObserver(self)
     }
 
-    @objc public func appBecomeActive() {
+    func appBecomeActive() {
         updateDeviceInfo()
     }
 

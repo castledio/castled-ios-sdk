@@ -12,13 +12,12 @@ enum CastledInAppRepository {
     static let eventsPath = "v1/inapp/\(CastledInApp.sharedInstance.castledConfig.instanceId)/ios/event"
 
     static func getFetchRequest() -> CastledNetworkRequest {
-        return CastledNetworkRequest(type: "", path: CastledInAppRepository.fetchPath, method: .get, parameters: ["user": CastledInApp.sharedInstance.userId])
+        return CastledNetworkRequest(type: "", method: .get, parameters: ["user": CastledInApp.sharedInstance.userId])
     }
 
     static func getEventsRequest(params: [[String: Any]]) -> CastledNetworkRequest {
         return CastledNetworkRequest(
             type: CastledConstants.CastledNetworkRequestType.inappRequest.rawValue,
-            path: CastledInAppRepository.eventsPath,
             method: .post,
             parameters: [CastledConstants.EventsReporting.events: params])
     }
@@ -39,12 +38,13 @@ enum CastledInAppRepository {
                         CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledInAppsList, data)
                         CastledInAppsDisplayController.sharedInstance.prefetchInApps()
                     }
+                    completion()
                 }
+            } else { completion()
             }
 
             print("Inapp Response:", response.result?.count ?? 0)
             print("after result \(Thread.current)")
-            completion()
         }
     }
 }

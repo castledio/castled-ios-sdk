@@ -22,9 +22,9 @@ class CastledDeviceInfo: NSObject {
             CastledLog.castledLog("Device Info already initilized! \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
-        isInitilized = true
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue] = CastledDeviceInfoRequestHandler.self
         CastledDeviceInfoController.sharedInstance.initialize()
+        isInitilized = true
     }
 
     func updateDeviceInfo() {

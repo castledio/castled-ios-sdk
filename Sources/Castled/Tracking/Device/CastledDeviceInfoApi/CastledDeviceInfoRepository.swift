@@ -13,7 +13,6 @@ enum CastledDeviceInfoRepository {
     static func getEventsRequest(params: [String: Any]) -> CastledNetworkRequest {
         return CastledNetworkRequest(
             type: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue,
-            path: CastledDeviceInfoRepository.eventsPath,
             method: .post,
             parameters: ["type": "track", "deviceInfo": params, "userId": CastledDeviceInfo.sharedInstance.userId])
     }

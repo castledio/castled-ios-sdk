@@ -56,17 +56,22 @@ import UserNotifications
         #endif
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
 
-        CastledDeviceInfo.sharedInstance.initializeDeviceInfo()
+        if config.enablePush {
+            CastledPushNotification.sharedInstance.initializeAppInApp()
+        }
         if config.enableInApp {
             CastledInApp.sharedInstance.initializeAppInApp()
         }
         if config.enableSessionTracking {
             CastledSessions.sharedInstance.initializeSessions()
         }
+        if config.enableTracking {
+            CastledEventsTracker.sharedInstance.initializeEventsTracking()
+        }
+        CastledDeviceInfo.sharedInstance.initializeDeviceInfo()
 
         CastledNetworkMonitor.shared.startMonitoring()
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        CastledLifeCycleManager.sharedInstance.start()
 
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
         setNotificationCategories(withItems: Set<UNNotificationCategory>())
@@ -130,11 +135,11 @@ import UserNotifications
      */
     @objc public func logCustomAppEvent(_ eventName: String, params: [String: Any]) {
         CastledInApp.sharedInstance.logCustomAppEvent(eventName, params: params)
-        CastledEventsTracker.shared.trackEvent(eventName: eventName, params: params)
+        CastledEventsTracker.sharedInstance.trackEvent(eventName: eventName, params: params)
     }
 
     @objc public func setUserAttributes(_ attributes: CastledUserAttributes) {
-        CastledEventsTracker.shared.setUserAttributes(attributes)
+        CastledEventsTracker.sharedInstance.setUserAttributes(attributes)
     }
 
     @objc public func logout() {
@@ -150,7 +155,7 @@ import UserNotifications
                                   CastledConstants.Sessions.sessionId: CastledSessionsManager.shared.sessionId,
                                   CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue]
 
-                    CastledNetworkManager.logoutUser(params: params.compactMapValues { $0 } as [String: Any])
+                    CastledPushNotification.sharedInstance.logoutUser(params: params.compactMapValues { $0 } as [String: Any])
                 }
 
                 CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
@@ -197,14 +202,6 @@ import UserNotifications
         }
     }
 
-    @objc public func appBecomeActive() {
-        if CastledUserDefaults.shared.userId != nil {
-            Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
-//            CastledUserEventsTracker.shared.setTheUserEventsFromBG()
-            Castled.sharedInstance.executeBGTasks(isFromBG: true)
-        }
-    }
-
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if CastledConfigsUtils.configs.enableInApp == false {
             return
@@ -248,8 +245,7 @@ import UserNotifications
                       CastledConstants.PushNotification.Token.apnsToken: apnsToken,
                       CastledConstants.PushNotification.Token.fcmToken: fcmToken,
                       CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userRegisterationRequest.rawValue]
-        CastledNetworkManager.registerUser(params: params.compactMapValues { $0 } as [String: Any]) { _ in
-        }
+        CastledPushNotification.sharedInstance.registerUser(params: params.compactMapValues { $0 } as [String: Any])
     }
 
     private func checkAndRegisterForAPNsToken() {

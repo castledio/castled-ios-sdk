@@ -10,14 +10,12 @@ import Foundation
 
 public struct CastledNetworkRequest: Codable, Equatable, Hashable {
     public let type: String
-    public let path: String
     public let method: HTTPMethod
     public let parameters: [String: Any]?
     let requestId: String
 
-    public init(type: String, path: String, method: HTTPMethod, parameters: [String: Any]?) {
+    public init(type: String, method: HTTPMethod, parameters: [String: Any]?) {
         self.type = type
-        self.path = path
         self.method = method
         self.parameters = parameters
         self.requestId = UUID().uuidString
@@ -38,7 +36,6 @@ public struct CastledNetworkRequest: Codable, Equatable, Hashable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .type)
-        try container.encode(path, forKey: .path)
         try container.encode(method, forKey: .method)
         try container.encode(requestId, forKey: .requestId)
         try container.encodeIfPresent(parameters, forKey: .parameters)
@@ -49,7 +46,6 @@ public struct CastledNetworkRequest: Codable, Equatable, Hashable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(String.self, forKey: .type)
-        self.path = try container.decode(String.self, forKey: .path)
         self.requestId = try container.decode(String.self, forKey: .requestId)
         self.method = try container.decode(HTTPMethod.self, forKey: .method)
         self.parameters = try container.decode([String: Any].self, forKey: .parameters)
