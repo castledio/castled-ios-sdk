@@ -86,7 +86,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             self.navigationItem.rightBarButtonItem = nil
             let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self.inboxTapped))
             self.navigationItem.rightBarButtonItem = inboxButton
-            //   self.setUpInboxCallback()
+            self.setUpInboxCallback()
         }
         else {
             self.btnGotoSecondVC.isHidden = true
@@ -145,7 +145,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
                                                                                // "Date": Date(),
                                                                                "BoolValue": true,
                                                                                "Name": "Antony Joe Mathew"])
-        logUserAttributes()
+        self.logUserAttributes()
     }
 
     func setUpInboxCallback() {
@@ -154,9 +154,8 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             print("Inbox unread count is \(unreadCount)")
         })
 
-        CastledInbox.sharedInstance.getInboxItems(completion: { _, _, _ in
-
-            //   print("getInboxItems \(result) \(errormessage)")
+        CastledInbox.sharedInstance.getInboxItems(completion: { _, result, errormessage in
+            print("getInboxItems \(result) \(errormessage)")
         })
         //       Castled.sharedInstance.dismissInboxViewController()
     }

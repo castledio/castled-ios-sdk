@@ -25,8 +25,8 @@ import UIKit
             CastledLog.castledLog("In-app module already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
-        isInitilized = true
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.inappRequest.rawValue] = CastledInAppRequestHandler.self
+        isInitilized = true
         CastledInAppController.sharedInstance.initialize()
         UIViewController.swizzleViewDidAppear()
         CastledLog.castledLog("In-app module initialized..", logLevel: CastledLogLevel.info)

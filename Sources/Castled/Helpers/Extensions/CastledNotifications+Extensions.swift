@@ -131,9 +131,6 @@ public extension Castled {
     }
 
     internal func processAllDeliveredNotifications(shouldClear: Bool) {
-        if CastledConfigsUtils.configs.enablePush == false {
-            return
-        }
         castledNotificationQueue.async {
             if #available(iOS 10.0, *) {
                 let center = UNUserNotificationCenter.current()

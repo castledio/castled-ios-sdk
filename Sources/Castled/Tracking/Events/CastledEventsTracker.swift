@@ -25,8 +25,8 @@ class CastledEventsTracker: NSObject {
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.userAttributes.rawValue] = CastledEventsUserRequestHandler.self
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue] = CastledEventsProductRequestHandler.self
 
-        CastledEventsController.sharedInstance.initialize()
         isInitilized = true
+        CastledEventsController.sharedInstance.initialize()
     }
 
     func trackEvent(eventName: String, params: [String: Any]) {

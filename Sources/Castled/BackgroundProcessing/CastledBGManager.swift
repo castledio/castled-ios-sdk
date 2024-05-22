@@ -77,10 +77,10 @@ class CastledBGManager {
             do {
                 try BGTaskScheduler.shared.submit(taskRequest)
             } catch {
-                CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.info)
+                CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.debug)
             }
         } else {
-            CastledLog.castledLog("\(CastledExceptionMessages.backgroundProcessNotenabled.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("\(CastledExceptionMessages.backgroundProcessNotenabled.rawValue)", logLevel: CastledLogLevel.debug)
         }
     }
 
@@ -98,7 +98,7 @@ class CastledBGManager {
         do {
             try BGTaskScheduler.shared.submit(taskRequest)
         } catch {
-            CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.debug)
         }
     }
 

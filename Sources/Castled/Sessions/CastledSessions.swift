@@ -20,8 +20,8 @@ class CastledSessions: NSObject {
             return
         }
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue] = CastledSessionsRequestHandler.self
-        CastledSessionsController.sharedInstance.initialize()
         isInitilized = true
+        CastledSessionsController.sharedInstance.initialize()
         //  CastledLog.castledLog("Sessions module initialized..", logLevel: CastledLogLevel.info)
     }
 

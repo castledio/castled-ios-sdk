@@ -28,8 +28,8 @@ import Foundation
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.userRegisterationRequest.rawValue] = CastledPushNotificationRegisterRequestHandler.self
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.logoutUser.rawValue] = CastledPushNotificationLogoutRequestHandler.self
 
-        CastledPushNotificationController.sharedInstance.initializePush()
         isInitilized = true
+        CastledPushNotificationController.sharedInstance.initializePush()
         CastledLog.castledLog("Push module initialized..", logLevel: CastledLogLevel.info)
     }
 

@@ -24,14 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         config.skipUrlHandling = false
         config.sessionTimeOutSec = 30
         config.location = CastledLocation.US
-        config.logLevel = CastledLogLevel.debug
+        config.logLevel = CastledLogLevel.info
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
         registerForPush()
         // UNUserNotificationCenter.current().delegate = self
 
         Castled.initialize(withConfig: config, andDelegate: self)
-        CastledInbox.sharedInstance.initializeAppInbox()
+        // CastledInbox.sharedInstance.initializeAppInbox()
         //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
         //   Castled.sharedInstance.setLaunchOptions(launchOptions)
         if #available(iOS 13.0, *) {

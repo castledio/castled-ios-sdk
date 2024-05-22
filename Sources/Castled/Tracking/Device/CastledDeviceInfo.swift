@@ -23,8 +23,8 @@ class CastledDeviceInfo: NSObject {
             return
         }
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue] = CastledDeviceInfoRequestHandler.self
-        CastledDeviceInfoController.sharedInstance.initialize()
         isInitilized = true
+        CastledDeviceInfoController.sharedInstance.initialize()
     }
 
     func updateDeviceInfo() {
