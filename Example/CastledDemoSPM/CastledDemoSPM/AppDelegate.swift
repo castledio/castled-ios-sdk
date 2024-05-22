@@ -5,15 +5,10 @@
 //  Created by Antony Joe Mathew.
 //
 
+import Castled
 import CastledInbox
-
-// import Castled
-import CastledNotificationContent
 import UIKit
 import UserNotifications
-
-// import CastledInbox
-import Castled
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -36,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // UNUserNotificationCenter.current().delegate = self
 
         Castled.initialize(withConfig: config, andDelegate: self)
-        // CastledInbox.sharedInstance.initializeAppInbox()
+        CastledInbox.sharedInstance.initializeAppInbox()
         //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
         //   Castled.sharedInstance.setLaunchOptions(launchOptions)
         if #available(iOS 13.0, *) {
@@ -52,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let notificationCategories = getNotificationCategories()
         Castled.sharedInstance.setNotificationCategories(withItems: notificationCategories)
         window?.makeKeyAndVisible()
-        Castled.sharedInstance.setLaunchOptions(launchOptions)
+        // Castled.sharedInstance.setLaunchOptions(launchOptions)
         return true
     }
 
