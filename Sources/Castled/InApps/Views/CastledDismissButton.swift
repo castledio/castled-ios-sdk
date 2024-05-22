@@ -42,6 +42,12 @@ class CastledDismissButton: UIView {
 
     private func setupViews() {
         backgroundColor = .clear
+        DispatchQueue.main.async { [weak self] in
+            if let closeImage = UIImage(named: "castled_close_icon_inverted", in: Bundle.resourceBundle(for: CastledDismissButton.self), compatibleWith: nil) {
+                self?.imgClose.image = closeImage
+            }
+        }
+
 //        let closeImage = imgClose.image?.withRenderingMode(.alwaysTemplate)
 //        //  imgClose.alpha = 0.5
 //        //  imgClose.image = closeImage

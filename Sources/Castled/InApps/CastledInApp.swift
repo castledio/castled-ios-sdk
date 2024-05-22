@@ -16,20 +16,20 @@ import UIKit
 
     override private init() {}
 
-    @objc public func initializeAppInApp() {
+    @objc public func initializeInApp() {
         if !Castled.sharedInstance.isCastledInitialized() {
             CastledLog.castledLog("In-app initialization failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         else if isInitilized {
-            CastledLog.castledLog("In-app module already initilized! \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("In-app module already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
         isInitilized = true
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.inappRequest.rawValue] = CastledInAppRequestHandler.self
         CastledInAppController.sharedInstance.initialize()
         UIViewController.swizzleViewDidAppear()
-        CastledLog.castledLog("In-app module initilized!", logLevel: CastledLogLevel.info)
+        CastledLog.castledLog("In-app module initialized..", logLevel: CastledLogLevel.info)
     }
 
     @objc public func logAppPageViewedEvent(_ viewContoller: UIViewController) {

@@ -40,17 +40,10 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
         if inboxUnreadCount == 0 {
             showLoader = true
         }
-        // FIXME:
-        /* CastledNetworkManager.fetchInboxItems { [weak self] response in
-                     if !response.success {
-                         CastledLog.castledLog("Fetch inbox items failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
-         //                DispatchQueue.main.async {
-         //                    self?.errorMessage = response.errorMessage
-         //                }
-                     }
-                     self?.showLoader = false
-                     self?.isLoading = false
-                 }*/
+        CastledInboxRepository.fetchInboxItems { [weak self] in
+            self?.showLoader = false
+            self?.isLoading = false
+        }
     }
 
     func didSelectItem(at index: Int) {}

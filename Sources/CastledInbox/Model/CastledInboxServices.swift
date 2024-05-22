@@ -79,11 +79,9 @@ class CastledInboxServices: NSObject {
     }
 
     private func updateInBoxEvents(savedEventTypes: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
-        CastledInboxRepository.reportInboxEvents(params: savedEventTypes)
-        // FIXME: do the needfull
-        /*  CastledNetworkManager.reportInboxEvents(params: savedEventTypes, completion: { (response: CastledResponse<[String: String]>) in
-             completion(response.success, response.errorMessage)
-         })*/
+        CastledInboxRepository.reportInboxEvents(params: savedEventTypes) { success, errorMessage in
+            completion(success, errorMessage)
+        }
     }
 
     private func getSendingParametersFrom(_ eventType: String, _ inboxObject: CastledInboxItem, _ title: String) -> [String: String] {
@@ -97,7 +95,6 @@ class CastledInboxServices: NSObject {
                     "teamId": teamId,
                     "eventType": eventType,
                     "sourceContext": sourceContext] as [String: String]
-        json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue
         json["btnLabel"] = title
         return json
     }

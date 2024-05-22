@@ -48,8 +48,7 @@ class CastledSessionsManager {
                                    CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionClosed,
                                    CastledConstants.Sessions.sessionLastDuration: Int(min(sessionDuration, Double(Int.max))),
                                    CastledConstants.Sessions.sessionTimeStamp: dateEnded.string(),
-                                   CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()],
-                                   CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
+                                   CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
             CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, false)
             isFirstSession = false
         }
@@ -66,8 +65,7 @@ class CastledSessionsManager {
                                CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionStarted,
                                CastledConstants.Sessions.sessionTimeStamp: dateStarted.string(),
                                CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
-                               CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()],
-                               CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.sessionTracking.rawValue])
+                               CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
 //        CastledLog.castledLog("sessionDetails ------> \(sessionDetails)", logLevel: .debug)
 
         CastledSessions.sharedInstance.reportSessionEvents(params: sessionDetails)

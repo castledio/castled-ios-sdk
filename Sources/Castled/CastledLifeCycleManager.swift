@@ -25,7 +25,7 @@ public class CastledLifeCycleManager: NSObject {
             observer.appBecomeActive()
         }
         if CastledUserDefaults.shared.userId != nil {
-            Castled.sharedInstance.executeBGTasks(isFromBG: true)
+            Castled.sharedInstance.executeBGTasks()
         }
     }
 

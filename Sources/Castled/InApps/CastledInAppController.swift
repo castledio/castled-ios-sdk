@@ -19,8 +19,7 @@ class CastledInAppController: NSObject, CastledPreferenceStoreListener, CastledL
         CastledLifeCycleManager.sharedInstance.addObserver(self)
     }
 
-    private func refreshInapps(isFromBG: Bool) {
-        print("refreshInapps \(Thread.current)")
+    private func refreshInapps(isFromBG: Bool) async {
         if !CastledInApp.sharedInstance.userId.isEmpty, !isMakingApiCall {
             isMakingApiCall = true
             CastledInAppRepository.fetchInAppItems {
@@ -33,13 +32,19 @@ class CastledInAppController: NSObject, CastledPreferenceStoreListener, CastledL
     }
 
     func appBecomeActive() {
-        refreshInapps(isFromBG: true)
+        Task {
+            await refreshInapps(isFromBG: true)
+        }
     }
 
     func onStoreUserIdSet(_ userId: String) {
         CastledInApp.sharedInstance.userId = userId
-        refreshInapps(isFromBG: false)
+        Task {
+            await refreshInapps(isFromBG: false)
+        }
     }
 
-    func onUserLoggedOut() {}
+    func onUserLoggedOut() {
+        CastledInApp.sharedInstance.userId = ""
+    }
 }

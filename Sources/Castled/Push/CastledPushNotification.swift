@@ -15,13 +15,13 @@ import Foundation
 
     override private init() {}
 
-    @objc public func initializeAppInApp() {
+    @objc public func initializePush() {
         if !Castled.sharedInstance.isCastledInitialized() {
             CastledLog.castledLog("Push initialization failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         else if isInitilized {
-            CastledLog.castledLog("Pushmodule already initilized! \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("Pushmodule already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.pushRequest.rawValue] = CastledPushNotificationEventsRequestHandler.self
@@ -29,9 +29,8 @@ import Foundation
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.logoutUser.rawValue] = CastledPushNotificationLogoutRequestHandler.self
 
         CastledPushNotificationController.sharedInstance.initializePush()
-
         isInitilized = true
-        CastledLog.castledLog("Push module initilized!", logLevel: CastledLogLevel.info)
+        CastledLog.castledLog("Push module initialized..", logLevel: CastledLogLevel.info)
     }
 
     func reportPushEvents(params: [[String: Any]], success: @escaping (Bool) -> Void) {
@@ -39,22 +38,31 @@ import Foundation
             success(false)
             return
         }
+        else if !isInitilized {
+            CastledLog.castledLog("Report push events failed: \(CastledExceptionMessages.pushDisabled.rawValue)", logLevel: CastledLogLevel.error)
+            success(false)
+            return
+        }
+
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
             success(result)
         }
     }
 
     func registerUser(params: [String: Any]) {
-        if !Castled.sharedInstance.isCastledInitialized() {
-            CastledLog.castledLog("Register user failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+        if !isInitilized {
+            CastledLog.castledLog("Register user failed: \(CastledExceptionMessages.pushDisabled.rawValue)", logLevel: CastledLogLevel.error)
             return
         }
         CastledPushNotificationRepository.registerUser(params: params)
     }
 
     func logoutUser(params: [String: Any]) {
-        if !Castled.sharedInstance.isCastledInitialized() {
-            CastledLog.castledLog("Logout user failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+        if !isInitilized {
+            CastledLog.castledLog("Logout user failed: \(CastledExceptionMessages.pushDisabled.rawValue)", logLevel: CastledLogLevel.error)
+            return
+        }
+        else if userId.isEmpty {
             return
         }
         CastledPushNotificationRepository.logoutUser(params: params)

@@ -65,7 +65,6 @@ class CastledInboxCell: UITableViewCell {
         lblTitle.textColor = inboxObj.colorTitle
         lblTime.textColor = inboxObj.colorBody
         lblTitle.text = inboxObj.title
-        // FIXME: do the needful
         lblDescription.attributedText = inboxObj.body.getAttributedStringFrom(textColr: inboxObj.colorBody, font: lblDescription.font, alignment: NSTextAlignment.left)
         lblTime.text = inboxObj.addedDate.timeAgo()
         viewIsRead.superview?.isHidden = inboxObj.isRead

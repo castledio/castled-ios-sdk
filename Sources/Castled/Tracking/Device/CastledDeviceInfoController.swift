@@ -28,7 +28,9 @@ class CastledDeviceInfoController: NSObject, CastledPreferenceStoreListener, Cas
         updateDeviceInfo()
     }
 
-    func onUserLoggedOut() {}
+    func onUserLoggedOut() {
+        CastledDeviceInfo.sharedInstance.userId = ""
+    }
 
     func updateDeviceInfo() {
         if CastledDeviceInfo.sharedInstance.userId.isEmpty {
@@ -45,8 +47,7 @@ class CastledDeviceInfoController: NSObject, CastledPreferenceStoreListener, Cas
                                   "deviceId": CastledCommonClass.getDeviceId(),
                                   "timeZone": self.getTimeZone(),
                                   "pushPermission": granted ? "1" : "0",
-                                  "platform": "MOBILE_IOS",
-                                  CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue]
+                                  "platform": "MOBILE_IOS"]
 
                 if deviceInfo != self.fetchSavedDeviceInfo() {
                     do {

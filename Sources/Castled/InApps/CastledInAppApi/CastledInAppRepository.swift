@@ -23,6 +23,9 @@ enum CastledInAppRepository {
     }
 
     static func reportInappEvents(params: [[String: Any]]) {
+        if CastledInApp.sharedInstance.userId.isEmpty {
+            return
+        }
         let request = CastledInAppRepository.getEventsRequest(params: params)
         CastledNetworkLayer.shared.makeApiCall(request: request, path: eventsPath, withRetry: true) { _ in
         }
@@ -42,9 +45,6 @@ enum CastledInAppRepository {
                 }
             } else { completion()
             }
-
-            print("Inapp Response:", response.result?.count ?? 0)
-            print("after result \(Thread.current)")
         }
     }
 }

@@ -29,5 +29,15 @@ class CastledPushNotificationController: NSObject, CastledPreferenceStoreListene
         CastledPushNotification.sharedInstance.userId = userId
     }
 
-    func onUserLoggedOut() {}
+    func onUserLoggedOut() {
+        if CastledPushNotification.sharedInstance.userId.isEmpty {
+            return
+        }
+        let params = [CastledConstants.PushNotification.userId: CastledPushNotification.sharedInstance.userId,
+                      CastledConstants.PushNotification.Token.apnsToken: CastledUserDefaults.shared.apnsToken,
+                      CastledConstants.PushNotification.Token.fcmToken: CastledUserDefaults.shared.fcmToken,
+                      CastledConstants.Sessions.sessionId: CastledSessionsManager.shared.sessionId]
+        CastledPushNotification.sharedInstance.logoutUser(params: params.compactMapValues { $0 } as [String: Any])
+        CastledPushNotification.sharedInstance.userId = ""
+    }
 }

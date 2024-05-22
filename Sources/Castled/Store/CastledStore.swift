@@ -11,42 +11,6 @@ import Foundation
     static let castledStoreQueue = DispatchQueue(label: "CastledbHandler")
     static let castledFailedItemsOperations = DispatchQueue(label: "CastledFailedItemsOperations", attributes: .concurrent)
 
-    static var isInserting = false
-
-    static func insertAllSendingItemsToStore(_ items: [[String: Any]]) {
-        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
-            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
-            failedItems.append(contentsOf: items)
-            failedItems = failedItems.removeDuplicates()
-            let maxmFailedItems = 5000
-            if failedItems.count > maxmFailedItems {
-                let numberOfElementsToRemove = failedItems.count - maxmFailedItems
-                failedItems.removeFirst(numberOfElementsToRemove)
-            }
-            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
-        }
-    }
-
-    static func deleteAllFailedItemsFromStore(_ items: [[String: Any]]) {
-        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
-            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
-            failedItems = failedItems.subtract(items)
-            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
-        }
-    }
-
-    static func getAllFailedItemss() -> [[String: Any]] {
-        var result: [[String: Any]]!
-        CastledStore.castledFailedItemsOperations.sync {
-            if let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]] {
-                result = failedItems
-            } else {
-                result = [[String: Any]]()
-            }
-        }
-        return result
-    }
-
     static func getAllFailedRequests() -> [CastledNetworkRequest] {
         var result: [CastledNetworkRequest]!
         CastledStore.castledFailedItemsOperations.sync {
@@ -62,9 +26,10 @@ import Foundation
     static func deleteFailedRequests(_ items: [CastledNetworkRequest]) {
         CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
             let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
+            let failedcount = failedItems.count
             let idsToRemove = Set(items.map { $0.requestId })
             let updatedRequests = failedItems.filter { !idsToRemove.contains($0.requestId) }
-            print("deleteFailedRequests \(updatedRequests)")
+            print("deleteFailedRequests \(updatedRequests) resned count \(idsToRemove.count)/\(failedcount)")
             CastledUserDefaults.setObject(updatedRequests, as: [CastledNetworkRequest].self, forKey: CastledUserDefaults.kCastledFailedRequests)
         }
     }
@@ -73,8 +38,6 @@ import Foundation
         CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
             var failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
             failedItems.append(request)
-            // FIXME: do the needfull
-            // failedItems = failedItems.removeDuplicates()
             let maxmFailedItems = 5000
             if failedItems.count > maxmFailedItems {
                 let numberOfElementsToRemove = failedItems.count - maxmFailedItems

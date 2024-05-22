@@ -20,8 +20,7 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener, CastledL
         CastledLifeCycleManager.sharedInstance.addObserver(self)
     }
 
-    private func refreshInbox() {
-        print("refreshInbox \(Thread.current)")
+    private func refreshInbox() async {
         if !CastledInbox.sharedInstance.userId.isEmpty, !isMakingApiCall {
             isMakingApiCall = true
             CastledInboxRepository.fetchInboxItems {
@@ -31,13 +30,20 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener, CastledL
     }
 
     func appBecomeActive() {
-        refreshInbox()
+        Task {
+            await refreshInbox()
+        }
     }
 
     func onStoreUserIdSet(_ userId: String) {
         CastledInbox.sharedInstance.userId = userId
-        refreshInbox()
+        Task {
+            await refreshInbox()
+        }
     }
 
-    func onUserLoggedOut() {}
+    func onUserLoggedOut() {
+        CastledDBManager.shared.clearTables()
+        CastledInbox.sharedInstance.userId = ""
+    }
 }

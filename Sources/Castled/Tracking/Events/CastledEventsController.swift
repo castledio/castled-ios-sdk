@@ -21,16 +21,20 @@ class CastledEventsController: NSObject, CastledPreferenceStoreListener {
         CastledEventsTracker.sharedInstance.userId = userId
     }
 
-    func onUserLoggedOut() {}
+    func onUserLoggedOut() {
+        CastledEventsTracker.sharedInstance.userId = ""
+    }
 
     func trackEvent(eventName: String, params: [String: Any]) {
+        if CastledEventsTracker.sharedInstance.userId.isEmpty {
+            return
+        }
         let stringDict = params.serializedDictionary()
         var trackParams: [String: Any] = ["type": "track",
                                           "event": eventName,
                                           "userId": CastledEventsTracker.sharedInstance.userId,
                                           "properties": stringDict,
-                                          "timestamp": Date().string(),
-                                          CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue]
+                                          "timestamp": Date().string()]
         if CastledConfigsUtils.configs.enableSessionTracking {
             trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId
         }
@@ -38,12 +42,14 @@ class CastledEventsController: NSObject, CastledPreferenceStoreListener {
     }
 
     func setUserAttributes(_ attributes: CastledUserAttributes) {
+        if CastledEventsTracker.sharedInstance.userId.isEmpty {
+            return
+        }
         let stringDict = attributes.getAttributes().serializedDictionary()
         var trackParams: [String: Any] = [
             "userId": CastledEventsTracker.sharedInstance.userId,
             "traits": stringDict,
-            "timestamp": Date().string(),
-            CastledConstants.CastledNetworkRequestTypeKey: CastledConstants.CastledNetworkRequestType.userAttributes.rawValue,
+            "timestamp": Date().string()
         ]
         if CastledConfigsUtils.configs.enableSessionTracking {
             trackParams[CastledConstants.Sessions.sessionId] = CastledSessionsManager.shared.sessionId

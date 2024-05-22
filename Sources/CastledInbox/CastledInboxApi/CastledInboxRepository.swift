@@ -23,20 +23,25 @@ enum CastledInboxRepository {
             parameters: [CastledConstants.EventsReporting.events: params])
     }
 
-    static func reportInboxEvents(params: [[String: String]]) {
+    static func reportInboxEvents(params: [[String: String]], completion: @escaping (_ success: Bool, _ errorMessage: String?) -> Void) {
         let request = CastledInboxRepository.getEventsRequest(params: params)
-        CastledNetworkLayer.shared.makeApiCall(request: request, path: eventsPath, withRetry: true) { _ in
+        CastledNetworkLayer.shared.makeApiCall(request: request, path: eventsPath, withRetry: true) { response in
+            completion(response.success, response.errorMessage)
         }
     }
 
     static func fetchInboxItems(completion: @escaping () -> Void) {
+        if CastledInbox.sharedInstance.userId.isEmpty {
+            completion()
+            return
+        }
         let request = CastledInboxRepository.getFetchRequest()
         CastledNetworkLayer.shared.makeApiCall(request: request, path: fetchPath, responseModel: [CastledInboxItem].self, shouldDecodeResponse: true) { response in
             if response.success {
                 CastledStore.refreshInboxItems(liveInboxResponse: response.result ?? [])
+            } else {
+                CastledLog.castledLog("Fetch inbox items failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
-            print("Inbox Response:", response.result?.count ?? 0)
-            print("after result \(Thread.current)")
             completion()
         }
     }

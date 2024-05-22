@@ -154,6 +154,7 @@ public class CastledUserDefaults: NSObject {
         removeFor(kCastledDeviceInfoKey)
         removeFor(kCastledUserTokenKey)
         removeFor(kCastledFailedItems)
+        removeFor(kCastledFailedRequests)
         removeFor(kCastledSavedInappConfigs)
         removeFor(kCastledDeliveredPushIds)
         removeFor(kCastledClickedPushIds)

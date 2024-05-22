@@ -14,7 +14,6 @@ public enum CastledConstants {
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
-    public static let CastledNetworkRequestTypeKey = "castled_request_type"
 
     public enum PushNotification {
         static let customKey = "castled"

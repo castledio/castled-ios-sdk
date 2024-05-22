@@ -31,7 +31,7 @@ import UIKit
     }
 
     func reportInAppEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
-        DispatchQueue.global().async {
+        self.castledInAppsQueue.async {
             let teamId = "\(inappObject.teamID)"
             let sourceContext = inappObject.sourceContext
             let timezone = TimeZone.current
@@ -51,17 +51,8 @@ import UIKit
             if let value = actionUri {
                 json["actionUri"] = value
             }
-            json[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.inappRequest.rawValue
 
             CastledInAppRepository.reportInappEvents(params: [json])
-            // FIXME: do the needful
-            /* CastledNetworkManager.reportInAppEvents(params: [json], completion: { (response: CastledResponse<[String: String]>) in
-                 if response.success {
-                     // CastledLog.castledLog(response.result as Any)
-                 } else {
-                     // CastledLog.castledLog("Error in updating inapp event ")
-                 }
-             })*/
         }
     }
 
@@ -102,13 +93,10 @@ import UIKit
     }
 
     func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
-        guard let _ = CastledUserDefaults.shared.userId,!isCurrentlyDisplaying else {
+        guard !CastledInApp.sharedInstance.userId.isEmpty,!self.isCurrentlyDisplaying else {
             return
         }
-        if CastledConfigsUtils.configs.enableInApp == false {
-            CastledLog.castledLog("Display Inapp: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
-            return
-        }
+
         self.castledInAppsQueue.async(flags: .barrier) { [self] in
             if self.savedInApps.isEmpty {
                 self.prefetchInApps()

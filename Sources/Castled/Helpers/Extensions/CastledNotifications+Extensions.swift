@@ -17,8 +17,7 @@ public extension Castled {
     }
 
     @objc func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any]) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: UIApplication.shared, withInfo: userInfo) { result in
-            print("didReceiveRemoteNotification result----- \(result)")
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: UIApplication.shared, withInfo: userInfo) { _ in
         }
     }
 
@@ -201,7 +200,6 @@ public extension Castled {
         if actionType?.count ?? 0 > 0 {
             params["actionType"] = actionType
         }
-        params[CastledConstants.CastledNetworkRequestTypeKey] = CastledConstants.CastledNetworkRequestType.pushRequest.rawValue
         payload.append(params)
         return payload
     }

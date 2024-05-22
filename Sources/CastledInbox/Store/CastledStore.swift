@@ -15,40 +15,6 @@ import RealmSwift
 
     static var isInserting = false
 
-    static func insertAllSendingItemsToStore(_ items: [[String: Any]]) {
-        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
-            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
-            failedItems.append(contentsOf: items)
-            failedItems = failedItems.removeDuplicates()
-            let maxmFailedItems = 5000
-            if failedItems.count > maxmFailedItems {
-                let numberOfElementsToRemove = failedItems.count - maxmFailedItems
-                failedItems.removeFirst(numberOfElementsToRemove)
-            }
-            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
-        }
-    }
-
-    static func deleteAllFailedItemsFromStore(_ items: [[String: Any]]) {
-        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
-            var failedItems = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]]) ?? [[String: Any]]()
-            failedItems = failedItems.subtract(items)
-            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledFailedItems, failedItems)
-        }
-    }
-
-    static func getAllFailedItemss() -> [[String: Any]] {
-        var result: [[String: Any]]!
-        CastledStore.castledFailedItemsOperations.sync {
-            if let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedItems) as? [[String: Any]] {
-                result = failedItems
-            } else {
-                result = [[String: Any]]()
-            }
-        }
-        return result
-    }
-
     // MARK: - DB
 
     static func getInboxUnreadCount(realm: Realm? = nil) -> Int {

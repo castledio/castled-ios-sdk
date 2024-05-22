@@ -24,7 +24,7 @@ import UIKit
     var userId = ""
     var inboxUnreadCountCallback: ((Int) -> Void)?
     let castledConfig = Castled.sharedInstance.getCastledConfig()
-    private var isInitilized = false
+    var isInitilized = false
 
     override private init() {}
 
@@ -34,13 +34,13 @@ import UIKit
             return
         }
         else if isInitilized {
-            CastledLog.castledLog("Inbox module already initilized! \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("Inbox module already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
         isInitilized = true
         CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue] = CastledInboxRequestHandler.self
         CastledInboxController.sharedInstance.initialize()
-        CastledLog.castledLog("Inbox module initilized!", logLevel: CastledLogLevel.info)
+        CastledLog.castledLog("Inbox module initialized..", logLevel: CastledLogLevel.info)
     }
 
     /**
@@ -69,6 +69,8 @@ import UIKit
     @objc public func getInboxViewController(withUIConfigs config: CastledInboxDisplayConfig?, andDelegate delegate: CastledInboxViewControllerDelegate) -> CastledInboxViewController {
         if !isInitilized {
             CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.inboxNotInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            // fatalError(CastledExceptionMessages.inboxNotInitialised.rawValue)
+
             // throw fatal error
         }
         let castledInboxVC = UIStoryboard(name: "CastledInbox", bundle: Bundle.resourceBundle(for: CastledInbox.self)).instantiateViewController(identifier: "CastledInboxViewController") as! CastledInboxViewController
