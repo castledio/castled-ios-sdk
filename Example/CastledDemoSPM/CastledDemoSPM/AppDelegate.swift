@@ -5,6 +5,8 @@
 //  Created by Antony Joe Mathew.
 //
 
+import CastledInbox
+
 // import Castled
 import CastledNotificationContent
 import UIKit
