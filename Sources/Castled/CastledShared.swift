@@ -12,4 +12,7 @@ public class CastledShared: NSObject {
     @objc public static var sharedInstance = CastledShared()
 
     override private init() {}
+    public func getCastledConfig() -> CastledConfigs {
+        return Castled.sharedInstance.getCastledConfig()
+    }
 }

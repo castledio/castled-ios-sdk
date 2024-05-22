@@ -270,7 +270,7 @@ import UserNotifications
         Castled.sharedInstance.delegate = delegate
     }
 
-    public func getCastledConfig() -> CastledConfigs {
+    func getCastledConfig() -> CastledConfigs {
         return CastledConfigsUtils.configs
     }
 }

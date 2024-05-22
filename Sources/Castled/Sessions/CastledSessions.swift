@@ -10,7 +10,7 @@ import Foundation
 class CastledSessions: NSObject {
     @objc static var sharedInstance = CastledSessions()
     var userId = ""
-    let castledConfig = Castled.sharedInstance.getCastledConfig()
+    let castledConfig = CastledShared.sharedInstance.getCastledConfig()
     private var isInitilized = false
 
     override private init() {}
