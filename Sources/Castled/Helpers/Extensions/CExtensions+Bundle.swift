@@ -16,12 +16,16 @@ public extension Bundle {
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
             fatalError("Couldn't determine module name from class \(bundleClass)")
         }
-        // SPM
         var bundle: Bundle?
         if bundle == nil, let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
             // cocoapod
             bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_\(moduleName)", ofType: "bundle") {
+            // SPM
+            bundle = Bundle(path: bundlePath)
         } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_\(moduleName)", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)
         } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
             bundle = Bundle(path: bundlePath)

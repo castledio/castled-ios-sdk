@@ -17,7 +17,6 @@ public class CastledRequestHelper: NSObject {
 
     public func registerHandlerWith(key: String, handler: CastledNetworkRequestHandler.Type) {
         requestHandlerRegistry[key] = handler
-        print("requestHandlerRegistry \(requestHandlerRegistry)")
     }
 
     func getHandlerFor(_ key: String) -> CastledNetworkRequestHandler.Type? {

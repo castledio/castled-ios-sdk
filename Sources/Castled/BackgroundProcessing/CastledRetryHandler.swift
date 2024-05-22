@@ -51,8 +51,8 @@ class CastledRetryHandler {
              }*/
             requestsByType.forEach { key, requests in
                 if let handler = CastledRequestHelper.sharedInstance.getHandlerFor(key) {
-                    self?.castledSemaphore.wait()
-                    // self?.castledGroup.enter()
+                    // self?.castledSemaphore.wait()
+                    self?.castledGroup.enter()
                     handler.handleRequest(requests: requests, onSuccess: { processed_requests in
                         print("retry success: ")
                         processedRequests.append(contentsOf: processed_requests)
