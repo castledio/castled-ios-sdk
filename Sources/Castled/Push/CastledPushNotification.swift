@@ -24,9 +24,9 @@ import Foundation
             CastledLog.castledLog("Pushmodule already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
-        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.pushRequest.rawValue] = CastledPushNotificationEventsRequestHandler.self
-        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.userRegisterationRequest.rawValue] = CastledPushNotificationRegisterRequestHandler.self
-        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.logoutUser.rawValue] = CastledPushNotificationLogoutRequestHandler.self
+        CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.pushRequest.rawValue, handler: CastledPushNotificationEventsRequestHandler.self)
+        CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.userRegisterationRequest.rawValue, handler: CastledPushNotificationRegisterRequestHandler.self)
+        CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.logoutUser.rawValue, handler: CastledPushNotificationLogoutRequestHandler.self)
 
         isInitilized = true
         CastledPushNotificationController.sharedInstance.initializePush()

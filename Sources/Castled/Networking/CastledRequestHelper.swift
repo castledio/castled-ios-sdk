@@ -9,9 +9,18 @@ import Foundation
 @_spi(CastledInternal)
 
 public class CastledRequestHelper: NSObject {
-    public var requestHandlerRegistry: [String: CastledNetworkRequestHandler.Type] = [:]
+    private var requestHandlerRegistry: [String: CastledNetworkRequestHandler.Type] = [:]
 
     @objc public static var sharedInstance = CastledRequestHelper()
 
     override private init() {}
+
+    public func registerHandlerWith(key: String, handler: CastledNetworkRequestHandler.Type) {
+        requestHandlerRegistry[key] = handler
+        print("requestHandlerRegistry \(requestHandlerRegistry)")
+    }
+
+    func getHandlerFor(_ key: String) -> CastledNetworkRequestHandler.Type? {
+        requestHandlerRegistry[key]
+    }
 }

@@ -22,9 +22,8 @@ class CastledEventsTracker: NSObject {
             CastledLog.castledLog("Events tracking already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
-        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.userAttributes.rawValue] = CastledEventsUserRequestHandler.self
-        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue] = CastledEventsProductRequestHandler.self
-
+        CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.userAttributes.rawValue, handler: CastledEventsUserRequestHandler.self)
+        CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.productEventRequest.rawValue, handler: CastledEventsProductRequestHandler.self)
         isInitilized = true
         CastledEventsController.sharedInstance.initialize()
     }

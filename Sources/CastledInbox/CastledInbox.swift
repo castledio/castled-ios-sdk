@@ -37,9 +37,9 @@ import UIKit
             CastledLog.castledLog("Inbox module already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
-        CastledRequestHelper.sharedInstance.requestHandlerRegistry[CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue] = CastledInboxRequestHandler.self
-        isInitilized = true
+        CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue, handler: CastledInboxRequestHandler.self)
         CastledInboxController.sharedInstance.initialize()
+        isInitilized = true
         CastledLog.castledLog("Inbox module initialized..", logLevel: CastledLogLevel.info)
     }
 

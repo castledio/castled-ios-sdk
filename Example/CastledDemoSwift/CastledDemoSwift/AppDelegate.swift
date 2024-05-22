@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // UNUserNotificationCenter.current().delegate = self
 
         Castled.initialize(withConfig: config, andDelegate: self)
-        // CastledInbox.sharedInstance.initializeAppInbox()
+        CastledInbox.sharedInstance.initializeAppInbox()
         //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
         //   Castled.sharedInstance.setLaunchOptions(launchOptions)
         if #available(iOS 13.0, *) {
