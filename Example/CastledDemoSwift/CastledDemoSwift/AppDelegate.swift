@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let notificationCategories = getNotificationCategories()
         Castled.sharedInstance.setNotificationCategories(withItems: notificationCategories)
         window?.makeKeyAndVisible()
-        Castled.sharedInstance.setLaunchOptions(launchOptions)
+        // Castled.sharedInstance.setLaunchOptions(launchOptions)
         return true
     }
 
