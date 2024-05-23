@@ -20,10 +20,12 @@ jobs:
           
           
           pod lib lint Castled.podspec --allow-warnings
+          pod lib lint CastledInbox.podspec --allow-warnings
           pod lib lint CastledNotificationService.podspec --allow-warnings
           pod lib lint CastledNotificationContent.podspec --allow-warnings
           
           pod trunk push Castled.podspec --allow-warnings
+          pod trunk push CastledInbox.podspec --allow-warnings
           pod trunk push CastledNotificationService.podspec --allow-warnings
           pod trunk push CastledNotificationContent.podspec --allow-warnings
 
