@@ -29,7 +29,7 @@ class CastledSessionsManager {
                 self.createNewSession()
                 self.resetTheValuesForNewSession()
             } else {
-                CastledLog.castledLog("Resuming session '\(sessionId)'", logLevel: CastledLogLevel.info)
+                // CastledLog.castledLog("Resuming session '\(sessionId)'", logLevel: CastledLogLevel.info)
             }
         }
     }
@@ -66,7 +66,7 @@ class CastledSessionsManager {
                                CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
                                CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
         CastledSessions.sharedInstance.reportSessionEvents(params: sessionDetails)
-        CastledLog.castledLog("reportSessionEvents \(sessionDetails)", logLevel: .info)
+        // CastledLog.castledLog("reportSessionEvents \(sessionDetails)", logLevel: .info)
     }
 
     private func resetTheValuesForNewSession() {
@@ -105,7 +105,7 @@ class CastledSessionsManager {
             userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
             userDefaults.setValue(sessionEndTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
             userDefaults.synchronize()
-            CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration) currentStartTime \(currentStartTime)", logLevel: .info)
+            // CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration) currentStartTime \(currentStartTime)", logLevel: .info)
         }
     }
 
