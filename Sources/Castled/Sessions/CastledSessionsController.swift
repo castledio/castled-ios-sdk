@@ -38,6 +38,7 @@ class CastledSessionsController: NSObject, CastledPreferenceStoreListener, Castl
     }
 
     func onUserLoggedOut() {
+        CastledSessions.sharedInstance.userId = ""
         CastledSessionsManager.shared.resetSessionDetails()
     }
 }

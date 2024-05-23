@@ -26,9 +26,6 @@ class CastledEventsController: NSObject, CastledPreferenceStoreListener {
     }
 
     func trackEvent(eventName: String, params: [String: Any]) {
-        if CastledEventsTracker.sharedInstance.userId.isEmpty {
-            return
-        }
         let stringDict = params.serializedDictionary()
         var trackParams: [String: Any] = ["type": "track",
                                           "event": eventName,
@@ -42,9 +39,6 @@ class CastledEventsController: NSObject, CastledPreferenceStoreListener {
     }
 
     func setUserAttributes(_ attributes: CastledUserAttributes) {
-        if CastledEventsTracker.sharedInstance.userId.isEmpty {
-            return
-        }
         let stringDict = attributes.getAttributes().serializedDictionary()
         var trackParams: [String: Any] = [
             "userId": CastledEventsTracker.sharedInstance.userId,
