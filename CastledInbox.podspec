@@ -20,7 +20,7 @@ Pod::Spec.new do |spec|
   spec.ios.dependency 'RealmSwift', '~>10.49.1'
 
   spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
-  spec.source_files = 'Sources/CastledInbox/**/*.{h,m,swift}'
+  spec.source_files = 'Sources/CastledInbox/**/*.{h,m,swift}', 'Sources/CastledInboxObjC/**/*.{h,m,swift}'
   spec.resource_bundles = {
     "Castled" => ['Sources/CastledInbox/**/*.{xcassets,storyboard,xib,js}']
   }

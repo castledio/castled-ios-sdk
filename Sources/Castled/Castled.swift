@@ -70,8 +70,11 @@ import UserNotifications
         }
         CastledDeviceInfo.sharedInstance.initializeDeviceInfo()
 
-        CastledNetworkMonitor.shared.startMonitoring()
+        CastledModuleInitManager.sharedInstance.notifiyListeners()
 
+        
+        //After all module initialization
+        CastledNetworkMonitor.shared.startMonitoring()
         CastledLifeCycleManager.sharedInstance.start()
 
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()

@@ -28,7 +28,7 @@ import UIKit
 
     override private init() {}
 
-    @objc public func initializeAppInbox() {
+    func initializeAppInbox() {
         if !Castled.sharedInstance.isCastledInitialized() {
             CastledLog.castledLog("Inbox initialization failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             return
