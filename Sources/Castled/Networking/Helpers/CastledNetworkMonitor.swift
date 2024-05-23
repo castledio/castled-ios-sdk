@@ -18,7 +18,9 @@ class CastledNetworkMonitor {
             if path.status == .satisfied {
                 if self.shouldCallApis {
                     self.shouldCallApis = false
-                    CastledBGManager.sharedInstance.executeBackgroundTask {}
+                    if CastledUserDefaults.shared.userId != nil {
+                        CastledBGManager.sharedInstance.executeBackgroundTask {}
+                    }
                 }
             }
             else {
