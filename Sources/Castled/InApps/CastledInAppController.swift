@@ -20,6 +20,9 @@ class CastledInAppController: NSObject, CastledPreferenceStoreListener, CastledL
     }
 
     private func refreshInapps(isFromBG: Bool) async {
+        if !CastledUserDefaults.shared.isAppInForeground {
+            return
+        }
         if !CastledInApp.sharedInstance.userId.isEmpty, !isMakingApiCall {
             isMakingApiCall = true
             CastledInAppRepository.fetchInAppItems {
@@ -31,7 +34,7 @@ class CastledInAppController: NSObject, CastledPreferenceStoreListener, CastledL
         }
     }
 
-    func appBecomeActive() {
+    func appDidBecomeActive() {
         Task {
             await refreshInapps(isFromBG: true)
         }

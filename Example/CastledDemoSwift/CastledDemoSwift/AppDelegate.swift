@@ -22,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         config.enableTracking = true
         config.enableSessionTracking = true
         config.skipUrlHandling = false
-        config.sessionTimeOutSec = 30
+        config.sessionTimeOutSec = 15
         config.location = CastledLocation.US
-        config.logLevel = CastledLogLevel.info
+        config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
         registerForPush()
@@ -32,8 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         Castled.initialize(withConfig: config, andDelegate: self)
         CastledInbox.sharedInstance.initializeAppInbox()
-        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
-        //   Castled.sharedInstance.setLaunchOptions(launchOptions)
+        Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
+       // Castled.sharedInstance.setLaunchOptions(launchOptions)
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let notificationCategories = getNotificationCategories()
         Castled.sharedInstance.setNotificationCategories(withItems: notificationCategories)
         window?.makeKeyAndVisible()
+
         // Castled.sharedInstance.setLaunchOptions(launchOptions)
         return true
     }
@@ -142,7 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
-        UNUserNotificationCenter.current().delegate = self
+        // UNUserNotificationCenter.current().delegate = self
         Castled.sharedInstance.requestPushPermission()
     }
 
@@ -220,9 +221,9 @@ extension AppDelegate: CastledNotificationDelegate {
          }
      }*/
 
-    func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
-        print("***** Castled Notificiation Received *****\n \(userInfo)\n")
-    }
+//    func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
+//        print("***** Castled Notificiation Received *****\n \(userInfo)\n")
+//    }
 }
 
 // MARK: - Push Notification Delegate Methods

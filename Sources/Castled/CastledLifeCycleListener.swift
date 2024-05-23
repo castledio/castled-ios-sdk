@@ -8,6 +8,9 @@
 import Foundation
 @_spi(CastledInternal)
 
-public protocol CastledLifeCycleListener: AnyObject {
-    func appBecomeActive()
+@objc public protocol CastledLifeCycleListener: AnyObject {
+    @objc func appDidBecomeActive()
+    @objc optional func appWillResignActive()
+    @objc optional func appDidEnterBackground()
+    @objc optional func appWillEnterForeground()
 }

@@ -48,7 +48,6 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                     guard let imageData = NSData(contentsOf: fileUrl),
                           let attachment = UNNotificationAttachment.saveImageToDisk(fileIdentifier: imageFileIdentifier, data: imageData, options: nil)
                     else {
-//                        print("Error in UNNotificationAttachment.saveImageToDisk()")
                         return
                     }
 

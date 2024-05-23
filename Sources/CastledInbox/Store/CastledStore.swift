@@ -120,7 +120,6 @@ import RealmSwift
                         }
                     } catch {
                         // Handle error gracefully
-                        print("Error writing to realm: \(error)")
                         CastledStore.isInserting = false
                     }
 

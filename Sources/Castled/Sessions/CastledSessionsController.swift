@@ -16,17 +16,21 @@ class CastledSessionsController: NSObject, CastledPreferenceStoreListener, Castl
     func initialize() {
         CastledUserDefaults.shared.addObserver(self)
         CastledLifeCycleManager.sharedInstance.addObserver(self)
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
-    func appBecomeActive() {
+    func appDidBecomeActive() {
         if !CastledSessions.sharedInstance.userId.isEmpty {
             CastledSessionsManager.shared.didEnterForeground()
         }
     }
 
-    @objc public func didEnterBackground() {
+    @objc func appWillResignActive() {
+        if !CastledSessions.sharedInstance.userId.isEmpty {
+            CastledSessionsManager.shared.doTheBackgroundJobs()
+        }
+    }
+
+    @objc func appDidEnterBackground() {
         if !CastledSessions.sharedInstance.userId.isEmpty {
             CastledSessionsManager.shared.didEnterBackground()
         }
@@ -34,7 +38,9 @@ class CastledSessionsController: NSObject, CastledPreferenceStoreListener, Castl
 
     func onStoreUserIdSet(_ userId: String) {
         CastledSessions.sharedInstance.userId = userId
-        CastledSessionsManager.shared.startCastledSession()
+        if CastledUserDefaults.shared.isAppInForeground {
+            CastledSessionsManager.shared.startCastledSession()
+        }
     }
 
     func onUserLoggedOut() {

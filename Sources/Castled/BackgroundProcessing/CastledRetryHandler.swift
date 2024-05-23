@@ -54,14 +54,12 @@ class CastledRetryHandler {
                     // self?.castledSemaphore.wait()
                     self?.castledGroup.enter()
                     handler.handleRequest(requests: requests, onSuccess: { processed_requests in
-                        print("retry success: ")
                         processedRequests.append(contentsOf: processed_requests)
                         // self?.castledSemaphore.signal()
                         self?.castledGroup.leave()
 
                     },
                     onError: { _ in
-                        print("retry failed: \(requests)")
                         // self?.castledSemaphore.signal()
                         self?.castledGroup.leave()
 

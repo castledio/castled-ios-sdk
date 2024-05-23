@@ -19,7 +19,7 @@ class CastledPushNotificationController: NSObject, CastledPreferenceStoreListene
         CastledLifeCycleManager.sharedInstance.addObserver(self)
     }
 
-    func appBecomeActive() {
+    func appDidBecomeActive() {
         if !CastledPushNotification.sharedInstance.userId.isEmpty {
             Castled.sharedInstance.processAllDeliveredNotifications(shouldClear: false)
         }

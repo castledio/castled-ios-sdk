@@ -19,7 +19,7 @@ class CastledSessionsManager {
     private lazy var isFirstSession = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledIsFirstSesion) ?? true
     private var currentStartTime: Double = 0
     private let sessionTrackingQueue = DispatchQueue(label: "CastledSessionsTrackingQueue", attributes: .concurrent)
-
+    private var isSaving = false
     private init() {}
 
     func startCastledSession() {
@@ -28,9 +28,8 @@ class CastledSessionsManager {
             if !self.isInCurrentSession() {
                 self.createNewSession()
                 self.resetTheValuesForNewSession()
-                //  CastledLog.castledLog("New session started '\(sessionId)'", logLevel: CastledLogLevel.debug)
             } else {
-                // CastledLog.castledLog("Resuming session '\(sessionId)'", logLevel: CastledLogLevel.debug)
+                CastledLog.castledLog("Resuming session '\(sessionId)'", logLevel: CastledLogLevel.info)
             }
         }
     }
@@ -46,7 +45,7 @@ class CastledSessionsManager {
             sessionDetails.append([CastledConstants.Sessions.userId: CastledSessions.sharedInstance.userId,
                                    CastledConstants.Sessions.sessionId: sessionId,
                                    CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionClosed,
-                                   CastledConstants.Sessions.sessionLastDuration: Int(min(sessionDuration, Double(Int.max))),
+                                   CastledConstants.Sessions.sessionLastDuration: Int(min(sessionDuration, Double(Int32.max))),
                                    CastledConstants.Sessions.sessionTimeStamp: dateEnded.string(),
                                    CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
             CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, false)
@@ -66,9 +65,8 @@ class CastledSessionsManager {
                                CastledConstants.Sessions.sessionTimeStamp: dateStarted.string(),
                                CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
                                CastledConstants.Sessions.properties: [CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
-//        CastledLog.castledLog("sessionDetails ------> \(sessionDetails)", logLevel: .debug)
-
         CastledSessions.sharedInstance.reportSessionEvents(params: sessionDetails)
+        CastledLog.castledLog("reportSessionEvents \(sessionDetails)", logLevel: .info)
     }
 
     private func resetTheValuesForNewSession() {
@@ -81,37 +79,42 @@ class CastledSessionsManager {
     }
 
     func didEnterBackground() {
-        if CastledSessions.sharedInstance.userId.isEmpty {
+        if isSaving {
             return
         }
-
+        isSaving = true
         let application = UIApplication.shared
         var backgroundTask: UIBackgroundTaskIdentifier?
         backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
-            application.endBackgroundTask(backgroundTask!)
-            backgroundTask = .invalid
+            if backgroundTask != nil { backgroundTask! = .invalid }
         }
+        doTheBackgroundJobs()
 
-        sessionEndTime = Date().timeIntervalSince1970
-        sessionDuration += sessionEndTime - currentStartTime
-        let userDefaults = CastledUserDefaults.getUserDefaults()
-        userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
-        userDefaults.setValue(sessionEndTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
-        userDefaults.synchronize()
-//        CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration)", logLevel: .debug)
-        application.endBackgroundTask(backgroundTask!)
-//        backgroundTask = .invalid
+        if let bgTask = backgroundTask {
+            application.endBackgroundTask(bgTask)
+        }
+        isSaving = false
+    }
+
+    func doTheBackgroundJobs() {
+        sessionTrackingQueue.sync {
+            sessionEndTime = Date().timeIntervalSince1970
+            sessionDuration += sessionEndTime - currentStartTime
+            currentStartTime = sessionEndTime
+            let userDefaults = CastledUserDefaults.getUserDefaults()
+            userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
+            userDefaults.setValue(sessionEndTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
+            userDefaults.synchronize()
+            CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration) currentStartTime \(currentStartTime)", logLevel: .info)
+        }
     }
 
     func didEnterForeground() {
-        if CastledSessions.sharedInstance.userId.isEmpty {
-            return
-        }
         startCastledSession()
     }
 
     private func getSessionId() -> String {
-        return UUID().uuidString
+        return CastledCommonClass.getUniqueString()
     }
 
     func resetSessionDetails() {

@@ -1,8 +1,8 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "CastledInbox"
-  spec.version      = '3.5.4'
-  spec.summary      = "iOS SDK for Castled Push and InApp support"
+  spec.version      = '3.5.5'
+  spec.summary      = "iOS SDK for Castled Inbox support"
   spec.description  = <<-DESC
   Castled SDK library providing support for push and in app notifications and event handling.
                    DESC

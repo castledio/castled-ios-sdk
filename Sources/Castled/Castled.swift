@@ -71,6 +71,7 @@ import UserNotifications
         CastledDeviceInfo.sharedInstance.initializeDeviceInfo()
 
         CastledNetworkMonitor.shared.startMonitoring()
+
         CastledLifeCycleManager.sharedInstance.start()
 
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
@@ -203,11 +204,10 @@ import UserNotifications
             if let secureUserId = userToken {
                 CastledUserDefaults.setString(CastledUserDefaults.kCastledUserTokenKey, secureUserId)
             }
-
-            CastledUserDefaults.shared.userId = userId
             CastledUserDefaults.shared.userToken = userToken
 
             if userId != existingUserId {
+                CastledUserDefaults.shared.userId = userId
                 if CastledUserDefaults.shared.apnsToken != nil || CastledUserDefaults.shared.fcmToken != nil {
                     Castled.sharedInstance.updateTheUserIdAndToken(userId, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
                 } else {

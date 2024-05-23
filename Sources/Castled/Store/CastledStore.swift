@@ -29,7 +29,6 @@ import Foundation
             let failedcount = failedItems.count
             let idsToRemove = Set(items.map { $0.requestId })
             let updatedRequests = failedItems.filter { !idsToRemove.contains($0.requestId) }
-            print("deleteFailedRequests \(updatedRequests) resned count \(idsToRemove.count)/\(failedcount)")
             CastledUserDefaults.setObject(updatedRequests, as: [CastledNetworkRequest].self, forKey: CastledUserDefaults.kCastledFailedRequests)
         }
     }

@@ -86,7 +86,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             self.navigationItem.rightBarButtonItem = nil
             let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self.inboxTapped))
             self.navigationItem.rightBarButtonItem = inboxButton
-            self.setUpInboxCallback()
+            // self.setUpInboxCallback()
         }
         else {
             self.btnGotoSecondVC.isHidden = true

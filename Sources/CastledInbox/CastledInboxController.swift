@@ -21,6 +21,9 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener, CastledL
     }
 
     private func refreshInbox() async {
+        if !CastledUserDefaults.shared.isAppInForeground {
+            return
+        }
         if !CastledInbox.sharedInstance.userId.isEmpty, !isMakingApiCall {
             isMakingApiCall = true
             CastledInboxRepository.fetchInboxItems {
@@ -29,7 +32,7 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener, CastledL
         }
     }
 
-    func appBecomeActive() {
+    func appDidBecomeActive() {
         Task {
             await refreshInbox()
         }

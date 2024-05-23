@@ -46,6 +46,8 @@ public class CastledUserDefaults: NSObject {
     }
 
     var userToken: String?
+    public var isAppInForeground = false
+
     lazy var deliveredPushIds: [String] = {
         CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
     }()

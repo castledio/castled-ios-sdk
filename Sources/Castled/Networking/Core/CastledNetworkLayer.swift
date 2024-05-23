@@ -72,14 +72,7 @@ public class CastledNetworkLayer: NSObject {
             let api_response = await CastledNetworkLayer.shared.sendRequestWith(request: request, path: path, responseModel: responseModel, shouldDecodeResponse: shouldDecodeResponse)
             if !api_response.success && withRetry {
                 CastledStore.enqueFailedRequest(request)
-                print("insert failed items to store..............................................")
-            } else {
-                print("api successs \(api_response.success).............................................. path \(path)")
-                if !api_response.success {
-                    print("api failed \(request).............................................. \(api_response.errorMessage)")
-                }
             }
-
             completion(api_response)
         }
     }

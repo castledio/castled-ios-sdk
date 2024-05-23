@@ -17,12 +17,38 @@ public class CastledLifeCycleManager: NSObject {
 
     func start() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
-    @objc public func appBecomeActive() {
+    @objc public func appWillResignActive() {
+        CastledUserDefaults.shared.isAppInForeground = false
         for observer in observers {
-            observer.appBecomeActive()
+            if let observerMethod = observer.appWillResignActive {
+                observerMethod()
+            }
+        }
+    }
+
+    @objc public func didEnterBackground() {
+        CastledUserDefaults.shared.isAppInForeground = false
+        for observer in observers {
+            if let observerMethod = observer.appDidEnterBackground {
+                observerMethod()
+            }
+        }
+    }
+
+    @objc public func appWillEnterForeground() {
+        //  CastledUserDefaults.shared.isAppInForeground = true
+    }
+
+    @objc public func appDidBecomeActive() {
+        CastledUserDefaults.shared.isAppInForeground = true
+        for observer in observers {
+            observer.appDidBecomeActive()
         }
         if CastledUserDefaults.shared.userId != nil {
             Castled.sharedInstance.executeBGTasks()
