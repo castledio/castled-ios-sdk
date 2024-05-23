@@ -5,14 +5,15 @@
 //
 
 import Foundation
+@_spi(CastledInternal)
 
-class CastledLog {
+public enum CastledLog {
     private static var defaultLogLevel: CastledLogLevel = .debug
     static func setLogLevel(_ logLevel: CastledLogLevel) {
         defaultLogLevel = logLevel
     }
 
-    static func castledLog(_ item: Any, logLevel: CastledLogLevel, separator: String = " ", terminator: String = "\n") {
+    public static func castledLog(_ item: Any, logLevel: CastledLogLevel, separator: String = " ", terminator: String = "\n") {
         if logLevel.rawValue <= defaultLogLevel.rawValue {
             var logLvelString = "Castled"
             if logLevel == CastledLogLevel.error {

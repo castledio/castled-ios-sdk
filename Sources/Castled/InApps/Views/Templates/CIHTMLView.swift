@@ -73,8 +73,8 @@ extension CIHTMLView: CastledInAppJSBridgeDelegate {
         if let optional_params = params["custom_params"] as? [String: Any] {
             btnLabel = optional_params["button_title"] as? String ?? ""
         }
-        CastledInApps.sharedInstance.reportInAppEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "", btnLabel: btnLabel, actionUri: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? "")
-        CastledInApps.sharedInstance.performButtonActionFor(webParams: params as? [String: Any])
+        CastledInAppsDisplayController.sharedInstance.reportInAppEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String ?? "", btnLabel: btnLabel, actionUri: params[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? "")
+        CastledInAppsDisplayController.sharedInstance.performButtonActionFor(webParams: params as? [String: Any])
         webViewBridge.delegate = nil
         webViewBridge.delegate = nil
         parentContainerVC?.hideInAppViewFromWindow(withAnimation: true)

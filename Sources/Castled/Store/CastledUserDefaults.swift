@@ -6,9 +6,11 @@
 //
 
 import Foundation
+@_spi(CastledInternal)
 
-class CastledUserDefaults: NSObject {
-    static let shared = CastledUserDefaults()
+public class CastledUserDefaults: NSObject {
+    public static let shared = CastledUserDefaults()
+    private var observers: [CastledPreferenceStoreListener] = []
 
     private static let userDefaults = UserDefaults.standard
     static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.configs.appGroupId) ?? UserDefaults.standard
@@ -21,7 +23,8 @@ class CastledUserDefaults: NSObject {
     static let kCastledFCMTokenKey = "_castledFCMToken_"
     static let kCastledBadgeKey = "_castledApplicationBadge_"
     static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
-    static let kCastledFailedItems = "_castledFailedItems_"
+    public static let kCastledFailedItems = "_castledFailedItems_"
+    public static let kCastledFailedRequests = "_castledFailedRequests_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
     static let kCastledClickedPushIds = "_castledClickedPushIds_"
@@ -34,8 +37,17 @@ class CastledUserDefaults: NSObject {
     static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
     static let kCastledInAppsList = "_castledInappsList_"
 
-    var userId: String?
+    public var userId: String? {
+        didSet {
+            if let userId = userId {
+                notifyUserIdObservers(userId)
+            }
+        }
+    }
+
     var userToken: String?
+    public var isAppInForeground = false
+
     lazy var deliveredPushIds: [String] = {
         CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
     }()
@@ -88,7 +100,7 @@ class CastledUserDefaults: NSObject {
         ud.synchronize()
     }
 
-    static func setObjectFor(_ key: String, _ data: Any) {
+    public static func setObjectFor(_ key: String, _ data: Any) {
         // Save the value in UserDefaults
         userDefaults.set(data, forKey: key)
         userDefaults.synchronize()
@@ -98,8 +110,30 @@ class CastledUserDefaults: NSObject {
         return userDefaults.data(forKey: key)
     }
 
-    static func getObjectFor(_ key: String) -> Any? {
+    public static func getObjectFor(_ key: String) -> Any? {
         return userDefaults.object(forKey: key)
+    }
+
+    public static func getObjectFor<T: Decodable>(_ key: String, as type: T.Type) -> T? {
+        guard let data = userDefaults.data(forKey: key) else {
+            return nil
+        }
+        let decoder = JSONDecoder()
+        do {
+            let object = try decoder.decode(T.self, from: data)
+            return object
+        } catch {
+            return nil
+        }
+    }
+
+    public static func setObject<T: Encodable>(_ object: T, as type: T.Type, forKey key: String) {
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(object)
+            userDefaults.set(data, forKey: key)
+            userDefaults.synchronize()
+        } catch {}
     }
 
     static func setValueFor(_ key: String, _ data: Any, ud: UserDefaults = UserDefaults.standard) {
@@ -122,16 +156,34 @@ class CastledUserDefaults: NSObject {
         removeFor(kCastledDeviceInfoKey)
         removeFor(kCastledUserTokenKey)
         removeFor(kCastledFailedItems)
+        removeFor(kCastledFailedRequests)
         removeFor(kCastledSavedInappConfigs)
         removeFor(kCastledDeliveredPushIds)
         removeFor(kCastledClickedPushIds)
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledInAppsList)
         removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
-        if CastledConfigsUtils.configs.enableSessionTracking {
-            CastledSessionsManager.shared.resetSessionDetails()
-        }
+        CastledUserDefaults.shared.notifyLogout()
         CastledUserDefaults.shared.userId = nil
 //        CastledUserDefaults.shared.userToken = nil
+    }
+
+    public func addObserver(_ observer: CastledPreferenceStoreListener) {
+        if let userId = userId {
+            observer.onStoreUserIdSet(userId)
+        }
+        observers.append(observer)
+    }
+
+    private func notifyUserIdObservers(_ userid: String) {
+        for observer in observers {
+            observer.onStoreUserIdSet(userid)
+        }
+    }
+
+    private func notifyLogout() {
+        for observer in observers {
+            observer.onUserLoggedOut()
+        }
     }
 }

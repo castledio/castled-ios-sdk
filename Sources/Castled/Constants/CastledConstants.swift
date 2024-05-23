@@ -6,15 +6,16 @@
 //
 
 import Foundation
+@_spi(CastledInternal)
 
-enum CastledConstants {
+public enum CastledConstants {
     // Plist Key for enable/ Disable swizzling
 
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
 
-    enum PushNotification {
+    public enum PushNotification {
         static let customKey = "castled"
         static let apsKey = "aps"
         static let badgeKey = "badge"
@@ -30,7 +31,7 @@ enum CastledConstants {
             static let category = "category"
         }
 
-        enum CustomProperties {
+        public enum CustomProperties {
             static let notificationId = "castled_notification_id"
             static let teamId = "team_id"
             static let sourceContext = "source_context"
@@ -38,25 +39,25 @@ enum CastledConstants {
             static let mediaURL = "media_url"
             static let categoryActions = "category_actions"
             static let keyValuePair = "key_vals"
-            enum Category {
+            public enum Category {
                 static let type = "type"
                 static let name = "name"
                 static let actionComponents = "actionComponents"
 
-                enum Action {
+                public enum Action {
                     static let actionId = "actionId"
                     static let clickAction = "clickAction"
                     static let clickActionUrl = "clickActionUrl"
                     static let url = "url"
                     static let useWebView = "useWebview"
-                    static let keyVals = "keyVals"
+                    public static let keyVals = "keyVals"
                     static let buttonTitle = "buttonTitle"
                     static let label = "label"
                 }
             }
         }
 
-        enum ClickActionType: String, Codable {
+        public enum ClickActionType: String, Codable {
             case navigateToScreen = "NAVIGATE_TO_SCREEN"
             case deepLink = "DEEP_LINKING"
             case richLanding = "RICH_LANDING"
@@ -66,6 +67,10 @@ enum CastledConstants {
             case custom = "CUSTOM" // this is for inapp
             case none = "NONE" // this is for inapp
         }
+    }
+
+    public enum EventsReporting {
+        public static let events = "events"
     }
 
     enum CastledPushCustomPropertyKeys {
@@ -87,7 +92,6 @@ enum CastledConstants {
         case viewed = "VIEWED" // this is for inapp
     }
 
-    static let CastledNetworkRequestTypeKey = "castled_request_type"
     enum InAppsConfigKeys: String {
         case inAppNotificationId = "nid"
         case inAppCurrentDisplayCounter = "dc"
@@ -124,14 +128,14 @@ enum CastledConstants {
         }
     }
 
-    enum CastledNetworkRequestType: String {
+    public enum CastledNetworkRequestType: String {
         case pushRequest = "push"
         case userRegisterationRequest = "userRegn"
         case inappRequest = "inapp"
         case inboxRequest = "inbox"
         case deviceInfoRequest = "deviceInfo"
         case productEventRequest = "prodEvent"
-        case userEventRequest = "userEvent"
+//        case userEventRequest = "userEvent"
         case userAttributes = "userAttrs"
         case sessionTracking = "session"
         case logoutUser = "logout"

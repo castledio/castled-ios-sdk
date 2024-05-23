@@ -33,26 +33,8 @@ class CastledBGManager {
             return
         }
         isExecuting = true
-        let dispatchGroup = DispatchGroup()
-        let dispatchSemaphore = DispatchSemaphore(value: 1)
-        dispatchGroup.enter()
-        dispatchSemaphore.wait()
-        CastledNetworkManager.fetchInAppNotifications { [weak self] _ in
-            CastledNetworkManager.fetchInboxItems { _ in
-                self?.retrySendingAllFailedEvents(dispatchGroup: dispatchGroup, dispatchSemaphore: dispatchSemaphore)
-            }
-        }
-        dispatchGroup.notify(queue: .main) { [weak self] in
+        CastledRetryHandler.shared.retrySendingAllFailedEvents(completion: { [weak self] in
             self?.isExecuting = false
-            completion()
-        }
-    }
-
-    private func retrySendingAllFailedEvents(dispatchGroup: DispatchGroup, dispatchSemaphore: DispatchSemaphore) {
-        CastledRetryHandler.shared.retrySendingAllFailedEvents(completion: {
-            dispatchSemaphore.signal()
-            dispatchGroup.leave()
-
         })
     }
 
@@ -95,10 +77,10 @@ class CastledBGManager {
             do {
                 try BGTaskScheduler.shared.submit(taskRequest)
             } catch {
-                CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.info)
+                CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.debug)
             }
         } else {
-            CastledLog.castledLog("\(CastledExceptionMessages.backgroundProcessNotenabled.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("\(CastledExceptionMessages.backgroundProcessNotenabled.rawValue)", logLevel: CastledLogLevel.debug)
         }
     }
 
@@ -116,7 +98,7 @@ class CastledBGManager {
         do {
             try BGTaskScheduler.shared.submit(taskRequest)
         } catch {
-            CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("\(CastledExceptionMessages.permittedIdentifiersNotInitialised.rawValue)", logLevel: CastledLogLevel.debug)
         }
     }
 

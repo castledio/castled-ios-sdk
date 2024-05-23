@@ -45,8 +45,8 @@ class CIBannerDefaultView: UIView, CIViewProtocol {
     }
 
     @IBAction func detailsButtonClikd(_ sender: Any) {
-        CastledInApps.sharedInstance.reportInAppEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.defaultClickAction, btnLabel: inAppDisplaySettings?.title, actionUri: inAppDisplaySettings?.defaultClickActionUri)
-        CastledInApps.sharedInstance.performButtonActionFor(slide: (parentContainerVC?.selectedInAppObject)!.message?.banner)
+        CastledInAppsDisplayController.sharedInstance.reportInAppEvent(inappObject: (parentContainerVC?.selectedInAppObject)!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppDisplaySettings?.defaultClickAction, btnLabel: inAppDisplaySettings?.title, actionUri: inAppDisplaySettings?.defaultClickActionUri)
+        CastledInAppsDisplayController.sharedInstance.performButtonActionFor(slide: (parentContainerVC?.selectedInAppObject)!.message?.banner)
         parentContainerVC?.hideInAppViewFromWindow()
     }
 }

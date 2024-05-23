@@ -6,6 +6,7 @@
 //
 
 import Castled
+import CastledInbox
 import UIKit
 
 class ViewController: UIViewController, CastledInboxViewControllerDelegate {
@@ -60,6 +61,24 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
          Castled.sharedInstance.setUserAttributes(userAttributes)*/
     }
 
+    func logUserAttributes() {
+        let userAttributes = CastledUserAttributes()
+        userAttributes.setFirstName("Antony Joe Mathew 1")
+        userAttributes.setLastName("Mathew")
+        userAttributes.setCity("Sanfrancisco")
+        userAttributes.setCountry("US")
+        userAttributes.setEmail("doe@email.com")
+        userAttributes.setDOB("02-01-1995")
+        userAttributes.setGender("M")
+        userAttributes.setPhone("+13156227533")
+        // Custom Attributes
+        userAttributes.setCustomAttribute("prime_member", true)
+        userAttributes.setCustomAttribute("int", 500)
+        userAttributes.setCustomAttribute("double", 500.01)
+        userAttributes.setCustomAttribute("occupation", "artist")
+        Castled.sharedInstance.setUserAttributes(userAttributes)
+    }
+
     func showRequiredViews() {
         if UserDefaults.standard.value(forKey: self.userIdKey ?? "userIdKey") != nil {
             self.btnGotoSecondVC.isHidden = false
@@ -67,7 +86,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             self.navigationItem.rightBarButtonItem = nil
             let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self.inboxTapped))
             self.navigationItem.rightBarButtonItem = inboxButton
-            //   self.setUpInboxCallback()
+            self.setUpInboxCallback()
         }
         else {
             self.btnGotoSecondVC.isHidden = true
@@ -117,22 +136,26 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 //        style.tabBarDefaultBackgroundColor = .purple
 //        style.tabBarSelectedBackgroundColor = .lightGray
 //        style.tabBarIndicatorBackgroundColor = .red
-        let inboxViewController = Castled.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
+        let inboxViewController = CastledInbox.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
         inboxViewController.modalPresentationStyle = .fullScreen
         present(inboxViewController, animated: true)
         // navigationController?.setNavigationBarHidden(true, animated: false)
         // navigationController?.pushViewController(inboxViewController, animated: true)
+        Castled.sharedInstance.logCustomAppEvent("antony_event_both", params: ["IntValue": 200,
+                                                                               // "Date": Date(),
+                                                                               "BoolValue": true,
+                                                                               "Name": "Antony Joe Mathew"])
+        self.logUserAttributes()
     }
 
     func setUpInboxCallback() {
         //   return;
-        Castled.sharedInstance.observeUnreadCountChanges(listener: { unreadCount in
+        CastledInbox.sharedInstance.observeUnreadCountChanges(listener: { unreadCount in
             print("Inbox unread count is \(unreadCount)")
         })
 
-        Castled.sharedInstance.getInboxItems(completion: { _, _, _ in
-
-            //   print("getInboxItems \(result) \(errormessage)")
+        CastledInbox.sharedInstance.getInboxItems(completion: { _, result, errormessage in
+            print("getInboxItems \(result) \(errormessage)")
         })
         //       Castled.sharedInstance.dismissInboxViewController()
     }

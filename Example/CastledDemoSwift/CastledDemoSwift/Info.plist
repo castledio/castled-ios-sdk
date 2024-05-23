@@ -47,5 +47,7 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>UIApplicationExitsOnSuspend</key>
+	<false/>
 </dict>
 </plist>

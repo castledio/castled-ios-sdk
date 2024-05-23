@@ -90,7 +90,7 @@ class CastledInAppDisplayViewController: UIViewController {
 
         }) { [weak self] _ in
             self?.view.layoutSubviews()
-            CastledInApps.sharedInstance.reportInAppEvent(inappObject: inAppObj, eventType: CastledConstants.CastledEventTypes.viewed.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
+            CastledInAppsDisplayController.sharedInstance.reportInAppEvent(inappObject: inAppObj, eventType: CastledConstants.CastledEventTypes.viewed.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
             if inAppObj.displayConfig?.autoDismissInterval ?? 0 > 0 {
                 self?.autoDismissalWorkItem?.cancel()
                 let requestWorkItem = DispatchWorkItem { [weak self] in
@@ -114,8 +114,8 @@ class CastledInAppDisplayViewController: UIViewController {
                 interstitialView.alpha = 0
             }) { [weak self] _ in
                 // Remove the interstitial view controller from the view hierarchy
-                CastledInApps.sharedInstance.isCurrentlyDisplaying = false
-                CastledInApps.sharedInstance.checkPendingNotificationsIfAny()
+                CastledInAppsDisplayController.sharedInstance.isCurrentlyDisplaying = false
+                CastledInAppsDisplayController.sharedInstance.checkPendingNotificationsIfAny()
                 self?.removeAllViews()
                 // Notify the delegate that it should dismiss the interstitial view controller
             }
@@ -135,7 +135,7 @@ class CastledInAppDisplayViewController: UIViewController {
     }
 
     private func dismissButtonClicked(_ sender: Any) {
-        CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
+        CastledInAppsDisplayController.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.discarded.rawValue, actionType: nil, btnLabel: nil, actionUri: nil)
         hideInAppViewFromWindow(withAnimation: true)
     }
 
@@ -174,16 +174,16 @@ class CastledInAppDisplayViewController: UIViewController {
 
     @objc func primaryButtonClikd(_ sender: UIButton) {
         if let actionButtons = getActionbuttons() {
-            CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppView?.inAppDisplaySettings?.primaryButtonClickAction, btnLabel: inAppView?.inAppDisplaySettings?.primaryButtonTitle, actionUri: inAppView?.inAppDisplaySettings?.primaryButtonClickActionUri)
-            CastledInApps.sharedInstance.performButtonActionFor(buttonAction: actionButtons.last)
+            CastledInAppsDisplayController.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppView?.inAppDisplaySettings?.primaryButtonClickAction, btnLabel: inAppView?.inAppDisplaySettings?.primaryButtonTitle, actionUri: inAppView?.inAppDisplaySettings?.primaryButtonClickActionUri)
+            CastledInAppsDisplayController.sharedInstance.performButtonActionFor(buttonAction: actionButtons.last)
         }
         hideInAppViewFromWindow(withAnimation: true)
     }
 
     @objc func secondaryButtonClikd(_ sender: UIButton) {
         if let actionButtons = getActionbuttons() {
-            CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppView?.inAppDisplaySettings?.seondaryButtonClickAction, btnLabel: inAppView?.inAppDisplaySettings?.seondaryButtonTitle, actionUri: inAppView?.inAppDisplaySettings?.seondaryButtonClickActionUri)
-            CastledInApps.sharedInstance.performButtonActionFor(buttonAction: actionButtons.first)
+            CastledInAppsDisplayController.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: inAppView?.inAppDisplaySettings?.seondaryButtonClickAction, btnLabel: inAppView?.inAppDisplaySettings?.seondaryButtonTitle, actionUri: inAppView?.inAppDisplaySettings?.seondaryButtonClickActionUri)
+            CastledInAppsDisplayController.sharedInstance.performButtonActionFor(buttonAction: actionButtons.first)
         }
 
         hideInAppViewFromWindow(withAnimation: true)
@@ -203,8 +203,8 @@ class CastledInAppDisplayViewController: UIViewController {
                     params[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] = keyvals
                 }
 
-                CastledInApps.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)
-                CastledInApps.sharedInstance.performButtonActionFor(webParams: params)
+                CastledInAppsDisplayController.sharedInstance.reportInAppEvent(inappObject: selectedInAppObject!, eventType: CastledConstants.CastledEventTypes.cliked.rawValue, actionType: defaultAction.rawValue, btnLabel: "", actionUri: url)
+                CastledInAppsDisplayController.sharedInstance.performButtonActionFor(webParams: params)
                 hideInAppViewFromWindow(withAnimation: true)
             }
         }

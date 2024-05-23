@@ -21,6 +21,10 @@ let package = Package(
         .library(
             name: "CastledNotificationService",
             targets: ["CastledNotificationService"]
+        ),
+        .library(
+            name: "CastledInbox",
+            targets: ["CastledInbox"]
         )
     ],
     dependencies: [
@@ -31,14 +35,12 @@ let package = Package(
         .target(
             name: "Castled",
             dependencies: [
-                "SDWebImage",
-                .product(name: "RealmSwift", package: "realm-cocoa")
+                "SDWebImage"
             ],
             path: "Sources/Castled",
             resources: [
                 .process("InApps/Views/CastledAssets.xcassets"),
-                .process("InApps/Views/Resources"),
-                .process("Inbox/Views/Resources")
+                .process("InApps/Views/Resources")
             ], linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit"),
@@ -81,6 +83,21 @@ let package = Package(
             path: "Sources/CastledNotificationService/Swift",
             linkerSettings: [
                 .linkedFramework("AVFoundation")
+            ]
+        ),
+        .target(
+            name: "CastledInbox",
+            dependencies: [
+                "SDWebImage",
+                .product(name: "RealmSwift", package: "realm-cocoa")
+            ],
+            path: "Sources/CastledInbox",
+            resources: [
+                .process("Views/CastledInboxAssets.xcassets"),
+                .process("Views/Resources")
+            ], linkerSettings: [
+                .linkedFramework("AVFoundation"),
+                .linkedFramework("UIKit")
             ]
         )
     ]

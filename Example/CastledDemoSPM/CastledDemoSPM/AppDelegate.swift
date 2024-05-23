@@ -6,6 +6,7 @@
 //
 
 import Castled
+import CastledInbox
 import UIKit
 import UserNotifications
 
@@ -23,14 +24,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         config.skipUrlHandling = false
         config.sessionTimeOutSec = 30
         config.location = CastledLocation.US
-        config.logLevel = CastledLogLevel.debug
+        config.logLevel = CastledLogLevel.info
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
         registerForPush()
+        // UNUserNotificationCenter.current().delegate = self
 
         Castled.initialize(withConfig: config, andDelegate: self)
+        CastledInbox.sharedInstance.initializeAppInbox()
         //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
-
+        //   Castled.sharedInstance.setLaunchOptions(launchOptions)
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -44,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let notificationCategories = getNotificationCategories()
         Castled.sharedInstance.setNotificationCategories(withItems: notificationCategories)
         window?.makeKeyAndVisible()
-        Castled.sharedInstance.setLaunchOptions(launchOptions)
+        // Castled.sharedInstance.setLaunchOptions(launchOptions)
         return true
     }
 
@@ -244,6 +247,8 @@ extension AppDelegate {
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("userNotificationCenter willPresent appdelegate ---- ")
+
         Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
         completionHandler([.alert, .badge, .sound])
     }
@@ -251,9 +256,9 @@ extension AppDelegate {
     /// This method is called when a remote notification is received and the app is running in the background.
     /// It is crucial to inform the Castled SDK about the notification for proper processing.
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { result in
-            completionHandler(result)
-        })
+        Castled.sharedInstance.didReceiveRemoteNotification(userInfo)
+        print("didReceiveRemoteNotification appdelegate ---- ")
+        completionHandler(.noData)
     }
 }
 

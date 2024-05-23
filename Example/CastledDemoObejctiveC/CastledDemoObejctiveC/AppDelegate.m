@@ -6,7 +6,9 @@
 //
 
 #import "AppDelegate.h"
-#import <Castled/Castled-Swift.h>
+//#import <Castled/Castled-Swift.h>
+#import <Castled-Swift.h>
+
 #import <UserNotifications/UserNotifications.h>
 
 @interface AppDelegate ()<UIApplicationDelegate,UNUserNotificationCenterDelegate,CastledNotificationDelegate>
@@ -137,9 +139,10 @@
 
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    [[Castled sharedInstance] didReceiveRemoteNotificationInApplication:application withInfo:userInfo fetchCompletionHandler:^(UIBackgroundFetchResult result) {
-        completionHandler(result);
-    }];
+    [[Castled sharedInstance] didReceiveRemoteNotification:userInfo];
+    //your code
+    completionHandler(UIBackgroundFetchResultNoData);
+     
 }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
     // Your implementation goes here

@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-class CastledCommonClass {
+public class CastledCommonClass {
     static func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
             do {
@@ -85,7 +85,7 @@ class CastledCommonClass {
         return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 
-    static func hexStringToUIColor(hex: String) -> UIColor? {
+    public static func hexStringToUIColor(hex: String) -> UIColor? {
         return UIColor(hexString: hex)
     }
 
@@ -116,5 +116,37 @@ class CastledCommonClass {
             return version
         }
         return ""
+    }
+
+    static func getDeviceId() -> String {
+        if let deviceID = CastledUserDefaults.getString(CastledUserDefaults.kCastledDeviceIddKey) {
+            return deviceID
+        }
+        let random = CastledCommonClass.getUniqueString()
+        CastledUserDefaults.setString(CastledUserDefaults.kCastledDeviceIddKey, random)
+        return random
+    }
+
+    private static func randomIntString() -> String {
+        let randomInt = Int.random(in: 1 ... Int.max)
+        return String(randomInt)
+    }
+
+    static func getUniqueString() -> String {
+        CastledCommonClass.getBase64UUID(uuid: UUID())
+    }
+
+    static func getBase64UUID(uuid: UUID) -> String {
+        // Convert UUID to 16-byte binary representation
+        var uuidBytes = uuid.uuid
+        let data = Data(bytes: &uuidBytes, count: MemoryLayout.size(ofValue: uuidBytes))
+
+        // Encode the data to a Base64 string
+        let base64String = data.base64EncodedString()
+
+        // Remove the padding characters to get 22 characters instead of 24
+        let trimmedBase64String = base64String.trimmingCharacters(in: CharacterSet(charactersIn: "="))
+
+        return trimmedBase64String
     }
 }
