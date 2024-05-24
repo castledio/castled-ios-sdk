@@ -70,8 +70,10 @@ import UserNotifications
         }
         CastledDeviceInfo.sharedInstance.initializeDeviceInfo()
 
-        CastledNetworkMonitor.shared.startMonitoring()
+        CastledModuleInitManager.sharedInstance.notifiyListeners()
 
+        // After all module initialization
+        CastledNetworkMonitor.shared.startMonitoring()
         CastledLifeCycleManager.sharedInstance.start()
 
 //        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
@@ -183,10 +185,6 @@ import UserNotifications
         UIApplication.shared.applicationIconBadgeNumber = count
     }
 
-    @objc func executeBGTasks() {
-        CastledBGManager.sharedInstance.executeBackgroundTask {}
-    }
-
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if CastledConfigsUtils.configs.enableInApp == false {
             return
@@ -213,14 +211,7 @@ import UserNotifications
                 } else {
                     Castled.sharedInstance.checkAndRegisterForAPNsToken()
                 }
-                self.didSetUserId()
             }
-        }
-    }
-
-    private func didSetUserId() {
-        DispatchQueue.main.async {
-            Castled.sharedInstance.executeBGTasks()
         }
     }
 

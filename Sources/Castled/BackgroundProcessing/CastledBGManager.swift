@@ -17,7 +17,7 @@ class CastledBGManager {
 
     private init() {}
 
-    func registerBackgroundTasks() {
+    private func registerBackgroundTasks() {
         if isRegistered { return }
         if #available(iOS 13.0, *) {
             isRegistered = true

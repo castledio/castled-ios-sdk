@@ -24,7 +24,7 @@ let package = Package(
         ),
         .library(
             name: "CastledInbox",
-            targets: ["CastledInbox"]
+            targets: ["CastledInbox", "CastledInboxObjC"]
         )
     ],
     dependencies: [
@@ -98,6 +98,20 @@ let package = Package(
             ], linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit")
+            ]
+        ),
+        .target(
+            name: "CastledInboxObjC",
+            dependencies: [
+                "CastledInbox", "Castled"
+            ],
+            path: "Sources/CastledInboxObjC",
+            publicHeadersPath: ".",
+            cSettings: [
+                .define("SWIFT_PACKAGE")
+            ],
+            linkerSettings: [
+                .linkedFramework("AVFoundation")
             ]
         )
     ]
