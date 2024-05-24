@@ -32,7 +32,7 @@ import UIKit
         CastledLog.castledLog("In-app module initialized..", logLevel: CastledLogLevel.info)
     }
 
-    @objc public func logAppPageViewedEvent(_ viewContoller: UIViewController) {
+    @objc public func logPageViewedEvent(_ viewContoller: UIViewController) {
         if !isInitilized {
             CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
             return

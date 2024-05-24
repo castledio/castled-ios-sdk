@@ -11,7 +11,7 @@ import UIKit
 extension UIViewController {
     @objc func _tracked_viewwDidAppear(_ animated: Bool) {
         if !(String(describing: type(of: self)).hasPrefix("CastledInApp")), !CastledInApp.sharedInstance.userId.isEmpty {
-            Castled.sharedInstance.logAppPageViewedEvent(self)
+            Castled.sharedInstance.logPageViewedEvent(self)
             if responds(to: #selector(_tracked_viewwDidAppear(_:))) {
                 _tracked_viewwDidAppear(animated)
             }
