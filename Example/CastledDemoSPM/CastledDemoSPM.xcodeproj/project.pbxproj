@@ -7,13 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A1641F82BFE561400F4E275 /* castled-ios-sdk in Resources */ = {isa = PBXBuildFile; fileRef = 0A1641F72BFE561400F4E275 /* castled-ios-sdk */; };
-		0A1641F92BFE561400F4E275 /* castled-ios-sdk in Resources */ = {isa = PBXBuildFile; fileRef = 0A1641F72BFE561400F4E275 /* castled-ios-sdk */; };
-		0A1641FA2BFE561400F4E275 /* castled-ios-sdk in Resources */ = {isa = PBXBuildFile; fileRef = 0A1641F72BFE561400F4E275 /* castled-ios-sdk */; };
-		0A1641FC2BFE565700F4E275 /* Castled in Frameworks */ = {isa = PBXBuildFile; productRef = 0A1641FB2BFE565700F4E275 /* Castled */; };
-		0A1641FE2BFE565700F4E275 /* CastledInbox in Frameworks */ = {isa = PBXBuildFile; productRef = 0A1641FD2BFE565700F4E275 /* CastledInbox */; };
-		0A1642002BFE567200F4E275 /* CastledNotificationService in Frameworks */ = {isa = PBXBuildFile; productRef = 0A1641FF2BFE567200F4E275 /* CastledNotificationService */; };
-		0A1642022BFE568200F4E275 /* CastledNotificationContent in Frameworks */ = {isa = PBXBuildFile; productRef = 0A1642012BFE568200F4E275 /* CastledNotificationContent */; };
 		0A365D8C2A4366FE0048BD09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365D8B2A4366FE0048BD09 /* AppDelegate.swift */; };
 		0A365D8E2A4366FE0048BD09 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365D8D2A4366FE0048BD09 /* SceneDelegate.swift */; };
 		0A365D952A4366FF0048BD09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A365D942A4366FF0048BD09 /* Assets.xcassets */; };
@@ -25,6 +18,11 @@
 		0A365DED2A4367F00048BD09 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365DEA2A4367F00048BD09 /* SecondViewController.swift */; };
 		0A365DEE2A4367F00048BD09 /* DeeplinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365DEB2A4367F00048BD09 /* DeeplinkViewController.swift */; };
 		0A365DF02A4367FD0048BD09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A365DEF2A4367FD0048BD09 /* Main.storyboard */; };
+		0A60A9A22C005D1300E2E1E9 /* castled-ios-sdk in Resources */ = {isa = PBXBuildFile; fileRef = 0A60A9A12C005D1300E2E1E9 /* castled-ios-sdk */; };
+		0A60A9A42C005D3A00E2E1E9 /* Castled in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A32C005D3A00E2E1E9 /* Castled */; };
+		0A60A9A62C005D3A00E2E1E9 /* CastledInbox in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A52C005D3A00E2E1E9 /* CastledInbox */; };
+		0A60A9A82C005D4200E2E1E9 /* CastledNotificationService in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A72C005D4200E2E1E9 /* CastledNotificationService */; };
+		0A60A9AA2C005D4800E2E1E9 /* CastledNotificationContent in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A92C005D4800E2E1E9 /* CastledNotificationContent */; };
 		0AB9043C2A474544009926A7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9043B2A474544009926A7 /* NotificationService.swift */; };
 		0AB904402A474544009926A7 /* CNotificationServiceDemo.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0AB904392A474544009926A7 /* CNotificationServiceDemo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0AB904492A474564009926A7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A365DC12A43674F0048BD09 /* UserNotifications.framework */; };
@@ -81,7 +79,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0A1641F72BFE561400F4E275 /* castled-ios-sdk */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "castled-ios-sdk"; path = ../..; sourceTree = "<group>"; };
 		0A365D882A4366FE0048BD09 /* CastledDemoSPM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CastledDemoSPM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A365D8B2A4366FE0048BD09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A365D8D2A4366FE0048BD09 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +98,7 @@
 		0A365DEF2A4367FD0048BD09 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		0A365E012A436E770048BD09 /* CastledDemoSPM.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CastledDemoSPM.entitlements; sourceTree = "<group>"; };
 		0A392ECB2A55981800D1F4DD /* CNotificationContentDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CNotificationContentDemo.entitlements; sourceTree = "<group>"; };
+		0A60A9A12C005D1300E2E1E9 /* castled-ios-sdk */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "castled-ios-sdk"; path = ../..; sourceTree = "<group>"; };
 		0AB904392A474544009926A7 /* CNotificationServiceDemo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CNotificationServiceDemo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AB9043B2A474544009926A7 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		0AB9043D2A474544009926A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,8 +113,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A1641FE2BFE565700F4E275 /* CastledInbox in Frameworks */,
-				0A1641FC2BFE565700F4E275 /* Castled in Frameworks */,
+				0A60A9A62C005D3A00E2E1E9 /* CastledInbox in Frameworks */,
+				0A60A9A42C005D3A00E2E1E9 /* Castled in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A1642002BFE567200F4E275 /* CastledNotificationService in Frameworks */,
+				0A60A9A82C005D4200E2E1E9 /* CastledNotificationService in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +146,7 @@
 			files = (
 				0AB9044A2A474564009926A7 /* UserNotificationsUI.framework in Frameworks */,
 				0AB904492A474564009926A7 /* UserNotifications.framework in Frameworks */,
-				0A1642022BFE568200F4E275 /* CastledNotificationContent in Frameworks */,
+				0A60A9AA2C005D4800E2E1E9 /* CastledNotificationContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +156,7 @@
 		0A365D7F2A4366FE0048BD09 = {
 			isa = PBXGroup;
 			children = (
-				0A1641F72BFE561400F4E275 /* castled-ios-sdk */,
+				0A60A9A12C005D1300E2E1E9 /* castled-ios-sdk */,
 				0A365D8A2A4366FE0048BD09 /* CastledDemoSPM */,
 				0A365DA12A4366FF0048BD09 /* CastledDemoSPMTests */,
 				0A365DAB2A4366FF0048BD09 /* CastledDemoSPMUITests */,
@@ -264,8 +262,8 @@
 			);
 			name = CastledDemoSPM;
 			packageProductDependencies = (
-				0A1641FB2BFE565700F4E275 /* Castled */,
-				0A1641FD2BFE565700F4E275 /* CastledInbox */,
+				0A60A9A32C005D3A00E2E1E9 /* Castled */,
+				0A60A9A52C005D3A00E2E1E9 /* CastledInbox */,
 			);
 			productName = CastledDemoSPM;
 			productReference = 0A365D882A4366FE0048BD09 /* CastledDemoSPM.app */;
@@ -321,7 +319,7 @@
 			);
 			name = CNotificationServiceDemo;
 			packageProductDependencies = (
-				0A1641FF2BFE567200F4E275 /* CastledNotificationService */,
+				0A60A9A72C005D4200E2E1E9 /* CastledNotificationService */,
 			);
 			productName = CNotificationServiceDemo;
 			productReference = 0AB904392A474544009926A7 /* CNotificationServiceDemo.appex */;
@@ -341,7 +339,7 @@
 			);
 			name = CNotificationContentDemo;
 			packageProductDependencies = (
-				0A1642012BFE568200F4E275 /* CastledNotificationContent */,
+				0A60A9A92C005D4800E2E1E9 /* CastledNotificationContent */,
 			);
 			productName = CNotificationContentDemo;
 			productReference = 0AB904482A474563009926A7 /* CNotificationContentDemo.appex */;
@@ -407,7 +405,7 @@
 			files = (
 				0A365DF02A4367FD0048BD09 /* Main.storyboard in Resources */,
 				0A365D982A4366FF0048BD09 /* LaunchScreen.storyboard in Resources */,
-				0A1641F82BFE561400F4E275 /* castled-ios-sdk in Resources */,
+				0A60A9A22C005D1300E2E1E9 /* castled-ios-sdk in Resources */,
 				0A365D952A4366FF0048BD09 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,7 +428,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A1641F92BFE561400F4E275 /* castled-ios-sdk in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +435,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A1641FA2BFE561400F4E275 /* castled-ios-sdk in Resources */,
 				0AB904502A474564009926A7 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -954,19 +950,19 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0A1641FB2BFE565700F4E275 /* Castled */ = {
+		0A60A9A32C005D3A00E2E1E9 /* Castled */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Castled;
 		};
-		0A1641FD2BFE565700F4E275 /* CastledInbox */ = {
+		0A60A9A52C005D3A00E2E1E9 /* CastledInbox */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CastledInbox;
 		};
-		0A1641FF2BFE567200F4E275 /* CastledNotificationService */ = {
+		0A60A9A72C005D4200E2E1E9 /* CastledNotificationService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CastledNotificationService;
 		};
-		0A1642012BFE568200F4E275 /* CastledNotificationContent */ = {
+		0A60A9A92C005D4800E2E1E9 /* CastledNotificationContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CastledNotificationContent;
 		};

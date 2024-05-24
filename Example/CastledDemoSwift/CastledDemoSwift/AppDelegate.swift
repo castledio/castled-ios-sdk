@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Register the custom category
         registerForPush()
         // UNUserNotificationCenter.current().delegate = self
-
         Castled.initialize(withConfig: config, andDelegate: self)
         // CastledInbox.sharedInstance.initializeAppInbox()
         // Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")

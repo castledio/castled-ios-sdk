@@ -8,19 +8,21 @@
 import Foundation
 import UIKit
 import UserNotifications
+@_spi(CastledInternalInterface)
 
 @objc public class CastledAppDelegate: NSObject, UNUserNotificationCenterDelegate {
     @objc public static let shared = CastledAppDelegate()
     private static var swizzledClasses = NSMutableSet()
+    var isLoaded = false
 
     override private init() {}
 
     @objc public func setApplicationDelegates(sourceClass: AnyClass? = nil) {
-        guard let fromClass = sourceClass, String(describing: fromClass) == "CastledApplicationLoader", !CastledSwizzler.swizzzlingDisabled else {
+        guard let fromClass = sourceClass, String(describing: fromClass) == "CastledApplicationLoader", !CastledSwizzler.swizzzlingDisabled,!isLoaded else {
             // If it's not the expected class, return without further execution
             return
         }
-
+        isLoaded = true
         CastledSwizzler.swizzleImplementations(originalSelector: #selector(setter: UIApplication.delegate), originalClass: UIApplication.self, swizzledSelector: #selector(CastledAppDelegate.setCastledApplicationDelegate), swizzlinglClass: type(of: CastledAppDelegate.shared))
         CastledNotificationCenter.shared.setNotiificationDelegates()
     }
