@@ -125,12 +125,8 @@ import UserNotifications
     /**
      InApps : Function that allows to display page view inapp
      */
-    @objc public func logAppPageViewedEvent(_ viewContoller: UIViewController) {
-        guard let _ = CastledUserDefaults.shared.userId else {
-            CastledLog.castledLog("Log page viewed \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
-            return
-        }
-        CastledInApp.sharedInstance.logAppPageViewedEvent(viewContoller)
+    @objc public func logPageViewedEvent(_ viewContoller: UIViewController) {
+        CastledInApp.sharedInstance.logPageViewedEvent(viewContoller)
     }
 
     /**
