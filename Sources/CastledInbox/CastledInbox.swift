@@ -17,9 +17,7 @@ import UIKit
 
     }() {
         didSet {
-            if oldValue != inboxUnreadCount {
-                inboxUnreadCountCallback?(inboxUnreadCount)
-            }
+            inboxUnreadCountCallback?(inboxUnreadCount)
         }
     }
 
