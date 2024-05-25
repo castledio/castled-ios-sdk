@@ -139,8 +139,11 @@
 
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+   
     [[Castled sharedInstance] didReceiveRemoteNotification:userInfo];
-    //your code
+    
+    // Implement your logic here...
+    
     completionHandler(UIBackgroundFetchResultNoData);
      
 }

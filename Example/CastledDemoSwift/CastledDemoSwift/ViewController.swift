@@ -21,12 +21,14 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         navigationItem.title = "Castled"
 
         self.showRequiredViews()
+        self.setUpInboxCallback()
 
         // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        Castled.sharedInstance.logPageViewedEvent(self)
         //        Castled.sharedInstance.logPageViewedEventIfAny(context: self)
         //        CastledConfigs.sharedInstance.enablePush = true
 
@@ -86,7 +88,6 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             self.navigationItem.rightBarButtonItem = nil
             let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self.inboxTapped))
             self.navigationItem.rightBarButtonItem = inboxButton
-            // self.setUpInboxCallback()
         }
         else {
             self.btnGotoSecondVC.isHidden = true
@@ -149,13 +150,12 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     }
 
     func setUpInboxCallback() {
-        //   return;
         CastledInbox.sharedInstance.observeUnreadCountChanges(listener: { unreadCount in
             print("Inbox unread count is \(unreadCount)")
         })
 
-        CastledInbox.sharedInstance.getInboxItems(completion: { _, result, errormessage in
-            print("getInboxItems \(result) \(errormessage)")
+        CastledInbox.sharedInstance.getInboxItems(completion: { _, result, _ in
+            print("getInboxItems \(result?.count)")
         })
         //       Castled.sharedInstance.dismissInboxViewController()
     }

@@ -16,9 +16,8 @@ import UIKit
 
     override private init() {}
 
-    @objc public func initializeInApp() {
-        if !Castled.sharedInstance.isCastledInitialized() {
-            CastledLog.castledLog("In-app initialization failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+    @objc func initializeInApp() {
+        if !castledConfig.enableInApp {
             return
         }
         else if isInitilized {
@@ -33,38 +32,39 @@ import UIKit
     }
 
     @objc public func logPageViewedEvent(_ viewContoller: UIViewController) {
-        if !isInitilized {
-            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
-            return
-        }
-        else if userId.isEmpty {
-            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
+        if !isValidated() {
             return
         }
         CastledInAppsDisplayController.sharedInstance.logAppEvent(context: viewContoller, eventName: CIEventType.page_viewed.rawValue, params: ["name": String(describing: type(of: viewContoller))], showLog: false)
     }
 
     @objc public func logCustomAppEvent(_ eventName: String, params: [String: Any]) {
-        if !isInitilized {
-            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
-            return
-        }
-        else if userId.isEmpty {
-            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
+        if !isValidated() {
             return
         }
         CastledInAppsDisplayController.sharedInstance.logAppEvent(context: nil, eventName: eventName, params: params, showLog: false)
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
-        if !isInitilized {
-            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
-            return
-        }
-        else if userId.isEmpty {
-            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
+        if !isValidated() {
             return
         }
         CastledInAppsDisplayController.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
+    }
+
+    private func isValidated() -> Bool {
+        if !castledConfig.enableInApp {
+            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
+            return false
+        }
+        else if userId.isEmpty {
+            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.userNotRegistered.rawValue)", logLevel: CastledLogLevel.error)
+            return false
+        }
+        else if !isInitilized {
+            CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
+            return false
+        }
+        return true
     }
 }

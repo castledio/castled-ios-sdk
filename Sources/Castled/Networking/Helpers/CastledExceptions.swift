@@ -16,7 +16,7 @@ public enum CastledExceptionMessages: String {
     case paramsMisMatch = "Unable to create the request. Please check the params or url."
     case userNotRegistered = "Please register the user with Castled using the method Castled.sharedInstance.setUserId(< userId >)"
     case pushDisabled = "Set 'enablePush' while initializing Castled SDK"
-//    case appInboxDisabled = "Set 'enableAppInbox' while initializing Castled SDK"
+    case appInboxDisabled = "Set 'enableAppInbox' while initializing Castled SDK"
     case inAppDisabled = "Set 'enableInapp' while initializing Castled SDK"
     case trackingDisabled = "Set 'enableTracking' while initializing Castled SDK"
     case emptyEventsArray = "Notificaion Id array cannot be empty"
