@@ -34,7 +34,7 @@ import UIKit
         if !castledConfig.enableAppInbox {
             return
         }
-        if isInitilized {
+        else if isInitilized {
             CastledLog.castledLog("Inbox module already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
             return
         }
