@@ -65,11 +65,13 @@ import UIKit
      Inbox : Function that will returns the unread message count
      */
     @objc public func observeUnreadCountChanges(listener: @escaping (Int) -> Void) {
-        if !isValidated() {
-            return
-        }
         inboxUnreadCountCallback = listener
-        inboxUnreadCountCallback?(inboxUnreadCount)
+        if !isValidated() {
+            inboxUnreadCountCallback?(0)
+        }
+        else {
+            inboxUnreadCountCallback?(inboxUnreadCount)
+        }
     }
 
     @objc public func getInboxUnreadCount() -> Int {
