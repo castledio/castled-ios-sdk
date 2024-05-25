@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
 
   spec.ios.deployment_target = "13.0"
   spec.swift_version = "5.7"
-  spec.ios.dependency 'Castled', '>= 4.0.1'
+  spec.ios.dependency 'Castled', '>= 4.0.3'
   spec.ios.dependency 'SDWebImage', '~> 5.11'
 
   spec.ios.dependency 'RealmSwift', '~>10.49.1'
