@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
-        registerForPush()
+        //  registerForPush()
         // UNUserNotificationCenter.current().delegate = self
         Castled.initialize(withConfig: config, andDelegate: self)
         // CastledInbox.sharedInstance.initializeAppInbox()
@@ -143,7 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
         // UNUserNotificationCenter.current().delegate = self
-        Castled.sharedInstance.requestPushPermission()
+        Castled.sharedInstance.requestPushPermission(showSettingsAlert: true)
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, buttonAction: CastledButtonAction, userInfo: [AnyHashable: Any]) {
@@ -220,9 +220,9 @@ extension AppDelegate: CastledNotificationDelegate {
          }
      }*/
 
-//    func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
-//        print("***** Castled Notificiation Received *****\n \(userInfo)\n")
-//    }
+    func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
+        print("***** Castled Notificiation Received *****\n \(userInfo)\n")
+    }
 }
 
 // MARK: - Push Notification Delegate Methods

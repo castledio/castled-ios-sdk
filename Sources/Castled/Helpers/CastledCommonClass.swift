@@ -149,4 +149,41 @@ public class CastledCommonClass {
 
         return trimmedBase64String
     }
+
+    static func getTopViewController() -> UIViewController? {
+        // Ensure there's a connected UIWindowScene
+        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              // Ensure there's a key window in the scene
+              let window = scene.windows.first(where: { $0.isKeyWindow }),
+              // Ensure the key window has a root view controller
+              let rootViewController = window.rootViewController
+        else {
+            return nil
+        }
+
+        var currentViewController = rootViewController
+
+        // Traverse the view controller hierarchy to find the top-most view controller
+        while let presentedViewController = currentViewController.presentedViewController {
+            currentViewController = presentedViewController
+        }
+
+        // Handle special cases for UINavigationController
+        if let navigationController = currentViewController as? UINavigationController {
+            return navigationController.topViewController
+        }
+        // Handle special cases for UITabBarController
+        else if let tabBarController = currentViewController as? UITabBarController {
+            if let selectedViewController = tabBarController.selectedViewController {
+                if let selectedNavigationController = selectedViewController as? UINavigationController {
+                    return selectedNavigationController.topViewController
+                } else {
+                    return selectedViewController
+                }
+            }
+        }
+
+        // Return the top-most view controller
+        return currentViewController
+    }
 }
