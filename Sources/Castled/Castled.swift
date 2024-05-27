@@ -258,9 +258,6 @@ import UserNotifications
 
     private func showSettingsAlert() {
         DispatchQueue.main.async {
-            guard let topController = CastledCommonClass.getTopViewController() else {
-                return
-            }
             let alertTitle = "Permission Needed"
             let alertMessage = "You have previously denied push notification permission. Please go to your settings to enable push notifications."
 

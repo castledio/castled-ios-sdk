@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
-        //  registerForPush()
+        registerForPush()
         // UNUserNotificationCenter.current().delegate = self
         Castled.initialize(withConfig: config, andDelegate: self)
         // CastledInbox.sharedInstance.initializeAppInbox()
