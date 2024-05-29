@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+@_spi(CastledInternal) import Castled
 
 enum CastledInboxResponseConverter {
     static func convertToInbox(inboxItem: CastledInboxItem, realm: Realm? = nil) -> CAppInbox? {
@@ -67,5 +68,28 @@ enum CastledInboxResponseConverter {
         inboxItem.containerBGColor = appInbox.colorContainer
         inboxItem.dateTextColor = appInbox.colorBody
         return inboxItem
+    }
+
+    static func convertToInbox(inboxItem: CastledInboxItem, appinbox: CastledAppInbox) {
+        appinbox.messageId = inboxItem.messageId
+        appinbox.isPinned = inboxItem.isPinned
+        appinbox.tag = inboxItem.tag
+        appinbox.updatedTime = inboxItem.updatedTime
+        appinbox.teamID = Int16(inboxItem.teamID)
+        appinbox.startTs = inboxItem.startTs
+        appinbox.sourceContext = inboxItem.sourceContext
+        appinbox.imageUrl = inboxItem.imageUrl
+        appinbox.title = inboxItem.title
+        appinbox.body = inboxItem.body
+        appinbox.isRead = inboxItem.isRead
+        appinbox.addedDate = inboxItem.addedDate
+        appinbox.aspectRatio = Float(inboxItem.aspectRatio)
+        appinbox.inboxType = inboxItem.inboxType.rawValue
+        appinbox.actionButtonsArray = inboxItem.actionButtons
+        appinbox.messageDictionary = inboxItem.message
+        appinbox.titleTextColor = (inboxItem.message["titleFontColor"] as? String) ?? ""
+        appinbox.bodyTextColor = (inboxItem.message["bodyFontColor"] as? String) ?? ""
+        appinbox.containerBGColor = (inboxItem.message["bgColor"] as? String) ?? ""
+        appinbox.dateTextColor = appinbox.bodyTextColor
     }
 }

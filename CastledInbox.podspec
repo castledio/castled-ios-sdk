@@ -22,7 +22,7 @@ Pod::Spec.new do |spec|
   spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
   spec.source_files = 'Sources/CastledInbox/**/*.{h,m,swift}', 'Sources/CastledInboxObjC/**/*.{h,m,swift}'
   spec.resource_bundles = {
-    "Castled" => ['Sources/CastledInbox/**/*.{xcassets,storyboard,xib,js}']
+    "Castled" => ['Sources/CastledInbox/**/*.{xcassets,storyboard,xib,js,xcdatamodeld}']
   }
  spec.readme = 'README.md'
  spec.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }

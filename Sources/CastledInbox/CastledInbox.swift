@@ -13,7 +13,7 @@ import UIKit
     @objc public static var sharedInstance = CastledInbox()
 
     lazy var inboxUnreadCount: Int = {
-        CastledStore.getInboxUnreadCount()
+        CastledCoreDataOperations.shared.getInboxUnreadCount()
 
     }() {
         didSet {

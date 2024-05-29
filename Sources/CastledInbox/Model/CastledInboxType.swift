@@ -6,7 +6,7 @@
 //
 import RealmSwift
 
-@objc public enum CastledInboxType: Int, RawRepresentable,PersistableEnum {
+@objc public enum CastledInboxType: Int, RawRepresentable, PersistableEnum {
     case messageWithMedia = 0
     case messageBanner
     case messageBannerNoIcon
