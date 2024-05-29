@@ -61,9 +61,6 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
          userAttributes.setCustomAttribute("double", 500.01)
          userAttributes.setCustomAttribute("occupation", "artist")
          Castled.sharedInstance.setUserAttributes(userAttributes)*/
-        //   let coreDataStack: CoreDataStack = .init(modelName: "Castled")
-        //  print("coreDataStack-----\(coreDataStack)")
-        //  print(CasCoreDataStack.shared.persistentContainer)
     }
 
     func logUserAttributes() {
