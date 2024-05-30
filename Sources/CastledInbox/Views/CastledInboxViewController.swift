@@ -6,9 +6,9 @@
 //
 
 import Combine
-import RealmSwift
 import UIKit
 @_spi(CastledInternal) import Castled
+import CoreData
 
 @objc public protocol CastledInboxViewControllerDelegate {
     @objc optional func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem)
@@ -24,6 +24,7 @@ import UIKit
     @IBOutlet weak var btnClose: UIButton!
 
     var viewModel = CastledInboxViewModel()
+
     var readItems = [Int64]()
 
     private var topCategories = [String]()
@@ -125,12 +126,32 @@ import UIKit
         viewModel.didLoadNextPage()
     }
 
-    private func getCategories(realm: Realm?) -> [String] {
-        let uniqueCategories = Set(realm?.objects(CAppInbox.self)
-            .filter("tag != '' && isDeleted == false")
-            .distinct(by: ["tag"])
-            .compactMap { $0.tag } ?? []).sorted()
-        return uniqueCategories
+    private func getCategories() -> [String] {
+        let context = CastledCoreDataStack.shared.mainContext
+        let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
+
+        // Set the predicate to filter items
+        fetchRequest.predicate = NSPredicate(format: "tag != '' AND isRemoved == false")
+
+        do {
+            let fetchedObjects = try context.fetch(fetchRequest)
+
+            // Filter, map, and get unique tag values
+            let filteredObjects = fetchedObjects.filter { $0.tag != "" && !$0.isRemoved }
+            let tagSet = Set(filteredObjects.map { $0.tag })
+            let uniqueCategories = tagSet.sorted()
+
+            return uniqueCategories
+        } catch {
+            return []
+        }
+
+//        frcViewModel.fetchedResultsController.fetchedObjects
+//        let uniqueCategories = Set(realm?.objects(CAppInbox.self)
+//            .filter("tag != '' && isDeleted == false")
+//            .distinct(by: ["tag"])
+//            .compactMap { $0.tag } ?? []).sorted()
+//        return uniqueCategories
     }
 
     private func setupTopCategories() {
@@ -138,7 +159,7 @@ import UIKit
         let tabDisplayConfig = CastledViewPagerDisplayConfigs()
         tabDisplayConfig.hideTabBar = !inboxConfig!.showCategoriesTab
         if inboxConfig!.showCategoriesTab {
-            topCategories.append(contentsOf: getCategories(realm: viewModel.realm))
+            topCategories.append(contentsOf: getCategories())
             tabDisplayConfig.hideTabBar = topCategories.count == 1 ? true : false
         }
         tabDisplayConfig.tabBarDefaultTextColor = inboxConfig!.tabBarDefaultTextColor
@@ -172,7 +193,7 @@ import UIKit
         }
         CastledStore.castledStoreQueue.async { [weak self] in
             var currentCategories = [CastledInboxViewController.ALL_STRING]
-            currentCategories.append(contentsOf: self?.getCategories(realm: CastledDBManager.shared.getRealm()) ?? [])
+            currentCategories.append(contentsOf: self?.getCategories() ?? [])
             if currentCategories != self?.topCategories {
                 DispatchQueue.main.async { [weak self] in
                     self?.topCategories.removeAll()
@@ -198,7 +219,7 @@ import UIKit
 
     func updateReadStatus() {
         if !readItems.isEmpty {
-            CastledStore.saveInboxIdsRead(readItems: readItems)
+            CastledCoreDataOperations.shared.saveInboxIdsRead(readItems: readItems)
             readItems.removeAll()
         }
     }

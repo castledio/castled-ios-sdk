@@ -24,13 +24,13 @@ public class CastledCoreDataStack {
         description.shouldInferMappingModelAutomatically = true
         CastledLog.castledLog("Inbox path \(storeURL)", logLevel: .info)
         container.persistentStoreDescriptions = [description]
-
         container.loadPersistentStores { _, error in
 
             if let err = error {
                 //   fatalError("❌ Loading of store failed:\(err)")
             }
         }
+        container.viewContext.automaticallyMergesChangesFromParent = true
 
         return container
     }()

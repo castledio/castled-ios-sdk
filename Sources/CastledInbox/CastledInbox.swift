@@ -102,7 +102,7 @@ import UIKit
         }
         CastledStore.castledStoreQueue.async {
             DispatchQueue.main.async {
-                completion(true, CastledDBManager.shared.getLiveInboxItems(), nil)
+                completion(true, CastledCoreDataOperations.shared.getLiveInboxItems(), nil)
             }
         }
     }

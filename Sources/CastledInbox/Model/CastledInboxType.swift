@@ -4,9 +4,8 @@
 //
 //  Created by antony on 31/08/2023.
 //
-import RealmSwift
 
-@objc public enum CastledInboxType: Int, RawRepresentable, PersistableEnum {
+@objc public enum CastledInboxType: Int, RawRepresentable {
     case messageWithMedia = 0
     case messageBanner
     case messageBannerNoIcon

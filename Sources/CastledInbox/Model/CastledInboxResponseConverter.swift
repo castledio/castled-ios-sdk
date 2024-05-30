@@ -6,49 +6,12 @@
 //
 
 import Foundation
-import RealmSwift
-@_spi(CastledInternal) import Castled
 
 enum CastledInboxResponseConverter {
-    static func convertToInbox(inboxItem: CastledInboxItem, realm: Realm? = nil) -> CAppInbox? {
-        let appinbox: CAppInbox
-        if let existingItem = realm?.object(ofType: CAppInbox.self, forPrimaryKey: inboxItem.messageId) {
-            if existingItem.updatedTime == inboxItem.updatedTime {
-                return nil
-            }
-            appinbox = existingItem
-        }
-        else {
-            appinbox = CAppInbox()
-            appinbox.messageId = inboxItem.messageId
-        }
-
-        appinbox.isPinned = inboxItem.isPinned
-        appinbox.tag = inboxItem.tag
-        appinbox.updatedTime = inboxItem.updatedTime
-        appinbox.teamID = inboxItem.teamID
-        appinbox.startTs = inboxItem.startTs
-        appinbox.sourceContext = inboxItem.sourceContext
-        appinbox.imageUrl = inboxItem.imageUrl
-        appinbox.title = inboxItem.title
-        appinbox.body = inboxItem.body
-        appinbox.isRead = inboxItem.isRead
-        appinbox.addedDate = inboxItem.addedDate
-        appinbox.aspectRatio = Float(inboxItem.aspectRatio)
-        appinbox.inboxType = inboxItem.inboxType
-        appinbox.actionButtonsArray = inboxItem.actionButtons
-        appinbox.messageDictionary = inboxItem.message
-        appinbox.titleTextColor = (inboxItem.message["titleFontColor"] as? String) ?? ""
-        appinbox.bodyTextColor = (inboxItem.message["bodyFontColor"] as? String) ?? ""
-        appinbox.containerBGColor = (inboxItem.message["bgColor"] as? String) ?? ""
-        appinbox.dateTextColor = appinbox.bodyTextColor
-        return appinbox
-    }
-
-    static func convertToInboxItem(appInbox: CAppInbox) -> CastledInboxItem {
+    static func convertToInboxItem(appInbox: CastledAppInbox) -> CastledInboxItem {
         let inboxItem = CastledInboxItem()
         inboxItem.messageId = appInbox.messageId
-        inboxItem.teamID = appInbox.teamID
+        inboxItem.teamID = Int(appInbox.teamID)
         inboxItem.startTs = appInbox.startTs
         inboxItem.updatedTime = appInbox.updatedTime
         inboxItem.tag = appInbox.tag
@@ -60,7 +23,7 @@ enum CastledInboxResponseConverter {
         inboxItem.isRead = appInbox.isRead
         inboxItem.addedDate = appInbox.addedDate
         inboxItem.aspectRatio = CGFloat(appInbox.aspectRatio)
-        inboxItem.inboxType = appInbox.inboxType
+        inboxItem.inboxType = CastledInboxType(rawValue: appInbox.inboxType) ?? .other
         inboxItem.actionButtons = appInbox.actionButtonsArray
         inboxItem.message = appInbox.messageDictionary
         inboxItem.titleTextColor = appInbox.colorTitle

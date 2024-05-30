@@ -23,9 +23,8 @@ protocol CastledInboxViewModelOutput {
 protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxViewModelOutput {}
 
 final class CastledInboxViewModel: DefaultCastledInboxViewModel {
-    let realm = CastledDBManager.shared.getRealm()
-    lazy var inboxUnreadCount: Int = {
-        CastledStore.getIAllnboxItemsCount()
+    lazy var inboxItemsCount: Int = {
+        CastledCoreDataOperations.shared.getAllInboxItemsCount()
 
     }()
 
@@ -37,7 +36,7 @@ final class CastledInboxViewModel: DefaultCastledInboxViewModel {
             return
         }
         isLoading = true
-        if inboxUnreadCount == 0 {
+        if inboxItemsCount == 0 {
             showLoader = true
         }
         CastledInboxRepository.fetchInboxItems { [weak self] in
