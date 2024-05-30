@@ -58,12 +58,15 @@ class CastledFRCViewModel: NSObject, FRCViewModelInput, FRCViewModelOutput {
                 sectionNameKeyPath: nil,
                 cacheName: nil)
             fetchedResultsController.delegate = self
-
             return fetchedResultsController
         }()
 
     func initialiseActions(actions: FRCViewModelActions? = nil) {
         self.actions = actions
+    }
+
+    func removeFRCDelegate() {
+        fetchedResultsController.delegate = nil
     }
 
     func setUpDataSource() {

@@ -12,7 +12,7 @@ class CastledInboxListingViewController: UIViewController {
     var currentIndex = 0
     var inboxConfig: CastledInboxDisplayConfig?
     private let refreshControl = UIRefreshControl()
-
+    private var isInsertedOrDeleted = false
     @IBOutlet private weak var tblView: UITableView!
     @IBOutlet weak var lblNoUpdates: UILabel!
     @IBOutlet weak var indicatorView: UIActivityIndicatorView!
@@ -31,7 +31,7 @@ class CastledInboxListingViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addRealmObservers()
+        addObservers()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -66,16 +66,20 @@ class CastledInboxListingViewController: UIViewController {
         frcViewModel.setUpDataSource()
     }
 
-    private func addRealmObservers() {
+    private func addObservers() {
         DispatchQueue.main.async { [weak self] in
             self?.showRequiredViews()
+            self?.tblView.reloadData()
         }
+        frcViewModel.fetchedResultsController.delegate = frcViewModel
     }
 
-    func removeObservers() {}
+    func removeObservers() {
+        frcViewModel.removeFRCDelegate()
+    }
 
     private func showRequiredViews() {
-        lblNoUpdates.isHidden = !(frcViewModel.numberOfSections() == 0)
+        lblNoUpdates.isHidden = !(frcViewModel.fetchedResultsController.fetchedObjects?.isEmpty ?? true)
         showOrHideLoader(showLoader: inboxViewController?.viewModel.showLoader ?? false)
         setErrorTextWith(title: inboxViewController?.viewModel.errorMessage)
     }
@@ -115,7 +119,6 @@ class CastledInboxListingViewController: UIViewController {
 extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDataSource, CastledInboxCellDelegate {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("numberOfRowsInSection \(currentIndex)\(section)---- \(frcViewModel.numberOfRowsIn(section: section))")
-
         return frcViewModel.numberOfRowsIn(section: section)
     }
 
@@ -223,21 +226,35 @@ extension CastledInboxListingViewController {
 
     func controllerDidChangeContent() {
         tblView.endUpdates()
+        DispatchQueue.main.async { [weak self] in
+
+            if self?.currentIndex == self?.inboxViewController?.getCurrentPageIndex() {
+                if let insertionOrUDeletion = self?.isInsertedOrDeleted, !insertionOrUDeletion {
+                    self?.inboxViewController?.updateViewPagerAfterDBChanges()
+                }
+            }
+            self?.showRequiredViews()
+        }
+        isInsertedOrDeleted = false
     }
 
     func insertSections(indexSet: IndexSet) {
+        isInsertedOrDeleted = true
         tblView.insertSections(indexSet, with: .automatic)
     }
 
     func deleteSections(indexSet: IndexSet) {
+        isInsertedOrDeleted = true
         tblView.deleteSections(indexSet, with: .automatic)
     }
 
     func insertRowsAtIndexPath(indexPth: IndexPath) {
+        isInsertedOrDeleted = true
         tblView.insertRows(at: [indexPth], with: .automatic)
     }
 
     func deletRowsAtIndexPath(indexPth: IndexPath) {
+        isInsertedOrDeleted = true
         tblView.deleteRows(at: [indexPth], with: .automatic)
     }
 

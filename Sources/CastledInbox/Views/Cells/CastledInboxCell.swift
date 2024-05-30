@@ -144,8 +144,6 @@ class CastledInboxCell: UITableViewCell {
     }
 
     @objc private func actionButtonClicked(sender: UIButton) {
-        // FIXME: do the needful
-
-        /*  delegate?.didSelectedInboxWith(inboxItem?.actionButtonsArray[sender.tag - 10], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItem!))*/
+        delegate?.didSelectedInboxWith(inboxItem?.actionButtonsArray[sender.tag - 10], CastledInboxResponseConverter.convertToInboxItem(appInbox: inboxItem!))
     }
 }

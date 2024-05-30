@@ -65,8 +65,6 @@
 		0A8AC1072BF641B900BCF7AB /* CastledInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC0F12BF641B900BCF7AB /* CastledInboxViewController.swift */; };
 		0A8AC10D2BF641B900BCF7AB /* CastledInboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC0F92BF641B900BCF7AB /* CastledInboxViewModel.swift */; };
 		0A8AC10F2BF642F900BCF7AB /* CastledInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC10E2BF642F900BCF7AB /* CastledInbox.swift */; };
-		0A8AC1102BF6442900BCF7AB /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A0F97EA2ACBE66E00BA05D0 /* RealmSwift.framework */; platformFilter = ios; };
-		0A8AC1122BF6443300BCF7AB /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A0F97EC2ACBE84200BA05D0 /* Realm.framework */; platformFilter = ios; };
 		0A8AC1132BF6443800BCF7AB /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A23C0042AC20E1B00F8772A /* SDWebImage.framework */; };
 		0A8AC11B2BF6472F00BCF7AB /* CastledDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC11A2BF6472F00BCF7AB /* CastledDBManager.swift */; };
 		0A8AC11D2BF647B700BCF7AB /* CastledStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC11C2BF647B700BCF7AB /* CastledStore.swift */; };
@@ -200,8 +198,6 @@
 		0A0E64972BFFD64700706B4B /* CastledInboxSetupLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxSetupLoader.swift; sourceTree = "<group>"; };
 		0A0E649E2BFFDB6500706B4B /* CastledInboxLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastledInboxLoader.m; sourceTree = "<group>"; };
 		0A0E649F2BFFDB6500706B4B /* CastledInboxLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledInboxLoader.h; sourceTree = "<group>"; };
-		0A0F97EA2ACBE66E00BA05D0 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
-		0A0F97EC2ACBE84200BA05D0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		0A0F97F02ACC53FF00BA05D0 /* CExtensions+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CExtensions+Data.swift"; sourceTree = "<group>"; };
 		0A18554F2B6A2DA7005C1681 /* CastledBadgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledBadgeManager.swift; sourceTree = "<group>"; };
 		0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIFsDefaultView.swift; sourceTree = "<group>"; };
@@ -361,9 +357,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A8AC1122BF6443300BCF7AB /* Realm.framework in Frameworks */,
 				0A8AC1132BF6443800BCF7AB /* SDWebImage.framework in Frameworks */,
-				0A8AC1102BF6442900BCF7AB /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,9 +719,7 @@
 				0A94D6802C0769E8007BF60B /* CastledAppInbox+CoreDataProperties.swift */,
 				0A0E649D2BFFDB4800706B4B /* CastledInboxObjC */,
 				0A99E9262BC0539C005E9F7E /* CastledObjC */,
-				0A0F97EC2ACBE84200BA05D0 /* Realm.framework */,
 				0A23C0042AC20E1B00F8772A /* SDWebImage.framework */,
-				0A0F97EA2ACBE66E00BA05D0 /* RealmSwift.framework */,
 				0AB5C552291C222C0027C36B /* Castled */,
 				66D18B192A062B760075AB43 /* CastledNotificationService */,
 				66D18BB32A0D55950075AB43 /* CastledNotificationContent */,
