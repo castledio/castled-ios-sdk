@@ -99,13 +99,14 @@ class CastledSessionsManager {
     func doTheBackgroundJobs() {
         sessionTrackingQueue.sync {
             sessionEndTime = Date().timeIntervalSince1970
-            sessionDuration += sessionEndTime - currentStartTime
-            currentStartTime = sessionEndTime
             let userDefaults = CastledUserDefaults.getUserDefaults()
-            userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
+            if currentStartTime != 0 {
+                sessionDuration += sessionEndTime - currentStartTime
+                userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
+            }
+            currentStartTime = sessionEndTime
             userDefaults.setValue(sessionEndTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
             userDefaults.synchronize()
-            // CastledLog.castledLog("sessionId \(sessionId) lastSessionEndTime \(sessionEndTime) sessionDuration \(sessionDuration) currentStartTime \(currentStartTime)", logLevel: .info)
         }
     }
 

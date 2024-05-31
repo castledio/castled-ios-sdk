@@ -69,9 +69,12 @@ class CastledInboxListingViewController: UIViewController {
     private func addObservers() {
         DispatchQueue.main.async { [weak self] in
             self?.showRequiredViews()
-            self?.tblView.reloadData()
+            if self?.frcViewModel.fetchedResultsController.delegate == nil {
+                // to reload after tab switching
+                self?.tblView.reloadData()
+            }
+            self?.frcViewModel.fetchedResultsController.delegate = self?.frcViewModel
         }
-        frcViewModel.fetchedResultsController.delegate = frcViewModel
     }
 
     func removeObservers() {
@@ -118,14 +121,8 @@ class CastledInboxListingViewController: UIViewController {
 
 extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDataSource, CastledInboxCellDelegate {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberOfRowsInSection \(currentIndex)\(section)---- \(frcViewModel.numberOfRowsIn(section: section))")
         return frcViewModel.numberOfRowsIn(section: section)
     }
-
-//    private func numberOfSections(in _: UITableView) -> Int {
-//        print("numberOfSections ---- \(frcViewModel.numberOfSections)")
-//        return frcViewModel.numberOfSections()
-//    }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row >= frcViewModel.numberOfRowsIn(section: indexPath.section) || (frcViewModel.fetchedResultsController.object(at: indexPath)).inboxType == CastledInboxType.other.rawValue {
@@ -139,22 +136,14 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
         let cell: CastledInboxCell
         cell = tableView.dequeueReusableCell(withIdentifier: CastledInboxCell.castledInboxImageAndTitleCell, for: indexPath) as! CastledInboxCell
         configure(cell: cell, for: indexPath)
-
         cell.delegate = self
         return cell
     }
 
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // FIXME: uncomment the below
-        /*  let item = frcViewModel.fetchedResultsController.object(at: indexPath)
-         if let inboxViewController = inboxViewController {
-             inboxViewController.readItems.append(item.messageId)
-         }
-         */
         let item = frcViewModel.fetchedResultsController.object(at: indexPath)
-        print("inboxViewController \(inboxViewController) \(currentIndex)")
-        if !item.isRead, !inboxViewController!.readItems.contains(item.messageId) {
-            inboxViewController!.readItems.append(item.messageId)
+        if let inboxViewController = inboxViewController,!item.isRead, !inboxViewController.readItems.contains(item.messageId) {
+            inboxViewController.readItems.append(item.messageId)
         }
     }
 
@@ -198,8 +187,8 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
         }
         inboxViewController?.updateReadStatus()
         CastledButtonActionHandler.notificationClicked(withNotificationType: .inbox, action: actionType, kvPairs: kvPairs, userInfo: nil)
-        inboxViewController!.delegate?.didSelectedInboxWith?(CastledButtonActionUtils.getButtonActionFrom(type: actionType, kvPairs: kvPairs), inboxItem: inboxItem)
-        guard (inboxViewController!.delegate?.didSelectedInboxWith?(actionType, kvPairs, inboxItem)) != nil else {
+        inboxViewController?.delegate?.didSelectedInboxWith?(CastledButtonActionUtils.getButtonActionFrom(type: actionType, kvPairs: kvPairs), inboxItem: inboxItem)
+        guard (inboxViewController?.delegate?.didSelectedInboxWith?(actionType, kvPairs, inboxItem)) != nil else {
             return
         }
     }
@@ -216,6 +205,10 @@ extension CastledInboxListingViewController {
         guard let cellN = cell else {
             return
         }
+//        guard indexPath.row < frcViewModel.fetchedResultsController.sections?[indexPath.section].numberOfObjects ?? 0 else {
+//            return
+//        }
+
         let item = frcViewModel.fetchedResultsController.object(at: indexPath)
         cellN.configureCellWith(item)
     }
@@ -267,7 +260,7 @@ extension CastledInboxListingViewController {
     }
 
     func moveRowsAtIndexPath(fromIndexPath: IndexPath, newIndexPath: IndexPath) {
-        tblView.deleteRows(at: [fromIndexPath], with: .automatic)
         tblView.insertRows(at: [newIndexPath], with: .automatic)
+        tblView.deleteRows(at: [fromIndexPath], with: .automatic)
     }
 }

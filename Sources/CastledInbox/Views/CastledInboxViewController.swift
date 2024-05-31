@@ -145,13 +145,6 @@ import CoreData
         } catch {
             return []
         }
-
-//        frcViewModel.fetchedResultsController.fetchedObjects
-//        let uniqueCategories = Set(realm?.objects(CAppInbox.self)
-//            .filter("tag != '' && isDeleted == false")
-//            .distinct(by: ["tag"])
-//            .compactMap { $0.tag } ?? []).sorted()
-//        return uniqueCategories
     }
 
     private func setupTopCategories() {

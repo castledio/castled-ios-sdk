@@ -41,7 +41,8 @@ class CastledFRCViewModel: NSObject, FRCViewModelInput, FRCViewModelOutput {
         NSFetchedResultsController<CastledAppInbox> = {
             // 1
             let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
-
+//            fetchRequest.fetchLimit = 2
+//            fetchRequest.fetchBatchSize = 2
             let pinSort = NSSortDescriptor(
                 key: #keyPath(CastledAppInbox.isPinned), ascending: false)
             let dateSort = NSSortDescriptor(
@@ -50,7 +51,7 @@ class CastledFRCViewModel: NSObject, FRCViewModelInput, FRCViewModelOutput {
             fetchRequest.sortDescriptors = [pinSort, dateSort]
             let predicate = NSPredicate(format: currentIndex == 0 ? "isRemoved == %@" : "isRemoved == %@ AND tag = '\(currentCategory)'", NSNumber(value: false))
             fetchRequest.predicate = predicate
-
+            fetchRequest.fetchLimit = 250
             // 2
             let fetchedResultsController = NSFetchedResultsController(
                 fetchRequest: fetchRequest,
@@ -110,19 +111,15 @@ extension CastledFRCViewModel: NSFetchedResultsControllerDelegate {
     {
         switch type {
         case .insert:
-            //   tableView.insertRows(at: [newIndexPath!], with: .automatic)
             actions?.insertRowsAtIndexPath(newIndexPath!)
 
         case .delete:
-            //  tableView.deleteRows(at: [indexPath!], with: .automatic)
             actions?.deletRowsAtIndexPath(indexPath!)
 
         case .update:
-
             actions?.updateRowsAtIndexPath(indexPath!)
 
         case .move:
-
             actions?.moveRowsAtIndexPath(indexPath!, newIndexPath!)
 
             break

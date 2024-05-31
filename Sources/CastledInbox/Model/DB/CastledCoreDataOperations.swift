@@ -22,7 +22,6 @@ class CastledCoreDataOperations {
                 do {
                     try context.save()
                     CastledCoreDataStack.shared.saveContext()
-                    print("after insertion total inbox count \(self.getAllInboxItemsCount())")
                     CastledCoreDataOperations.shared.isInserting = false
 
                 } catch {
@@ -31,7 +30,6 @@ class CastledCoreDataOperations {
                     CastledCoreDataOperations.shared.isInserting = false
                 }
             } else {
-                print("context.hasChanges elseeeee \(self.getAllInboxItemsCount())")
                 CastledCoreDataOperations.shared.isInserting = false
             }
         }
@@ -49,7 +47,6 @@ class CastledCoreDataOperations {
             var existingItems: [CastledAppInbox] = []
             do {
                 existingItems = try context.fetch(fetchRequest)
-                print("existingItems \(existingItems.count)")
             } catch {
                 print("Error fetching existing items: \(error)")
             }
@@ -66,6 +63,7 @@ class CastledCoreDataOperations {
             }
             let expiredInboxItems = existingItems.filter { !responseIDs.contains($0.messageId) }
             for expiredItem in expiredInboxItems {
+                print("deleting item \(expiredItem)")
                 context.delete(expiredItem)
             }
 
@@ -110,8 +108,8 @@ class CastledCoreDataOperations {
 
     private func updateOrInsertInboxObject(from item: CastledInboxItem, in context: NSManagedObjectContext) {
         if let existingObject = getAppInboxFrom(messageId: item.messageId, in: context) {
-            // Update existing object
-            CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: existingObject)
+            // Update existing object,
+            //  CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: existingObject)
 
         } else {
             // Insert new object
@@ -180,9 +178,7 @@ class CastledCoreDataOperations {
                     message.isRemoved = false
                     message.isRead = true
                 }
-                let inboxItems = Array(messages.compactMap {
-                    CastledInboxResponseConverter.convertToInboxItem(appInbox: $0)
-                })
+
                 try context.save()
 
                 // Ensure main context reflects these changes if needed
@@ -194,6 +190,15 @@ class CastledCoreDataOperations {
             } catch {
                 print("Failed to mark messages as unread: \(error)")
             }
+        }
+    }
+
+    func saveInboxItemAsDeletedWith(messageId: Int64) {
+        // added this method in addition to the above method to make the delete transition smoother
+        if let existingItem = self.getAppInboxFrom(messageId: messageId, in: CastledCoreDataStack.shared.mainContext) { existingItem.isRemoved = false
+            existingItem.isRead = true
+            CastledCoreDataStack.shared.saveContext()
+            self.resetUnreadUncountAfterCRUD()
         }
     }
 
