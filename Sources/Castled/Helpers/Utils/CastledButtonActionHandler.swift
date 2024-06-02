@@ -24,7 +24,7 @@ public class CastledButtonActionHandler {
             case .richLanding:
                 if let clickActionUrl = clickAction.actionUri, let url = URL(string: clickActionUrl) { CastledButtonActionHandler.openURL(url) }
             case .requestForPush:
-                Castled.sharedInstance.requestPushPermission()
+                Castled.sharedInstance.requestPushPermission(showSettingsAlert: true)
             case .dismiss:
                 // TODO:
 

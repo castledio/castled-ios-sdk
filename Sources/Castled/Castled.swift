@@ -230,14 +230,61 @@ import UserNotifications
         }
     }
 
-    @objc public func requestPushPermission() {
+    @objc public func requestPushPermission(showSettingsAlert: Bool = false) {
         DispatchQueue.main.async {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { [self] granted, _ in
-                if granted {
-                    registerForAPNsToken()
-                } else { CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
+            UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+
+                if settings.authorizationStatus == .notDetermined {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { granted, _ in
+                        if granted {
+                            self?.registerForAPNsToken()
+                        } else {
+                            CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
+                        }
+                    })
+                } else {
+                    if settings.authorizationStatus == .authorized {
+                        self?.registerForAPNsToken()
+                    } else {
+                        CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
+                        if showSettingsAlert {
+                            self?.showSettingsAlert()
+                        }
+                    }
                 }
-            })
+            }
+        }
+    }
+
+    private func showSettingsAlert() {
+        DispatchQueue.main.async {
+            let alertTitle = "Permission Needed"
+            let alertMessage = "You have previously denied push notification permission. Please go to your settings to enable push notifications."
+
+            let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+
+            let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+                if let appSettings = URL(string: UIApplication.openSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(appSettings) {
+                        UIApplication.shared.open(appSettings)
+                    }
+                }
+            }
+
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+            alertController.addAction(settingsAction)
+            alertController.addAction(cancelAction)
+
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootViewController = windowScene.windows.first?.rootViewController
+            {
+                var topController = rootViewController
+                while let presentedViewController = topController.presentedViewController {
+                    topController = presentedViewController
+                }
+                topController.present(alertController, animated: true, completion: nil)
+            }
         }
     }
 

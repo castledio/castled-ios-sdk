@@ -21,14 +21,14 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         navigationItem.title = "Castled"
 
         self.showRequiredViews()
-        self.setUpInboxCallback()
+       //
 
         // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        Castled.sharedInstance.logPageViewedEvent(self)
+      //
         //        Castled.sharedInstance.logPageViewedEventIfAny(context: self)
         //        CastledConfigs.sharedInstance.enablePush = true
 
@@ -88,6 +88,8 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             self.navigationItem.rightBarButtonItem = nil
             let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self.inboxTapped))
             self.navigationItem.rightBarButtonItem = inboxButton
+            self.setUpInboxCallback()
+            Castled.sharedInstance.logPageViewedEvent(self)
         }
         else {
             self.btnGotoSecondVC.isHidden = true
