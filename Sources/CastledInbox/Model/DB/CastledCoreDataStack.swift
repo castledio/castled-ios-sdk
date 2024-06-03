@@ -49,7 +49,7 @@ public class CastledCoreDataStack {
             do {
                 try context.save()
             } catch {
-                let nserror = error as NSError
+                //   let nserror = error as NSError
                 // fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }

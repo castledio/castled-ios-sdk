@@ -107,7 +107,7 @@ class CastledCoreDataOperations {
     }
 
     private func updateOrInsertInboxObject(from item: CastledInboxItem, in context: NSManagedObjectContext) {
-        if let existingObject = getAppInboxFrom(messageId: item.messageId, in: context) {
+        if let _ = getAppInboxFrom(messageId: item.messageId, in: context) {
             // Update existing object,
             //  CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: existingObject)
 
