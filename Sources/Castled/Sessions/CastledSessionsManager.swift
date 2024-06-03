@@ -101,16 +101,14 @@ class CastledSessionsManager {
     func doTheBackgroundJobs() {
         if !isSessionStarted || currentStartTime == 0 {
             return
-            /* adding this to handle the corener case
-                app is launched and then immediately backgrounded before it has a chance to become active, you might see didEnterBackgroundNotification without didBecomeActiveNotification. */
+                /* adding this to handle the corener case
+                    app is launched and then immediately backgrounded before it has a chance to become active, you might see didEnterBackgroundNotification without didBecomeActiveNotification. */
         }
         sessionTrackingQueue.sync {
             sessionEndTime = Date().timeIntervalSince1970
             let userDefaults = CastledUserDefaults.getUserDefaults()
-            if currentStartTime != 0 {
-                sessionDuration += sessionEndTime - currentStartTime
-                userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
-            }
+            sessionDuration += sessionEndTime - currentStartTime
+            userDefaults.setValue(sessionDuration, forKey: CastledUserDefaults.kCastledSessionDuration)
             currentStartTime = sessionEndTime
             userDefaults.setValue(sessionEndTime, forKey: CastledUserDefaults.kCastledLastSessionEndTime)
             userDefaults.synchronize()
