@@ -20,6 +20,7 @@ class CastledSessionsManager {
     private var currentStartTime: Double = 0
     private let sessionTrackingQueue = DispatchQueue(label: "CastledSessionsTrackingQueue", attributes: .concurrent)
     private var isSaving = false
+    var isSessionStarted = false
     private init() {}
 
     func startCastledSession() {
@@ -31,6 +32,7 @@ class CastledSessionsManager {
             } else {
                 // CastledLog.castledLog("Resuming session '\(sessionId)'", logLevel: CastledLogLevel.info)
             }
+            isSessionStarted = true
         }
     }
 
@@ -97,6 +99,11 @@ class CastledSessionsManager {
     }
 
     func doTheBackgroundJobs() {
+        if !isSessionStarted || currentStartTime == 0 {
+            return
+            /* adding this to handle the corener case
+                app is launched and then immediately backgrounded before it has a chance to become active, you might see didEnterBackgroundNotification without didBecomeActiveNotification. */
+        }
         sessionTrackingQueue.sync {
             sessionEndTime = Date().timeIntervalSince1970
             let userDefaults = CastledUserDefaults.getUserDefaults()
