@@ -29,6 +29,7 @@
 		0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */; };
 		0A31CFC12BB5468900901A50 /* CastledNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A31CFC02BB5468900901A50 /* CastledNotificationCenter.swift */; };
 		0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */; };
+		0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */; };
 		0A446E272A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */; };
 		0A46C2BD2B6D070C00D40B17 /* CastledSessionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */; };
 		0A46C2C32B72708700D40B17 /* CastledUserAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */; };
@@ -64,13 +65,13 @@
 		0A8AC1072BF641B900BCF7AB /* CastledInboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC0F12BF641B900BCF7AB /* CastledInboxViewController.swift */; };
 		0A8AC10D2BF641B900BCF7AB /* CastledInboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC0F92BF641B900BCF7AB /* CastledInboxViewModel.swift */; };
 		0A8AC10F2BF642F900BCF7AB /* CastledInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC10E2BF642F900BCF7AB /* CastledInbox.swift */; };
-		0A8AC1102BF6442900BCF7AB /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A0F97EA2ACBE66E00BA05D0 /* RealmSwift.framework */; platformFilter = ios; };
-		0A8AC1122BF6443300BCF7AB /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A0F97EC2ACBE84200BA05D0 /* Realm.framework */; platformFilter = ios; };
 		0A8AC1132BF6443800BCF7AB /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A23C0042AC20E1B00F8772A /* SDWebImage.framework */; };
-		0A8AC1162BF644D900BCF7AB /* CastledAppInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC1152BF644D900BCF7AB /* CastledAppInbox.swift */; };
-		0A8AC11B2BF6472F00BCF7AB /* CastledDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC11A2BF6472F00BCF7AB /* CastledDBManager.swift */; };
-		0A8AC11D2BF647B700BCF7AB /* CastledStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC11C2BF647B700BCF7AB /* CastledStore.swift */; };
 		0A8F25AA29E5AE4E00FBD9E0 /* CastledInAppObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */; };
+		0A94D6752C075556007BF60B /* CastledCoreDataOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A94D6742C075556007BF60B /* CastledCoreDataOperations.swift */; };
+		0A94D67E2C0768B1007BF60B /* CastledCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A94D67D2C0768B1007BF60B /* CastledCoreDataStack.swift */; };
+		0A94D6812C0769E8007BF60B /* CastledAppInbox+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A94D67F2C0769E8007BF60B /* CastledAppInbox+CoreDataClass.swift */; };
+		0A94D6822C0769E8007BF60B /* CastledAppInbox+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A94D6802C0769E8007BF60B /* CastledAppInbox+CoreDataProperties.swift */; };
+		0A94D6A22C07866A007BF60B /* CastledInbox.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0A94D6A02C07866A007BF60B /* CastledInbox.xcdatamodeld */; };
 		0A99E8882BBA82C3005E9F7E /* CastledAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99E8872BBA82C3005E9F7E /* CastledAppDelegate.swift */; };
 		0A99E88A2BBA905A005E9F7E /* CastledNotificationDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A99E8892BBA905A005E9F7E /* CastledNotificationDelegates.swift */; };
 		0A99E9292BC053A8005E9F7E /* CastledApplicationLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A99E9282BC053A8005E9F7E /* CastledApplicationLoader.m */; };
@@ -195,8 +196,6 @@
 		0A0E64972BFFD64700706B4B /* CastledInboxSetupLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxSetupLoader.swift; sourceTree = "<group>"; };
 		0A0E649E2BFFDB6500706B4B /* CastledInboxLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastledInboxLoader.m; sourceTree = "<group>"; };
 		0A0E649F2BFFDB6500706B4B /* CastledInboxLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledInboxLoader.h; sourceTree = "<group>"; };
-		0A0F97EA2ACBE66E00BA05D0 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
-		0A0F97EC2ACBE84200BA05D0 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		0A0F97F02ACC53FF00BA05D0 /* CExtensions+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CExtensions+Data.swift"; sourceTree = "<group>"; };
 		0A18554F2B6A2DA7005C1681 /* CastledBadgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledBadgeManager.swift; sourceTree = "<group>"; };
 		0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIFsDefaultView.swift; sourceTree = "<group>"; };
@@ -210,6 +209,7 @@
 		0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CastledAssets.xcassets; sourceTree = "<group>"; };
 		0A31CFC02BB5468900901A50 /* CastledNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationCenter.swift; sourceTree = "<group>"; };
 		0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzlingAppear.swift; sourceTree = "<group>"; };
+		0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledFRCViewModel.swift; sourceTree = "<group>"; };
 		0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledInAppDisplayViewController.xib; sourceTree = "<group>"; };
 		0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsManager.swift; sourceTree = "<group>"; };
 		0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledUserAttributes.swift; sourceTree = "<group>"; };
@@ -246,10 +246,12 @@
 		0A8AC0F12BF641B900BCF7AB /* CastledInboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxViewController.swift; sourceTree = "<group>"; };
 		0A8AC0F92BF641B900BCF7AB /* CastledInboxViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxViewModel.swift; sourceTree = "<group>"; };
 		0A8AC10E2BF642F900BCF7AB /* CastledInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInbox.swift; sourceTree = "<group>"; };
-		0A8AC1152BF644D900BCF7AB /* CastledAppInbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledAppInbox.swift; sourceTree = "<group>"; };
-		0A8AC11A2BF6472F00BCF7AB /* CastledDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledDBManager.swift; sourceTree = "<group>"; };
-		0A8AC11C2BF647B700BCF7AB /* CastledStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledStore.swift; sourceTree = "<group>"; };
 		0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppObject.swift; sourceTree = "<group>"; };
+		0A94D6742C075556007BF60B /* CastledCoreDataOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledCoreDataOperations.swift; sourceTree = "<group>"; };
+		0A94D67D2C0768B1007BF60B /* CastledCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledCoreDataStack.swift; sourceTree = "<group>"; };
+		0A94D67F2C0769E8007BF60B /* CastledAppInbox+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CastledAppInbox+CoreDataClass.swift"; path = "CastledInbox/Model/DB/CastledAppInbox+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0A94D6802C0769E8007BF60B /* CastledAppInbox+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CastledAppInbox+CoreDataProperties.swift"; path = "CastledInbox/Model/DB/CastledAppInbox+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		0A94D6A12C07866A007BF60B /* Castled.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Castled.xcdatamodel; sourceTree = "<group>"; };
 		0A99E8872BBA82C3005E9F7E /* CastledAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledAppDelegate.swift; sourceTree = "<group>"; };
 		0A99E8892BBA905A005E9F7E /* CastledNotificationDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationDelegates.swift; sourceTree = "<group>"; };
 		0A99E9272BC053A8005E9F7E /* CastledApplicationLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledApplicationLoader.h; sourceTree = "<group>"; };
@@ -351,9 +353,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A8AC1122BF6443300BCF7AB /* Realm.framework in Frameworks */,
 				0A8AC1132BF6443800BCF7AB /* SDWebImage.framework in Frameworks */,
-				0A8AC1102BF6442900BCF7AB /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,7 +574,6 @@
 				0A8AC10E2BF642F900BCF7AB /* CastledInbox.swift */,
 				0ACE7A902BF70A4D0003F596 /* CastledInboxController.swift */,
 				0A0E64972BFFD64700706B4B /* CastledInboxSetupLoader.swift */,
-				0A8AC1192BF6471B00BCF7AB /* Store */,
 				0ACE7A9B2BF737F70003F596 /* CastledInboxApi */,
 				0A8AC0F82BF641B900BCF7AB /* Helpers */,
 				0A8AC0E62BF641B900BCF7AB /* Model */,
@@ -647,6 +646,7 @@
 		0A8AC0FA2BF641B900BCF7AB /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */,
 				0A8AC0F92BF641B900BCF7AB /* CastledInboxViewModel.swift */,
 			);
 			path = ViewModel;
@@ -655,18 +655,11 @@
 		0A8AC1142BF644B400BCF7AB /* DB */ = {
 			isa = PBXGroup;
 			children = (
-				0A8AC1152BF644D900BCF7AB /* CastledAppInbox.swift */,
+				0A94D67D2C0768B1007BF60B /* CastledCoreDataStack.swift */,
+				0A94D6A02C07866A007BF60B /* CastledInbox.xcdatamodeld */,
+				0A94D6742C075556007BF60B /* CastledCoreDataOperations.swift */,
 			);
 			path = DB;
-			sourceTree = "<group>";
-		};
-		0A8AC1192BF6471B00BCF7AB /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				0A8AC11C2BF647B700BCF7AB /* CastledStore.swift */,
-				0A8AC11A2BF6472F00BCF7AB /* CastledDBManager.swift */,
-			);
-			path = Store;
 			sourceTree = "<group>";
 		};
 		0A99E9262BC0539C005E9F7E /* CastledObjC */ = {
@@ -708,11 +701,11 @@
 		0AB5C546291C222C0027C36B = {
 			isa = PBXGroup;
 			children = (
+				0A94D67F2C0769E8007BF60B /* CastledAppInbox+CoreDataClass.swift */,
+				0A94D6802C0769E8007BF60B /* CastledAppInbox+CoreDataProperties.swift */,
 				0A0E649D2BFFDB4800706B4B /* CastledInboxObjC */,
 				0A99E9262BC0539C005E9F7E /* CastledObjC */,
-				0A0F97EC2ACBE84200BA05D0 /* Realm.framework */,
 				0A23C0042AC20E1B00F8772A /* SDWebImage.framework */,
-				0A0F97EA2ACBE66E00BA05D0 /* RealmSwift.framework */,
 				0AB5C552291C222C0027C36B /* Castled */,
 				66D18B192A062B760075AB43 /* CastledNotificationService */,
 				66D18BB32A0D55950075AB43 /* CastledNotificationContent */,
@@ -1263,23 +1256,26 @@
 				0ACE7A912BF70A4D0003F596 /* CastledInboxController.swift in Sources */,
 				0A8AC0FF2BF641B900BCF7AB /* CastledInboxType.swift in Sources */,
 				0A8AC10D2BF641B900BCF7AB /* CastledInboxViewModel.swift in Sources */,
+				0A94D6A22C07866A007BF60B /* CastledInbox.xcdatamodeld in Sources */,
 				0A8AC1032BF641B900BCF7AB /* CastledPagerTabView.swift in Sources */,
 				0A0E64A02BFFDB6500706B4B /* CastledInboxLoader.m in Sources */,
-				0A8AC1162BF644D900BCF7AB /* CastledAppInbox.swift in Sources */,
 				0A8AC1072BF641B900BCF7AB /* CastledInboxViewController.swift in Sources */,
 				0AB9BE922BFB3F4900DB7744 /* CastledInboxRepository.swift in Sources */,
 				0A8AC0FC2BF641B900BCF7AB /* CastledInboxItem.swift in Sources */,
-				0A8AC11D2BF647B700BCF7AB /* CastledStore.swift in Sources */,
+				0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */,
+				0A94D67E2C0768B1007BF60B /* CastledCoreDataStack.swift in Sources */,
 				0A8AC1042BF641B900BCF7AB /* CastledViewPager.swift in Sources */,
 				0A8AC0FE2BF641B900BCF7AB /* CastledInboxServices.swift in Sources */,
 				0A0E64982BFFD64700706B4B /* CastledInboxSetupLoader.swift in Sources */,
 				0A8AC1062BF641B900BCF7AB /* CastledInboxListingViewController.swift in Sources */,
+				0A94D6812C0769E8007BF60B /* CastledAppInbox+CoreDataClass.swift in Sources */,
+				0A94D6822C0769E8007BF60B /* CastledAppInbox+CoreDataProperties.swift in Sources */,
+				0A94D6752C075556007BF60B /* CastledCoreDataOperations.swift in Sources */,
 				0A8AC0FD2BF641B900BCF7AB /* CastledInboxResponseConverter.swift in Sources */,
 				0ACE7AB32BF7C47D0003F596 /* CastledInboxRequestHandler.swift in Sources */,
 				0A8AC1052BF641B900BCF7AB /* CastledViewPagerDisplayConfigs.swift in Sources */,
 				0A8AC0FB2BF641B900BCF7AB /* CastledInboxConfig.swift in Sources */,
 				0A8AC1002BF641B900BCF7AB /* CastledInboxCell.swift in Sources */,
-				0A8AC11B2BF6472F00BCF7AB /* CastledDBManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1919,6 +1915,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		0A94D6A02C07866A007BF60B /* CastledInbox.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				0A94D6A12C07866A007BF60B /* Castled.xcdatamodel */,
+			);
+			currentVersion = 0A94D6A12C07866A007BF60B /* Castled.xcdatamodel */;
+			path = CastledInbox.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0AB5C547291C222C0027C36B /* Project object */;
 }

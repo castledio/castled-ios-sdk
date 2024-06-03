@@ -21,14 +21,14 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         navigationItem.title = "Castled"
 
         self.showRequiredViews()
-       //
+        //
 
         // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-      //
+        //
         //        Castled.sharedInstance.logPageViewedEventIfAny(context: self)
         //        CastledConfigs.sharedInstance.enablePush = true
 
@@ -157,8 +157,14 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         })
 
         CastledInbox.sharedInstance.getInboxItems(completion: { _, result, _ in
+            // let inboxItem = result?.first
+            // let inboxItemDelete = result?.last
+            // CastledInbox.sharedInstance.logInboxItemClicked(inboxItem!, buttonTitle: "")
+            // CastledInbox.sharedInstance.logInboxItemsRead([inboxItemDelete!])
+            // CastledInbox.sharedInstance.deleteInboxItem(inboxItem!)
             print("getInboxItems \(result?.count)")
         })
+
         //       Castled.sharedInstance.dismissInboxViewController()
     }
 

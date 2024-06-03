@@ -33,7 +33,7 @@ class CastledInboxCell: UITableViewCell {
     @IBOutlet weak var imgBottomLine: UIImageView!
     @IBOutlet weak var constraintImageHeightRatio: NSLayoutConstraint!
     @IBOutlet weak var constraintButtonContainerHeight: NSLayoutConstraint!
-    private var inboxItem: CAppInbox?
+    private var inboxItem: CastledAppInbox?
     private var actualCoverImageRatioConstraint: NSLayoutConstraint?
 
     override func awakeFromNib() {
@@ -59,7 +59,7 @@ class CastledInboxCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func configureCellWith(_ inboxObj: CAppInbox) {
+    func configureCellWith(_ inboxObj: CastledAppInbox) {
         inboxItem = inboxObj
         viewContainer.backgroundColor = inboxObj.colorContainer
         lblTitle.textColor = inboxObj.colorTitle
@@ -74,24 +74,26 @@ class CastledInboxCell: UITableViewCell {
         var imageView: UIImageView?
 
         switch inboxObj.inboxType {
-            case .messageWithMedia:
-                imageView = imgCover
-                imgCover.isHidden = false
-                imgBannerLogo.superview?.isHidden = true
-            case .messageBanner:
-                multiplier = 0.0
-                imageView = imgBannerLogo
-                imgCover.isHidden = true
-                imgBannerLogo.superview?.isHidden = false
+        case CastledInboxType.messageWithMedia.rawValue:
+            imageView = imgCover
+            imgCover.isHidden = false
+            imgBannerLogo.superview?.isHidden = true
+        case CastledInboxType.messageBanner.rawValue:
+            multiplier = 0.0
+            imageView = imgBannerLogo
+            imgCover.isHidden = true
+            imgBannerLogo.superview?.isHidden = false
 
-            case .messageBannerNoIcon:
-                multiplier = 0.0
-                imageView = imgBannerLogo
-                imgCover.isHidden = true
-                imgBannerLogo.superview?.isHidden = true
+        case CastledInboxType.messageBannerNoIcon.rawValue:
+            multiplier = 0.0
+            imageView = imgBannerLogo
+            imgCover.isHidden = true
+            imgBannerLogo.superview?.isHidden = true
 
-            case .other:
-                break
+        case CastledInboxType.other.rawValue:
+            break
+        default:
+            break
         }
 
         let newConstraint = actualCoverImageRatioConstraint!.constraintWithMultiplier(CGFloat(multiplier))

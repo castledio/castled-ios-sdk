@@ -28,8 +28,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1"),
-        .package(url: "https://github.com/realm/realm-cocoa.git", from: "10.43.0")
+        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.11.1")
     ],
     targets: [
         .target(
@@ -88,8 +87,7 @@ let package = Package(
         .target(
             name: "CastledInbox",
             dependencies: [
-                "SDWebImage",
-                .product(name: "RealmSwift", package: "realm-cocoa")
+                "SDWebImage", "Castled"
             ],
             path: "Sources/CastledInbox",
             resources: [
@@ -97,7 +95,8 @@ let package = Package(
                 .process("Views/Resources")
             ], linkerSettings: [
                 .linkedFramework("AVFoundation"),
-                .linkedFramework("UIKit")
+                .linkedFramework("UIKit"),
+                .linkedFramework("Coredata")
             ]
         ),
         .target(

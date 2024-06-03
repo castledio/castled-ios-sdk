@@ -18,9 +18,9 @@
 		0A365DED2A4367F00048BD09 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365DEA2A4367F00048BD09 /* SecondViewController.swift */; };
 		0A365DEE2A4367F00048BD09 /* DeeplinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A365DEB2A4367F00048BD09 /* DeeplinkViewController.swift */; };
 		0A365DF02A4367FD0048BD09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A365DEF2A4367FD0048BD09 /* Main.storyboard */; };
+		0A43B1A12C0DF30A004EA8A6 /* Castled in Frameworks */ = {isa = PBXBuildFile; productRef = 0A43B1A02C0DF30A004EA8A6 /* Castled */; };
+		0A43B1A32C0DF30A004EA8A6 /* CastledInbox in Frameworks */ = {isa = PBXBuildFile; productRef = 0A43B1A22C0DF30A004EA8A6 /* CastledInbox */; };
 		0A60A9A22C005D1300E2E1E9 /* castled-ios-sdk in Resources */ = {isa = PBXBuildFile; fileRef = 0A60A9A12C005D1300E2E1E9 /* castled-ios-sdk */; };
-		0A60A9A42C005D3A00E2E1E9 /* Castled in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A32C005D3A00E2E1E9 /* Castled */; };
-		0A60A9A62C005D3A00E2E1E9 /* CastledInbox in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A52C005D3A00E2E1E9 /* CastledInbox */; };
 		0A60A9A82C005D4200E2E1E9 /* CastledNotificationService in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A72C005D4200E2E1E9 /* CastledNotificationService */; };
 		0A60A9AA2C005D4800E2E1E9 /* CastledNotificationContent in Frameworks */ = {isa = PBXBuildFile; productRef = 0A60A9A92C005D4800E2E1E9 /* CastledNotificationContent */; };
 		0AB9043C2A474544009926A7 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB9043B2A474544009926A7 /* NotificationService.swift */; };
@@ -113,8 +113,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A60A9A62C005D3A00E2E1E9 /* CastledInbox in Frameworks */,
-				0A60A9A42C005D3A00E2E1E9 /* Castled in Frameworks */,
+				0A43B1A32C0DF30A004EA8A6 /* CastledInbox in Frameworks */,
+				0A43B1A12C0DF30A004EA8A6 /* Castled in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,8 +262,8 @@
 			);
 			name = CastledDemoSPM;
 			packageProductDependencies = (
-				0A60A9A32C005D3A00E2E1E9 /* Castled */,
-				0A60A9A52C005D3A00E2E1E9 /* CastledInbox */,
+				0A43B1A02C0DF30A004EA8A6 /* Castled */,
+				0A43B1A22C0DF30A004EA8A6 /* CastledInbox */,
 			);
 			productName = CastledDemoSPM;
 			productReference = 0A365D882A4366FE0048BD09 /* CastledDemoSPM.app */;
@@ -950,11 +950,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0A60A9A32C005D3A00E2E1E9 /* Castled */ = {
+		0A43B1A02C0DF30A004EA8A6 /* Castled */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Castled;
 		};
-		0A60A9A52C005D3A00E2E1E9 /* CastledInbox */ = {
+		0A43B1A22C0DF30A004EA8A6 /* CastledInbox */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CastledInbox;
 		};

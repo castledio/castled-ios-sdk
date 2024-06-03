@@ -13,7 +13,7 @@ import UIKit
     @objc public static var sharedInstance = CastledInbox()
 
     lazy var inboxUnreadCount: Int = {
-        CastledStore.getInboxUnreadCount()
+        CastledCoreDataOperations.shared.getInboxUnreadCount()
 
     }() {
         didSet {
@@ -100,10 +100,8 @@ import UIKit
             completion(false, [], CastledExceptionMessages.notInitialised.rawValue)
             return
         }
-        CastledStore.castledStoreQueue.async {
-            DispatchQueue.main.async {
-                completion(true, CastledDBManager.shared.getLiveInboxItems(), nil)
-            }
+        DispatchQueue.main.async {
+            completion(true, CastledCoreDataOperations.shared.getLiveInboxItems(), nil)
         }
     }
 
