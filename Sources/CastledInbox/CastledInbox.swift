@@ -100,10 +100,8 @@ import UIKit
             completion(false, [], CastledExceptionMessages.notInitialised.rawValue)
             return
         }
-        CastledStore.castledStoreQueue.async {
-            DispatchQueue.main.async {
-                completion(true, CastledCoreDataOperations.shared.getLiveInboxItems(), nil)
-            }
+        DispatchQueue.main.async {
+            completion(true, CastledCoreDataOperations.shared.getLiveInboxItems(), nil)
         }
     }
 

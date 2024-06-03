@@ -22,6 +22,7 @@ import CoreData
     @IBOutlet weak var viewTopBar: UIView!
     @IBOutlet weak var constraintTopBarHeight: NSLayoutConstraint!
     @IBOutlet weak var btnClose: UIButton!
+    let castledInboxQueue = DispatchQueue(label: "CastledInboxQueue")
 
     var viewModel = CastledInboxViewModel()
 
@@ -128,21 +129,25 @@ import CoreData
 
     private func getCategories() -> [String] {
         let context = CastledCoreDataStack.shared.mainContext
-        let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
+        let column = "tag"
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CastledAppInbox.fetchRequest()
+        fetchRequest.resultType = .dictionaryResultType
+
+        // Set that you want distinct results
+        fetchRequest.returnsDistinctResults = true
+
+        // Set the column you want to fetch
+        fetchRequest.propertiesToFetch = [column]
 
         // Set the predicate to filter items
         fetchRequest.predicate = NSPredicate(format: "tag != '' AND isRemoved == false")
 
         do {
-            let fetchedObjects = try context.fetch(fetchRequest)
-
-            // Filter, map, and get unique tag values
-            let filteredObjects = fetchedObjects.filter { $0.tag != "" && !$0.isRemoved }
-            let tagSet = Set(filteredObjects.map { $0.tag })
-            let uniqueCategories = tagSet.sorted()
-
-            return uniqueCategories
+            let res = try context.fetch(fetchRequest) as? [[String: Any]]
+            let distinctValues = res?.compactMap { $0[column] as? String } ?? []
+            return distinctValues.sorted()
         } catch {
+            print("Error fetching categories: \(error)")
             return []
         }
     }
@@ -184,7 +189,7 @@ import CoreData
         if !inboxConfig!.showCategoriesTab {
             return
         }
-        CastledStore.castledStoreQueue.async { [weak self] in
+        castledInboxQueue.async { [weak self] in
             var currentCategories = [CastledInboxViewController.ALL_STRING]
             currentCategories.append(contentsOf: self?.getCategories() ?? [])
             if currentCategories != self?.topCategories {

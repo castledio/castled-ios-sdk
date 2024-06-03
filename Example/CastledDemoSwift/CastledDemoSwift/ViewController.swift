@@ -157,8 +157,14 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         })
 
         CastledInbox.sharedInstance.getInboxItems(completion: { _, result, _ in
+            // let inboxItem = result?.first
+            // let inboxItemDelete = result?.last
+            // CastledInbox.sharedInstance.logInboxItemClicked(inboxItem!, buttonTitle: "")
+            // CastledInbox.sharedInstance.logInboxItemsRead([inboxItemDelete!])
+            // CastledInbox.sharedInstance.deleteInboxItem(inboxItem!)
             print("getInboxItems \(result?.count)")
         })
+
         //       Castled.sharedInstance.dismissInboxViewController()
     }
 

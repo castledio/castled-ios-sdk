@@ -66,8 +66,6 @@
 		0A8AC10D2BF641B900BCF7AB /* CastledInboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC0F92BF641B900BCF7AB /* CastledInboxViewModel.swift */; };
 		0A8AC10F2BF642F900BCF7AB /* CastledInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC10E2BF642F900BCF7AB /* CastledInbox.swift */; };
 		0A8AC1132BF6443800BCF7AB /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A23C0042AC20E1B00F8772A /* SDWebImage.framework */; };
-		0A8AC11B2BF6472F00BCF7AB /* CastledDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC11A2BF6472F00BCF7AB /* CastledDBManager.swift */; };
-		0A8AC11D2BF647B700BCF7AB /* CastledStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC11C2BF647B700BCF7AB /* CastledStore.swift */; };
 		0A8F25AA29E5AE4E00FBD9E0 /* CastledInAppObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */; };
 		0A94D6752C075556007BF60B /* CastledCoreDataOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A94D6742C075556007BF60B /* CastledCoreDataOperations.swift */; };
 		0A94D67E2C0768B1007BF60B /* CastledCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A94D67D2C0768B1007BF60B /* CastledCoreDataStack.swift */; };
@@ -248,8 +246,6 @@
 		0A8AC0F12BF641B900BCF7AB /* CastledInboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxViewController.swift; sourceTree = "<group>"; };
 		0A8AC0F92BF641B900BCF7AB /* CastledInboxViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxViewModel.swift; sourceTree = "<group>"; };
 		0A8AC10E2BF642F900BCF7AB /* CastledInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInbox.swift; sourceTree = "<group>"; };
-		0A8AC11A2BF6472F00BCF7AB /* CastledDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledDBManager.swift; sourceTree = "<group>"; };
-		0A8AC11C2BF647B700BCF7AB /* CastledStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledStore.swift; sourceTree = "<group>"; };
 		0A8F25A929E5AE4E00FBD9E0 /* CastledInAppObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppObject.swift; sourceTree = "<group>"; };
 		0A94D6742C075556007BF60B /* CastledCoreDataOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledCoreDataOperations.swift; sourceTree = "<group>"; };
 		0A94D67D2C0768B1007BF60B /* CastledCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledCoreDataStack.swift; sourceTree = "<group>"; };
@@ -578,7 +574,6 @@
 				0A8AC10E2BF642F900BCF7AB /* CastledInbox.swift */,
 				0ACE7A902BF70A4D0003F596 /* CastledInboxController.swift */,
 				0A0E64972BFFD64700706B4B /* CastledInboxSetupLoader.swift */,
-				0A8AC1192BF6471B00BCF7AB /* Store */,
 				0ACE7A9B2BF737F70003F596 /* CastledInboxApi */,
 				0A8AC0F82BF641B900BCF7AB /* Helpers */,
 				0A8AC0E62BF641B900BCF7AB /* Model */,
@@ -665,15 +660,6 @@
 				0A94D6742C075556007BF60B /* CastledCoreDataOperations.swift */,
 			);
 			path = DB;
-			sourceTree = "<group>";
-		};
-		0A8AC1192BF6471B00BCF7AB /* Store */ = {
-			isa = PBXGroup;
-			children = (
-				0A8AC11C2BF647B700BCF7AB /* CastledStore.swift */,
-				0A8AC11A2BF6472F00BCF7AB /* CastledDBManager.swift */,
-			);
-			path = Store;
 			sourceTree = "<group>";
 		};
 		0A99E9262BC0539C005E9F7E /* CastledObjC */ = {
@@ -1276,7 +1262,6 @@
 				0A8AC1072BF641B900BCF7AB /* CastledInboxViewController.swift in Sources */,
 				0AB9BE922BFB3F4900DB7744 /* CastledInboxRepository.swift in Sources */,
 				0A8AC0FC2BF641B900BCF7AB /* CastledInboxItem.swift in Sources */,
-				0A8AC11D2BF647B700BCF7AB /* CastledStore.swift in Sources */,
 				0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */,
 				0A94D67E2C0768B1007BF60B /* CastledCoreDataStack.swift in Sources */,
 				0A8AC1042BF641B900BCF7AB /* CastledViewPager.swift in Sources */,
@@ -1291,7 +1276,6 @@
 				0A8AC1052BF641B900BCF7AB /* CastledViewPagerDisplayConfigs.swift in Sources */,
 				0A8AC0FB2BF641B900BCF7AB /* CastledInboxConfig.swift in Sources */,
 				0A8AC1002BF641B900BCF7AB /* CastledInboxCell.swift in Sources */,
-				0A8AC11B2BF6472F00BCF7AB /* CastledDBManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

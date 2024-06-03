@@ -22,7 +22,7 @@ public class CastledCoreDataStack {
         let description = NSPersistentStoreDescription(url: storeURL)
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
-        CastledLog.castledLog("Inbox path \(storeURL)", logLevel: .info)
+        // CastledLog.castledLog("Inbox path \(storeURL)", logLevel: .info)
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { _, error in
 

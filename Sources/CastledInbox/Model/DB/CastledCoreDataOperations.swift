@@ -240,4 +240,18 @@ class CastledCoreDataOperations {
             return []
         }
     }
+
+    func clearInboxItems() {
+        let deleteFetch: NSFetchRequest<NSFetchRequestResult> = CastledAppInbox.fetchRequest()
+
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+
+        do {
+            let context = CastledCoreDataStack.shared.mainContext
+            try context.execute(deleteRequest)
+            CastledCoreDataStack.shared.saveContext()
+        } catch {
+            // error
+        }
+    }
 }

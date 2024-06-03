@@ -52,7 +52,7 @@ class CastledInboxServices: NSObject {
 
     func reportInboxItemsDeleted(inboxObject: CastledInboxItem) {
         CastledCoreDataOperations.shared.saveInboxIdsDeleted(deletedItems: [inboxObject.messageId])
-       // CastledCoreDataOperations.shared.saveInboxItemAsDeletedWith(messageId: inboxObject.messageId)
+        // CastledCoreDataOperations.shared.saveInboxItemAsDeletedWith(messageId: inboxObject.messageId)
         let eventType = "DELETED"
         var savedEventTypes = [[String: String]]()
         savedEventTypes.append(getSendingParametersFrom(eventType, inboxObject, ""))
