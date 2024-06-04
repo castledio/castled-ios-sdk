@@ -11,14 +11,14 @@ import Foundation
 
 public class CastledCoreDataStack {
     public static let shared = CastledCoreDataStack()
-    let modelName = "CastledInbox"
+    static let modelName = "CastledInbox"
     private init() {}
 
-    lazy var persistentContainer: NSPersistentContainer = {
+    static var persistentContainer: NSPersistentContainer = {
         let modelURL = Bundle.resourceBundle(for: CastledCoreDataStack.self).url(forResource: modelName, withExtension: "momd")!
         let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
         let container = NSPersistentContainer(name: modelName, managedObjectModel: managedObjectModel!)
-        let storeURL = self.applicationDocumentsDirectory.appendingPathComponent("castled_inbox.sqlite")
+        let storeURL = CastledCoreDataStack.applicationDocumentsDirectory.appendingPathComponent("castled_inbox.sqlite")
         let description = NSPersistentStoreDescription(url: storeURL)
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
@@ -36,15 +36,19 @@ public class CastledCoreDataStack {
     }()
 
     public var mainContext: NSManagedObjectContext {
-        return persistentContainer.viewContext
+        return Self.persistentContainer.viewContext
+    }
+
+    func initialize() {
+        _ = Self.persistentContainer
     }
 
     public func newBackgroundContext() -> NSManagedObjectContext {
-        return persistentContainer.newBackgroundContext()
+        return Self.persistentContainer.newBackgroundContext()
     }
 
     public func saveContext() {
-        let context = persistentContainer.viewContext
+        let context = Self.persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -55,7 +59,7 @@ public class CastledCoreDataStack {
         }
     }
 
-    private var applicationDocumentsDirectory: URL {
+    static var applicationDocumentsDirectory: URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
 }
