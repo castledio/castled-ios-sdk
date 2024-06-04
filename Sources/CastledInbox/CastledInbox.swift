@@ -37,6 +37,7 @@ import UIKit
             return
         }
         CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue, handler: CastledInboxRequestHandler.self)
+        CastledCoreDataStack.shared.initialize()
         CastledInboxController.sharedInstance.initialize()
         isInitilized = true
         CastledLog.castledLog("Inbox module initialized..", logLevel: CastledLogLevel.info)
