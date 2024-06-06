@@ -45,22 +45,19 @@ public class CastledNetworkLayer: NSObject {
                             }
                         }
                         return CastledResponse<T>(response: ["success": "1"] as! T)
-
                     } else {
                         var statusCode = 0
                         var errorMsg = CastledExceptionMessages.common.rawValue
                         if let httpResponse = response as? HTTPURLResponse, !shouldDecodeResponse,
-                           (400 ... 499).contains(httpResponse.statusCode)
+                           httpResponse.statusCode.shouldIgnoreErrorCode()
                         { // Ignoring 400 series error
                             statusCode = httpResponse.statusCode
                             errorMsg = "Invalid input params"
                         }
-                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                            if let error_message = json["message"] as? String {
-                                return CastledResponse<T>(error: "\(error_message) \(String(describing: request.parameters))", statusCode: statusCode)
-                            }
+                        if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any], let error_message = json["message"] as? String {
+                            errorMsg = error_message
                         }
-                        return CastledResponse<T>(error: "\(errorMsg) \(String(describing: request.parameters))", statusCode: statusCode)
+                        return CastledResponse<T>(error: "\(errorMsg) with params \(String(describing: request.parameters))", statusCode: statusCode)
                     }
                 } else {
                     // Fallback on earlier versions
@@ -79,13 +76,14 @@ public class CastledNetworkLayer: NSObject {
         Task {
             let api_response = await CastledNetworkLayer.shared.sendRequestWith(request: request, path: path, responseModel: responseModel, shouldDecodeResponse: shouldDecodeResponse)
             if !api_response.success, !shouldDecodeResponse {
-                if (400 ... 499).contains(api_response.statusCode) {
-                    // ignoring the result if its 400 series
+                // handle api failure for reporting
+                if api_response.statusCode.shouldIgnoreErrorCode() {
                     if withRetry {
+                        // not enqueueing the request as 400 series
                         completion(api_response)
                     } else {
-                        // retuens success to remove from the queue if any for 400 series
-                        // this conditon is for retry
+                        // retuens success to remove from the  queue if any for 400 series
+                        // this is for retry
                         completion(CastledResponse<T>(response: ["success": "1"] as! T))
                     }
                     return
@@ -97,5 +95,11 @@ public class CastledNetworkLayer: NSObject {
             }
             completion(api_response)
         }
+    }
+}
+
+private extension Int {
+    func shouldIgnoreErrorCode() -> Bool {
+        return (400 ... 499).contains(self)
     }
 }
