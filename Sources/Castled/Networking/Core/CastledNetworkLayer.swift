@@ -49,7 +49,9 @@ public class CastledNetworkLayer: NSObject {
                     } else {
                         var statusCode = 0
                         var errorMsg = CastledExceptionMessages.common.rawValue
-                        if let httpResponse = response as? HTTPURLResponse, !shouldDecodeResponse {
+                        if let httpResponse = response as? HTTPURLResponse, !shouldDecodeResponse,
+                           (400 ... 499).contains(httpResponse.statusCode)
+                        { // Ignoring 400 series error
                             statusCode = httpResponse.statusCode
                             errorMsg = "Invalid input params"
                         }
@@ -83,6 +85,7 @@ public class CastledNetworkLayer: NSObject {
                         completion(api_response)
                     } else {
                         // retuens success to remove from the queue if any for 400 series
+                        // this conditon is for retry
                         completion(CastledResponse<T>(response: ["success": "1"] as! T))
                     }
                     return
