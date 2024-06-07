@@ -90,46 +90,12 @@ public extension Castled {
             return !alertDict.isEmpty
         }
 
+        // if only body is specified
         if let alertString = alert as? String {
             return !alertString.isEmpty
         }
 
         return false
-    }
-
-    internal func didReceiveRemoteNotificationOld(inApplication application: UIApplication?, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        guard let application = application else {
-            return
-        }
-        var backgroundTask: UIBackgroundTaskIdentifier?
-        backgroundTask = application.beginBackgroundTask(withName: "com.castled.bgpush") {
-            application.endBackgroundTask(backgroundTask!)
-            backgroundTask = .invalid
-        }
-        CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
-        if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
-            if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
-                let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
-                let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
-                let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
-                if !params.isEmpty {
-                    CastledPushNotification.sharedInstance.reportPushEvents(params: params) { success in
-                        completionHandler(success ? .newData : .failed)
-                        if let backgroundTask = backgroundTask {
-                            application.endBackgroundTask(backgroundTask)
-                        }
-                    }
-
-                    return
-                }
-            }
-        }
-
-        // not from castled or  send test
-        completionHandler(.noData)
-        if let backgroundTask = backgroundTask {
-            application.endBackgroundTask(backgroundTask)
-        }
     }
 
     @objc func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) {
