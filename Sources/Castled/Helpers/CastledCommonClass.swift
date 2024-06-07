@@ -149,4 +149,8 @@ public class CastledCommonClass {
 
         return trimmedBase64String
     }
+
+    static func getUUIDString() -> String {
+        return UUID().uuidString
+    }
 }
