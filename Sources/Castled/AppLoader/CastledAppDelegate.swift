@@ -30,6 +30,7 @@ import UserNotifications
     private func swizzleNotificationDelegates(delegateObject: AnyObject) {
         CastledAppDelegate.shared.swizzleImplementations(type(of: delegateObject), "application:didRegisterForRemoteNotificationsWithDeviceToken:")
         CastledAppDelegate.shared.swizzleImplementations(type(of: delegateObject), "application:didFailToRegisterForRemoteNotificationsWithError:")
+        CastledAppDelegate.shared.swizzleImplementations(type(of: delegateObject), "application:didReceiveRemoteNotification:fetchCompletionHandler:")
     }
 
     private func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {

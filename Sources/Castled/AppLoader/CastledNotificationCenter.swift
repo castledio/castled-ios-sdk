@@ -28,7 +28,6 @@ class CastledNotificationCenter: NSObject, UNUserNotificationCenterDelegate {
     private func swizzleNotificationDelegates(delegateObject: AnyObject) {
         CastledNotificationCenter.shared.swizzleImplementations(type(of: delegateObject), "userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:")
         CastledNotificationCenter.shared.swizzleImplementations(type(of: delegateObject), "userNotificationCenter:willPresentNotification:withCompletionHandler:")
-        CastledNotificationCenter.shared.swizzleImplementations(type(of: delegateObject), "application:didReceiveRemoteNotification:fetchCompletionHandler:")
     }
 
     private func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {

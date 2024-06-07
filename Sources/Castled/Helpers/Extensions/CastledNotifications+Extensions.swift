@@ -25,6 +25,82 @@ public extension Castled {
         guard let application = application else {
             return
         }
+
+        var backgroundTask: UIBackgroundTaskIdentifier?
+        backgroundTask = application.beginBackgroundTask(withName: CastledCommonClass.getUUIDString()) {
+            application.endBackgroundTask(backgroundTask!)
+            backgroundTask = .invalid
+        }
+        if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary, let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: 0),
+           let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
+        {
+            let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
+            let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
+            var event = CastledConstants.CastledEventTypes.received.rawValue
+            let isVisible = Castled.sharedInstance.isVisibleNotification(userInfo)
+            if isVisible {
+                switch application.applicationState {
+                case .inactive:
+                    // The app is transitioning between states (e.g., the user is tapping on a notification, and the app is about to become active).
+                    event = CastledConstants.CastledEventTypes.cliked.rawValue
+                case .active:
+                    event = CastledConstants.CastledEventTypes.received.rawValue
+                default:
+                    break
+                    //   event = CastledConstants.CastledEventTypes.cliked.rawValue
+                }
+            }
+            if event == CastledConstants.CastledEventTypes.cliked.rawValue {
+                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: defaultAction.getCastledClickActionType(), kvPairs: userInfo, userInfo: userInfo)
+                CastledBadgeManager.shared.clearApplicationBadge()
+            } else {
+                CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
+            }
+            let params = Castled.sharedInstance.getPushPayload(event: event, teamID: teamID, sourceContext: sourceContext)
+            if !params.isEmpty {
+                CastledPushNotification.sharedInstance.reportPushEvents(params: params) { success in
+                    completionHandler(success ? .newData : .failed)
+                    if let backgroundTask = backgroundTask {
+                        application.endBackgroundTask(backgroundTask)
+                    }
+                }
+
+                return
+            }
+
+        } else {
+            // not from castled
+        }
+
+        // not from castled or  send test
+        completionHandler(.noData)
+        if let backgroundTask = backgroundTask {
+            application.endBackgroundTask(backgroundTask)
+        }
+    }
+
+    private func isVisibleNotification(_ notification: [AnyHashable: Any]) -> Bool {
+        guard let aps = notification["aps"] as? [String: Any] else {
+            return false
+        }
+
+        let alert = aps["alert"]
+
+        if let alertDict = alert as? [String: Any] {
+            return !alertDict.isEmpty
+        }
+
+        if let alertString = alert as? String {
+            return !alertString.isEmpty
+        }
+
+        return false
+    }
+
+    internal func didReceiveRemoteNotificationOld(inApplication application: UIApplication?, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        guard let application = application else {
+            return
+        }
         var backgroundTask: UIBackgroundTaskIdentifier?
         backgroundTask = application.beginBackgroundTask(withName: "com.castled.bgpush") {
             application.endBackgroundTask(backgroundTask!)
@@ -83,6 +159,7 @@ public extension Castled {
                 clickedParams = defaultActionDetails
             } else {
                 // not from castled
+                return
             }
             processCastledPushEvents(userInfo: userInfo, isOpened: true)
         } else if response.actionIdentifier == UNNotificationDismissActionIdentifier {
@@ -98,6 +175,7 @@ public extension Castled {
 
             } else {
                 // not from castled
+                return
             }
         }
         CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: clickedParams, userInfo: userInfo)
