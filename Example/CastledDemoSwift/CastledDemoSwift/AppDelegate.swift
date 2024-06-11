@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
         config.enableAppInbox = true
         config.enablePush = true
-        config.enableInApp = true
+        config.enableInApp = false
         config.enableTracking = true
         config.enableSessionTracking = true
         config.skipUrlHandling = false
