@@ -11,6 +11,7 @@ import Foundation
 public enum CastledConstants {
     // Plist Key for enable/ Disable swizzling
 
+    static let kCastledPlatform = "ios"
     static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
@@ -146,6 +147,7 @@ public enum CastledConstants {
         static let sessionStarted = "session_started"
         static let sessionClosed = "session_ended"
         static let sessionId = "sessionId"
+        static let sessionPlatform = "platform"
         static let sessionLastDuration = "duration"
         static let sessionisFirstSession = "firstSession"
         static let sessionTimeStamp = "timestamp"

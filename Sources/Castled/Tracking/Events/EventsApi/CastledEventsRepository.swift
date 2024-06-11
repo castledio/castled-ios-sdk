@@ -8,8 +8,8 @@
 import Foundation
 
 enum CastledEventsRepository {
-    static let eventsTrackingPath = "external/v1/collections/events/lists?apiSource=app"
-    static let userAttributesPath = "external/v1/collections/users?apiSource=app"
+    static let eventsTrackingPath = "external/v1/collections/events/lists?apiSource=app&pf=ios"
+    static let userAttributesPath = "external/v1/collections/users?apiSource=app&pf=ios"
 
     static func getEventsTrackingRequest(params: [[String: Any]]) -> CastledNetworkRequest {
         return CastledNetworkRequest(
