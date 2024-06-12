@@ -259,33 +259,22 @@ extension Bundle {
         guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
             fatalError("Couldn't determine module name from class \(bundleClass)")
         }
-        // SPM
         var bundle: Bundle?
-        if bundle == nil, let bundlePath = sourceBundle.path(forResource: "Castled", ofType: "bundle") {
-            // cocoapod
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_CastledNotificationContent", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if let bundlePath = mainBundle.path(forResource: "\(bundleClass)_Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = sourceBundle.path(forResource: "\(bundleClass)-Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        } else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
+        // CocoaPods (framework)
+        if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
+            bundle = Bundle(path: frameworkBundlePath)
         }
         // CocoaPods (static)
         else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
             bundle = Bundle(path: staticBundlePath)
         }
-        // CocoaPods (framework)
-        else if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: frameworkBundlePath)
+        // SPM
+        else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_\(moduleName)", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
+        }
+        // SPM for other modules : Inbox
+        else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_\(moduleName)", ofType: "bundle") {
+            bundle = Bundle(path: bundlePath)
         }
         return bundle ?? sourceBundle
     }
