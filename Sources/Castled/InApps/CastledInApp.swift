@@ -21,7 +21,7 @@ import UIKit
             return
         }
         else if isInitilized {
-            CastledLog.castledLog("In-app module already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("In-app module already initialized..", logLevel: CastledLogLevel.info)
             return
         }
         CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.inappRequest.rawValue, handler: CastledInAppRequestHandler.self)

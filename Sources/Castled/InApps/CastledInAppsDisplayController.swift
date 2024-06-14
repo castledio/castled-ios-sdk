@@ -32,14 +32,12 @@ import UIKit
 
     func reportInAppEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
         self.castledInAppsQueue.async {
-            let teamId = "\(inappObject.teamID)"
             let sourceContext = inappObject.sourceContext
             let timezone = TimeZone.current
             let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
             let epochTime = "\(Int(Date().timeIntervalSince1970))"
             var json = ["ts": "\(epochTime)",
                         "tz": "\(abbreviation)",
-                        "teamId": teamId,
                         "eventType": eventType,
                         "sourceContext": sourceContext] as [String: String]
             if let value = btnLabel {

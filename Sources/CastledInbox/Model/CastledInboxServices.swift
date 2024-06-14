@@ -73,14 +73,12 @@ class CastledInboxServices: NSObject {
     }
 
     private func getSendingParametersFrom(_ eventType: String, _ inboxObject: CastledInboxItem, _ title: String) -> [String: String] {
-        let teamId = "\(inboxObject.teamID)"
         let sourceContext = inboxObject.sourceContext
         let timezone = TimeZone.current
         let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
         let epochTime = "\(Int(Date().timeIntervalSince1970))"
         var json = ["ts": "\(epochTime)",
                     "tz": "\(abbreviation)",
-                    "teamId": teamId,
                     "eventType": eventType,
                     "sourceContext": sourceContext] as [String: String]
         json["btnLabel"] = title

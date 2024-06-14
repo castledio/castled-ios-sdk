@@ -35,7 +35,6 @@ public extension Castled {
            let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
         {
             let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
-            let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
             var event = CastledConstants.CastledEventTypes.received.rawValue
             let isVisible = Castled.sharedInstance.isVisibleNotification(userInfo)
             if isVisible {
@@ -51,12 +50,12 @@ public extension Castled {
                 }
             }
             if event == CastledConstants.CastledEventTypes.cliked.rawValue {
-                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: defaultAction.getCastledClickActionType(), kvPairs: userInfo, userInfo: userInfo)
+                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: defaultAction.getCastledClickActionType(), kvPairs: defaultActionDetails, userInfo: userInfo)
                 CastledBadgeManager.shared.clearApplicationBadge()
             } else {
                 CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
             }
-            let params = Castled.sharedInstance.getPushPayload(event: event, teamID: teamID, sourceContext: sourceContext)
+            let params = Castled.sharedInstance.getPushPayload(event: event, sourceContext: sourceContext, actionType: defaultAction, actionUri: CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: defaultActionDetails) ?? "")
             if !params.isEmpty {
                 CastledPushNotification.sharedInstance.reportPushEvents(params: params) { success in
                     completionHandler(success ? .newData : .failed)
@@ -120,14 +119,16 @@ public extension Castled {
             if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaultsSuit.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
                let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             {
+                // Any change here should handle in the background delegate also
                 pushActionType = defaultAction.getCastledClickActionType()
                 CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
                 clickedParams = defaultActionDetails
+                processCastledPushEvents(userInfo: userInfo, isOpened: true, actionType: defaultAction, actionUri: CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: clickedParams))
+
             } else {
                 // not from castled
                 return
             }
-            processCastledPushEvents(userInfo: userInfo, isOpened: true)
         } else if response.actionIdentifier == UNNotificationDismissActionIdentifier {
             pushActionType = CastledClickActionType.dismiss
             processCastledPushEvents(userInfo: userInfo, isDismissed: true, actionType: CastledConstants.PushNotification.ClickActionType.discardNotification.rawValue)
@@ -135,9 +136,10 @@ public extension Castled {
             if let actionDetails: [String: Any] = CastledCommonClass.getActionDetails(dict: userInfo, actionType: response.actionIdentifier),
                let clickAction = actionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             {
+                // Any change here should handle in the background delegate also
                 pushActionType = clickAction.getCastledClickActionType()
-                processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: clickAction)
                 clickedParams = actionDetails
+                processCastledPushEvents(userInfo: userInfo, isOpened: true, actionLabel: response.actionIdentifier, actionType: clickAction, actionUri: CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: clickedParams))
 
             } else {
                 // not from castled
@@ -148,13 +150,12 @@ public extension Castled {
         CastledBadgeManager.shared.clearApplicationBadge()
     }
 
-    internal func processCastledPushEvents(userInfo: [AnyHashable: Any], isOpened: Bool? = false, isDismissed: Bool? = false, actionLabel: String? = "", actionType: String? = "") {
+    internal func processCastledPushEvents(userInfo: [AnyHashable: Any], isOpened: Bool? = false, isDismissed: Bool? = false, actionLabel: String? = "", actionType: String? = "", actionUri: String? = "") {
         castledNotificationQueue.async {
             if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
                 //  CastledLog.castledLog("Castled PushEvents \(customCasledDict)")
                 if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                     let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String
-                    let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String
                     var event = CastledConstants.CastledEventTypes.received.rawValue
                     if isOpened == true {
                         event = CastledConstants.CastledEventTypes.cliked.rawValue
@@ -164,7 +165,8 @@ public extension Castled {
                         event = CastledConstants.CastledEventTypes.received.rawValue
                     }
 
-                    let params = Castled.sharedInstance.getPushPayload(event: event, teamID: teamID ?? "", sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType)
+                    let params = Castled.sharedInstance.getPushPayload(event: event, sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType, actionUri: actionUri ?? "")
+                    print("Process CastledPushEvents ---- \(params)")
                     if !params.isEmpty {
                         CastledPushNotification.sharedInstance.reportPushEvents(params: params) { _ in
                         }
@@ -186,8 +188,7 @@ public extension Castled {
                         if let customCasledDict = content.userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
                             if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
-                                let teamID = customCasledDict[CastledConstants.PushNotification.CustomProperties.teamId] as? String ?? ""
-                                let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext)
+                                let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, sourceContext: sourceContext)
                                 castledPushEvents.append(contentsOf: params)
                             }
                             castledNotifications += 1
@@ -205,7 +206,7 @@ public extension Castled {
         }
     }
 
-    private func getPushPayload(event: String, teamID: String, sourceContext: String, actionLabel: String? = "", actionType: String? = "") -> [[String: String]] {
+    private func getPushPayload(event: String, sourceContext: String, actionLabel: String? = "", actionType: String? = "", actionUri: String = "") -> [[String: String]] {
         if sourceContext.isEmpty {
             return []
         }
@@ -215,13 +216,13 @@ public extension Castled {
                 return payload
             } else {
                 CastledUserDefaults.shared.deliveredPushIds.append(sourceContext)
-                if CastledUserDefaults.shared.deliveredPushIds.count > 20 {
+                if CastledUserDefaults.shared.deliveredPushIds.count > 25 {
                     CastledUserDefaults.shared.deliveredPushIds.removeFirst()
                 }
                 CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledDeliveredPushIds, CastledUserDefaults.shared.deliveredPushIds)
             }
         } else if event == CastledConstants.CastledEventTypes.cliked.rawValue {
-            payload.append(contentsOf: Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, teamID: teamID, sourceContext: sourceContext))
+            payload.append(contentsOf: Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, sourceContext: sourceContext))
             if CastledUserDefaults.shared.clickedPushIds.contains(sourceContext) {
                 return payload
             } else {
@@ -234,12 +235,15 @@ public extension Castled {
         }
         let timezone = TimeZone.current
         let abbreviation = timezone.abbreviation(for: Date()) ?? "GMT"
-        var params = ["eventType": event, "appInBg": String(false), "ts": "\(Int(Date().timeIntervalSince1970))", "tz": abbreviation, "teamId": teamID, "sourceContext": sourceContext] as [String: String]
+        var params = ["eventType": event, "ts": "\(Int(Date().timeIntervalSince1970))", "tz": abbreviation, "sourceContext": sourceContext] as [String: String]
         if actionLabel?.count ?? 0 > 0 {
             params["actionLabel"] = actionLabel
         }
         if actionType?.count ?? 0 > 0 {
             params["actionType"] = actionType
+        }
+        if !actionUri.isEmpty {
+            params["actionUri"] = actionUri
         }
         payload.append(params)
         return payload

@@ -13,7 +13,7 @@ public enum CastledButtonActionUtils {
         let action = CastledButtonAction()
         action.actionType = type
         if let kvPairs = kvPairs {
-            if let clickActionUrl = kvPairs[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? kvPairs[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String {
+            if let clickActionUrl = CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: kvPairs) {
                 action.actionUri = clickActionUrl
             }
             if let inboxCopyEnabled = kvPairs[CastledConstants.PushNotification.inboxCopyEnabled] as? Bool {
@@ -27,5 +27,10 @@ public enum CastledButtonActionUtils {
             }
         }
         return action
+    }
+
+    static func getClickActionUrlFrom(kvPairs: [AnyHashable: Any]?) -> String? {
+        let clickActionUrl = kvPairs?[CastledConstants.PushNotification.CustomProperties.Category.Action.clickActionUrl] as? String ?? kvPairs?[CastledConstants.PushNotification.CustomProperties.Category.Action.url] as? String
+        return clickActionUrl
     }
 }
