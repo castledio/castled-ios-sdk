@@ -48,7 +48,7 @@ import UIKit
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.teamID = try container.decode(Int.self, forKey: .teamID)
+        self.teamID = (try? container.decodeIfPresent(Int.self, forKey: .teamID)) ?? 0
         self.messageId = try container.decode(Int64.self, forKey: .messageId)
         self.sourceContext = try container.decode(String.self, forKey: .sourceContext)
         self.startTs = try container.decodeIfPresent(Int64.self, forKey: .startTs) ?? 0

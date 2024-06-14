@@ -49,7 +49,7 @@ class CastledSessionsManager {
                                    CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionClosed,
                                    CastledConstants.Sessions.sessionLastDuration: Int(min(sessionDuration, Double(Int32.max))),
                                    CastledConstants.Sessions.sessionTimeStamp: dateEnded.string(),
-                                   CastledConstants.Sessions.properties: [CastledConstants.Sessions.sessionPlatform: CastledConstants.kCastledPlatform,
+                                   CastledConstants.Sessions.properties: [CastledConstants.kCastledPlatformKey: CastledConstants.kCastledPlatformValue,
                                                                           CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
             CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, false)
             isFirstSession = false
@@ -67,10 +67,10 @@ class CastledSessionsManager {
                                CastledConstants.Sessions.sessionType: CastledConstants.Sessions.sessionStarted,
                                CastledConstants.Sessions.sessionTimeStamp: dateStarted.string(),
                                CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
-                               CastledConstants.Sessions.properties: [CastledConstants.Sessions.sessionPlatform: CastledConstants.kCastledPlatform,
+                               CastledConstants.Sessions.properties: [CastledConstants.kCastledPlatformKey: CastledConstants.kCastledPlatformValue,
                                                                       CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
         CastledSessions.sharedInstance.reportSessionEvents(params: sessionDetails)
-        //CastledLog.castledLog("reportSessionEvents \(sessionDetails)", logLevel: .info)
+        // CastledLog.castledLog("reportSessionEvents \(sessionDetails)", logLevel: .info)
     }
 
     private func resetTheValuesForNewSession() {

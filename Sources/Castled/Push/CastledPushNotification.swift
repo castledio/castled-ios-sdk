@@ -21,7 +21,7 @@ import Foundation
             return
         }
         else if isInitilized {
-            CastledLog.castledLog("Pushmodule already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("Pushmodule already initialized..", logLevel: CastledLogLevel.info)
             return
         }
         CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.pushRequest.rawValue, handler: CastledPushNotificationEventsRequestHandler.self)

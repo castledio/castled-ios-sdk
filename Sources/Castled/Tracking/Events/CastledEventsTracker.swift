@@ -19,7 +19,7 @@ class CastledEventsTracker: NSObject {
             return
         }
         else if isInitilized {
-            CastledLog.castledLog("Events tracking already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("Events tracking already initialized..", logLevel: CastledLogLevel.info)
             return
         }
         CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.userAttributes.rawValue, handler: CastledEventsUserRequestHandler.self)

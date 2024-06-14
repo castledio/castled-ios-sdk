@@ -19,7 +19,7 @@ class CastledDeviceInfo: NSObject {
             return
         }
         else if isInitilized {
-            CastledLog.castledLog("Device Info already initialized.. \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.info)
+            CastledLog.castledLog("Device Info already initialized..", logLevel: CastledLogLevel.info)
             return
         }
         CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.deviceInfoRequest.rawValue, handler: CastledDeviceInfoRequestHandler.self)
