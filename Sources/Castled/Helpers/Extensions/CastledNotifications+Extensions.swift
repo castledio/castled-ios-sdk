@@ -29,12 +29,12 @@ public extension Castled {
         DispatchQueue.main.async {
             var backgroundTask: UIBackgroundTaskIdentifier?
             backgroundTask = application.beginBackgroundTask(withName: CastledCommonClass.getUUIDString()) {
-                application.endBackgroundTask(backgroundTask!)
-                backgroundTask = .invalid
+                endBackgroundTask()
             }
-            defer {
-                if let backgroundTask = backgroundTask, backgroundTask != .invalid {
-                    application.endBackgroundTask(backgroundTask)
+            func endBackgroundTask() {
+                if var backgroundTaskN = backgroundTask, backgroundTask != .invalid {
+                    application.endBackgroundTask(backgroundTaskN)
+                    backgroundTaskN = .invalid
                 }
             }
             guard let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary,
@@ -44,31 +44,32 @@ public extension Castled {
                   !sourceContext.isEmpty
 
             else {
-                // not from castled or test push
+                // not from castled, send test/ already reported
+                endBackgroundTask()
                 completionHandler(.noData)
                 return
             }
-            var event = CastledConstants.CastledEventTypes.received.rawValue
             let isVisible = Castled.sharedInstance.isVisibleNotification(userInfo)
-            if isVisible, application.applicationState == .inactive {
-                // The app is transitioning between states (e.g., the user is tapping on a notification, and the app is about to become active).
-                event = CastledConstants.CastledEventTypes.cliked.rawValue
-                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: defaultAction.getCastledClickActionType(), kvPairs: defaultActionDetails, userInfo: userInfo)
-                CastledBadgeManager.shared.clearApplicationBadge()
+            let event = isVisible && application.applicationState == .inactive ? CastledConstants.CastledEventTypes.cliked.rawValue : CastledConstants.CastledEventTypes.received.rawValue
+            // application.applicationState == .inactive :  The app is transitioning between states (e.g., the user is tapping on a notification, and the app is about to become active).
 
-            } else {
-                CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
-            }
             let params = Castled.sharedInstance.getPushPayload(event: event, sourceContext: sourceContext, actionType: defaultAction, actionUri: CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: defaultActionDetails) ?? "")
             if !params.isEmpty {
+                // no need to report if already reported/ send test/ not from castled
+                if event == CastledConstants.CastledEventTypes.cliked.rawValue {
+                    CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: defaultAction.getCastledClickActionType(), kvPairs: defaultActionDetails, userInfo: userInfo)
+                    CastledBadgeManager.shared.clearApplicationBadge()
+                } else {
+                    CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
+                }
+
                 CastledPushNotification.sharedInstance.reportPushEvents(params: params) { success in
+                    endBackgroundTask()
                     completionHandler(success ? .newData : .failed)
-                    if let backgroundTask = backgroundTask, backgroundTask != .invalid {
-                        application.endBackgroundTask(backgroundTask)
-                    }
                 }
             } else {
-                // not from castled or test push
+                // not from castled, send test/ already reported
+                endBackgroundTask()
                 completionHandler(.noData)
             }
         }

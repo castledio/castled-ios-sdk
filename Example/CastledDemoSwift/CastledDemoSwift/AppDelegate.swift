@@ -221,7 +221,7 @@ extension AppDelegate: CastledNotificationDelegate {
      }*/
 
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
-        print("***** Castled Notificiation Received *****\n \(userInfo)\n")
+        //   print("***** Castled Notificiation Received *****\n \(userInfo)\n")
     }
 }
 
