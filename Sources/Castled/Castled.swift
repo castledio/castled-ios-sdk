@@ -54,7 +54,7 @@ import UserNotifications
         #if !DEBUG
         CastledLog.setLogLevel(CastledLogLevel.none)
         #endif
-        CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..beta", logLevel: .debug)
+        CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
 
         if config.enablePush {
             CastledPushNotification.sharedInstance.initializePush()
@@ -99,7 +99,6 @@ import UserNotifications
      Function that allows users to set the PushNotifiication token.
      */
     @objc public func setPushToken(_ token: String, _ type: CastledPushTokenType = .apns) {
-        print("Castled: Setting the token '\(token):\(type.rawValue)'")
         castledProfileQueue.async(flags: .barrier) {
             if type == .apns {
                 let oldToken = CastledUserDefaults.shared.apnsToken ?? ""
@@ -116,14 +115,9 @@ import UserNotifications
                 CastledUserDefaults.shared.fcmToken = token
                 CastledUserDefaults.setString(CastledUserDefaults.kCastledFCMTokenKey, token)
             }
-            print("Castled: After setting the token 'a\(CastledUserDefaults.shared.apnsToken ?? "")' 'f\(CastledUserDefaults.shared.fcmToken ?? "")'")
-
             if let uid = CastledUserDefaults.shared.userId {
-                print("Castled: User id is there....")
                 Castled.sharedInstance.updateTheUserIdAndToken(uid, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
                 CastledDeviceInfo.sharedInstance.updateDeviceInfo()
-            } else {
-                print("Castled: User id is not there....")
             }
         }
     }
@@ -209,20 +203,14 @@ import UserNotifications
                 CastledUserDefaults.setString(CastledUserDefaults.kCastledUserTokenKey, secureUserId)
             }
             CastledUserDefaults.shared.userToken = userToken
-            print("Castled: Setting the userid '\(userId)' and secureId '\(CastledUserDefaults.shared.userToken ?? "")'")
+
             if userId != existingUserId {
-                print("Castled: User id is different from the existing....")
                 CastledUserDefaults.shared.userId = userId
                 if CastledUserDefaults.shared.apnsToken != nil || CastledUserDefaults.shared.fcmToken != nil {
-                    print("Castled: Token is there....apns'\(CastledUserDefaults.shared.apnsToken ?? "")' fcm '\(CastledUserDefaults.shared.fcmToken ?? "")'")
                     Castled.sharedInstance.updateTheUserIdAndToken(userId, apns: CastledUserDefaults.shared.apnsToken, fcm: CastledUserDefaults.shared.fcmToken)
                 } else {
-                    print("Castled: Both tokens are nil....")
-
                     Castled.sharedInstance.checkAndRegisterForAPNsToken()
                 }
-            } else {
-                print("Castled: User id same as the existing....")
             }
         }
     }
@@ -231,7 +219,6 @@ import UserNotifications
         let params = [CastledConstants.PushNotification.userId: userId,
                       CastledConstants.PushNotification.Token.apnsToken: apnsToken,
                       CastledConstants.PushNotification.Token.fcmToken: fcmToken]
-        print("Castled: Updating the userid and tokens with params \(params)")
         CastledPushNotification.sharedInstance.registerUser(params: params.compactMapValues { $0 } as [String: Any])
     }
 
