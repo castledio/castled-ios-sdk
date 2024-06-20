@@ -41,18 +41,13 @@ enum CastledPushNotificationRepository {
     }
 
     static func registerUser(params: [String: Any]) {
-        print("Castled: Registering to caslted with params \(params)")
         let request = CastledPushNotificationRepository.getUserRegnRequest(params: params)
         CastledNetworkLayer.shared.makeApiCall(request: request, path: registerUserPath, withRetry: true) { response
             in
             if let uid = params[CastledConstants.PushNotification.userId] as? String {
                 if response.success {
-                    print("'\(uid)' registered successfully...\(params)")
-
-                    //   CastledLog.castledLog("'\(uid)' registered successfully...\(params)", logLevel: CastledLogLevel.debug)
-                } else {
-                    print("Register User '\(uid)' failed: \(response.errorMessage) and params\(params)")
-//                    CastledLog.castledLog("Register User '\(uid)' failed: \(response.errorMessage) and params\(params)", logLevel: CastledLogLevel.error)
+                    CastledLog.castledLog("'\(uid)' registered successfully...", logLevel: CastledLogLevel.debug)
+                } else { CastledLog.castledLog("Register User '\(uid)' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
                 }
             }
         }
