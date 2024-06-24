@@ -184,12 +184,10 @@ extension CastledInboxListingViewController: UITableViewDelegate, UITableViewDat
         let actionType = ((kvPairs?["clickAction"] as? String) ?? "").getCastledClickActionType()
         if actionType != .none {
             CastledInbox.sharedInstance.logInboxItemClicked(inboxItem, buttonTitle: title)
-        }
-        inboxViewController?.updateReadStatus()
-        CastledButtonActionHandler.notificationClicked(withNotificationType: .inbox, action: actionType, kvPairs: kvPairs, userInfo: nil)
-        inboxViewController?.delegate?.didSelectedInboxWith?(CastledButtonActionUtils.getButtonActionFrom(type: actionType, kvPairs: kvPairs), inboxItem: inboxItem)
-        guard (inboxViewController?.delegate?.didSelectedInboxWith?(actionType, kvPairs, inboxItem)) != nil else {
-            return
+
+            inboxViewController?.updateReadStatus()
+            CastledButtonActionHandler.notificationClicked(withNotificationType: .inbox, action: actionType, kvPairs: kvPairs, userInfo: nil)
+            inboxViewController?.delegate?.didSelectedInboxWith?(CastledButtonActionUtils.getButtonActionFrom(type: actionType, kvPairs: kvPairs), inboxItem: inboxItem)
         }
     }
 }

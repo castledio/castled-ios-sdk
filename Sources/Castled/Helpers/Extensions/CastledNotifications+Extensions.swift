@@ -13,7 +13,7 @@ public extension Castled {
     @objc internal func setDeviceToken(deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         CastledLog.castledLog("APNs token \(deviceTokenString)", logLevel: CastledLogLevel.debug)
-        Castled.sharedInstance.setPushToken(deviceTokenString)
+        Castled.sharedInstance.setPushToken(deviceTokenString, type: .apns)
     }
 
     @objc func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any]) {

@@ -12,7 +12,6 @@ import CoreData
 
 @objc public protocol CastledInboxViewControllerDelegate {
     @objc optional func didSelectedInboxWith(_ buttonAction: CastledButtonAction, inboxItem: CastledInboxItem)
-    @objc optional func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem)
 }
 
 @objc public class CastledInboxViewController: UIViewController {

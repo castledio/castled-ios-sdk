@@ -231,7 +231,7 @@ extension AppDelegate {
     // If you disabled the swizzling in plist you should call the required functions in the delegate methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        Castled.sharedInstance.setPushToken(deviceTokenString, CastledPushTokenType.apns)
+        Castled.sharedInstance.setPushToken(deviceTokenString, type: CastledPushTokenType.apns)
         print("APNs token \(deviceTokenString) \(description)")
     }
 
