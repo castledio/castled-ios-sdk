@@ -12,8 +12,8 @@ import UIKit
 public class CastledButtonActionHandler {
     public static func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]?) {
         let clickAction = CastledButtonActionUtils.getButtonActionFrom(type: action, kvPairs: kvPairs)
-        if type != .inbox { Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: type, buttonAction: clickAction, userInfo: userInfo ?? [AnyHashable: Any]())
-            Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: type, action: action, kvPairs: kvPairs, userInfo: userInfo ?? [AnyHashable: Any]())
+        if type != .inbox {
+            Castled.sharedInstance.delegate?.notificationClicked?(withNotificationType: type, buttonAction: clickAction, userInfo: userInfo ?? [AnyHashable: Any]())
         }
 
         switch action {

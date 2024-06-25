@@ -185,41 +185,6 @@ extension AppDelegate: CastledNotificationDelegate {
         }
     }
 
-    /* func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
-         let inboxCopyEnabled = kvPairs?["inboxCopyEnabled"] as? Bool ?? false
-
-         print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************inboxCopyEnabled \(inboxCopyEnabled)")
-         switch action {
-             case .deepLink:
-                 if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {
-                     handleDeepLink(url: url)
-                 }
-
-             case .navigateToScreen:
-                 if let details = kvPairs, let screenName = details["clickActionUrl"] as? String {
-                     handleNavigateToScreen(screenName: screenName)
-                 }
-             case .richLanding:
-                 // TODO:
-
-                 break
-             case .requestForPush:
-                 // TODO:
-
-                 break
-             case .dismiss:
-                 // TODO:
-
-                 break
-             case .custom:
-                 // TODO:
-
-                 break
-             default:
-                 break
-         }
-     }*/
-
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
         //   print("***** Castled Notificiation Received *****\n \(userInfo)\n")
     }
@@ -232,7 +197,7 @@ extension AppDelegate {
     // If you disabled the swizzling in plist you should call the required functions in the delegate methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        Castled.sharedInstance.setPushToken(deviceTokenString, CastledPushTokenType.apns)
+        Castled.sharedInstance.setPushToken(deviceTokenString, type: CastledPushTokenType.apns)
         print("APNs token \(deviceTokenString) \(description)")
     }
 

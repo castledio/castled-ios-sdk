@@ -189,24 +189,4 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
                 break
         }
     }
-
-    func didSelectedInboxWith(_ action: CastledClickActionType, _ kvPairs: [AnyHashable: Any]?, _ inboxItem: CastledInboxItem) {
-        switch action {
-            case .deepLink:
-                break
-            case .navigateToScreen:
-                break
-            case .richLanding:
-                break
-            case .requestForPush:
-                break
-            case .dismiss:
-                break
-            case .custom:
-                break
-            default:
-                break
-        }
-        print("didSelectedInboxWith kvPairs \(action) \(kvPairs) inboxItem\(inboxItem)")
-    }
 }

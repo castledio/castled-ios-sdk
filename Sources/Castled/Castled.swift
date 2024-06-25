@@ -10,7 +10,6 @@ import UIKit
 import UserNotifications
 
 @objc public protocol CastledNotificationDelegate {
-    @objc optional func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any])
     @objc optional func notificationClicked(withNotificationType type: CastledNotificationType, buttonAction: CastledButtonAction, userInfo: [AnyHashable: Any])
     @objc optional func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any])
 }
@@ -98,7 +97,7 @@ import UserNotifications
     /**
      Function that allows users to set the PushNotifiication token.
      */
-    @objc public func setPushToken(_ token: String, _ type: CastledPushTokenType = .apns) {
+    @objc public func setPushToken(_ token: String, type: CastledPushTokenType) {
         castledProfileQueue.async(flags: .barrier) {
             if type == .apns {
                 let oldToken = CastledUserDefaults.shared.apnsToken ?? ""

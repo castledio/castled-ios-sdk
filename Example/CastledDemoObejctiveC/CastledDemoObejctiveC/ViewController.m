@@ -154,33 +154,6 @@ static NSString *userIdKey = @"userIdKey";
             break;
     }
 }
-- (void)didSelectedInboxWith:(CastledClickActionType)action :(NSDictionary * _Nullable)kvPairs :(CastledInboxItem * _Nonnull)inboxItem {
- //   NSLog(@"didSelectedInboxWith ----kvPairs  %@ item %@",kvPairs,inboxItem);
-    switch (action) {
-        case CastledClickActionTypeDeepLink:
-
-            break;
-        case CastledClickActionTypeNavigateToScreen:
-
-            break;
-        case CastledClickActionTypeRichLanding:
-
-            break;
-        case CastledClickActionTypeRequestForPush:
-
-            break;
-        case CastledClickActionTypeDismiss:
-
-            break;
-        case CastledClickActionTypeCustom:
-
-            break;
-        default:
-            break;
-    }
-
-}
-
 - (void)registerEvents {
     // Implementation for registering events
 }

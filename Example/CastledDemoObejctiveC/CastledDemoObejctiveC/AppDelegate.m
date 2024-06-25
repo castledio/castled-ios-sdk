@@ -6,8 +6,8 @@
 //
 
 #import "AppDelegate.h"
-//#import <Castled/Castled-Swift.h>
-#import <Castled-Swift.h>
+#import <Castled/Castled-Swift.h>
+//#import <Castled-Swift.h>
 
 #import <UserNotifications/UserNotifications.h>
 
@@ -113,7 +113,7 @@
                                    stringByReplacingOccurrencesOfString:@" " withString:@""];
         deviceTokenString = [[NSMutableString alloc] initWithString:deviceToken1];
     }
-     [[Castled sharedInstance] setPushToken:deviceTokenString :CastledPushTokenTypeApns];
+     [[Castled sharedInstance] setPushToken:deviceTokenString type:CastledPushTokenTypeApns];
 
 }
 
@@ -205,50 +205,6 @@
                     break;
     }
     
-}
-- (void)notificationClickedWithNotificationType:(CastledNotificationType)type
-                                         action:(CastledClickActionType)action
-                                        kvPairs:(NSDictionary<id, id> * _Nullable)kvPairs
-                                       userInfo:(NSDictionary<id, id> *)userInfo {
-    NSLog(@"type %ld action %ld", (long)type, (long)action);
-
-    switch (action) {
-        case CastledClickActionTypeDeepLink:
-            if (kvPairs) {
-                NSString *value = kvPairs[@"clickActionUrl"];
-                NSURL *url = [NSURL URLWithString:value];
-                if (url) {
-                    [self handleDeepLinkWithURL:url];
-                }
-            }
-            break;
-
-        case CastledClickActionTypeNavigateToScreen:
-            if (kvPairs) {
-                NSString *screenName = kvPairs[@"clickActionUrl"];
-                [self handleNavigateToScreenWithScreenName:screenName];
-            }
-            break;
-
-        case CastledClickActionTypeRichLanding:
-            // TODO:
-            break;
-
-        case CastledClickActionTypeRequestForPush:
-            // TODO:
-            break;
-
-        case CastledClickActionTypeDismiss:
-            // TODO:
-            break;
-
-        case CastledClickActionTypeCustom:
-            // TODO:
-            break;
-
-        default:
-            break;
-    }
 }
 
 - (void)handleDeepLinkWithURL:(NSURL *)url {
