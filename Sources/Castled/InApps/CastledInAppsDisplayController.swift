@@ -90,7 +90,7 @@ import UIKit
         CastledButtonActionHandler.notificationClicked(withNotificationType: .inapp, action: clickActionType, kvPairs: params, userInfo: params ?? [String: String]())
     }
 
-    func logAppEvent(context: UIViewController?, eventName: String, params: [String: Any]?, showLog: Bool? = true) {
+    func logAppEvent(eventName: String, params: [String: Any]?, showLog: Bool? = true) {
         guard !CastledInApp.sharedInstance.userId.isEmpty,!self.isCurrentlyDisplaying else {
             return
         }

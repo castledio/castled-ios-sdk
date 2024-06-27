@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // code to handle the URL
 
-        if url.scheme == "com.castled" {
+        if url.scheme == "castledios" {
             let host = url.host
             // let pathComponents = url.pathComponents
             var parameters: [String: String] = [:]
@@ -186,7 +186,7 @@ extension AppDelegate: CastledNotificationDelegate {
     }
 
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
-        //   print("***** Castled Notificiation Received *****\n \(userInfo)\n")
+        print("***** Castled Notificiation Received *****\n \(userInfo)\n")
     }
 }
 

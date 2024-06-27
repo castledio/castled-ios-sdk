@@ -124,8 +124,8 @@ import UserNotifications
     /**
      InApps : Function that allows to display page view inapp
      */
-    @objc public func logPageViewedEvent(_ viewContoller: UIViewController) {
-        CastledInApp.sharedInstance.logPageViewedEvent(viewContoller)
+    @objc public func logPageViewedEvent(_ screenName: String) {
+        CastledInApp.sharedInstance.logPageViewedEvent(screenName)
     }
 
     /**
