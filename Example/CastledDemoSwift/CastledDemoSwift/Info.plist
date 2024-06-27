@@ -6,23 +6,27 @@
 	<array>
 		<string>com.castled.backgroundtask</string>
 	</array>
-	<key>CastledExcludedInppViews</key>
-	<array>
-		<string>SplashViewController</string>
-		<string>TutorialPageViewController</string>
-	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.castled</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.castled</string>
+				<string>castledios</string>
 			</array>
 		</dict>
 	</array>
+	<key>CastledExcludedInppViews</key>
+	<array>
+		<string>SplashViewController</string>
+		<string>TutorialPageViewController</string>
+	</array>
 	<key>CastledSwizzlingDisabled</key>
+	<false/>
+	<key>UIApplicationExitsOnSuspend</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
@@ -47,7 +51,5 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
-	<key>UIApplicationExitsOnSuspend</key>
-	<false/>
 </dict>
 </plist>

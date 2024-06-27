@@ -89,7 +89,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             let inboxButton = UIBarButtonItem(image: UIImage(systemName: "bell", withConfiguration: largeConfig), style: .plain, target: self, action: #selector(self.inboxTapped))
             self.navigationItem.rightBarButtonItem = inboxButton
             self.setUpInboxCallback()
-            Castled.sharedInstance.logPageViewedEvent(self)
+            // Castled.sharedInstance.logPageViewedEvent("DetailsScreen")
         }
         else {
             self.btnGotoSecondVC.isHidden = true

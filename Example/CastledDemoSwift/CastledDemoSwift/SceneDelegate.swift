@@ -46,6 +46,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        // Determine who sent the URL.
+        if let urlContext = URLContexts.first {
+            let sendingAppID = urlContext.options.sourceApplication
+            let url = urlContext.url
+            // print("source application = \(sendingAppID ?? "Unknown")")
+
+            if url.scheme == "castledios" {
+                let host = url.host
+                // let pathComponents = url.pathComponents
+                var parameters: [String: String] = [:]
+                URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.forEach {
+                    parameters[$0.name] = $0.value
+                }
+//                print("url is -- > \(url)")
+//                print("host  -- > \(String(describing: host))")
+//                print("parameters  -- > \(parameters)")
+                if let appdelegate = (UIApplication.shared.delegate as? AppDelegate) {
+                    let queryString = appdelegate.queryString(from: parameters)
+
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    if let vc = storyboard.instantiateViewController(withIdentifier: "DeeplinkViewController") as? DeeplinkViewController {
+                        guard let rootViewController = window?.rootViewController else {
+                            return
+                        }
+                        vc.params = parameters
+                        // If the root view controller is a navigation controller, push the view controller onto its stack
+                        if let navigationController = rootViewController as? UINavigationController {
+                            navigationController.pushViewController(vc, animated: true)
+                        } else {
+                            // If the root view controller is not a navigation controller, present the view controller modally
+                            rootViewController.present(vc, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+
+            // Process the URL similarly to the UIApplicationDelegate example.
+        }
         print(URLContexts)
     }
 }
