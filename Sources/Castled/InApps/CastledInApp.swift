@@ -31,25 +31,26 @@ import UIKit
         CastledLog.castledLog("In-app module initialized..", logLevel: CastledLogLevel.info)
     }
 
-    @objc public func logPageViewedEvent(_ viewContoller: UIViewController) {
-        if !isValidated() {
+    @objc public func logPageViewedEvent(_ screenName: String?) {
+        guard let screen = screenName, isValidated() else {
             return
         }
-        CastledInAppsDisplayController.sharedInstance.logAppEvent(context: viewContoller, eventName: CIEventType.page_viewed.rawValue, params: ["name": String(describing: type(of: viewContoller))], showLog: false)
+
+        CastledInAppsDisplayController.sharedInstance.logAppEvent(eventName: CIEventType.page_viewed.rawValue, params: ["name": screen], showLog: false)
     }
 
     @objc public func logCustomAppEvent(_ eventName: String, params: [String: Any]) {
         if !isValidated() {
             return
         }
-        CastledInAppsDisplayController.sharedInstance.logAppEvent(context: nil, eventName: eventName, params: params, showLog: false)
+        CastledInAppsDisplayController.sharedInstance.logAppEvent(eventName: eventName, params: params, showLog: false)
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
         if !isValidated() {
             return
         }
-        CastledInAppsDisplayController.sharedInstance.logAppEvent(context: nil, eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
+        CastledInAppsDisplayController.sharedInstance.logAppEvent(eventName: CIEventType.app_opened.rawValue, params: nil, showLog: showLog)
     }
 
     private func isValidated() -> Bool {

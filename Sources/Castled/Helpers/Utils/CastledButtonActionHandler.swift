@@ -17,24 +17,22 @@ public class CastledButtonActionHandler {
         }
 
         switch action {
-            case .deepLink:
-                if let clickActionUrl = clickAction.actionUri, let url = getDeepLinkUrlFrom(url: clickActionUrl, parameters: kvPairs) { CastledButtonActionHandler.openURL(url) }
-            case .navigateToScreen:
-                break
-            case .richLanding:
-                if let clickActionUrl = clickAction.actionUri, let url = URL(string: clickActionUrl) { CastledButtonActionHandler.openURL(url) }
-            case .requestForPush:
-                Castled.sharedInstance.requestPushPermission(showSettingsAlert: true)
-            case .dismiss:
-                // TODO:
+        case .deepLink, .richLanding:
+            if let clickActionUrl = clickAction.actionUri, let url = getDeepLinkUrlFrom(url: clickActionUrl, parameters: kvPairs) { CastledButtonActionHandler.openURL(url) }
+        case .navigateToScreen:
+            break
+        case .requestForPush:
+            Castled.sharedInstance.requestPushPermission(showSettingsAlert: true)
+        case .dismiss:
+            // TODO:
 
-                break
-            case .custom:
-                // TODO:
+            break
+        case .custom:
+            // TODO:
 
-                break
-            default:
-                break
+            break
+        default:
+            break
         }
     }
 
@@ -44,30 +42,48 @@ public class CastledButtonActionHandler {
      */
 
     private static func getDeepLinkUrlFrom(url: String, parameters: [AnyHashable: Any]?) -> URL? {
-        // Define the base URL for your deep link
-        guard let baseURL = URL(string: url) else {
+        // Encode the URL to handle special characters
+        guard let formattedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+              let baseURL = URL(string: formattedUrl)
+        else {
+            // Log error if the URL is invalid
             CastledLog.castledLog("Invalid Deeplink URL provided", logLevel: CastledLogLevel.error)
             return nil
         }
-        var queryString = ""
-        // Create a dictionary of query parameters
-        if let params = parameters, let keyVals = params[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] as? [String: String] {
-            // Convert the query parameters to a query string
-            queryString = keyVals.map { key, value in
-                "\(key)=\(value)"
-            }.joined(separator: "&")
-        }
-        // Construct the final deep link URL with query parameters
-        var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
-        components.query = queryString
 
-        if let deepLinkURL = components.url {
-            // deepLinkURL now contains the complete deep link URL with query parameters
-            return deepLinkURL
-        } else {
-            CastledLog.castledLog("Invalid Deeplink URL provided", logLevel: CastledLogLevel.error)
+        // Initialize URLComponents to parse the baseURL
+        guard var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false) else {
+            // Log error if URLComponents initialization fails
+            CastledLog.castledLog("Failed to initialize URL components from base URL.", logLevel: CastledLogLevel.error)
+            return baseURL
         }
-        return nil
+
+        var existingQueryItems = components.queryItems ?? []
+
+        // Check if parameters are provided and contain a valid key-value dictionary
+        if let parameters = parameters, let keyVals = parameters[CastledConstants.PushNotification.CustomProperties.Category.Action.keyVals] as? [String: String] {
+            // Convert the key-value pairs into URLQueryItem
+            let newQueryItems = keyVals.map { URLQueryItem(name: $0.key, value: $0.value) }
+
+            // Append new query items to existing query items, ensuring no duplicates
+            for item in newQueryItems {
+                // Update existing item if the key matches, or append if new
+                if let index = existingQueryItems.firstIndex(where: { $0.name == item.name }) {
+                    existingQueryItems[index].value = item.value
+                } else {
+                    existingQueryItems.append(item)
+                }
+            }
+            components.queryItems = existingQueryItems
+            if let finalURL = components.url {
+                return finalURL
+            } else {
+                CastledLog.castledLog("Failed to construct final URL.", logLevel: CastledLogLevel.error)
+            }
+        }
+
+        // Return the base URL if no additional query parameters are provided
+        return baseURL
     }
 
     private static func openURL(_ url: URL) {
