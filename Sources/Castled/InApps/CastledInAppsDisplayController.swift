@@ -119,6 +119,9 @@ import UIKit
     // MARK: - Display methods
 
     private func validateInappBeforeDisplay(_ events: [CastledInAppObject]) {
+        if events.isEmpty {
+            return
+        }
         DispatchQueue.main.async {
             var campaigns = events
             let currentTopVc = self.getTopViewController()
