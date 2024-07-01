@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 @objc class CastledInAppsDisplayController: NSObject {
-    var isCurrentlyDisplaying = false
+    private var isCurrentlyDisplaying = false
+    private var currentDisplayingInapp: CastledInAppObject?
     private var pendingInApps = [CastledInAppObject]()
     static var sharedInstance = CastledInAppsDisplayController()
     var savedInApps = [CastledInAppObject]()
@@ -91,7 +92,7 @@ import UIKit
     }
 
     func logAppEvent(eventName: String, params: [String: Any]?, showLog: Bool? = true) {
-        guard !CastledInApp.sharedInstance.userId.isEmpty,!self.isCurrentlyDisplaying else {
+        guard !CastledInApp.sharedInstance.userId.isEmpty else {
             return
         }
 
@@ -104,12 +105,12 @@ import UIKit
             if !filteredInApps.isEmpty {
                 let evaluator = CastledInAppTriggerEvaluator()
                 for event in filteredInApps {
-                    if evaluator.shouldTriggerEvent(filter: event.trigger?.eventFilter, params: params, showLog: showLog) {
+                    if evaluator.shouldTriggerEvent(filter: event.trigger?.eventFilter, params: params, showLog: showLog), event.notificationID != self.currentDisplayingInapp?.notificationID {
                         satisfiedEvents.append(event)
                     }
                 }
             }
-            if let events = findTriggeredInApps(inAppsArray: satisfiedEvents),!events.isEmpty {
+            if !satisfiedEvents.isEmpty, let events = findTriggeredInApps(inAppsArray: satisfiedEvents),!events.isEmpty {
                 self.validateInappBeforeDisplay(events)
             }
         }
@@ -118,6 +119,9 @@ import UIKit
     // MARK: - Display methods
 
     private func validateInappBeforeDisplay(_ events: [CastledInAppObject]) {
+        if events.isEmpty {
+            return
+        }
         DispatchQueue.main.async {
             var campaigns = events
             let currentTopVc = self.getTopViewController()
@@ -151,8 +155,10 @@ import UIKit
             if castle.showInAppViewControllerFromNotification(inAppObj: event, inAppDisplaySettings: inAppDisplaySettings) {
                 self.saveInappDisplayStatus(event: event)
                 self.removeFromPendingItems(event)
+                self.currentDisplayingInapp = event
             } else {
                 self.isCurrentlyDisplaying = false
+                self.currentDisplayingInapp = nil
             }
         }
     }
@@ -276,5 +282,10 @@ import UIKit
             result = self.pendingInApps
         }
         return result
+    }
+
+    func resetInAppAobjects() {
+        self.currentDisplayingInapp = nil
+        self.isCurrentlyDisplaying = false
     }
 }
