@@ -23,6 +23,8 @@ public enum CastledConstants {
         static let apsKey = "aps"
         static let badgeKey = "badge"
         static let inboxCopyEnabled = "inboxCopyEnabled"
+        static let isCastledSilentPush = "csp"
+        static let contentAvailable = "content-available"
         static let userId = "userId"
 
         enum Token {

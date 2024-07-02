@@ -35,25 +35,36 @@ extension CastledNotificationDelegates {
                                                willPresentNotification notification: UNNotification,
                                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
-        Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
-        if responds(to: #selector(swizzled_userNotificationCenter(_:willPresentNotification:withCompletionHandler:))) {
-            swizzled_userNotificationCenter(center, willPresentNotification: notification) { options in
-                completionHandler(options)
+        let isCastledSilent = Castled.sharedInstance.isCastledSilentPush(fromInfo: notification.request.content.userInfo)
+        Castled.sharedInstance.castledUserNotificationCenter(center, willPresent: notification, isCastledSilentPush: isCastledSilent)
+        if !isCastledSilent {
+            if responds(to: #selector(swizzled_userNotificationCenter(_:willPresentNotification:withCompletionHandler:))) {
+                swizzled_userNotificationCenter(center, willPresentNotification: notification) { options in
+                    completionHandler(options)
+                }
+            } else {
+                completionHandler([[.alert, .badge, .sound]])
             }
         } else {
-            completionHandler([[.alert, .badge, .sound]])
+            completionHandler([])
         }
     }
 
     @objc func swizzled_application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, fetchCompletionHandler: { [self] response in
-            if self.responds(to: #selector(swizzled_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))) {
-                self.swizzled_application(application, didReceiveRemoteNotification: userInfo) { result in
-                    completionHandler(result)
+        let isCastledSilent = Castled.sharedInstance.isCastledSilentPush(fromInfo: userInfo)
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, isCastledSilentPush: isCastledSilent, fetchCompletionHandler: { [self] response in
+            if !isCastledSilent {
+                if self.responds(to: #selector(swizzled_application(_:didReceiveRemoteNotification:fetchCompletionHandler:))) {
+                    self.swizzled_application(application, didReceiveRemoteNotification: userInfo) { result in
+                        completionHandler(result)
+                    }
+                } else {
+                    completionHandler(response)
                 }
             } else {
                 completionHandler(response)
             }
+
         })
     }
 
