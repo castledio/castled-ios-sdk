@@ -17,11 +17,11 @@ public extension Castled {
     }
 
     @objc func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any]) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: UIApplication.shared, withInfo: userInfo) { _ in
+        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: UIApplication.shared, withInfo: userInfo, isCastledSilentPush: Castled.sharedInstance.isCastledSilentPush(fromInfo: userInfo)) { _ in
         }
     }
 
-    internal func didReceiveRemoteNotification(inApplication application: UIApplication?, withInfo userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    internal func didReceiveRemoteNotification(inApplication application: UIApplication?, withInfo userInfo: [AnyHashable: Any], isCastledSilentPush: Bool, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         guard let application = application else {
             completionHandler(.noData)
             return
@@ -37,10 +37,7 @@ public extension Castled {
                     backgroundTaskN = .invalid
                 }
             }
-            guard let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary,
-                  let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: 0),
-                  let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
-            else {
+            guard let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary else {
                 // not from castled/ already reported
                 endBackgroundTask()
                 completionHandler(.noData)
@@ -51,16 +48,29 @@ public extension Castled {
             var actionType = ""
 
             var event = CastledConstants.CastledEventTypes.received.rawValue
-            if isVisible, application.applicationState == .inactive {
-                // application.applicationState == .inactive :  The app is transitioning between states (e.g., the user is tapping on a notification, and the app is about to become active).
-                event = CastledConstants.CastledEventTypes.cliked.rawValue
-                actionType = defaultAction
-                actionUri = CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: defaultActionDetails) ?? ""
-                CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: defaultAction.getCastledClickActionType(), kvPairs: defaultActionDetails, userInfo: userInfo)
-                CastledBadgeManager.shared.clearApplicationBadge()
-            } else {
-                CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
+            if !isCastledSilentPush {
+                guard let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: 0),
+                      let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
+                else {
+                    // not from castled/ already reported
+                    endBackgroundTask()
+                    completionHandler(.noData)
+                    return
+                }
+
+                // no need to do the functionalities if its caslted silent push, just update the server
+                if isVisible, application.applicationState == .inactive {
+                    // application.applicationState == .inactive :  The app is transitioning between states (e.g., the user is tapping on a notification, and the app is about to become active).
+                    event = CastledConstants.CastledEventTypes.cliked.rawValue
+                    actionType = defaultAction
+                    actionUri = CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: defaultActionDetails) ?? ""
+                    CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: defaultAction.getCastledClickActionType(), kvPairs: defaultActionDetails, userInfo: userInfo)
+                    CastledBadgeManager.shared.clearApplicationBadge()
+                } else {
+                    CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
+                }
             }
+
             let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
             let params = Castled.sharedInstance.getPushPayload(event: event, sourceContext: sourceContext, actionType: actionType, actionUri: actionUri)
 
@@ -98,9 +108,16 @@ public extension Castled {
     }
 
     @objc func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) {
+        let isCastledSilentPush = Castled.sharedInstance.isCastledSilentPush(fromInfo: notification.request.content.userInfo)
+        Castled.sharedInstance.castledUserNotificationCenter(center, willPresent: notification, isCastledSilentPush: isCastledSilentPush)
+    }
+
+    internal func castledUserNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, isCastledSilentPush: Bool) {
         processCastledPushEvents(userInfo: notification.request.content.userInfo)
-        Castled.sharedInstance.delegate?.didReceiveCastledRemoteNotification?(withInfo: notification.request.content.userInfo)
-        CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(notification.request.content.userInfo)
+        if !isCastledSilentPush {
+            Castled.sharedInstance.delegate?.didReceiveCastledRemoteNotification?(withInfo: notification.request.content.userInfo)
+            CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(notification.request.content.userInfo)
+        }
     }
 
     // The method will be called on the delegate when the user responded to the notification by opening the application, dismissing the notification or choosing a UNNotificationAction. The delegate must be set before the application returns from application:didFinishLaunchingWithOptions:.
@@ -251,5 +268,17 @@ public extension Castled {
     internal func getCastledCategory() -> UNNotificationCategory {
         let castledCategory = UNNotificationCategory(identifier: "CASTLED_PUSH_TEMPLATE", actions: [], intentIdentifiers: [], options: .customDismissAction)
         return castledCategory
+    }
+
+    internal func isCastledSilentPush(fromInfo userInfo: [AnyHashable: Any]) -> Bool {
+        guard let aps = userInfo[CastledConstants.PushNotification.apsKey] as? [String: AnyObject],
+              aps[CastledConstants.PushNotification.contentAvailable] as? Int == 1,
+              let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary,
+              let silent = customCasledDict[CastledConstants.PushNotification.isCastledSilentPush] as? Int,
+              silent == 1
+        else {
+            return false
+        }
+        return true
     }
 }
