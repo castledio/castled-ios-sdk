@@ -21,6 +21,7 @@ class CastledInAppDisplayViewController: UIViewController {
     var selectedInAppObject: CastledInAppObject?
     private var isSlideUpInApp = false
     private var isDefaultActionTriggered = false
+    private var showCloseButton = true
     private var autoDismissalWorkItem: DispatchWorkItem?
     var inAppView: (any CIViewProtocol)?
     override func viewDidLoad() {
@@ -64,7 +65,10 @@ class CastledInAppDisplayViewController: UIViewController {
         inAppView?.inAppDisplaySettings = inAppDisplaySettings
         inAppView?.selectedInAppObject = selectedInAppObject
         inAppView?.addTheInappViewInContainer(inappView: inAppView as! UIView)
-        arrangeDismissButton(containerView: containerView!)
+        dismissView.isHidden = !showCloseButton
+        if showCloseButton {
+            arrangeDismissButton(containerView: containerView!)
+        }
         if let html = items.2 {
             let htmlView = inAppView as! CIHTMLView
             if let decodedData = Data(base64Encoded: html) {
@@ -219,6 +223,7 @@ private extension CastledInAppDisplayViewController {
         switch inappAObject.message?.type.rawValue {
             case CIMessageType.modal.rawValue:
                 container = viewModalContainer
+                showCloseButton = inappAObject.message?.modal?.showCloseButton ?? true
                 switch inappAObject.message?.modal?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
                         inppV = CastledCommonClass.loadView(fromNib: "CIModalDefaultView", withType: CIModalDefaultView.self)
@@ -239,6 +244,7 @@ private extension CastledInAppDisplayViewController {
                 }
             case CIMessageType.fs.rawValue:
                 container = viewFSContainer
+                showCloseButton = inappAObject.message?.fs?.showCloseButton ?? true
                 switch inappAObject.message?.fs?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
                         inppV = CastledCommonClass.loadView(fromNib: "CIFsDefaultView", withType: CIFsDefaultView.self)
@@ -256,6 +262,7 @@ private extension CastledInAppDisplayViewController {
                 }
             case CIMessageType.banner.rawValue:
                 container = viewBannerContainer
+                showCloseButton = inappAObject.message?.banner?.showCloseButton ?? true
                 view.restorationIdentifier = "touchdisabled"
                 switch inappAObject.message?.banner?.type.rawValue {
                     case CITemplateType.default_template.rawValue:
