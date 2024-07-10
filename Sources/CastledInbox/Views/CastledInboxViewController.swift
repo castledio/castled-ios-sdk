@@ -36,10 +36,11 @@ import CoreData
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-
-        setupViews()
-        setupTopCategories()
-        bindViewModel()
+        DispatchQueue.main.async { [weak self] in
+            self?.setupViews()
+            self?.setupTopCategories()
+            self?.bindViewModel()
+        }
     }
 
     override public func viewWillDisappear(_ animated: Bool) {
