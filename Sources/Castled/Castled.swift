@@ -57,6 +57,7 @@ import UserNotifications
 
         if config.enablePush {
             CastledPushNotification.sharedInstance.initializePush()
+            setNotificationCategories(withItems: Set<UNNotificationCategory>())
         }
         if config.enableInApp {
             CastledInApp.sharedInstance.initializeInApp()
@@ -75,8 +76,6 @@ import UserNotifications
         CastledNetworkMonitor.shared.startMonitoring()
         CastledLifeCycleManager.sharedInstance.start()
 
-//        CastledUserEventsTracker.shared.setInitialLaunchEventDetails()
-        setNotificationCategories(withItems: Set<UNNotificationCategory>())
         checkAndRegisterForAPNsToken()
     }
 
