@@ -30,6 +30,11 @@
 		0A31CFC12BB5468900901A50 /* CastledNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A31CFC02BB5468900901A50 /* CastledNotificationCenter.swift */; };
 		0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */; };
 		0A3865C62C455FF50047B370 /* CastledEnvironmentChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865C52C455FF50047B370 /* CastledEnvironmentChecker.swift */; };
+		0A3865CD2C4561160047B370 /* CastledInboxTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865CC2C4561160047B370 /* CastledInboxTestHelper.swift */; };
+		0A3865CE2C45611A0047B370 /* CastledInbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8AC0DA2BF6417D00BCF7AB /* CastledInbox.framework */; };
+		0A3865D42C4561640047B370 /* castled_inbox.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A3865D02C4561620047B370 /* castled_inbox.json */; };
+		0A3865D52C4561640047B370 /* CastledTestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */; };
+		0A3865D62C4561640047B370 /* CastledTestInitializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D32C4561640047B370 /* CastledTestInitializer.m */; };
 		0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */; };
 		0A446E272A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */; };
 		0A46C2BD2B6D070C00D40B17 /* CastledSessionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */; };
@@ -236,6 +241,12 @@
 		0A31CFC02BB5468900901A50 /* CastledNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationCenter.swift; sourceTree = "<group>"; };
 		0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzlingAppear.swift; sourceTree = "<group>"; };
 		0A3865C52C455FF50047B370 /* CastledEnvironmentChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledEnvironmentChecker.swift; sourceTree = "<group>"; };
+		0A3865C82C4560F60047B370 /* CastledTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CastledTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		0A3865CC2C4561160047B370 /* CastledInboxTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxTestHelper.swift; sourceTree = "<group>"; };
+		0A3865D02C4561620047B370 /* castled_inbox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = castled_inbox.json; sourceTree = "<group>"; };
+		0A3865D12C4561630047B370 /* CastledTestInitializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledTestInitializer.h; sourceTree = "<group>"; };
+		0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledTestCoreDataStack.swift; sourceTree = "<group>"; };
+		0A3865D32C4561640047B370 /* CastledTestInitializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastledTestInitializer.m; sourceTree = "<group>"; };
 		0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledFRCViewModel.swift; sourceTree = "<group>"; };
 		0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledInAppDisplayViewController.xib; sourceTree = "<group>"; };
 		0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsManager.swift; sourceTree = "<group>"; };
@@ -392,6 +403,7 @@
 			files = (
 				0AAA5FBD2C3FAE360025435E /* SDWebImage.framework in Frameworks */,
 				0AAA5FB62C3FAC190025435E /* Castled.framework in Frameworks */,
+				0A3865CE2C45611A0047B370 /* CastledInbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +544,25 @@
 				0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		0A3865C72C4560D50047B370 /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				0A3865CF2C4561560047B370 /* Helpers */,
+			);
+			path = Inbox;
+			sourceTree = "<group>";
+		};
+		0A3865CF2C4561560047B370 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0A3865D02C4561620047B370 /* castled_inbox.json */,
+				0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */,
+				0A3865D12C4561630047B370 /* CastledTestInitializer.h */,
+				0A3865D32C4561640047B370 /* CastledTestInitializer.m */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		0A46C2BB2B6D06DB00D40B17 /* Sessions */ = {
@@ -677,6 +708,7 @@
 		0A8AC0F82BF641B900BCF7AB /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0A3865CC2C4561160047B370 /* CastledInboxTestHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -740,6 +772,8 @@
 			isa = PBXGroup;
 			children = (
 				0AAA5FB42C3FAC190025435E /* CastledTests.swift */,
+				0A3865C72C4560D50047B370 /* Inbox */,
+				0A3865C82C4560F60047B370 /* CastledTests-Bridging-Header.h */,
 			);
 			path = CastledTests;
 			sourceTree = "<group>";
@@ -1200,6 +1234,7 @@
 					};
 					0AAA5FB12C3FAC190025435E = {
 						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
 					};
 					0AB5C54F291C222C0027C36B = {
 						CreatedOnToolsVersion = 14.0.1;
@@ -1288,6 +1323,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3865D42C4561640047B370 /* castled_inbox.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1341,6 +1377,7 @@
 				0A8AC1072BF641B900BCF7AB /* CastledInboxViewController.swift in Sources */,
 				0AB9BE922BFB3F4900DB7744 /* CastledInboxRepository.swift in Sources */,
 				0A8AC0FC2BF641B900BCF7AB /* CastledInboxItem.swift in Sources */,
+				0A3865CD2C4561160047B370 /* CastledInboxTestHelper.swift in Sources */,
 				0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */,
 				0A94D67E2C0768B1007BF60B /* CastledCoreDataStack.swift in Sources */,
 				0A8AC1042BF641B900BCF7AB /* CastledViewPager.swift in Sources */,
@@ -1362,7 +1399,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3865D52C4561640047B370 /* CastledTestCoreDataStack.swift in Sources */,
 				0AAA5FB52C3FAC190025435E /* CastledTests.swift in Sources */,
+				0A3865D62C4561640047B370 /* CastledTestInitializer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1595,6 +1634,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
@@ -1612,6 +1652,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CastledTests/CastledTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1621,6 +1663,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
@@ -1637,6 +1680,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CastledTests/CastledTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
