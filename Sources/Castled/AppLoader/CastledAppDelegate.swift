@@ -18,10 +18,18 @@ import UserNotifications
     override private init() {}
 
     @objc public func setApplicationDelegates(sourceClass: AnyClass? = nil) {
-        guard let fromClass = sourceClass, String(describing: fromClass) == "CastledApplicationLoader", !CastledSwizzler.swizzzlingDisabled,!isLoaded else {
+        guard let fromClass = sourceClass, String(describing: fromClass) == "CastledApplicationLoader",
+              !CastledSwizzler.swizzzlingDisabled,
+              !isLoaded,
+              !CastledEnvironmentChecker.isRunningInDesignOrTestEnvironment()
+        else {
             // If it's not the expected class, return without further execution
             return
         }
+        setApplicationDelegates()
+    }
+
+    func setApplicationDelegates() {
         isLoaded = true
         CastledSwizzler.swizzleImplementations(originalSelector: #selector(setter: UIApplication.delegate), originalClass: UIApplication.self, swizzledSelector: #selector(CastledAppDelegate.setCastledApplicationDelegate), swizzlinglClass: type(of: CastledAppDelegate.shared))
         CastledNotificationCenter.shared.setNotiificationDelegates()
