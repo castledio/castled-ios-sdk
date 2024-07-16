@@ -9,37 +9,20 @@
 import UserNotifications
 import XCTest
 
-final class CastledTests: XCTestCase, CastledNotificationDelegate {
-    // 4
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        print("setUp")
-    }
-
+final class CastledTests: XCTestCase {
+    var castledInitializer: CastledInitializer!
     override func setUpWithError() throws {
+        castledInitializer = CastledInitializer()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        print("setUpWithError")
     }
 
     override func tearDownWithError() throws {
+        castledInitializer = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        print("tearDownWithError")
     }
 
     func testInitialization() {
-        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
-        config.enableAppInbox = true
-        config.enablePush = false
-        config.enableInApp = true
-        config.enableTracking = true
-        config.enableSessionTracking = true
-        config.skipUrlHandling = false
-        config.sessionTimeOutSec = 15
-        config.location = CastledLocation.US
-        config.logLevel = CastledLogLevel.debug
-        config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
-        Castled.initialize(withConfig: config, andDelegate: self)
+        castledInitializer.initializeCaslted()
         XCTAssertTrue(Castled.sharedInstance.isCastledInitialized(), "Castled SDK initialized..")
     }
 

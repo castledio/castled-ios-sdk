@@ -23,4 +23,8 @@ public class CastledInboxTestHelper: NSObject {
     public func setCoredataStackContainer(container: NSPersistentContainer) {
         CastledCoreDataStack.persistentContainer = container
     }
+
+    public func isInboxModuleInitialized() -> Bool {
+        return CastledInbox.sharedInstance.isInitilized
+    }
 }

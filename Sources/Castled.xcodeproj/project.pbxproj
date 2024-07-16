@@ -34,8 +34,9 @@
 		0A3865CE2C45611A0047B370 /* CastledInbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8AC0DA2BF6417D00BCF7AB /* CastledInbox.framework */; };
 		0A3865D42C4561640047B370 /* castled_inbox.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A3865D02C4561620047B370 /* castled_inbox.json */; };
 		0A3865D52C4561640047B370 /* CastledTestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */; };
-		0A3865D62C4561640047B370 /* CastledTestInitializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D32C4561640047B370 /* CastledTestInitializer.m */; };
 		0A3865D82C45627A0047B370 /* CastledInboxTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D72C45627A0047B370 /* CastledInboxTest.swift */; };
+		0A3865DA2C4563D20047B370 /* CastledInboxMockObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D92C4563D20047B370 /* CastledInboxMockObjects.swift */; };
+		0A3865DC2C4571D30047B370 /* CastledInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865DB2C4571D30047B370 /* CastledInitializer.swift */; };
 		0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */; };
 		0A446E272A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */; };
 		0A46C2BD2B6D070C00D40B17 /* CastledSessionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */; };
@@ -245,10 +246,10 @@
 		0A3865C82C4560F60047B370 /* CastledTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CastledTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		0A3865CC2C4561160047B370 /* CastledInboxTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxTestHelper.swift; sourceTree = "<group>"; };
 		0A3865D02C4561620047B370 /* castled_inbox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = castled_inbox.json; sourceTree = "<group>"; };
-		0A3865D12C4561630047B370 /* CastledTestInitializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CastledTestInitializer.h; sourceTree = "<group>"; };
 		0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledTestCoreDataStack.swift; sourceTree = "<group>"; };
-		0A3865D32C4561640047B370 /* CastledTestInitializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CastledTestInitializer.m; sourceTree = "<group>"; };
 		0A3865D72C45627A0047B370 /* CastledInboxTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxTest.swift; sourceTree = "<group>"; };
+		0A3865D92C4563D20047B370 /* CastledInboxMockObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxMockObjects.swift; sourceTree = "<group>"; };
+		0A3865DB2C4571D30047B370 /* CastledInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInitializer.swift; sourceTree = "<group>"; };
 		0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledFRCViewModel.swift; sourceTree = "<group>"; };
 		0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledInAppDisplayViewController.xib; sourceTree = "<group>"; };
 		0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsManager.swift; sourceTree = "<group>"; };
@@ -561,9 +562,8 @@
 			isa = PBXGroup;
 			children = (
 				0A3865D02C4561620047B370 /* castled_inbox.json */,
+				0A3865D92C4563D20047B370 /* CastledInboxMockObjects.swift */,
 				0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */,
-				0A3865D12C4561630047B370 /* CastledTestInitializer.h */,
-				0A3865D32C4561640047B370 /* CastledTestInitializer.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -775,6 +775,7 @@
 			isa = PBXGroup;
 			children = (
 				0AAA5FB42C3FAC190025435E /* CastledTests.swift */,
+				0A3865DB2C4571D30047B370 /* CastledInitializer.swift */,
 				0A3865C72C4560D50047B370 /* Inbox */,
 				0A3865C82C4560F60047B370 /* CastledTests-Bridging-Header.h */,
 			);
@@ -1405,7 +1406,8 @@
 				0A3865D52C4561640047B370 /* CastledTestCoreDataStack.swift in Sources */,
 				0A3865D82C45627A0047B370 /* CastledInboxTest.swift in Sources */,
 				0AAA5FB52C3FAC190025435E /* CastledTests.swift in Sources */,
-				0A3865D62C4561640047B370 /* CastledTestInitializer.m in Sources */,
+				0A3865DA2C4563D20047B370 /* CastledInboxMockObjects.swift in Sources */,
+				0A3865DC2C4571D30047B370 /* CastledInitializer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

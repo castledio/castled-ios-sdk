@@ -25,7 +25,7 @@ import UIKit
 
     var userId = ""
     var inboxUnreadCountCallback: ((Int) -> Void)?
-    let castledConfig = CastledShared.sharedInstance.getCastledConfig()
+    lazy var castledConfig = CastledShared.sharedInstance.getCastledConfig()
     var isInitilized = false
 
     override private init() {}

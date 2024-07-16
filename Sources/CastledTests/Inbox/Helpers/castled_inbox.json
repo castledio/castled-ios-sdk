@@ -32,7 +32,7 @@
         "updatedTs": 1720597912000,
         "pinningEnabled": false,
         "expiryTs": 9223372036854775807,
-        "read": true,
+        "read": false,
         "tag": "https://www.castled.io/"
     },
     {
@@ -68,7 +68,7 @@
         "updatedTs": 1720597918000,
         "pinningEnabled": false,
         "expiryTs": 9223372036854775807,
-        "read": true,
+        "read": false,
         "tag": "https://www.castled.io/"
     },
     {
@@ -95,7 +95,7 @@
         "updatedTs": 1720525794000,
         "pinningEnabled": false,
         "expiryTs": 9223372036854775807,
-        "read": true,
+        "read": false,
         "tag": null
     },
     {
@@ -158,7 +158,7 @@
         "updatedTs": 1720600016000,
         "pinningEnabled": false,
         "expiryTs": 9223372036854775807,
-        "read": true,
+        "read": false,
         "tag": "https://www.castled.io/"
     },
     {
@@ -224,7 +224,7 @@
         "updatedTs": 1720526202000,
         "pinningEnabled": false,
         "expiryTs": 9223372036854775807,
-        "read": true,
+        "read": false,
         "tag": null
     },
     {
@@ -587,7 +587,7 @@
         "updatedTs": 1720593848000,
         "pinningEnabled": false,
         "expiryTs": 9223372036854775807,
-        "read": true,
+        "read": false,
         "tag": "https://www.castled.io/"
     }
 ]

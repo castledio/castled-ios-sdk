@@ -11,7 +11,7 @@ import UIKit
 @objc class CastledInApp: NSObject {
     @objc static var sharedInstance = CastledInApp()
     var userId = ""
-    let castledConfig = CastledShared.sharedInstance.getCastledConfig()
+    lazy var castledConfig = CastledShared.sharedInstance.getCastledConfig()
     private var isInitilized = false
 
     override private init() {}

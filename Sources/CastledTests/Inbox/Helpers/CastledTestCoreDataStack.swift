@@ -12,7 +12,10 @@ import Foundation
 
 @objc public class CastledTestCoreDataStack: NSObject {
     public static let shared = CastledTestCoreDataStack()
-    override private init() {}
+    override init() {
+        super.init()
+        initializeTestStack()
+    }
 
     static var persistentContainer: NSPersistentContainer = {
         let modelURL = Bundle.resourceBundle(for: CastledCoreDataStack.self).url(forResource: CastledInboxTestHelper.shared.getModelName(), withExtension: "momd")!
@@ -35,7 +38,11 @@ import Foundation
         return container
     }()
 
-    @objc public static func initializeTestStack() {
-        CastledInboxTestHelper.shared.setCoredataStackContainer(container: persistentContainer)
+    @objc func initializeTestStack() {
+        CastledInboxTestHelper.shared.setCoredataStackContainer(container: CastledTestCoreDataStack.persistentContainer)
     }
+
+    lazy var mainContext: NSManagedObjectContext = {
+        CastledTestCoreDataStack.persistentContainer.viewContext
+    }()
 }
