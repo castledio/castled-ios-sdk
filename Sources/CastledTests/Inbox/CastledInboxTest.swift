@@ -55,6 +55,21 @@ final class CastledInboxTest: XCTestCase {
         XCTAssertTrue(CastledInbox.sharedInstance.getInboxUnreadCount() == inboxObjects.filter { !$0.isRead }.count)
     }
 
+    func testListenerForUnreadCount() {
+        let expectation = XCTestExpectation(description: "Listen for unread count")
+        let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
+        var isFulFilled = false
+        CastledInbox.sharedInstance.observeUnreadCountChanges { unreadCount in
+            if !isFulFilled {
+i                // adding this conditon to prevent the call back after other db actions
+                isFulFilled = true
+                XCTAssertTrue(inboxObjects.filter { !$0.isRead }.count == unreadCount)
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 2.0)
+    }
+
     func testMarkInboxItemRead() {
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
         let expectation = self.expectation(description: "Mark inbox items as read")
