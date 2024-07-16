@@ -27,6 +27,9 @@ final class CastledInboxTest: XCTestCase {
     }
 
     func testAANotInitialized() {
+        CastledInbox.sharedInstance.getInboxItems(completion: { success, _, _ in
+            XCTAssertFalse(success)
+        })
         XCTAssertFalse(CastledInboxTestHelper.shared.isInboxModuleInitialized(), "Castled SDK already initialized with inbox module..")
     }
 
