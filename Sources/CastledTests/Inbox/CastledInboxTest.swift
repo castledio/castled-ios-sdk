@@ -61,7 +61,7 @@ final class CastledInboxTest: XCTestCase {
         var isFulFilled = false
         CastledInbox.sharedInstance.observeUnreadCountChanges { unreadCount in
             if !isFulFilled {
-i                // adding this conditon to prevent the call back after other db actions
+                // adding this conditon to prevent the call back after other db actions
                 isFulFilled = true
                 XCTAssertTrue(inboxObjects.filter { !$0.isRead }.count == unreadCount)
                 expectation.fulfill()
