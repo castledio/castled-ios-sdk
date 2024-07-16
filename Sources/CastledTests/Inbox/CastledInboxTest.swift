@@ -22,6 +22,7 @@ final class CastledInboxTest: XCTestCase {
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+//        castledInitializer.initializeCaslted()// this for reseting the
         coreDataStack = nil
         castledInitializer = nil
     }
@@ -30,6 +31,21 @@ final class CastledInboxTest: XCTestCase {
         CastledInbox.sharedInstance.getInboxItems(completion: { success, _, _ in
             XCTAssertFalse(success)
         })
+
+        XCTAssertTrue(CastledInbox.sharedInstance.getInboxUnreadCount() == 0)
+
+        let expectation = XCTestExpectation(description: "Listen for unread count")
+        var isFulFilled = false
+        CastledInbox.sharedInstance.observeUnreadCountChanges { unreadCount in
+            if !isFulFilled {
+                // adding this conditon to prevent the call back after other db actions
+                isFulFilled = true
+                XCTAssertTrue(unreadCount == 0)
+                expectation.fulfill()
+            }
+        }
+        wait(for: [expectation], timeout: 1.0)
+
         XCTAssertFalse(CastledInboxTestHelper.shared.isInboxModuleInitialized(), "Castled SDK already initialized with inbox module..")
     }
 
@@ -62,6 +78,7 @@ final class CastledInboxTest: XCTestCase {
         let expectation = XCTestExpectation(description: "Listen for unread count")
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
         var isFulFilled = false
+        castledInitializer.initializeCaslted(enableAppInbox: true)
         CastledInbox.sharedInstance.observeUnreadCountChanges { unreadCount in
             if !isFulFilled {
                 // adding this conditon to prevent the call back after other db actions
@@ -70,7 +87,7 @@ final class CastledInboxTest: XCTestCase {
                 expectation.fulfill()
             }
         }
-        wait(for: [expectation], timeout: 2.0)
+        wait(for: [expectation], timeout: 1.0)
     }
 
     func testMarkInboxItemRead() {

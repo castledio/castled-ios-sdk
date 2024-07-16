@@ -25,13 +25,15 @@ import UIKit
 
     var userId = ""
     var inboxUnreadCountCallback: ((Int) -> Void)?
-    lazy var castledConfig = CastledShared.sharedInstance.getCastledConfig()
+    var enableAppInbox: Bool { CastledShared.sharedInstance.getCastledConfig().enableAppInbox }
+    var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
+
     var isInitilized = false
 
     override private init() {}
 
     func initializeAppInbox() {
-        if !castledConfig.enableAppInbox {
+        if !enableAppInbox {
             return
         }
         else if isInitilized {
@@ -46,7 +48,7 @@ import UIKit
     }
 
     private func isValidated() -> Bool {
-        if !castledConfig.enableAppInbox {
+        if !enableAppInbox {
             CastledLog.castledLog("Inbox operation failed: \(CastledExceptionMessages.appInboxDisabled.rawValue)", logLevel: CastledLogLevel.error)
             return false
         }
