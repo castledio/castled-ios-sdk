@@ -41,7 +41,7 @@ final class CastledInboxTest: XCTestCase {
     func testALoadItems() {
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
         castledInitializer.initializeCaslted(enableAppInbox: true)
-        let expectation = self.expectation(description: "Populate mock data and fetch inbox items")
+        let expectation = XCTestExpectation(description: "Populate mock data and fetch inbox items")
         CastledCoreDataOperations.shared.refreshInboxItems(liveInboxResponse: inboxObjects)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             CastledInbox.sharedInstance.getInboxItems { _, items, _ in
@@ -49,7 +49,7 @@ final class CastledInboxTest: XCTestCase {
                 expectation.fulfill()
             }
         }
-        waitForExpectations(timeout: 2.0, handler: nil)
+        wait(for: [expectation], timeout: 2.0)
     }
 
     func testGetUnreadCount() {
@@ -75,18 +75,18 @@ final class CastledInboxTest: XCTestCase {
 
     func testMarkInboxItemRead() {
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
-        let expectation = self.expectation(description: "Mark inbox items as read")
+        let expectation = XCTestExpectation(description: "Mark inbox items as read")
         CastledCoreDataOperations.shared.saveInboxItemsRead(readItems: inboxObjects.filter { !$0.isRead })
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             XCTAssertTrue(CastledCoreDataOperations.shared.getInboxUnreadCount() == 0)
             expectation.fulfill()
         }
-        waitForExpectations(timeout: 2.0, handler: nil)
+        wait(for: [expectation], timeout: 2.0)
     }
 
     func testRemoveInboxItem() {
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
-        let expectation = self.expectation(description: "Delete last inbox item")
+        let expectation = XCTestExpectation(description: "Delete last inbox item")
         castledInitializer.initializeCaslted(enableAppInbox: true)
         CastledCoreDataOperations.shared.deleteInboxItem(inboxItem: inboxObjects.last!)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -95,6 +95,6 @@ final class CastledInboxTest: XCTestCase {
                 expectation.fulfill()
             }
         }
-        waitForExpectations(timeout: 2.0, handler: nil)
+        wait(for: [expectation], timeout: 2.0)
     }
 }
