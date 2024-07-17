@@ -67,11 +67,11 @@ final class CastledInAppTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
 
-    func testInvalidCustomEventInApp() {
+    func testZInvalidCustomEventInApp() {
         CastledInitializer().initializeCaslted(enableInApp: true)
         preloadInApps()
         Castled.sharedInstance.logCustomAppEvent("invalid_inapps", params: [:])
-        let expectation = XCTestExpectation(description: "Checking for custom invalid inapps")
+        let expectation = XCTestExpectation(description: "Checking for custom inapps")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             XCTAssertEqual(CastledTestingHelper.shared.getSatisifiedInApps().filter {
                 ![CastledInAppTests.CUSTOM_INAPP_ID, CastledInAppTests.APP_OPENED_ID, CastledInAppTests.PAGE_VIEWED_ID].contains($0.notificationID)
