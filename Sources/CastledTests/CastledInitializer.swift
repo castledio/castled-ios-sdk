@@ -9,12 +9,13 @@ import Castled
 import UIKit
 
 class CastledInitializer: NSObject, CastledNotificationDelegate {
-    func initializeCaslted(enableAppInbox: Bool = false, enableInApp: Bool = false, enableTracking: Bool = false, enableSessionTracking: Bool = false, enablePush: Bool = false, location: CastledLocation = .US) {
+    func initializeCaslted(enableAppInbox: Bool = false, enableInApp: Bool = false, enableTracking: Bool = false, enableSessionTracking: Bool = false, enablePush: Bool = false, location: CastledLocation = .US, sessionDuration: Int = 900) {
         let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
         config.enableAppInbox = enableAppInbox
         config.enableInApp = enableInApp
         config.enableTracking = enableTracking
         config.enableSessionTracking = enableSessionTracking
+        config.sessionTimeOutSec = sessionDuration
         config.skipUrlHandling = false
         config.location = location
         config.logLevel = CastledLogLevel.debug

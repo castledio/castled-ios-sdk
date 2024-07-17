@@ -47,6 +47,7 @@
 		0A58325E2C465B4200A679E7 /* castled_inapp.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A58325D2C465B4200A679E7 /* castled_inapp.json */; };
 		0A5832602C465B5900A679E7 /* CastledInAppMockObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A58325F2C465B5900A679E7 /* CastledInAppMockObjects.swift */; };
 		0A5832622C4670A800A679E7 /* CastledTestingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */; };
+		0A592A8D2C47944F00BC71E3 /* CastledSessionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */; };
 		0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */; };
 		0A652F912AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A652F8E2AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib */; };
 		0A652F932AFB3A1A00752467 /* CIModalTextAndButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A652F902AFB3A1A00752467 /* CIModalTextAndButtons.xib */; };
@@ -264,6 +265,7 @@
 		0A58325D2C465B4200A679E7 /* castled_inapp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = castled_inapp.json; sourceTree = "<group>"; };
 		0A58325F2C465B5900A679E7 /* CastledInAppMockObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppMockObjects.swift; sourceTree = "<group>"; };
 		0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTestingHelper.swift; sourceTree = "<group>"; };
+		0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsTest.swift; sourceTree = "<group>"; };
 		0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTouchThroughWindow.swift; sourceTree = "<group>"; };
 		0A652F8E2AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIModalImageBodyAndButtons.xib; sourceTree = "<group>"; };
 		0A652F902AFB3A1A00752467 /* CIModalTextAndButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIModalTextAndButtons.xib; sourceTree = "<group>"; };
@@ -613,6 +615,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		0A592A8B2C47943500BC71E3 /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+				0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */,
+			);
+			path = Sessions;
+			sourceTree = "<group>";
+		};
 		0A5D9F572A0D638900FB3FAE /* Trigger */ = {
 			isa = PBXGroup;
 			children = (
@@ -802,6 +812,7 @@
 			children = (
 				0AAA5FB42C3FAC190025435E /* CastledTests.swift */,
 				0A3865DB2C4571D30047B370 /* CastledInitializer.swift */,
+				0A592A8B2C47943500BC71E3 /* Sessions */,
 				0A5832592C465A9600A679E7 /* Inapp */,
 				0A3865C72C4560D50047B370 /* Inbox */,
 				0A3865C82C4560F60047B370 /* CastledTests-Bridging-Header.h */,
@@ -1435,6 +1446,7 @@
 				0A3865D52C4561640047B370 /* CastledTestCoreDataStack.swift in Sources */,
 				0A5832602C465B5900A679E7 /* CastledInAppMockObjects.swift in Sources */,
 				0A58325B2C465AC400A679E7 /* CastledInAppTests.swift in Sources */,
+				0A592A8D2C47944F00BC71E3 /* CastledSessionsTest.swift in Sources */,
 				0A3865D82C45627A0047B370 /* CastledInboxTest.swift in Sources */,
 				0AAA5FB52C3FAC190025435E /* CastledTests.swift in Sources */,
 				0A3865DA2C4563D20047B370 /* CastledInboxMockObjects.swift in Sources */,

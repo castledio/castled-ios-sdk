@@ -33,7 +33,7 @@ class CastledDeviceInfoController: NSObject, CastledPreferenceStoreListener, Cas
     }
 
     func updateDeviceInfo() {
-        if CastledDeviceInfo.sharedInstance.userId.isEmpty || !CastledUserDefaults.shared.isAppInForeground {
+        if CastledDeviceInfo.sharedInstance.userId.isEmpty || !CastledUserDefaults.shared.isAppInForeground || CastledEnvironmentChecker.isRunningInDesignOrTestEnvironment() {
             return
         }
         Castled.sharedInstance.castledCommonQueue.async {

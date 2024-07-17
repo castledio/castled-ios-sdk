@@ -26,7 +26,7 @@ class CastledSessions: NSObject {
     }
 
     func reportSessionEvents(params: [[String: Any]]) {
-        if userId.isEmpty {
+        if userId.isEmpty || CastledEnvironmentChecker.isRunningInDesignOrTestEnvironment() {
             return
         }
         CastledSessionRepository.reportSessionEvents(params: params)

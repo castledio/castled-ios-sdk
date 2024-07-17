@@ -14,4 +14,12 @@ public class CastledTestingHelper {
     public func getSatisifiedInApps() -> [CastledInAppObject] {
         CastledInAppsDisplayController.sharedInstance.getAllPendingItems()
     }
+
+    public func getSessionId() -> String {
+        return CastledSessionsManager.shared.sessionId
+    }
+
+    func getLastSessionDuration() -> Double {
+        return CastledSessionsManager.shared.getLastSessionDuration()
+    }
 }
