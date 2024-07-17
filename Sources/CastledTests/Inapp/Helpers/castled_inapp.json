@@ -126,45 +126,6 @@
     },
     {
         "teamId": 0,
-        "notificationId": 1255,
-        "sourceContext": "IiLuWVjYEmJsxXurkJmeUqUv2oZn6ayfjcjWKLLnGP/I9N9yKg1ME3ji5ev1mC2E9NwSECrPh4Lyq4Ed+PfLpZ4X1TwNKXQ5BfNb4j5UEQ7TVxDtkSuFnZiBq5RXY7Is2E3iNv3Xavek4/jXZVCxpbeZ3ijGN/5UJqc3TlnWPJgmCSlV3LlG9rA/QnAXXuxnHqQ/dHxk9iDZc80HKCi0tgpks/XfUgtHQmCMdInePidHpV87v7od/HSyNkUmJTnq5Jf5JB63RD21ZhmxoTpvLA==",
-        "priority": "MODERATE",
-        "message": {
-            "type": "BANNER",
-            "banner": {
-                "type": "DEFAULT",
-                "imageUrl": "https://cdn.castled.io/uploads-app/167-149/img/Dark-logo-94d0b159a3cc42889ea6533c2493e141.png",
-                "clickAction": "RICH_LANDING",
-                "url": "https://www.google.co.in/",
-                "keyVals": {},
-                "body": "Data-driven cross channel orchestration powered by your data warehouse.Create the most effective user segments using our visual audience builder to run your dream cross-channel campaigns. Integrate effortlessly with other tools in your marketing ecosystem.",
-                "bgColor": "#ff4a90e2",
-                "fontSize": 14,
-                "fontColor": "#FFFDD0"
-            }
-        },
-        "displayConfig": {
-            "displayLimit": 100,
-            "minIntervalBtwDisplays": 0,
-            "minIntervalBtwDisplaysGlobal": 0,
-            "autoDismissInterval": 0
-        },
-        "trigger": {
-            "type": "EVENT",
-            "eventId": "-1",
-            "eventName": "app_opened",
-            "eventFilter": {
-                "type": "GROUP",
-                "joinType": "AND",
-                "filters": []
-            }
-        },
-        "startTs": 1721116405000,
-        "endTs": 1721721205000,
-        "ttl": null
-    },
-    {
-        "teamId": 0,
         "notificationId": 1254,
         "sourceContext": "IiLuWVjYEmJsxXurkJmeUqUv2oZn6ayfjcjWKLLnGP/sp6Dlj7vY9eJNn/WrYQ3doqA4SiRQTe6lyOZoJ1wlw6OkG/H0jtpVbk3Wl67h58OKM3+3A9woQGtpOcDAa2oXr+xyLo1pLsyCOuB5J6LkdiYJKVXcuUb2sD9CcBde7GcepD90fGT2INlzzQcoKLS2CmSz9d9SC0dCYIx0id4+J0elXzu/uh38dLI2RSYlOerkl/kkHrdEPbVmGbGhOm8s",
         "priority": "MODERATE",

@@ -12,7 +12,7 @@ import XCTest
 
 final class CastledInAppTests: XCTestCase {
     static let PAGE_VIEWED_ID = 1256
-    static let APP_OPENED_ID = 1255
+    static let APP_OPENED_ID = 1254
     static let CUSTOM_INAPP_ID = 1257
 
     override func setUpWithError() throws {
@@ -62,6 +62,20 @@ final class CastledInAppTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Checking for custom inapps")
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             XCTAssertGreaterThan(CastledTestingHelper.shared.getSatisifiedInApps().filter { $0.notificationID == CastledInAppTests.CUSTOM_INAPP_ID }.count, 0)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2.0)
+    }
+
+    func testInvalidCustomEventInApp() {
+        CastledInitializer().initializeCaslted(enableInApp: true)
+        preloadInApps()
+        Castled.sharedInstance.logCustomAppEvent("invalid_inapps", params: [:])
+        let expectation = XCTestExpectation(description: "Checking for custom invalid inapps")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            XCTAssertEqual(CastledTestingHelper.shared.getSatisifiedInApps().filter {
+                ![CastledInAppTests.CUSTOM_INAPP_ID, CastledInAppTests.APP_OPENED_ID, CastledInAppTests.PAGE_VIEWED_ID].contains($0.notificationID)
+            }.count, 0)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2.0)

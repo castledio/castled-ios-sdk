@@ -25,11 +25,4 @@ final class CastledTests: XCTestCase {
         castledInitializer.initializeCaslted()
         XCTAssertTrue(Castled.sharedInstance.isCastledInitialized(), "Castled SDK initialized..")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
 }
