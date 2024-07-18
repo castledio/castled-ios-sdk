@@ -8,9 +8,9 @@
 import Foundation
 
 enum CastledPushNotificationRepository {
-    static let eventsPath = "v1/push/\(CastledPushNotification.sharedInstance.castledConfig.instanceId)/event"
-    static let registerUserPath = "v1/push/\(CastledPushNotification.sharedInstance.castledConfig.instanceId)/apns/register"
-    static let logoutPath = "v1/push/\(CastledPushNotification.sharedInstance.castledConfig.instanceId)/apns/logout"
+    static let eventsPath = "v1/push/\(CastledPushNotification.sharedInstance.instanceId)/event"
+    static let registerUserPath = "v1/push/\(CastledPushNotification.sharedInstance.instanceId)/apns/register"
+    static let logoutPath = "v1/push/\(CastledPushNotification.sharedInstance.instanceId)/apns/logout"
 
     static func getEventsRequest(params: [[String: Any]]) -> CastledNetworkRequest {
         return CastledNetworkRequest(

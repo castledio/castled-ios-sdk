@@ -1,0 +1,166 @@
+[
+    {
+        "teamId": 0,
+        "notificationId": 1257,
+        "sourceContext": "IiLuWVjYEmJsxXurkJmeUqUv2oZn6ayfjcjWKLLnGP/Tz+IXI5k+M/7DynXkiq1yPh071S+OtJE8ZHAhjaonNLypZrWiGlqMFZeMNwyn4CIYqWeLSPvE4mOyzA29Dfv4Ph071S+OtJE8ZHAhjaonNG5BLMGlClo2elG4hIQxy6tnDkD68k0DvNGEFuVgXu3j+ULhop/XhYMhMSfBfPl2CwZ+VLxvLO3MpcyBVMRH/qlhMh7tl3NzgKXcjW7RHy+w",
+        "priority": "MODERATE",
+        "message": {
+            "type": "FULL_SCREEN",
+            "fs": {
+                "type": "IMG_AND_BUTTONS",
+                "imageUrl": "https://cdn.castled.io/uploads-app/167-149/img/pexels-pavel-danilyuk-8294558-eeb3cd75303d45f1a9183c338631424c.jpg",
+                "defaultClickAction": "RICH_LANDING",
+                "url": "https://www.castled.io/",
+                "keyVals": null,
+                "screenOverlayColor": null,
+                "actionButtons": [
+                    {
+                        "label": "Google",
+                        "url": "https://www.google.co.in/",
+                        "clickAction": "RICH_LANDING",
+                        "buttonColor": "#FFFDD0",
+                        "fontColor": "#123959",
+                        "borderColor": "#123959",
+                        "keyVals": {}
+                    },
+                    {
+                        "label": "Dismiss",
+                        "url": "",
+                        "clickAction": "DISMISS_NOTIFICATION",
+                        "buttonColor": "#123959",
+                        "fontColor": "#FFFDD0",
+                        "borderColor": "#123959",
+                        "keyVals": {}
+                    }
+                ]
+            }
+        },
+        "displayConfig": {
+            "displayLimit": 100,
+            "minIntervalBtwDisplays": 0,
+            "minIntervalBtwDisplaysGlobal": 0,
+            "autoDismissInterval": 0
+        },
+        "trigger": {
+            "type": "EVENT",
+            "eventId": "116932",
+            "eventName": "added_to_cart",
+            "eventFilter": {
+                "type": "GROUP",
+                "joinType": "AND",
+                "filters": []
+            }
+        },
+        "startTs": 1721116676000,
+        "endTs": 1721721476000,
+        "ttl": null
+    },
+    {
+        "teamId": 0,
+        "notificationId": 1256,
+        "sourceContext": "IiLuWVjYEmJsxXurkJmeUqUv2oZn6ayfjcjWKLLnGP8c69Sv5n+QXCX17Lol9LTYR3L84aIbBxqEM5sExrPHPyyzP8JG88ilELs4IHZ5q+u3EykbK04ohuv3tuaRKa8MNuPz1I8imF+yHaHcjy/DdNJ67ia5iaPO9fwhsoA4La+OsU/CQmZgYGEdTYE12bMvHlSY1ofM4vKi7n3OGNXTNw==",
+        "priority": "MODERATE",
+        "message": {
+            "type": "MODAL",
+            "modal": {
+                "type": "DEFAULT",
+                "imageUrl": "https://cdn.castled.io/uploads-app/167-149/img/pexels-james-wheeler-417074-46747a6648574a2381c6d08e485d1bfc.jpg",
+                "defaultClickAction": "RICH_LANDING",
+                "url": "https://www.castled.io/",
+                "keyVals": {
+                    "k": "v"
+                },
+                "title": "Incomplete Customer Data",
+                "titleFontColor": "#FFFDD0",
+                "titleFontSize": 16,
+                "titleBgColor": "#1d5c96",
+                "body": "Your customer data is scattered across 50+ data silos including databases, ad platforms and analytics tools in addition to digital touch points like websites & mobile apps.\n\nLegacy Customer Engagement Platforms typically house only 10-15% of your complete customer data, which is insufficient to create a personalised customer experience.",
+                "bodyFontColor": "#FFFDD0",
+                "bodyFontSize": 15,
+                "bodyBgColor": "#1d5c96",
+                "screenOverlayColor": "#527db0de",
+                "actionButtons": [
+                    {
+                        "label": "Github",
+                        "url": "https://github.com/",
+                        "clickAction": "DEEP_LINKING",
+                        "buttonColor": "#123959",
+                        "fontColor": "#FFFDD0",
+                        "borderColor": "#123959",
+                        "keyVals": {
+                            "k": "v"
+                        }
+                    }
+                ]
+            }
+        },
+        "displayConfig": {
+            "displayLimit": 100,
+            "minIntervalBtwDisplays": 0,
+            "minIntervalBtwDisplaysGlobal": 0,
+            "autoDismissInterval": 0
+        },
+        "trigger": {
+            "type": "EVENT",
+            "eventId": "-2",
+            "eventName": "page_viewed",
+            "eventFilter": {
+                "type": "GROUP",
+                "joinType": "AND",
+                "filters": [
+                    {
+                        "type": "HAVING_PROPERTY",
+                        "name": "name",
+                        "operation": {
+                            "type": "EQ",
+                            "propertyType": "string",
+                            "value": "DetailsScreen"
+                        }
+                    }
+                ]
+            }
+        },
+        "startTs": 1721116508000,
+        "endTs": 1721176988000,
+        "ttl": null
+    },
+    {
+        "teamId": 0,
+        "notificationId": 1254,
+        "sourceContext": "IiLuWVjYEmJsxXurkJmeUqUv2oZn6ayfjcjWKLLnGP/sp6Dlj7vY9eJNn/WrYQ3doqA4SiRQTe6lyOZoJ1wlw6OkG/H0jtpVbk3Wl67h58OKM3+3A9woQGtpOcDAa2oXr+xyLo1pLsyCOuB5J6LkdiYJKVXcuUb2sD9CcBde7GcepD90fGT2INlzzQcoKLS2CmSz9d9SC0dCYIx0id4+J0elXzu/uh38dLI2RSYlOerkl/kkHrdEPbVmGbGhOm8s",
+        "priority": "MODERATE",
+        "message": {
+            "type": "BANNER",
+            "banner": {
+                "type": "DEFAULT",
+                "imageUrl": "https://cdn.castled.io/uploads-app/167-149/img/app-icon1024-c98ee975e9e442a99752a16bdb06dc1f.png",
+                "clickAction": "RICH_LANDING",
+                "url": "https://www.castled.io/",
+                "keyVals": {},
+                "body": "Create complex customer journeys and personalised engagement campaigns using customer data locked securely in your data warehouse.",
+                "bgColor": "#123959",
+                "fontSize": 14,
+                "fontColor": "#FFFDD0"
+            }
+        },
+        "displayConfig": {
+            "displayLimit": 100,
+            "minIntervalBtwDisplays": 0,
+            "minIntervalBtwDisplaysGlobal": 0,
+            "autoDismissInterval": 0
+        },
+        "trigger": {
+            "type": "EVENT",
+            "eventId": "-1",
+            "eventName": "app_opened",
+            "eventFilter": {
+                "type": "GROUP",
+                "joinType": "AND",
+                "filters": []
+            }
+        },
+        "startTs": 1721116271000,
+        "endTs": 1721721071000,
+        "ttl": null
+    }
+]

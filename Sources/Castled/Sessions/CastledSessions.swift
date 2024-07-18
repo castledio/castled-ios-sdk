@@ -10,7 +10,7 @@ import Foundation
 class CastledSessions: NSObject {
     @objc static var sharedInstance = CastledSessions()
     var userId = ""
-    let castledConfig = CastledShared.sharedInstance.getCastledConfig()
+    // var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
     private var isInitilized = false
 
     override private init() {}
@@ -26,7 +26,7 @@ class CastledSessions: NSObject {
     }
 
     func reportSessionEvents(params: [[String: Any]]) {
-        if userId.isEmpty {
+        if userId.isEmpty || CastledEnvironmentChecker.isRunningInDesignOrTestEnvironment() {
             return
         }
         CastledSessionRepository.reportSessionEvents(params: params)

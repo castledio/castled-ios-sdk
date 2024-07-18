@@ -9,8 +9,8 @@ import Foundation
 @_spi(CastledInternal) import Castled
 
 enum CastledInboxRepository {
-    static let fetchPath = "v1/app-inbox/\(CastledInbox.sharedInstance.castledConfig.instanceId)/ios/campaigns"
-    static let eventsPath = "v1/app-inbox/\(CastledInbox.sharedInstance.castledConfig.instanceId)/ios/event"
+    static let fetchPath = "v1/app-inbox/\(CastledInbox.sharedInstance.instanceId)/ios/campaigns"
+    static let eventsPath = "v1/app-inbox/\(CastledInbox.sharedInstance.instanceId)/ios/event"
 
     static func getFetchRequest() -> CastledNetworkRequest {
         return CastledNetworkRequest(type: "", method: .get, parameters: ["user": CastledInbox.sharedInstance.userId])

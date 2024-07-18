@@ -8,8 +8,8 @@
 import Foundation
 
 enum CastledInAppRepository {
-    static let fetchPath = "v1/inapp/\(CastledInApp.sharedInstance.castledConfig.instanceId)/ios/campaigns"
-    static let eventsPath = "v1/inapp/\(CastledInApp.sharedInstance.castledConfig.instanceId)/ios/event"
+    static let fetchPath = "v1/inapp/\(CastledInApp.sharedInstance.instanceId)/ios/campaigns"
+    static let eventsPath = "v1/inapp/\(CastledInApp.sharedInstance.instanceId)/ios/event"
 
     static func getFetchRequest() -> CastledNetworkRequest {
         return CastledNetworkRequest(type: "", method: .get, parameters: ["user": CastledInApp.sharedInstance.userId])

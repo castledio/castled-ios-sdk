@@ -157,6 +157,7 @@ import UIKit
                 self.removeFromPendingItems(event)
                 self.currentDisplayingInapp = event
             } else {
+                self.enqueInappObject([event])
                 self.isCurrentlyDisplaying = false
                 self.currentDisplayingInapp = nil
             }
@@ -276,7 +277,7 @@ import UIKit
         }
     }
 
-    private func getAllPendingItems() -> [CastledInAppObject] {
+    func getAllPendingItems() -> [CastledInAppObject] {
         var result: [CastledInAppObject]!
         self.castledInAppsPendinItemsQueue.sync {
             result = self.pendingInApps

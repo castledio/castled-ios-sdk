@@ -10,7 +10,7 @@ import Foundation
 @objc class CastledPushNotification: NSObject {
     @objc static var sharedInstance = CastledPushNotification()
     var userId = CastledUserDefaults.shared.userId ?? ""
-    let castledConfig = CastledShared.sharedInstance.getCastledConfig()
+    var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
     private var isInitilized = false
 
     override private init() {}
