@@ -18,13 +18,8 @@ public class CastledShared: NSObject {
 
     public func processCastledPushEventsFromExtension(userInfo: [AnyHashable: Any], appGroupId: String) {
         CastledUserDefaults.appGroupId = appGroupId
-        let userDefaults = UserDefaults(suiteName: CastledUserDefaults.appGroupId)
-        let dict = userDefaults!.dictionaryRepresentation()
-        for key in dict.keys {
-            if let value = dict[key], key.contains("_castled") {
-                print("\(key) = \(value)")
-            }
-        }
+        CastledPushNotification.sharedInstance.shouldReportFromNotiExtension = true
         Castled.sharedInstance.processCastledPushEvents(userInfo: userInfo, deliveredDate: Date())
+        CastledBadgeManager.shared.updateApplicationBadgeAfterNotification(userInfo)
     }
 }

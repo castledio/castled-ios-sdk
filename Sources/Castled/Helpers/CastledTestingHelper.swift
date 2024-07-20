@@ -22,4 +22,8 @@ public class CastledTestingHelper {
     func getLastSessionDuration() -> Double {
         return CastledSessionsManager.shared.getLastSessionDuration()
     }
+
+    public func getAppgroupIdFromUserdefaults() -> String {
+        return CastledUserDefaults.appGroupId
+    }
 }

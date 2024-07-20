@@ -16,10 +16,9 @@ import UserNotifications
 
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance = Castled()
-
-    var instanceId = CastledConfigsUtils.appId ?? ""
+    lazy var instanceId = CastledConfigsUtils.appId ?? ""
     var delegate: CastledNotificationDelegate?
-    var clientRootViewController: UIViewController?
+
     private var isInitialized = false
     // Create a dispatch queue
     let castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)

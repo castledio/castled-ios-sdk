@@ -12,7 +12,16 @@ public class CastledUserDefaults: NSObject {
     public static let shared = CastledUserDefaults()
     private var observers: [CastledPreferenceStoreListener] = []
     static var appGroupId = ""
-    static let userDefaults = UserDefaults(suiteName: CastledUserDefaults.appGroupId) ?? UserDefaults.standard
+    static let userDefaults: UserDefaults = {
+        if appGroupId.isEmpty {
+            return UserDefaults.standard
+        }
+        guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            return UserDefaults.standard
+        }
+        return defaults
+    }()
+
     private static var userDefaultsLocal = UserDefaults.standard
 
     // Userdefault keys
@@ -72,14 +81,6 @@ public class CastledUserDefaults: NSObject {
     }
 
     private func initializeUserDetails() {
-        let userDefaults = UserDefaults(suiteName: CastledUserDefaults.appGroupId)
-        let dict = userDefaults!.dictionaryRepresentation()
-        for key in dict.keys {
-            if let value = dict[key], key.contains("_castled") {
-                print("\(key) = \(value)")
-            }
-        }
-
         userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
         userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)
     }
@@ -250,7 +251,7 @@ public class CastledUserDefaults: NSObject {
 
         // Remove old data
         for key in keysToMigrate {
-            userDefaultsLocal.removeObject(forKey: key)
+            //  userDefaultsLocal.removeObject(forKey: key)
         }
 
         userDefaultsLocal.synchronize()

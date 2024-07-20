@@ -36,6 +36,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
             if let customCasledDict = request.content.userInfo[CastledNotificationServiceExtension.kCustomKey] as? NSDictionary {
                 if customCasledDict[CastledNotificationServiceExtension.kNotificationId] is String {
                     defer {
+                        print("defer")
                         contentHandler(bestAttemptContent ?? request.content)
                         contentHandler(request.content)
                     }
@@ -53,9 +54,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                     }
 
                     bestAttemptContent?.attachments = [attachment]
-                    // Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
                     CastledShared.sharedInstance.processCastledPushEventsFromExtension(userInfo: request.content.userInfo, appGroupId: appGroupId)
-                    setApplicationBadge()
                 }
             }
         }
