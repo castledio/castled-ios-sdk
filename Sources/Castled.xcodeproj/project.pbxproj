@@ -48,6 +48,7 @@
 		0A5832602C465B5900A679E7 /* CastledInAppMockObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A58325F2C465B5900A679E7 /* CastledInAppMockObjects.swift */; };
 		0A5832622C4670A800A679E7 /* CastledTestingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */; };
 		0A592A8D2C47944F00BC71E3 /* CastledSessionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */; };
+		0A592A912C4A8D0F00BC71E3 /* CExtension+UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A592A902C4A8D0E00BC71E3 /* CExtension+UIApplication.swift */; };
 		0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */; };
 		0A652F912AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A652F8E2AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib */; };
 		0A652F932AFB3A1A00752467 /* CIModalTextAndButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A652F902AFB3A1A00752467 /* CIModalTextAndButtons.xib */; };
@@ -266,6 +267,7 @@
 		0A58325F2C465B5900A679E7 /* CastledInAppMockObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppMockObjects.swift; sourceTree = "<group>"; };
 		0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTestingHelper.swift; sourceTree = "<group>"; };
 		0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsTest.swift; sourceTree = "<group>"; };
+		0A592A902C4A8D0E00BC71E3 /* CExtension+UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CExtension+UIApplication.swift"; sourceTree = "<group>"; };
 		0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTouchThroughWindow.swift; sourceTree = "<group>"; };
 		0A652F8E2AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIModalImageBodyAndButtons.xib; sourceTree = "<group>"; };
 		0A652F902AFB3A1A00752467 /* CIModalTextAndButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIModalTextAndButtons.xib; sourceTree = "<group>"; };
@@ -1039,6 +1041,7 @@
 				0ACE7AAC2BF754E50003F596 /* CExtensions+NSLayoutConstraint.swift */,
 				0ACE7AAE2BF755470003F596 /* CExtensions+View.swift */,
 				0ACE7AA62BF7537B0003F596 /* CExtensions+Dictionary.swift */,
+				0A592A902C4A8D0E00BC71E3 /* CExtension+UIApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1470,6 +1473,7 @@
 				0ACE7A952BF72C030003F596 /* CastledNetworkRequest.swift in Sources */,
 				0AB9BEBB2BFCB01800DB7744 /* CastledPushNotification.swift in Sources */,
 				0ACE7AAB2BF754A80003F596 /* CExtensions+DecodingContainer.swift in Sources */,
+				0A592A912C4A8D0F00BC71E3 /* CExtension+UIApplication.swift in Sources */,
 				0ACA95972B8D919500165C41 /* CastledButtonClickAction.swift in Sources */,
 				0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */,
 				0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */,

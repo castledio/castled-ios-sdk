@@ -43,6 +43,9 @@ import UserNotifications
         if let castledDelegate = delegate {
             Castled.sharedInstance.delegate = castledDelegate
         }
+        CastledUserDefaults.appGroupId = config.appGroupId
+        if !config.appGroupId.isEmpty { CastledUserDefaults.migrateDatasToSuit() }
+
         CastledConfigsUtils.saveTheConfigs(config: config)
         Castled.sharedInstance.initialSetup()
     }
@@ -180,7 +183,9 @@ import UserNotifications
      Function that allows users to set the badge on the app icon manually.
      */
     func setBadge(to count: Int) {
-        UIApplication.shared.applicationIconBadgeNumber = count
+        if let application = UIApplication.getSharedApplication() as? UIApplication {
+            application.applicationIconBadgeNumber = count
+        }
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
@@ -228,7 +233,9 @@ import UserNotifications
 
     private func registerForAPNsToken() {
         DispatchQueue.main.async {
-            UIApplication.shared.registerForRemoteNotifications()
+            if let application = UIApplication.getSharedApplication() as? UIApplication {
+                application.registerForRemoteNotifications()
+            }
         }
     }
 
@@ -260,32 +267,34 @@ import UserNotifications
 
     private func showSettingsAlert() {
         DispatchQueue.main.async {
-            let alertTitle = "Permission Needed"
-            let alertMessage = "You have previously denied push notification permission. Please go to your settings to enable push notifications."
+            if let application = UIApplication.getSharedApplication() as? UIApplication {
+                let alertTitle = "Permission Needed"
+                let alertMessage = "You have previously denied push notification permission. Please go to your settings to enable push notifications."
 
-            let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
 
-            let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-                if let appSettings = URL(string: UIApplication.openSettingsURLString) {
-                    if UIApplication.shared.canOpenURL(appSettings) {
-                        UIApplication.shared.open(appSettings)
+                let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+                    if let appSettings = URL(string: UIApplication.openSettingsURLString), let application = UIApplication.getSharedApplication() as? UIApplication {
+                        if application.canOpenURL(appSettings) {
+                            application.open(appSettings)
+                        }
                     }
                 }
-            }
 
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-            alertController.addAction(settingsAction)
-            alertController.addAction(cancelAction)
+                alertController.addAction(settingsAction)
+                alertController.addAction(cancelAction)
 
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let rootViewController = windowScene.windows.first?.rootViewController
-            {
-                var topController = rootViewController
-                while let presentedViewController = topController.presentedViewController {
-                    topController = presentedViewController
+                if let windowScene = application.connectedScenes.first as? UIWindowScene,
+                   let rootViewController = windowScene.windows.first?.rootViewController
+                {
+                    var topController = rootViewController
+                    while let presentedViewController = topController.presentedViewController {
+                        topController = presentedViewController
+                    }
+                    topController.present(alertController, animated: true, completion: nil)
                 }
-                topController.present(alertController, animated: true, completion: nil)
             }
         }
     }

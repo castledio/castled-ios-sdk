@@ -7,6 +7,7 @@
 
 import Foundation
 import UserNotifications
+@_spi(CastledInternal) import Castled
 
 open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     private static let kCustomKey = "castled"
@@ -52,6 +53,8 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                     }
 
                     bestAttemptContent?.attachments = [attachment]
+                    // Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
+                    CastledShared.sharedInstance.processCastledPushEventsFromExtension(userInfo: request.content.userInfo, appGroupId: appGroupId)
                     setApplicationBadge()
                 }
             }

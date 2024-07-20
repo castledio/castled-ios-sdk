@@ -11,10 +11,12 @@ import Foundation
 public class CastledUserDefaults: NSObject {
     public static let shared = CastledUserDefaults()
     private var observers: [CastledPreferenceStoreListener] = []
+    static var appGroupId = ""
+    static let userDefaults = UserDefaults(suiteName: CastledUserDefaults.appGroupId) ?? UserDefaults.standard
+    private static var userDefaultsLocal = UserDefaults.standard
 
-    private static let userDefaults = UserDefaults.standard
-    static let userDefaultsSuit = UserDefaults(suiteName: CastledConfigsUtils.configs.appGroupId) ?? UserDefaults.standard
     // Userdefault keys
+    static let kCastledAppIddKey = "_castledAppid_"
     static let kCastledUserIdKey = "_castledUserId_"
     static let kCastledDeviceIddKey = "_castledDeviceId_"
     static let kCastledDeviceInfoKey = "_castledDeviceInfo_"
@@ -23,7 +25,6 @@ public class CastledUserDefaults: NSObject {
     static let kCastledFCMTokenKey = "_castledFCMToken_"
     static let kCastledBadgeKey = "_castledApplicationBadge_"
     static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
-    public static let kCastledFailedItems = "_castledFailedItems_"
     public static let kCastledFailedRequests = "_castledFailedRequests_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
@@ -36,6 +37,7 @@ public class CastledUserDefaults: NSObject {
     static let kCastledSessionStartTime = "_castledSessionStartTime_"
     static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
     static let kCastledInAppsList = "_castledInappsList_"
+    static let kCastledIsMigratedToSuit = "_castledUsMigratedToSuit_"
 
     public var userId: String? {
         didSet {
@@ -65,6 +67,19 @@ public class CastledUserDefaults: NSObject {
     }()
 
     override private init() {
+        super.init()
+        initializeUserDetails()
+    }
+
+    private func initializeUserDetails() {
+        let userDefaults = UserDefaults(suiteName: CastledUserDefaults.appGroupId)
+        let dict = userDefaults!.dictionaryRepresentation()
+        for key in dict.keys {
+            if let value = dict[key], key.contains("_castled") {
+                print("\(key) = \(value)")
+            }
+        }
+
         userId = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserIdKey)
         userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)
     }
@@ -94,10 +109,10 @@ public class CastledUserDefaults: NSObject {
         userDefaults.synchronize()
     }
 
-    static func removeFor(_ key: String, ud: UserDefaults = UserDefaults.standard) {
+    static func removeFor(_ key: String) {
         // Remove value from UserDefaults
-        ud.removeObject(forKey: key)
-        ud.synchronize()
+        userDefaults.removeObject(forKey: key)
+        userDefaults.synchronize()
     }
 
     public static func setObjectFor(_ key: String, _ data: Any) {
@@ -136,14 +151,14 @@ public class CastledUserDefaults: NSObject {
         } catch {}
     }
 
-    static func setValueFor(_ key: String, _ data: Any, ud: UserDefaults = UserDefaults.standard) {
+    static func setValueFor(_ key: String, _ data: Any) {
         // Save the value in UserDefaults
-        ud.setValue(data, forKey: key)
-        ud.synchronize()
+        userDefaults.setValue(data, forKey: key)
+        userDefaults.synchronize()
     }
 
-    static func getValueFor(_ key: String, ud: UserDefaults = UserDefaults.standard) -> Any? {
-        return ud.value(forKey: key)
+    static func getValueFor(_ key: String) -> Any? {
+        return userDefaults.value(forKey: key)
     }
 
     static func getUserDefaults() -> UserDefaults {
@@ -155,14 +170,13 @@ public class CastledUserDefaults: NSObject {
         removeFor(kCastledDeviceIddKey)
         removeFor(kCastledDeviceInfoKey)
         removeFor(kCastledUserTokenKey)
-        removeFor(kCastledFailedItems)
         removeFor(kCastledFailedRequests)
         removeFor(kCastledSavedInappConfigs)
         removeFor(kCastledDeliveredPushIds)
         removeFor(kCastledClickedPushIds)
         removeFor(kCastledLastInappDisplayedTime)
         removeFor(kCastledInAppsList)
-        removeFor(kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
+        removeFor(kCastledClickedNotiContentIndx)
         CastledUserDefaults.shared.notifyLogout()
         CastledUserDefaults.shared.userId = nil
 //        CastledUserDefaults.shared.userToken = nil
@@ -185,5 +199,60 @@ public class CastledUserDefaults: NSObject {
         for observer in observers {
             observer.onUserLoggedOut()
         }
+    }
+
+    static func migrateDatasToSuit() {
+        // Check if migration has already been performed
+        if userDefaults.bool(forKey: kCastledIsMigratedToSuit) == true {
+            return
+        }
+
+        // Use defer to mark migration as complete, even if an error occurs
+        defer {
+            userDefaults.setValue(true, forKey: kCastledIsMigratedToSuit)
+            userDefaults.synchronize()
+            CastledUserDefaults.shared.initializeUserDetails()
+        }
+        guard userDefaultsLocal.string(forKey: kCastledAppIddKey) != nil else {
+            return
+        }
+
+        // Keys to migrate
+        let keysToMigrate = [
+            kCastledAppIddKey,
+            kCastledUserIdKey,
+            kCastledDeviceIddKey,
+            kCastledDeviceInfoKey,
+            kCastledUserTokenKey,
+            kCastledAPNsTokenKey,
+            kCastledFCMTokenKey,
+            kCastledBadgeKey,
+            kCastledLastBadgeIncrementTimeKey,
+            kCastledFailedRequests,
+            kCastledSavedInappConfigs,
+            kCastledDeliveredPushIds,
+            kCastledClickedPushIds,
+            kCastledInAppsList,
+            kCastledLastInappDisplayedTime,
+            kCastledSessionId,
+            kCastledLastSessionEndTime,
+            kCastledSessionDuration,
+            kCastledSessionStartTime,
+            kCastledIsFirstSesion
+        ]
+
+        // Migrate data
+        for key in keysToMigrate {
+            if let value = userDefaultsLocal.object(forKey: key) {
+                userDefaults.set(value, forKey: key)
+            }
+        }
+
+        // Remove old data
+        for key in keysToMigrate {
+            userDefaultsLocal.removeObject(forKey: key)
+        }
+
+        userDefaultsLocal.synchronize()
     }
 }

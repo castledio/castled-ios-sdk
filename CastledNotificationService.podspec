@@ -18,6 +18,7 @@ Pod::Spec.new do |spec|
 
   spec.ios.deployment_target = "13.0"
   spec.swift_version = "5.7"
+  spec.ios.dependency 'Castled', '~> 4.2.4'
 
   spec.weak_frameworks  = 'UserNotifications'
 

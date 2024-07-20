@@ -83,14 +83,16 @@ import CoreData
     }
 
     private func modifyTopBarHeight() {
-        let window = UIApplication.shared.windows.first
-        let topPadding = window?.safeAreaInsets.top
-
+        var topPadding = CGFloat(44)
+        if let application = UIApplication.getSharedApplication() as? UIApplication {
+            let window = application.windows.first
+            topPadding = window?.safeAreaInsets.top ?? CGFloat(44)
+        }
         if navigationController != nil {
-            constraintTopBarHeight.constant = (topPadding ?? 0) + 44.0
+            constraintTopBarHeight.constant = topPadding + 44.0
         } else {
             if modalPresentationStyle == .fullScreen {
-                constraintTopBarHeight.constant = (topPadding ?? 0) + 44.0
+                constraintTopBarHeight.constant = topPadding + 44.0
 
             } else {
                 constraintTopBarHeight.constant = 44.0

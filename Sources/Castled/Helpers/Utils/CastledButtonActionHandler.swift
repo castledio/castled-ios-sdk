@@ -91,7 +91,9 @@ public class CastledButtonActionHandler {
             return
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            if let application = UIApplication.getSharedApplication() as? UIApplication {
+                application.open(url, options: [:], completionHandler: nil)
+            }
         }
     }
 }
