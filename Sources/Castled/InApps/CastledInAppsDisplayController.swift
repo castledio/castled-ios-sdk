@@ -157,6 +157,7 @@ import UIKit
                 self.removeFromPendingItems(event)
                 self.currentDisplayingInapp = event
             } else {
+                self.enqueInappObject([event])
                 self.isCurrentlyDisplaying = false
                 self.currentDisplayingInapp = nil
             }
@@ -225,7 +226,8 @@ import UIKit
     }
 
     private func getTopViewController() -> String? {
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+        if let application = UIApplication.getSharedApplication() as? UIApplication,
+           let scene = application.connectedScenes.first as? UIWindowScene,
            let window = scene.windows.first(where: { $0.isKeyWindow })
         {
             if let topViewController = window.rootViewController {
@@ -276,7 +278,7 @@ import UIKit
         }
     }
 
-    private func getAllPendingItems() -> [CastledInAppObject] {
+    func getAllPendingItems() -> [CastledInAppObject] {
         var result: [CastledInAppObject]!
         self.castledInAppsPendinItemsQueue.sync {
             result = self.pendingInApps

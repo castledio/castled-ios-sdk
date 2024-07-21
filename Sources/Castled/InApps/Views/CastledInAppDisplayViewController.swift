@@ -30,7 +30,10 @@ class CastledInAppDisplayViewController: UIViewController {
 
     func showInAppViewControllerFromNotification(inAppObj: CastledInAppObject, inAppDisplaySettings: InAppDisplayConfig) -> Bool {
         if #available(iOS 13, tvOS 13.0, *) {
-            let connectedScenes = UIApplication.shared.connectedScenes
+            guard let application = UIApplication.getSharedApplication() as? UIApplication else {
+                return false
+            }
+            let connectedScenes = application.connectedScenes
             for scene in connectedScenes {
                 if scene.activationState == .foregroundActive && (scene is UIWindowScene) {
                     let windowScene = scene as? UIWindowScene

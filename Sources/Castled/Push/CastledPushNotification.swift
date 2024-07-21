@@ -10,8 +10,9 @@ import Foundation
 @objc class CastledPushNotification: NSObject {
     @objc static var sharedInstance = CastledPushNotification()
     var userId = CastledUserDefaults.shared.userId ?? ""
-    let castledConfig = CastledShared.sharedInstance.getCastledConfig()
-    private var isInitilized = false
+    var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
+    var isInitilized = false
+    var shouldReportFromNotiExtension = false
 
     override private init() {}
 
@@ -38,12 +39,12 @@ import Foundation
             success(false)
             return
         }
-        else if !isInitilized {
+        else if !isInitilized, !shouldReportFromNotiExtension {
             CastledLog.castledLog("Report push events failed: \(CastledExceptionMessages.pushDisabled.rawValue)", logLevel: CastledLogLevel.error)
             success(false)
             return
         }
-
+        shouldReportFromNotiExtension = false
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
             success(result)
         }

@@ -43,6 +43,12 @@ import CoreData
         }
     }
 
+    override public func viewWillAppear(_ animated: Bool) {
+        if navigationController != nil, navigationController?.isNavigationBarHidden == false {
+            navigationItem.setHidesBackButton(true, animated: false)
+        }
+    }
+
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         updateReadStatus()
@@ -83,14 +89,16 @@ import CoreData
     }
 
     private func modifyTopBarHeight() {
-        let window = UIApplication.shared.windows.first
-        let topPadding = window?.safeAreaInsets.top
-
+        var topPadding = CGFloat(0)
+        if let application = UIApplication.getSharedApplication() as? UIApplication {
+            let window = application.windows.first
+            topPadding = window?.safeAreaInsets.top ?? CGFloat(0)
+        }
         if navigationController != nil {
-            constraintTopBarHeight.constant = (topPadding ?? 0) + 44.0
+            constraintTopBarHeight.constant = topPadding + 44.0
         } else {
             if modalPresentationStyle == .fullScreen {
-                constraintTopBarHeight.constant = (topPadding ?? 0) + 44.0
+                constraintTopBarHeight.constant = topPadding + 44.0
 
             } else {
                 constraintTopBarHeight.constant = 44.0

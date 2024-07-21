@@ -29,12 +29,26 @@
 		0A24C56429E74CA200B89B55 /* CastledAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */; };
 		0A31CFC12BB5468900901A50 /* CastledNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A31CFC02BB5468900901A50 /* CastledNotificationCenter.swift */; };
 		0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */; };
+		0A3865C62C455FF50047B370 /* CastledEnvironmentChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865C52C455FF50047B370 /* CastledEnvironmentChecker.swift */; };
+		0A3865CD2C4561160047B370 /* CastledInboxTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865CC2C4561160047B370 /* CastledInboxTestHelper.swift */; };
+		0A3865CE2C45611A0047B370 /* CastledInbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A8AC0DA2BF6417D00BCF7AB /* CastledInbox.framework */; };
+		0A3865D42C4561640047B370 /* castled_inbox.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A3865D02C4561620047B370 /* castled_inbox.json */; };
+		0A3865D52C4561640047B370 /* CastledTestCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */; };
+		0A3865D82C45627A0047B370 /* CastledInboxTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D72C45627A0047B370 /* CastledInboxTest.swift */; };
+		0A3865DA2C4563D20047B370 /* CastledInboxMockObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865D92C4563D20047B370 /* CastledInboxMockObjects.swift */; };
+		0A3865DC2C4571D30047B370 /* CastledInitializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3865DB2C4571D30047B370 /* CastledInitializer.swift */; };
 		0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */; };
 		0A446E272A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */; };
 		0A46C2BD2B6D070C00D40B17 /* CastledSessionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */; };
 		0A46C2C32B72708700D40B17 /* CastledUserAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */; };
 		0A4C76582A7C258A00F60D16 /* CIBannerDefaultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */; };
 		0A4C765A2A7C25AD00F60D16 /* CIBannerDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4C76592A7C25AD00F60D16 /* CIBannerDefaultView.swift */; };
+		0A58325B2C465AC400A679E7 /* CastledInAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A58325A2C465AC400A679E7 /* CastledInAppTests.swift */; };
+		0A58325E2C465B4200A679E7 /* castled_inapp.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A58325D2C465B4200A679E7 /* castled_inapp.json */; };
+		0A5832602C465B5900A679E7 /* CastledInAppMockObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A58325F2C465B5900A679E7 /* CastledInAppMockObjects.swift */; };
+		0A5832622C4670A800A679E7 /* CastledTestingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */; };
+		0A592A8D2C47944F00BC71E3 /* CastledSessionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */; };
+		0A592A912C4A8D0F00BC71E3 /* CExtension+UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A592A902C4A8D0E00BC71E3 /* CExtension+UIApplication.swift */; };
 		0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */; };
 		0A652F912AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A652F8E2AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib */; };
 		0A652F932AFB3A1A00752467 /* CIModalTextAndButtons.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A652F902AFB3A1A00752467 /* CIModalTextAndButtons.xib */; };
@@ -234,12 +248,26 @@
 		0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = CastledAssets.xcassets; sourceTree = "<group>"; };
 		0A31CFC02BB5468900901A50 /* CastledNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationCenter.swift; sourceTree = "<group>"; };
 		0A33BB8D29E6E64F0005ACED /* CastledSwizzlingAppear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledSwizzlingAppear.swift; sourceTree = "<group>"; };
+		0A3865C52C455FF50047B370 /* CastledEnvironmentChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledEnvironmentChecker.swift; sourceTree = "<group>"; };
+		0A3865C82C4560F60047B370 /* CastledTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CastledTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		0A3865CC2C4561160047B370 /* CastledInboxTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxTestHelper.swift; sourceTree = "<group>"; };
+		0A3865D02C4561620047B370 /* castled_inbox.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = castled_inbox.json; sourceTree = "<group>"; };
+		0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledTestCoreDataStack.swift; sourceTree = "<group>"; };
+		0A3865D72C45627A0047B370 /* CastledInboxTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxTest.swift; sourceTree = "<group>"; };
+		0A3865D92C4563D20047B370 /* CastledInboxMockObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInboxMockObjects.swift; sourceTree = "<group>"; };
+		0A3865DB2C4571D30047B370 /* CastledInitializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInitializer.swift; sourceTree = "<group>"; };
 		0A43B19C2C086223004EA8A6 /* CastledFRCViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledFRCViewModel.swift; sourceTree = "<group>"; };
 		0A446E262A7AD1E4004A6376 /* CastledInAppDisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CastledInAppDisplayViewController.xib; sourceTree = "<group>"; };
 		0A46C2BC2B6D070C00D40B17 /* CastledSessionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsManager.swift; sourceTree = "<group>"; };
 		0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledUserAttributes.swift; sourceTree = "<group>"; };
 		0A4C76572A7C258900F60D16 /* CIBannerDefaultView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIBannerDefaultView.xib; sourceTree = "<group>"; };
 		0A4C76592A7C25AD00F60D16 /* CIBannerDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIBannerDefaultView.swift; sourceTree = "<group>"; };
+		0A58325A2C465AC400A679E7 /* CastledInAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppTests.swift; sourceTree = "<group>"; };
+		0A58325D2C465B4200A679E7 /* castled_inapp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = castled_inapp.json; sourceTree = "<group>"; };
+		0A58325F2C465B5900A679E7 /* CastledInAppMockObjects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppMockObjects.swift; sourceTree = "<group>"; };
+		0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTestingHelper.swift; sourceTree = "<group>"; };
+		0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledSessionsTest.swift; sourceTree = "<group>"; };
+		0A592A902C4A8D0E00BC71E3 /* CExtension+UIApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CExtension+UIApplication.swift"; sourceTree = "<group>"; };
 		0A5D9F552A0D598400FB3FAE /* CastledTouchThroughWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledTouchThroughWindow.swift; sourceTree = "<group>"; };
 		0A652F8E2AFB3A1A00752467 /* CIModalImageBodyAndButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIModalImageBodyAndButtons.xib; sourceTree = "<group>"; };
 		0A652F902AFB3A1A00752467 /* CIModalTextAndButtons.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CIModalTextAndButtons.xib; sourceTree = "<group>"; };
@@ -390,6 +418,7 @@
 			files = (
 				0AAA5FBD2C3FAE360025435E /* SDWebImage.framework in Frameworks */,
 				0AAA5FB62C3FAC190025435E /* Castled.framework in Frameworks */,
+				0A3865CE2C45611A0047B370 /* CastledInbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +561,25 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		0A3865C72C4560D50047B370 /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				0A3865D72C45627A0047B370 /* CastledInboxTest.swift */,
+				0A3865CF2C4561560047B370 /* Helpers */,
+			);
+			path = Inbox;
+			sourceTree = "<group>";
+		};
+		0A3865CF2C4561560047B370 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0A3865D02C4561620047B370 /* castled_inbox.json */,
+				0A3865D92C4563D20047B370 /* CastledInboxMockObjects.swift */,
+				0A3865D22C4561630047B370 /* CastledTestCoreDataStack.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		0A46C2BB2B6D06DB00D40B17 /* Sessions */ = {
 			isa = PBXGroup;
 			children = (
@@ -549,6 +597,32 @@
 				0A46C2C22B72708700D40B17 /* CastledUserAttributes.swift */,
 			);
 			path = UserAttributes;
+			sourceTree = "<group>";
+		};
+		0A5832592C465A9600A679E7 /* Inapp */ = {
+			isa = PBXGroup;
+			children = (
+				0A58325C2C465B2C00A679E7 /* Helpers */,
+				0A58325A2C465AC400A679E7 /* CastledInAppTests.swift */,
+			);
+			path = Inapp;
+			sourceTree = "<group>";
+		};
+		0A58325C2C465B2C00A679E7 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0A58325D2C465B4200A679E7 /* castled_inapp.json */,
+				0A58325F2C465B5900A679E7 /* CastledInAppMockObjects.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0A592A8B2C47943500BC71E3 /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+				0A592A8C2C47944F00BC71E3 /* CastledSessionsTest.swift */,
+			);
+			path = Sessions;
 			sourceTree = "<group>";
 		};
 		0A5D9F572A0D638900FB3FAE /* Trigger */ = {
@@ -675,6 +749,7 @@
 		0A8AC0F82BF641B900BCF7AB /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0A3865CC2C4561160047B370 /* CastledInboxTestHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -738,6 +813,11 @@
 			isa = PBXGroup;
 			children = (
 				0AAA5FB42C3FAC190025435E /* CastledTests.swift */,
+				0A3865DB2C4571D30047B370 /* CastledInitializer.swift */,
+				0A592A8B2C47943500BC71E3 /* Sessions */,
+				0A5832592C465A9600A679E7 /* Inapp */,
+				0A3865C72C4560D50047B370 /* Inbox */,
+				0A3865C82C4560F60047B370 /* CastledTests-Bridging-Header.h */,
 			);
 			path = CastledTests;
 			sourceTree = "<group>";
@@ -832,6 +912,8 @@
 				0ACA959A2B8D945E00165C41 /* CastledConfigsUtils.swift */,
 				0A7C51AF2AD1C20E001B2CE4 /* CastledLog.swift */,
 				12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */,
+				0A3865C52C455FF50047B370 /* CastledEnvironmentChecker.swift */,
+				0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */,
 				0ACE7AA82BF7539F0003F596 /* Extensions */,
 				0ACE7AA92BF753B90003F596 /* Utils */,
 			);
@@ -959,6 +1041,7 @@
 				0ACE7AAC2BF754E50003F596 /* CExtensions+NSLayoutConstraint.swift */,
 				0ACE7AAE2BF755470003F596 /* CExtensions+View.swift */,
 				0ACE7AA62BF7537B0003F596 /* CExtensions+Dictionary.swift */,
+				0A592A902C4A8D0E00BC71E3 /* CExtension+UIApplication.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1197,6 +1280,7 @@
 					};
 					0AAA5FB12C3FAC190025435E = {
 						CreatedOnToolsVersion = 15.4;
+						LastSwiftMigration = 1540;
 					};
 					0AB5C54F291C222C0027C36B = {
 						CreatedOnToolsVersion = 14.0.1;
@@ -1285,6 +1369,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3865D42C4561640047B370 /* castled_inbox.json in Resources */,
+				0A58325E2C465B4200A679E7 /* castled_inapp.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1338,6 +1424,7 @@
 				0A8AC1072BF641B900BCF7AB /* CastledInboxViewController.swift in Sources */,
 				0AB9BE922BFB3F4900DB7744 /* CastledInboxRepository.swift in Sources */,
 				0A8AC0FC2BF641B900BCF7AB /* CastledInboxItem.swift in Sources */,
+				0A3865CD2C4561160047B370 /* CastledInboxTestHelper.swift in Sources */,
 				0A43B19D2C086223004EA8A6 /* CastledFRCViewModel.swift in Sources */,
 				0A94D67E2C0768B1007BF60B /* CastledCoreDataStack.swift in Sources */,
 				0A8AC1042BF641B900BCF7AB /* CastledViewPager.swift in Sources */,
@@ -1359,7 +1446,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3865D52C4561640047B370 /* CastledTestCoreDataStack.swift in Sources */,
+				0A5832602C465B5900A679E7 /* CastledInAppMockObjects.swift in Sources */,
+				0A58325B2C465AC400A679E7 /* CastledInAppTests.swift in Sources */,
+				0A592A8D2C47944F00BC71E3 /* CastledSessionsTest.swift in Sources */,
+				0A3865D82C45627A0047B370 /* CastledInboxTest.swift in Sources */,
 				0AAA5FB52C3FAC190025435E /* CastledTests.swift in Sources */,
+				0A3865DA2C4563D20047B370 /* CastledInboxMockObjects.swift in Sources */,
+				0A3865DC2C4571D30047B370 /* CastledInitializer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1379,6 +1473,7 @@
 				0ACE7A952BF72C030003F596 /* CastledNetworkRequest.swift in Sources */,
 				0AB9BEBB2BFCB01800DB7744 /* CastledPushNotification.swift in Sources */,
 				0ACE7AAB2BF754A80003F596 /* CExtensions+DecodingContainer.swift in Sources */,
+				0A592A912C4A8D0F00BC71E3 /* CExtension+UIApplication.swift in Sources */,
 				0ACA95972B8D919500165C41 /* CastledButtonClickAction.swift in Sources */,
 				0A33BB8E29E6E64F0005ACED /* CastledSwizzlingAppear.swift in Sources */,
 				0A5D9F562A0D598400FB3FAE /* CastledTouchThroughWindow.swift in Sources */,
@@ -1399,6 +1494,7 @@
 				0AB5C5A2291C27840027C36B /* Castled.swift in Sources */,
 				0AB9BE9A2BFC5FC900DB7744 /* CastledInAppController.swift in Sources */,
 				0AB9BEAA2BFC793A00DB7744 /* CastledSessionsRequestHandler.swift in Sources */,
+				0A3865C62C455FF50047B370 /* CastledEnvironmentChecker.swift in Sources */,
 				0A0E64962BFFD56000706B4B /* CastledModuleInitManager.swift in Sources */,
 				0AB9BEB42BFC9ACB00DB7744 /* CastledEventsRepository.swift in Sources */,
 				0A1B4B792A7BB1E100D6430B /* CIHTMLView.swift in Sources */,
@@ -1439,6 +1535,7 @@
 				0AB5C59D291C27840027C36B /* CastledUserDefaults.swift in Sources */,
 				0ACE7AAD2BF754E60003F596 /* CExtensions+NSLayoutConstraint.swift in Sources */,
 				0A1B4B7C2A7BB1F300D6430B /* CastledInAppJSBridge.swift in Sources */,
+				0A5832622C4670A800A679E7 /* CastledTestingHelper.swift in Sources */,
 				0AB9BEA82BFC792800DB7744 /* CastledSessionRepository.swift in Sources */,
 				0A74E08D29E6D615004F2610 /* CastledInAppsDisplayController.swift in Sources */,
 				0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */,
@@ -1591,6 +1688,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
@@ -1608,6 +1706,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CastledTests/CastledTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1617,6 +1717,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
@@ -1633,6 +1734,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.castled.CastledTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CastledTests/CastledTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -37,14 +37,14 @@ class CastledBadgeManager {
 
     private func modifyBadgeCount(by delta: Int = 1) {
         Castled.sharedInstance.castledCommonQueue.async {
-            var currentBadge = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledBadgeKey, ud: CastledUserDefaults.userDefaultsSuit) as? Int ?? 0
+            var currentBadge = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledBadgeKey) as? Int ?? 0
             currentBadge += delta
             self.setApplicationBadge(currentBadge)
         }
     }
 
     private func setApplicationBadge(_ badge: Int) {
-        let lastIncrementTimestamp = CastledUserDefaults.userDefaultsSuit.double(forKey: CastledUserDefaults.kCastledLastBadgeIncrementTimeKey)
+        let lastIncrementTimestamp = CastledUserDefaults.getUserDefaults().double(forKey: CastledUserDefaults.kCastledLastBadgeIncrementTimeKey)
         let currentTimestamp = Date().timeIntervalSince1970
         if currentTimestamp - lastIncrementTimestamp > 2 || badge == 0 {
             /* This check is for avoiding the badge increment more than 1, as we are incrementing the count in
@@ -53,15 +53,17 @@ class CastledBadgeManager {
              1. background
              2. will present
              3. notification extension */
-            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledBadgeKey, badge, ud: CastledUserDefaults.userDefaultsSuit)
-            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledLastBadgeIncrementTimeKey, currentTimestamp, ud: CastledUserDefaults.userDefaultsSuit)
+            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledBadgeKey, badge)
+            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledLastBadgeIncrementTimeKey, currentTimestamp)
 
             DispatchQueue.main.async {
                 if #available(iOS 16.0, *) {
                     UNUserNotificationCenter.current().setBadgeCount(badge) { _ in
                     }
                 } else {
-                    UIApplication.shared.applicationIconBadgeNumber = badge
+                    if let application = UIApplication.getSharedApplication() as? UIApplication {
+                        application.applicationIconBadgeNumber = badge
+                    }
                 }
             }
         }

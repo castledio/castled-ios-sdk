@@ -140,9 +140,9 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
 //        style.tabBarSelectedBackgroundColor = .lightGray
 //        style.tabBarIndicatorBackgroundColor = .red
         let inboxViewController = CastledInbox.sharedInstance.getInboxViewController(withUIConfigs: style, andDelegate: self)
-        inboxViewController.modalPresentationStyle = .fullScreen
+        // inboxViewController.modalPresentationStyle = .fullScreen
         present(inboxViewController, animated: true)
-        // navigationController?.setNavigationBarHidden(true, animated: false)
+        //  navigationController?.setNavigationBarHidden(true, animated: false)
         // navigationController?.pushViewController(inboxViewController, animated: true)
         Castled.sharedInstance.logCustomAppEvent("antony_event_both", params: ["IntValue": 200,
                                                                                // "Date": Date(),

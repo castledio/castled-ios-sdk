@@ -17,16 +17,16 @@ class CastledBGManager {
 
     private init() {}
 
-    private func registerBackgroundTasks() {
-        if isRegistered { return }
-        if #available(iOS 13.0, *) {
-            isRegistered = true
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: CastledConfigsUtils.configs.permittedBGIdentifier, using: nil) { task in
-                self.handleBackgroundTask(task: task as! BGProcessingTask)
-            }
-            startBackgroundTask()
-        }
-    }
+    /*   private func registerBackgroundTasks() {
+         if isRegistered { return }
+         if #available(iOS 13.0, *) {
+             isRegistered = true
+             BGTaskScheduler.shared.register(forTaskWithIdentifier: CastledConfigsUtils.configs.permittedBGIdentifier, using: nil) { task in
+                 self.handleBackgroundTask(task: task as! BGProcessingTask)
+             }
+             startBackgroundTask()
+         }
+     }*/
 
     func executeBackgroundTask(completion: @escaping () -> Void) {
         if isExecuting {

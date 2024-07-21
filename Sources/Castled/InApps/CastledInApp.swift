@@ -11,13 +11,14 @@ import UIKit
 @objc class CastledInApp: NSObject {
     @objc static var sharedInstance = CastledInApp()
     var userId = ""
-    let castledConfig = CastledShared.sharedInstance.getCastledConfig()
+    var enableInApp: Bool { CastledShared.sharedInstance.getCastledConfig().enableInApp }
+    var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
     private var isInitilized = false
 
     override private init() {}
 
     @objc func initializeInApp() {
-        if !castledConfig.enableInApp {
+        if !enableInApp {
             return
         }
         else if isInitilized {
@@ -54,7 +55,7 @@ import UIKit
     }
 
     private func isValidated() -> Bool {
-        if !castledConfig.enableInApp {
+        if !enableInApp {
             CastledLog.castledLog("In-app operation failed: \(CastledExceptionMessages.inAppDisabled.rawValue)", logLevel: CastledLogLevel.error)
             return false
         }

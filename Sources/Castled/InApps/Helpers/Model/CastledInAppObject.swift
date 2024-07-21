@@ -6,11 +6,12 @@
 //
 
 import Foundation
+@_spi(CastledInternal)
 
 // MARK: - InAppObject
 
-struct CastledInAppObject: Codable, Equatable {
-    static func == (lhs: CastledInAppObject, rhs: CastledInAppObject) -> Bool {
+public struct CastledInAppObject: Codable, Equatable {
+    public static func == (lhs: CastledInAppObject, rhs: CastledInAppObject) -> Bool {
         return lhs.notificationID == rhs.notificationID
     }
 
@@ -29,7 +30,7 @@ struct CastledInAppObject: Codable, Equatable {
         case sourceContext, priority, message, displayConfig, trigger, startTs, endTs, ttl
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.teamID = (try? container.decodeIfPresent(Int.self, forKey: .teamID)) ?? 0
         self.notificationID = (try? container.decodeIfPresent(Int.self, forKey: .notificationID)) ?? 0

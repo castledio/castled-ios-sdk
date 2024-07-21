@@ -16,6 +16,7 @@ class CastledSessionsManager {
     private lazy var sessionEndTime = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledLastSessionEndTime) as? Double ?? 0
     private lazy var
         sessionDuration = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionDuration) as? Double ?? 0
+    private lazy var lastSessionDurationForTestCases: Double = 0
     private lazy var isFirstSession = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledIsFirstSesion) ?? true
     private var currentStartTime: Double = 0
     private let sessionTrackingQueue = DispatchQueue(label: "CastledSessionsTrackingQueue", attributes: .concurrent)
@@ -54,6 +55,7 @@ class CastledSessionsManager {
             CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, false)
             isFirstSession = false
         }
+        lastSessionDurationForTestCases = sessionDuration
 
         sessionId = getSessionId()
         sessionDuration = 0
@@ -86,18 +88,19 @@ class CastledSessionsManager {
         if isSaving {
             return
         }
-        isSaving = true
-        let application = UIApplication.shared
-        var backgroundTask: UIBackgroundTaskIdentifier?
-        backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
-            if backgroundTask != nil { backgroundTask! = .invalid }
-        }
-        doTheBackgroundJobs()
+        if let application = UIApplication.getSharedApplication() as? UIApplication {
+            isSaving = true
+            var backgroundTask: UIBackgroundTaskIdentifier?
+            backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
+                if backgroundTask != nil { backgroundTask! = .invalid }
+            }
+            doTheBackgroundJobs()
 
-        if let bgTask = backgroundTask {
-            application.endBackgroundTask(bgTask)
+            if let bgTask = backgroundTask {
+                application.endBackgroundTask(bgTask)
+            }
+            isSaving = false
         }
-        isSaving = false
     }
 
     func doTheBackgroundJobs() {
@@ -137,5 +140,9 @@ class CastledSessionsManager {
         sessionEndTime = 0.0
         sessionDuration = 0
         isFirstSession = true
+    }
+
+    func getLastSessionDuration() -> Double {
+        return lastSessionDurationForTestCases
     }
 }
