@@ -11,20 +11,14 @@ import UIKit
 
 public extension UIApplication {
     static func getSharedApplication() -> Any? {
-        #if os(iOS) || os(tvOS)
-            if !CastledEnvironmentChecker.isAppExtension() {
-                if let uiApplicationClass = NSClassFromString("UIApplication") as? NSObject.Type,
-                   uiApplicationClass.responds(to: NSSelectorFromString("sharedApplication"))
-                {
-                    let sharedApplicationSelector = NSSelectorFromString("sharedApplication")
-                    if let sharedApplication = uiApplicationClass.perform(sharedApplicationSelector)?.takeUnretainedValue() {
-                        return sharedApplication
-                    }
-                }
+        if let uiApplicationClass = NSClassFromString("UIApplication") as? NSObject.Type {
+            let sharedApplicationSelector = NSSelectorFromString("sharedApplication")
+            if uiApplicationClass.responds(to: sharedApplicationSelector),
+               let sharedApplication = uiApplicationClass.perform(sharedApplicationSelector)?.takeUnretainedValue()
+            {
+                return sharedApplication
             }
-        #elseif os(watchOS)
-            return ProcessInfo.processInfo
-        #endif
+        }
         return nil
     }
 }

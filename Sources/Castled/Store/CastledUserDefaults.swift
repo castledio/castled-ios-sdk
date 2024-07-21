@@ -47,6 +47,7 @@ public class CastledUserDefaults: NSObject {
     static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
     static let kCastledInAppsList = "_castledInappsList_"
     static let kCastledIsMigratedToSuit = "_castledUsMigratedToSuit_"
+    static let kCastledAppInForeground = "_castledAppInForeground_"
 
     public var userId: String? {
         didSet {
@@ -57,7 +58,11 @@ public class CastledUserDefaults: NSObject {
     }
 
     var userToken: String?
-    public var isAppInForeground = false
+    public var isAppInForeground = false {
+        didSet {
+            CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledAppInForeground, isAppInForeground)
+        }
+    }
 
     lazy var deliveredPushIds: [String] = {
         CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
@@ -251,7 +256,7 @@ public class CastledUserDefaults: NSObject {
 
         // Remove old data
         for key in keysToMigrate {
-            //  userDefaultsLocal.removeObject(forKey: key)
+            userDefaultsLocal.removeObject(forKey: key)
         }
 
         userDefaultsLocal.synchronize()
