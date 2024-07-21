@@ -24,7 +24,13 @@ import Foundation
 
     // MARK: - Supporting properites
 
-    @objc public var appGroupId: String = ""
+    @objc public var appGroupId: String = "" {
+        didSet {
+            if !appGroupId.isEmpty {
+                CastledUserDefaults.appGroupId = appGroupId
+            }
+        }
+    }
 
     @objc public var enableAppInbox: Bool = false
     @objc public var enableInApp: Bool = false

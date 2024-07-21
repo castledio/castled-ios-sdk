@@ -31,4 +31,8 @@ enum CastledEnvironmentChecker {
             return false
         }
     }
+
+    static func isAppExtension() -> Bool {
+        return Bundle.main.bundlePath.hasSuffix(".appex")
+    }
 }

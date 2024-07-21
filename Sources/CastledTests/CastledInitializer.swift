@@ -19,7 +19,7 @@ class CastledInitializer: NSObject, CastledNotificationDelegate {
         config.skipUrlHandling = false
         config.location = location
         config.logLevel = CastledLogLevel.debug
-        config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
+        // config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         Castled.initialize(withConfig: config, andDelegate: self)
         setUserId("antony@castled.io")
     }

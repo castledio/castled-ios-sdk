@@ -19,12 +19,10 @@ class CastledConfigsUtils: NSObject {
         return CastledConfigs.initialize(appId: Castled.sharedInstance.instanceId.isEmpty ? "castled_appId" : Castled.sharedInstance.instanceId)
     }()
 
-    private static let kCastledAppIddKey = "_castledAppid_"
-
     // MARK: - Supporting properites
 
     static var appId: String? = {
-        CastledUserDefaults.getString(kCastledAppIddKey)
+        CastledUserDefaults.getString(CastledUserDefaults.kCastledAppIddKey)
     }()
 
     static func saveTheConfigs(config: CastledConfigs) {
@@ -33,7 +31,7 @@ class CastledConfigsUtils: NSObject {
 
         DispatchQueue.main.async {
             let userDefaults = CastledUserDefaults.getUserDefaults()
-            userDefaults.set(Castled.sharedInstance.instanceId, forKey: kCastledAppIddKey)
+            userDefaults.set(Castled.sharedInstance.instanceId, forKey: CastledUserDefaults.kCastledAppIddKey)
             let encoder = JSONEncoder()
             if let data = try? encoder.encode(config) {
                 userDefaults.set(data, forKey: CastledConfigsUtils.kCastledConfigsKey)

@@ -147,7 +147,9 @@ import UIKit
         if !isValidated() {
             return
         }
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+
+        if let application = UIApplication.getSharedApplication() as? UIApplication,
+           let scene = application.connectedScenes.first as? UIWindowScene,
            let window = scene.windows.first(where: { $0.isKeyWindow })
         {
             if let topViewController = window.rootViewController {

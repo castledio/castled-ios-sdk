@@ -88,18 +88,19 @@ class CastledSessionsManager {
         if isSaving {
             return
         }
-        isSaving = true
-        let application = UIApplication.shared
-        var backgroundTask: UIBackgroundTaskIdentifier?
-        backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
-            if backgroundTask != nil { backgroundTask! = .invalid }
-        }
-        doTheBackgroundJobs()
+        if let application = UIApplication.getSharedApplication() as? UIApplication {
+            isSaving = true
+            var backgroundTask: UIBackgroundTaskIdentifier?
+            backgroundTask = application.beginBackgroundTask(withName: "com.castled.sessiontracking") {
+                if backgroundTask != nil { backgroundTask! = .invalid }
+            }
+            doTheBackgroundJobs()
 
-        if let bgTask = backgroundTask {
-            application.endBackgroundTask(bgTask)
+            if let bgTask = backgroundTask {
+                application.endBackgroundTask(bgTask)
+            }
+            isSaving = false
         }
-        isSaving = false
     }
 
     func doTheBackgroundJobs() {

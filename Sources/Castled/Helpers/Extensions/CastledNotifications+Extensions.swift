@@ -17,7 +17,9 @@ public extension Castled {
     }
 
     @objc func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any]) {
-        Castled.sharedInstance.didReceiveRemoteNotification(inApplication: UIApplication.shared, withInfo: userInfo, isCastledSilentPush: Castled.sharedInstance.isCastledSilentPush(fromInfo: userInfo)) { _ in
+        if let application = UIApplication.getSharedApplication() as? UIApplication {
+            Castled.sharedInstance.didReceiveRemoteNotification(inApplication: application, withInfo: userInfo, isCastledSilentPush: Castled.sharedInstance.isCastledSilentPush(fromInfo: userInfo)) { _ in
+            }
         }
     }
 
@@ -123,12 +125,12 @@ public extension Castled {
         var clickedParams: [AnyHashable: Any]?
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-            if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.userDefaultsSuit.value(forKey: CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
+            if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
                let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             {
                 // Any change here should handle in the background delegate also
                 pushActionType = defaultAction.getCastledClickActionType()
-                CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx, ud: CastledUserDefaults.userDefaultsSuit)
+                CastledUserDefaults.removeFor(CastledUserDefaults.kCastledClickedNotiContentIndx)
                 clickedParams = defaultActionDetails
                 processCastledPushEvents(userInfo: userInfo, isOpened: true, actionType: defaultAction, actionUri: CastledButtonActionUtils.getClickActionUrlFrom(kvPairs: clickedParams), deliveredDate: response.notification.date)
 
