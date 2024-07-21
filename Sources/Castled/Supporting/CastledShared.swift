@@ -9,18 +9,17 @@ import Foundation
 @_spi(CastledInternal)
 
 public class CastledShared: NSObject {
+    //Dont initialize/ call any CastledUserDefaults method here for extensions. only after setting appGroupId. otherwise userdefaults will get initialize without group id
     @objc public static var sharedInstance = CastledShared()
-    lazy var pendingPushEvents = [[AnyHashable: Any]]()
+    var pendingPushEvent: [AnyHashable: Any]?
     @objc public var appGroupId: String = "" {
         didSet {
             if !appGroupId.isEmpty {
                 CastledUserDefaults.appGroupId = appGroupId
-                if !pendingPushEvents.isEmpty {
+                if let event = pendingPushEvent {
                     // this is to handle the scenario where the user set the appid after theu super. in their extension class
-                    pendingPushEvents.forEach { event in
-                        CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: event)
-                    }
-                    pendingPushEvents.removeAll()
+                    CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: event)
+                    pendingPushEvent = nil
                 }
             }
         }
@@ -32,14 +31,14 @@ public class CastledShared: NSObject {
     }
 
     public func reportCastledPushEventsFromExtension(userInfo: [AnyHashable: Any]) {
-        if CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledAppInForeground) {
-            return
-        }
         if !appGroupId.isEmpty {
+            if CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledAppInForeground) {
+                return
+            }
             CastledPushNotification.sharedInstance.shouldReportFromNotiExtension = true
             Castled.sharedInstance.processCastledPushEvents(userInfo: userInfo, deliveredDate: Date())
         } else {
-            pendingPushEvents.append(userInfo)
+            pendingPushEvent = userInfo
         }
     }
 }
