@@ -79,6 +79,9 @@ let package = Package(
         ),
         .target(
             name: "CastledNotificationService",
+            dependencies: [
+                "Castled"
+            ],
             path: "Sources/CastledNotificationService/Swift",
             linkerSettings: [
                 .linkedFramework("AVFoundation")
