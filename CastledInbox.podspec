@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "CastledInbox"
-  spec.version      = '4.2.6'
+  spec.version      = '4.2.7'
   spec.summary      = "iOS SDK for Castled Inbox support"
   spec.description  = <<-DESC
   Castled SDK library providing support for push and in app notifications and event handling.
@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
 
   spec.ios.deployment_target = "13.0"
   spec.swift_version = "5.7"
-  spec.ios.dependency 'Castled', '~> 4.2.6'
+  spec.ios.dependency 'Castled', '~> 4.2.7'
   spec.ios.dependency 'SDWebImage', '~> 5.11'
 
  
