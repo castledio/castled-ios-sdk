@@ -44,7 +44,6 @@ import Foundation
             success(false)
             return
         }
-        print("reportPushEvents \(params)")
         shouldReportFromNotiExtension = false
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
             success(result)
