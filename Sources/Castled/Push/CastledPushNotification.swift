@@ -68,4 +68,18 @@ import Foundation
         }
         CastledPushNotificationRepository.logoutUser(params: params)
     }
+
+    @objc func isPushFromCastled(userInfo: [AnyHashable: Any]) -> Bool {
+        if let customCasledDict = CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: userInfo), customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
+            return true
+        }
+        return false
+    }
+
+    func getCastledDictionary(userInfo: [AnyHashable: Any]) -> [String: Any]? {
+        if let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? [String: Any] {
+            return customCasledDict
+        }
+        return nil
+    }
 }

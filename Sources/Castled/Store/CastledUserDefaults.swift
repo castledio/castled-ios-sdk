@@ -32,8 +32,8 @@ public class CastledUserDefaults: NSObject {
     static let kCastledUserTokenKey = "_castleduserToken_"
     static let kCastledAPNsTokenKey = "_castledApnsToken_"
     static let kCastledFCMTokenKey = "_castledFCMToken_"
-    static let kCastledBadgeKey = "_castledApplicationBadge_"
-    static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
+    public static let kCastledBadgeKey = "_castledApplicationBadge_"
+    public static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
     public static let kCastledFailedRequests = "_castledFailedRequests_"
     static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
@@ -64,13 +64,13 @@ public class CastledUserDefaults: NSObject {
         }
     }
 
-    lazy var deliveredPushIds: [String] = {
-        CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
-    }()
+    func getDeliveredPushIds() -> [String] {
+        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
+    }
 
-    lazy var clickedPushIds: [String] = {
-        CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
-    }()
+    func getClickedPushIds() -> [String] {
+        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
+    }
 
     lazy var apnsToken: String? = {
         CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)

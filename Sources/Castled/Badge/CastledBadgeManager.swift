@@ -16,7 +16,7 @@ class CastledBadgeManager {
 
     func updateApplicationBadgeAfterNotification(_ notification: [AnyHashable: Any]) {
         Castled.sharedInstance.castledCommonQueue.async {
-            guard (notification[CastledConstants.PushNotification.customKey] as? NSDictionary) != nil,
+            guard (CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: notification)) != nil,
                   let aps = notification[CastledConstants.PushNotification.apsKey] as? NSDictionary, let badge = aps[CastledConstants.PushNotification.badgeKey] as? Int, badge >= 0
             else {
                 return

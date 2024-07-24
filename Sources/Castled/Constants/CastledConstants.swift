@@ -19,7 +19,7 @@ public enum CastledConstants {
     static let kCastledSwizzledMethodPrefix = "swizzled_"
 
     public enum PushNotification {
-        static let customKey = "castled"
+        public static let castledKey = "castled"
         static let apsKey = "aps"
         static let badgeKey = "badge"
         static let inboxCopyEnabled = "inboxCopyEnabled"
@@ -37,10 +37,10 @@ public enum CastledConstants {
         }
 
         public enum CustomProperties {
-            static let notificationId = "castled_notification_id"
+            public static let notificationId = "castled_notification_id"
             static let teamId = "team_id"
             static let sourceContext = "source_context"
-            static let mediaType = "media_type"
+            public static let mediaType = "media_type"
             static let mediaURL = "media_url"
             static let categoryActions = "category_actions"
             static let keyValuePair = "key_vals"
@@ -76,18 +76,6 @@ public enum CastledConstants {
 
     public enum EventsReporting {
         public static let events = "events"
-    }
-
-    enum CastledPushCustomPropertyKeys {
-        static let castledNotificationId = "castled_notification_id"
-        static let teamId = "team_id"
-        static let sourceContext = "source_context"
-        static let mediaType = "media_type"
-        static let mediaURL = "media_url"
-        static let categoryActions = "category_actions"
-        static let defaultActionURL = "default_action_url"
-        static let defaultAction = "default_action"
-        static let keyValuePair = "key_vals"
     }
 
     enum CastledEventTypes: String {

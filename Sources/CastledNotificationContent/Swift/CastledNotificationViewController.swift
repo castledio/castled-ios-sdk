@@ -20,6 +20,8 @@ import UserNotificationsUI
 
     private static let kCustomKey = "castled"
     private static let kMsg_frames = "msg_frames"
+    private static let kNotificationId = "castled_notification_id"
+
     @IBOutlet var imageView: UIImageView!
     var childViewController: UIViewController?
 
@@ -71,5 +73,12 @@ import UserNotificationsUI
         let jsonDecoder = JSONDecoder()
         let convertedAttachments = try? jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
         return convertedAttachments
+    }
+
+    @objc func isPushFromCastled(userInfo: [AnyHashable: Any]) -> Bool {
+        if let customCasledDict = userInfo[CastledNotificationViewController.kCustomKey] as? NSDictionary, customCasledDict[CastledNotificationViewController.kNotificationId] is String {
+            return true
+        }
+        return false
     }
 }
