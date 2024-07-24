@@ -20,7 +20,7 @@ public class CastledCommonClass {
     }
 
     static func getCastledPushNotificationId(dict: [AnyHashable: Any]) -> String? {
-        guard let customDict = dict[CastledConstants.PushNotification.castledKey] as? NSDictionary,
+        guard let customDict = CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: dict),
               let notificationId = customDict[CastledConstants.PushNotification.CustomProperties.notificationId] as? String
         else {
             return nil
@@ -29,7 +29,7 @@ public class CastledCommonClass {
     }
 
     static func getActionDetails(dict: [AnyHashable: Any], actionType: String) -> [String: Any]? {
-        guard let customDict = dict[CastledConstants.PushNotification.castledKey] as? NSDictionary,
+        guard let customDict = CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: dict),
               let notification = dict[CastledConstants.PushNotification.apsKey] as? NSDictionary,
               let category = notification[CastledConstants.PushNotification.ApsProperties.category] as? String,
               let categoryJsonString = customDict[CastledConstants.PushNotification.CustomProperties.categoryActions] as? String,
@@ -58,7 +58,7 @@ public class CastledCommonClass {
     }
 
     static func getDefaultActionDetails(dict: [AnyHashable: Any], index: Int? = 0) -> [String: Any]? {
-        guard let customDict = dict[CastledConstants.PushNotification.castledKey] as? [String: Any]
+        guard let customDict = CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: dict)
         else {
             return nil
         }

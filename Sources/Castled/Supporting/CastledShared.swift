@@ -9,7 +9,7 @@ import Foundation
 @_spi(CastledInternal)
 
 public class CastledShared: NSObject {
-    //Dont initialize/ call any CastledUserDefaults method here for extensions. only after setting appGroupId. otherwise userdefaults will get initialize without group id
+    // Dont initialize/ call any CastledUserDefaults method here for extensions. only after setting appGroupId. otherwise userdefaults will get initialize without group id
     @objc public static var sharedInstance = CastledShared()
     var pendingPushEvent: [AnyHashable: Any]?
     @objc public var appGroupId: String = "" {
@@ -40,5 +40,9 @@ public class CastledShared: NSObject {
         } else {
             pendingPushEvent = userInfo
         }
+    }
+
+    public func getCastledDictionary(userInfo: [AnyHashable: Any]) -> [String: Any]? {
+        return CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: userInfo)
     }
 }

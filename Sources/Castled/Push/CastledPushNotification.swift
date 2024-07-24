@@ -44,6 +44,7 @@ import Foundation
             success(false)
             return
         }
+        print("reportPushEvents \(params)")
         shouldReportFromNotiExtension = false
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
             success(result)
@@ -67,5 +68,19 @@ import Foundation
             return
         }
         CastledPushNotificationRepository.logoutUser(params: params)
+    }
+
+    @objc func isPushFromCastled(userInfo: [AnyHashable: Any]) -> Bool {
+        if let customCasledDict = CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: userInfo), customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
+            return true
+        }
+        return false
+    }
+
+    func getCastledDictionary(userInfo: [AnyHashable: Any]) -> [String: Any]? {
+        if let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? [String: Any] {
+            return customCasledDict
+        }
+        return nil
     }
 }

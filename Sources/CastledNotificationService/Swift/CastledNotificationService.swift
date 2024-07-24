@@ -30,29 +30,29 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         if bestAttemptContent != nil {
-            if let customCasledDict = request.content.userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary {
-                if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
-                    defer {
-                        CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
-                        setApplicationBadge()
-                        contentHandler(bestAttemptContent ?? request.content)
-                        contentHandler(request.content)
-                    }
-                    guard let urlString = customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] as? String,
-                          let fileUrl = URL(string: urlString)
-                    else {
-                        return
-                    }
-                    let fileExtension = fileUrl.pathExtension
-                    let imageFileIdentifier = UUID().uuidString + "." + fileExtension
-                    guard let imageData = NSData(contentsOf: fileUrl),
-                          let attachment = UNNotificationAttachment.saveImageToDisk(fileIdentifier: imageFileIdentifier, data: imageData, options: nil)
-                    else {
-                        return
-                    }
-
-                    bestAttemptContent?.attachments = [attachment]
+            if let customCasledDict = CastledShared.sharedInstance.getCastledDictionary(userInfo: request.content.userInfo),
+               customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String
+            {
+                defer {
+                    CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
+                    setApplicationBadge()
+                    contentHandler(bestAttemptContent ?? request.content)
+                    contentHandler(request.content)
                 }
+                guard let urlString = customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] as? String,
+                      let fileUrl = URL(string: urlString)
+                else {
+                    return
+                }
+                let fileExtension = fileUrl.pathExtension
+                let imageFileIdentifier = UUID().uuidString + "." + fileExtension
+                guard let imageData = NSData(contentsOf: fileUrl),
+                      let attachment = UNNotificationAttachment.saveImageToDisk(fileIdentifier: imageFileIdentifier, data: imageData, options: nil)
+                else {
+                    return
+                }
+
+                bestAttemptContent?.attachments = [attachment]
             }
         }
     }

@@ -64,13 +64,13 @@ public class CastledUserDefaults: NSObject {
         }
     }
 
-    lazy var deliveredPushIds: [String] = {
-        CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
-    }()
+    func getDeliveredPushIds() -> [String] {
+        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
+    }
 
-    lazy var clickedPushIds: [String] = {
-        CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
-    }()
+    func getClickedPushIds() -> [String] {
+        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
+    }
 
     lazy var apnsToken: String? = {
         CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
