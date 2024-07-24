@@ -39,7 +39,7 @@ public extension Castled {
                     backgroundTaskN = .invalid
                 }
             }
-            guard let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary,
+            guard let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary,
                   let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: 0),
                   let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             else {
@@ -161,7 +161,7 @@ public extension Castled {
 
     internal func processCastledPushEvents(userInfo: [AnyHashable: Any], isOpened: Bool? = false, isDismissed: Bool? = false, actionLabel: String? = "", actionType: String? = "", actionUri: String? = "", deliveredDate: Date = Date()) {
         castledNotificationQueue.async {
-            if let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
+            if let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary {
                 //  CastledLog.castledLog("Castled PushEvents \(customCasledDict)")
                 if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                     let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String
@@ -193,7 +193,7 @@ public extension Castled {
                     var castledNotifications = 0
                     for notification in receivedNotifications {
                         let content = notification.request.content
-                        if let customCasledDict = content.userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary {
+                        if let customCasledDict = content.userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary {
                             if customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
                                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String ?? ""
                                 let params = Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, sourceContext: sourceContext, deliveredDate: notification.date)
@@ -267,7 +267,7 @@ public extension Castled {
     internal func isCastledSilentPush(fromInfo userInfo: [AnyHashable: Any]) -> Bool {
         guard let aps = userInfo[CastledConstants.PushNotification.apsKey] as? [String: AnyObject],
               aps[CastledConstants.PushNotification.contentAvailable] as? Int == 1,
-              let customCasledDict = userInfo[CastledConstants.PushNotification.customKey] as? NSDictionary,
+              let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary,
               let silent = customCasledDict[CastledConstants.PushNotification.isCastledSilentPush] as? Int,
               silent == 1
         else {
