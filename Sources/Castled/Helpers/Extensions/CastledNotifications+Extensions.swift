@@ -117,6 +117,9 @@ public extension Castled {
         handleNotificationAction(response: response)
     }
 
+    /**
+     This method checks the `userInfo` dictionary of a push notification to determine if it is from the Castled server.
+     */
     @objc func isPushFromCastled(userInfo: [AnyHashable: Any]) -> Bool {
         return CastledPushNotification.sharedInstance.isPushFromCastled(userInfo: userInfo)
     }

@@ -23,6 +23,18 @@ class SecondViewController: UIViewController {
         Castled.sharedInstance.logCustomAppEvent("added_to_cart", params: ["Int": 100, "Date": "12-16-2000", "Name": "Antony"])
     }
 
+    @IBAction func resumeInappNotification(_ sender: Any) {
+        Castled.sharedInstance.resumeInAppNotifications()
+    }
+
+    @IBAction func suspendInappNotification(_ sender: Any) {
+        Castled.sharedInstance.suspendInAppNotifications()
+    }
+
+    @IBAction func discardInAppNotifications(_ sender: Any) {
+        Castled.sharedInstance.discardInAppNotifications()
+    }
+
     /*
      // MARK: - Navigation
 
@@ -31,5 +43,6 @@ class SecondViewController: UIViewController {
      // Get the new view controller using segue.destination.
      // Pass the selected object to the new view controller.
      }
+
      */
 }

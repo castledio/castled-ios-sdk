@@ -31,16 +31,15 @@ class CastledRetryHandler {
             let requestsByType = Dictionary(grouping: failedRequests) { $0.type }
             requestsByType.forEach { key, requests in
                 if let handler = CastledRequestHelper.sharedInstance.getHandlerFor(key) {
-                    // self?.castledSemaphore.wait()
+                    self?.castledSemaphore.wait()
                     self?.castledGroup.enter()
                     handler.handleRequest(requests: requests, onSuccess: { processed_requests in
                         processedRequests.append(contentsOf: processed_requests)
-                        // self?.castledSemaphore.signal()
+                        self?.castledSemaphore.signal()
                         self?.castledGroup.leave()
-
                     },
                     onError: { _ in
-                        // self?.castledSemaphore.signal()
+                        self?.castledSemaphore.signal()
                         self?.castledGroup.leave()
 
                     })
