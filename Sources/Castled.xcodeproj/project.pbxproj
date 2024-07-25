@@ -63,6 +63,8 @@
 		0A7505E729ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */; };
 		0A7B3DB12AFD51540055C968 /* CIViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B3DB02AFD51540055C968 /* CIViewProtocol.swift */; };
 		0A7C51B02AD1C20E001B2CE4 /* CastledLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7C51AF2AD1C20E001B2CE4 /* CastledLog.swift */; };
+		0A7EF78F2C520DB8001D35F1 /* CNotificationContent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7EF78E2C520DB8001D35F1 /* CNotificationContent.storyboard */; };
+		0A7EF7912C520DE0001D35F1 /* CastledDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7EF7902C520DE0001D35F1 /* CastledDefaultViewController.swift */; };
 		0A8AC0DD2BF6417D00BCF7AB /* CastledInbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A8AC0DC2BF6417D00BCF7AB /* CastledInbox.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A8AC0FB2BF641B900BCF7AB /* CastledInboxConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC0E12BF641B900BCF7AB /* CastledInboxConfig.swift */; };
 		0A8AC0FC2BF641B900BCF7AB /* CastledInboxItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8AC0E22BF641B900BCF7AB /* CastledInboxItem.swift */; };
@@ -282,6 +284,8 @@
 		0A7505E629ED3DAC00B84973 /* CastledInAppTriggerEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppTriggerEvaluator.swift; sourceTree = "<group>"; };
 		0A7B3DB02AFD51540055C968 /* CIViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIViewProtocol.swift; sourceTree = "<group>"; };
 		0A7C51AF2AD1C20E001B2CE4 /* CastledLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledLog.swift; sourceTree = "<group>"; };
+		0A7EF78E2C520DB8001D35F1 /* CNotificationContent.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CNotificationContent.storyboard; sourceTree = "<group>"; };
+		0A7EF7902C520DE0001D35F1 /* CastledDefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledDefaultViewController.swift; sourceTree = "<group>"; };
 		0A8AC0DA2BF6417D00BCF7AB /* CastledInbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CastledInbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A8AC0DC2BF6417D00BCF7AB /* CastledInbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CastledInbox.h; sourceTree = "<group>"; };
 		0A8AC0E12BF641B900BCF7AB /* CastledInboxConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledInboxConfig.swift; sourceTree = "<group>"; };
@@ -547,6 +551,8 @@
 			isa = PBXGroup;
 			children = (
 				0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */,
+				0A7EF7902C520DE0001D35F1 /* CastledDefaultViewController.swift */,
+				0A7EF78D2C520D96001D35F1 /* Resources */,
 				0A365E0C2A437C3D0048BD09 /* Cell */,
 			);
 			path = Views;
@@ -675,6 +681,14 @@
 				0A24C56329E74CA200B89B55 /* CastledAssets.xcassets */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		0A7EF78D2C520D96001D35F1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0A7EF78E2C520DB8001D35F1 /* CNotificationContent.storyboard */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		0A8AC0DB2BF6417D00BCF7AB /* CastledInbox */ = {
@@ -1404,6 +1418,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A9C26712A42413100ADB960 /* ContentAssets.xcassets in Resources */,
+				0A7EF78F2C520DB8001D35F1 /* CNotificationContent.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1576,6 +1591,7 @@
 				0A0E11212A41F4C4004F247F /* CastledNotificationViewControllerObjC.m in Sources */,
 				0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */,
 				0A9C266E2A42413100ADB960 /* CastledNotificationMediaObject.swift in Sources */,
+				0A7EF7912C520DE0001D35F1 /* CastledDefaultViewController.swift in Sources */,
 				66D18BB62A0D55960075AB43 /* CastledNotificationContent.docc in Sources */,
 				0A9C26722A42413100ADB960 /* CastledNotificationViewController.swift in Sources */,
 			);

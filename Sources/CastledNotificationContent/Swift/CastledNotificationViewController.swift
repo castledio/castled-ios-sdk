@@ -37,18 +37,32 @@ import UserNotificationsUI
         if let customCasledDict = notification.request.content.userInfo[CastledNotificationViewController.kCustomKey] as? NSDictionary {
             if let msgFramesString = customCasledDict[CastledNotificationViewController.kMsg_frames] as? String {
                 // type =  carousel
-                if let convertedAttachments = convertToArray(text: msgFramesString) {
-                    let mediaListVC = CastledMediasViewController(mediaObjects: convertedAttachments)
-                    addChild(mediaListVC)
-                    mediaListVC.view.frame = view.frame
-                    view.addSubview(mediaListVC.view)
-                    if !appGroupId.isEmpty {
-                        mediaListVC.setUserdefaults(FromAppgroup: appGroupId)
-                    }
-                    childViewController = mediaListVC
-                    mediaListVC.view.layoutIfNeeded()
-                    preferredContentSize = mediaListVC.preferredContentSize
+                /*   if let convertedAttachments = convertToArray(text: msgFramesString) {
+                     let mediaListVC = CastledMediasViewController(mediaObjects: convertedAttachments)
+                     addChild(mediaListVC)
+                     mediaListVC.view.frame = view.frame
+                     view.addSubview(mediaListVC.view)
+                     if !appGroupId.isEmpty {
+                         mediaListVC.setUserdefaults(FromAppgroup: appGroupId)
+                     }
+                     childViewController = mediaListVC
+                     mediaListVC.view.layoutIfNeeded()
+                     preferredContentSize = mediaListVC.preferredContentSize
+                 }*/
+                preferredContentSize = CGSize(width: UIScreen.main.bounds.size.width, height: 200)
+
+                let defaultVC = UIStoryboard(name: "CNotificationContent", bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: "CastledDefaultViewController") as! CastledDefaultViewController
+                addChild(defaultVC)
+                defaultVC.view.frame = CGRectMake(0, 0, UIScreen.main.bounds.size.width, 200)
+                view.addSubview(defaultVC.view)
+                if !appGroupId.isEmpty {
+                    //  defaultVC.setUserdefaults(FromAppgroup: appGroupId)
                 }
+                childViewController = defaultVC
+                defaultVC.view.layoutIfNeeded()
+                preferredContentSize = defaultVC.preferredContentSize
+                view.setNeedsUpdateConstraints()
+                view.setNeedsLayout()
             }
             // other types
         }
