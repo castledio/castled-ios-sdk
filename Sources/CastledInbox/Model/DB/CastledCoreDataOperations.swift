@@ -63,7 +63,6 @@ class CastledCoreDataOperations {
             }
             let expiredInboxItems = existingItems.filter { !responseIDs.contains($0.messageId) }
             for expiredItem in expiredInboxItems {
-                print("deleting item \(expiredItem)")
                 context.delete(expiredItem)
             }
 

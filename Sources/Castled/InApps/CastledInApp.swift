@@ -80,12 +80,12 @@ import UIKit
 
     func suspendInAppNotifications() {
         CastledInApp.sharedInstance.currentDisplayState = .suspended
-        CastledLog.castledLog("In-app state changed to ‘suspended’; no more in-app notifications will be displayed until ‘resumeInAppNotifications’ is called.", logLevel: CastledLogLevel.debug)
+        CastledLog.castledLog("In-app state changed to ‘suspended’, no more in-app notifications will be displayed until ‘resumeInAppNotifications’ is called.", logLevel: CastledLogLevel.debug)
     }
 
     func discardInAppNotifications() {
         CastledInApp.sharedInstance.currentDisplayState = .discarded
-        CastledLog.castledLog("In-app state changed to ‘discarded’; no more in-app notifications will be evaluated/displayed until ‘resumeInAppNotifications’ is called.", logLevel: CastledLogLevel.debug)
+        CastledLog.castledLog("In-app state changed to ‘discarded’, no more in-app notifications will be evaluated/displayed until ‘resumeInAppNotifications’ is called.", logLevel: CastledLogLevel.debug)
     }
 
     func resumeInAppNotifications() {

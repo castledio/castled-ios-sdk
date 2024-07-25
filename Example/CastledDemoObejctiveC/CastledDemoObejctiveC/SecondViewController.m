@@ -6,6 +6,7 @@
 //
 
 #import "SecondViewController.h"
+#import <Castled-Swift.h>
 
 @interface SecondViewController ()
 
@@ -18,6 +19,17 @@
     self.navigationItem.title = @"Second VC";
 
     // Do any additional setup after loading the view.
+}
+- (IBAction)suspendedStateClicked:(id)sender {
+    [[Castled sharedInstance] suspendInAppNotifications];
+}
+- (IBAction)resumeStateCLicked:(id)sender {
+    [[Castled sharedInstance] resumeInAppNotifications];
+
+}
+- (IBAction)discardStateClicked:(id)sender {
+    [[Castled sharedInstance] discardInAppNotifications];
+
 }
 
 /*
