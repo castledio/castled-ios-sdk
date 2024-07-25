@@ -35,9 +35,8 @@ class CastledInAppController: NSObject, CastledPreferenceStoreListener, CastledL
     }
 
     func appDidBecomeActive() {
-        Task {
-            await refreshInapps(isFromBG: true)
-        }
+        //  Calling this method with a delay to ensure that the in-app display state value is set if the user sets discard/suspended in-app state at app launch
+        perform(#selector(appBecomeActiveWithDelay), with: nil, afterDelay: 0.3)
     }
 
     func onStoreUserIdSet(_ userId: String) {
@@ -49,5 +48,11 @@ class CastledInAppController: NSObject, CastledPreferenceStoreListener, CastledL
 
     func onUserLoggedOut() {
         CastledInApp.sharedInstance.userId = ""
+    }
+
+    @objc private func appBecomeActiveWithDelay() {
+        Task {
+            await refreshInapps(isFromBG: true)
+        }
     }
 }
