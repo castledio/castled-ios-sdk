@@ -209,24 +209,24 @@ import UserNotifications
     }
 
     /**
-     Pauses the display of in-app notifications. Notifications will be on hold until `resumeInAppNotifications` is called
+     Pauses the display of in-app notifications. Notifications will be on hold until `resumeInApp` is called
      */
-    @objc public func suspendInAppNotifications() {
-        CastledInApp.sharedInstance.suspendInAppNotifications()
+    @objc public func pauseInApp() {
+        CastledInApp.sharedInstance.pauseInApp()
     }
 
     /**
-       Stops the evaluation and display of in-app notifications. Notifications will not be shown or processed until `resumeInAppNotifications` is called
+       Stops the evaluation and display of in-app notifications. Notifications will not be shown or processed until `resumeInApp` is called
      */
-    @objc public func discardInAppNotifications() {
-        CastledInApp.sharedInstance.discardInAppNotifications()
+    @objc public func stopInApp() {
+        CastledInApp.sharedInstance.stopInApp()
     }
 
     /**
        Resumes the evaluation and display of in-app notifications. This method reactivates the process of showing and evaluating notifications
      */
-    @objc public func resumeInAppNotifications() {
-        CastledInApp.sharedInstance.resumeInAppNotifications()
+    @objc public func resumeInApp() {
+        CastledInApp.sharedInstance.resumeInApp()
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {

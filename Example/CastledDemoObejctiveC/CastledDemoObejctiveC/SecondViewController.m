@@ -24,11 +24,11 @@
     [[Castled sharedInstance] suspendInAppNotifications];
 }
 - (IBAction)resumeStateCLicked:(id)sender {
-    [[Castled sharedInstance] resumeInAppNotifications];
+    [[Castled sharedInstance] resumeInApp];
 
 }
 - (IBAction)discardStateClicked:(id)sender {
-    [[Castled sharedInstance] discardInAppNotifications];
+    [[Castled sharedInstance] stopInApp];
 
 }
 

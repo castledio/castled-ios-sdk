@@ -21,7 +21,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         navigationItem.title = "Castled"
 
         self.showRequiredViews()
-        Castled.sharedInstance.suspendInAppNotifications()
+        Castled.sharedInstance.pauseInApp()
         //
 
         // Do any additional setup after loading the view.
