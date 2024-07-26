@@ -9,6 +9,6 @@ import Foundation
 
 enum CastledInappDiplayState {
     case active
-    case suspended
-    case discarded
+    case paused
+    case stopped
 }

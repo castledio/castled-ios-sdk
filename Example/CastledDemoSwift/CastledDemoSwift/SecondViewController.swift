@@ -24,15 +24,15 @@ class SecondViewController: UIViewController {
     }
 
     @IBAction func resumeInappNotification(_ sender: Any) {
-        Castled.sharedInstance.resumeInAppNotifications()
+        Castled.sharedInstance.resumeInApp()
     }
 
     @IBAction func suspendInappNotification(_ sender: Any) {
-        Castled.sharedInstance.suspendInAppNotifications()
+        Castled.sharedInstance.pauseInApp()
     }
 
     @IBAction func discardInAppNotifications(_ sender: Any) {
-        Castled.sharedInstance.discardInAppNotifications()
+        Castled.sharedInstance.stopInApp()
     }
 
     /*

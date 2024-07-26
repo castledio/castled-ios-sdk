@@ -167,7 +167,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="epy-1g-6dX">
                                         <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Suspend">
+                                        <buttonConfiguration key="configuration" style="plain" title="Pause in-app">
                                             <backgroundConfiguration key="background">
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </backgroundConfiguration>
@@ -180,7 +180,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wxq-B0-Z9S">
                                         <rect key="frame" x="120" y="0.0" width="110" height="40"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Resume">
+                                        <buttonConfiguration key="configuration" style="plain" title="Resume in-app">
                                             <backgroundConfiguration key="background">
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </backgroundConfiguration>
@@ -193,7 +193,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VU7-j0-LHL">
                                         <rect key="frame" x="240" y="0.0" width="110" height="40"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Discard">
+                                        <buttonConfiguration key="configuration" style="plain" title="Stop in-app">
                                             <backgroundConfiguration key="background">
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </backgroundConfiguration>

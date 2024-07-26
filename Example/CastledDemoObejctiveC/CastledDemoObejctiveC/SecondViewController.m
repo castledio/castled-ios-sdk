@@ -21,14 +21,14 @@
     // Do any additional setup after loading the view.
 }
 - (IBAction)suspendedStateClicked:(id)sender {
-    [[Castled sharedInstance] suspendInAppNotifications];
+    [[Castled sharedInstance] pauseInApp];
 }
 - (IBAction)resumeStateCLicked:(id)sender {
-    [[Castled sharedInstance] resumeInAppNotifications];
+    [[Castled sharedInstance] resumeInApp];
 
 }
 - (IBAction)discardStateClicked:(id)sender {
-    [[Castled sharedInstance] discardInAppNotifications];
+    [[Castled sharedInstance] stopInApp];
 
 }
 

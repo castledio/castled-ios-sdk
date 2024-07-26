@@ -92,8 +92,8 @@ import UIKit
     }
 
     func logAppEvent(eventName: String, params: [String: Any]?, showLog: Bool? = true) {
-        guard !CastledInApp.sharedInstance.userId.isEmpty, CastledInApp.sharedInstance.currentDisplayState != .discarded else {
-            // CastledLog.castledLog("Ignoring in-app evaluation as the state is ‘discarded’ Or userId is not set.", logLevel: .debug)
+        guard !CastledInApp.sharedInstance.userId.isEmpty, CastledInApp.sharedInstance.currentDisplayState != .stopped else {
+            // CastledLog.castledLog("Ignoring in-app evaluation as the state is ‘stopped’ Or userId is not set.", logLevel: .debug)
             return
         }
 
