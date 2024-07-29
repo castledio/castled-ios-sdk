@@ -219,6 +219,7 @@ public class CastledUserDefaults: NSObject {
             userDefaults.setValue(true, forKey: kCastledIsMigratedToSuit)
             userDefaults.synchronize()
             CastledUserDefaults.shared.initializeUserDetails()
+            CastledUserDefaults.saveAppGroupId()
         }
         guard userDefaultsLocal.string(forKey: kCastledAppIddKey) != nil else {
             return
