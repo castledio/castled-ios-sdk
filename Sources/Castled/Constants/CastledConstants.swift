@@ -14,7 +14,7 @@ public enum CastledConstants {
     static let kCastledPlatformValue = "ios"
     static let kCastledPlatformKey = "platform"
 
-    static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
+    public static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
 
