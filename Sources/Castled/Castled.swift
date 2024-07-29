@@ -81,7 +81,7 @@ import UserNotifications
         checkAndRegisterForAPNsToken()
     }
 
-    @objc public func isCastledInitialized() -> Bool {
+    func isCastledInitialized() -> Bool {
         return isInitialized
     }
 
@@ -336,25 +336,5 @@ import UserNotifications
                 }
             }
         }
-    }
-
-    // MARK: - REACT AND OTHER SDK SUPPORT
-
-    /**
-     Supporting method for react and other SDKs
-     */
-    public func logMessage(_ message: String, _ logLevel: CastledLogLevel) {
-        CastledLog.castledLog(message, logLevel: logLevel)
-    }
-
-    /**
-     Supporting method for react and other SDKs
-     */
-    public static func setDelegate(_ delegate: CastledNotificationDelegate) {
-        Castled.sharedInstance.delegate = delegate
-    }
-
-    func getCastledConfig() -> CastledConfigs {
-        return CastledConfigsUtils.configs
     }
 }

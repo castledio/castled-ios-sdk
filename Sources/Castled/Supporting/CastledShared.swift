@@ -26,9 +26,6 @@ public class CastledShared: NSObject {
     }
 
     override private init() {}
-    public func getCastledConfig() -> CastledConfigs {
-        return Castled.sharedInstance.getCastledConfig()
-    }
 
     public func reportCastledPushEventsFromExtension(userInfo: [AnyHashable: Any]) {
         if !appGroupId.isEmpty {
@@ -44,5 +41,29 @@ public class CastledShared: NSObject {
 
     public func getCastledDictionary(userInfo: [AnyHashable: Any]) -> [String: Any]? {
         return CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: userInfo)
+    }
+
+    // MARK: - REACT AND OTHER SDK SUPPORT
+
+    /**
+     Supporting method for react and other SDKs
+     */
+    public func setDelegate(_ delegate: CastledNotificationDelegate) {
+        Castled.sharedInstance.delegate = delegate
+    }
+
+    public func getCastledConfig() -> CastledConfigs {
+        return CastledConfigsUtils.configs
+    }
+
+    /**
+     Supporting method for react and other SDKs
+     */
+    public func logMessage(_ message: String, _ logLevel: CastledLogLevel) {
+        CastledLog.castledLog(message, logLevel: logLevel)
+    }
+
+    public func isCastledInitialized() -> Bool {
+        return Castled.sharedInstance.isCastledInitialized()
     }
 }
