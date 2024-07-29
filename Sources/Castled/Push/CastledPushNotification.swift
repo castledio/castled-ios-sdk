@@ -39,12 +39,13 @@ import Foundation
             success(false)
             return
         }
-        else if !isInitilized, !shouldReportFromNotiExtension {
-            CastledLog.castledLog("Report push events failed: \(CastledExceptionMessages.pushDisabled.rawValue)", logLevel: CastledLogLevel.error)
+        else if Castled.sharedInstance.instanceId.isEmpty {
+            //  else if !isInitilized, !shouldReportFromNotiExtension {
+            CastledLog.castledLog("Report push events failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             success(false)
             return
         }
-        shouldReportFromNotiExtension = false
+        // shouldReportFromNotiExtension = false
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
             success(result)
         }

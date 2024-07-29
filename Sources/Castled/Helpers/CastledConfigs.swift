@@ -28,6 +28,7 @@ import Foundation
         didSet {
             if !appGroupId.isEmpty {
                 CastledUserDefaults.appGroupId = appGroupId
+                CastledUserDefaults.saveAppGroupId()
             }
         }
     }

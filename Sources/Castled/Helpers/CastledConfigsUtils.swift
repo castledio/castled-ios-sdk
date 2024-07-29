@@ -16,7 +16,7 @@ class CastledConfigsUtils: NSObject {
                 return config
             }
         }
-        return CastledConfigs.initialize(appId: Castled.sharedInstance.instanceId.isEmpty ? "castled_appId" : Castled.sharedInstance.instanceId)
+        return CastledConfigs.initialize(appId: Castled.sharedInstance.instanceId)
     }()
 
     // MARK: - Supporting properites
