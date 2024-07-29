@@ -13,6 +13,7 @@ import UIKit
     var userId = ""
     var enableInApp: Bool { CastledShared.sharedInstance.getCastledConfig().enableInApp }
     var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
+    var currentDisplayState = CastledInappDiplayState.active
     private var isInitilized = false
 
     override private init() {}
@@ -68,5 +69,31 @@ import UIKit
             return false
         }
         return true
+    }
+
+    func displayInAppNotificationIfAny() {
+        if !isValidated() {
+            return
+        }
+        CastledInAppsDisplayController.sharedInstance.checkPendingNotificationsIfAny(shouldShow: true)
+    }
+
+    func pauseInApp() {
+        CastledInApp.sharedInstance.currentDisplayState = .paused
+        CastledLog.castledLog("In-app state changed to ‘paused’, no more in-app notifications will be displayed until ‘resumeInApp’ is called.", logLevel: CastledLogLevel.debug)
+    }
+
+    func stopInApp() {
+        CastledInApp.sharedInstance.currentDisplayState = .stopped
+        CastledLog.castledLog("In-app state changed to ‘stopped’, no more in-app notifications will be evaluated/displayed until ‘resumeInApp’ is called.", logLevel: CastledLogLevel.debug)
+    }
+
+    func resumeInApp() {
+        CastledInApp.sharedInstance.currentDisplayState = .active
+        CastledLog.castledLog("In-app state changed to ‘active’.", logLevel: CastledLogLevel.debug)
+        if !isValidated() {
+            return
+        }
+        CastledInAppsDisplayController.sharedInstance.checkPendingNotificationsIfAny()
     }
 }

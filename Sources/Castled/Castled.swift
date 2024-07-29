@@ -31,8 +31,8 @@ import UserNotifications
     override private init() {}
 
     /**
-     Static method for conguring the Castled framework.
-     */
+     This method initilize the Castled SDK using the specified configuration object and optionally assigns a delegate for handling notifications. The configuration (`CastledConfigs`) provides necessary setup parameters, while the delegate (`CastledNotificationDelegate`) can be used to handle notification events and interactions.
+         */
     @objc public static func initialize(withConfig config: CastledConfigs, andDelegate delegate: CastledNotificationDelegate?) {
         if config.instanceId.isEmpty {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
@@ -85,8 +85,10 @@ import UserNotifications
         return isInitialized
     }
 
+    // MARK: - PUSH
+
     /**
-     Function that allows users to set the userId and  userToken.
+      This method updates the system with the provided user ID. An optional `userToken` can also be provided, which serves as a secure identifier for the user. The `userToken` is useful for additional security and verification purposes but is not required.
      */
     @objc public func setUserId(_ userId: String, userToken: String? = nil) {
         if !Castled.sharedInstance.isCastledInitialized() {
@@ -96,7 +98,7 @@ import UserNotifications
     }
 
     /**
-     Function that allows users to set the PushNotifiication token.
+     This method updates the Castled with the current push notification token associated with the device. The `token` parameter is used to send push notifications to the specific device, while the `type` parameter specifies the type of push notification token being set, either Firebase Cloud Messaging (FCM) or Apple Push Notification Service (APNs)
      */
     @objc public func setPushToken(_ token: String, type: CastledPushTokenType) {
         castledProfileQueue.async(flags: .barrier) {
@@ -122,38 +124,6 @@ import UserNotifications
         }
     }
 
-    /**
-     InApps : Function that allows to display page view inapp
-     */
-    @objc public func logPageViewedEvent(_ screenName: String) {
-        CastledInApp.sharedInstance.logPageViewedEvent(screenName)
-    }
-
-    /**
-     InApps : Function that allows to display custom inapp
-     */
-    @objc public func logCustomAppEvent(_ eventName: String, params: [String: Any]) {
-        if CastledConfigsUtils.configs.enableInApp {
-            CastledInApp.sharedInstance.logCustomAppEvent(eventName, params: params)
-        }
-        if CastledConfigsUtils.configs.enableTracking {
-            CastledEventsTracker.sharedInstance.trackEvent(eventName: eventName, params: params)
-        }
-    }
-
-    @objc public func setUserAttributes(_ attributes: CastledUserAttributes) {
-        CastledEventsTracker.sharedInstance.setUserAttributes(attributes)
-    }
-
-    @objc public func logout() {
-        if let userId = CastledUserDefaults.shared.userId {
-            DispatchQueue.main.async {
-                CastledUserDefaults.clearAllFromPreference()
-                CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
-            }
-        }
-    }
-
     @objc public func setLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if !Castled.sharedInstance.isCastledInitialized() {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
@@ -168,6 +138,9 @@ import UserNotifications
         //  CastledBGManager.sharedInstance.registerBackgroundTasks()
     }
 
+    /**
+     This method sets the categories that define the types of notifications your app can handle. Each category may include actions and options that affect how notifications are presented and interacted with.
+     */
     @objc public func setNotificationCategories(withItems items: Set<UNNotificationCategory>) {
         if !Castled.sharedInstance.isCastledInitialized() {
             fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
@@ -179,12 +152,81 @@ import UserNotifications
     }
 
     /**
-     Function that allows users to set the badge on the app icon manually.
+     This method prompts the user to grant or deny permission for push notifications. If the user has previously denied permission, and `showSettingsAlert` is set to `true`, it will present an alert directing the user to the app settings to enable notifications
      */
-    func setBadge(to count: Int) {
-        if let application = UIApplication.getSharedApplication() as? UIApplication {
-            application.applicationIconBadgeNumber = count
+    @objc public func requestPushPermission(showSettingsAlert: Bool = false) {
+        DispatchQueue.main.async {
+            UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+
+                if settings.authorizationStatus == .notDetermined {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { granted, _ in
+                        if granted {
+                            self?.registerForAPNsToken()
+                        } else {
+                            CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
+                        }
+                    })
+                } else {
+                    if settings.authorizationStatus == .authorized {
+                        self?.registerForAPNsToken()
+                    } else {
+                        CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
+                        if showSettingsAlert {
+                            self?.showSettingsAlert()
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    // MARK: - INAPP
+
+    /**
+     InApps : Function that allows to display page viewed inapp
+     */
+    @objc public func logPageViewedEvent(_ screenName: String) {
+        CastledInApp.sharedInstance.logPageViewedEvent(screenName)
+    }
+
+    /**
+     Function that allows to display custom inapp/ used for event tracking
+      */
+    @objc public func logCustomAppEvent(_ eventName: String, params: [String: Any]) {
+        if CastledConfigsUtils.configs.enableInApp {
+            CastledInApp.sharedInstance.logCustomAppEvent(eventName, params: params)
+        }
+        if CastledConfigsUtils.configs.enableTracking {
+            CastledEventsTracker.sharedInstance.trackEvent(eventName: eventName, params: params)
+        }
+    }
+
+    /**
+     InApps : Displays an in-app notification if one is available. This method ensures that the notification is shown only once and will not trigger any further notifications.
+     */
+    @objc func displayInAppNotificationIfAny() {
+        CastledInApp.sharedInstance.displayInAppNotificationIfAny()
+    }
+
+    /**
+     Pauses the display of in-app notifications. Notifications will be on hold until `resumeInApp` is called
+     */
+    @objc public func pauseInApp() {
+        CastledInApp.sharedInstance.pauseInApp()
+    }
+
+    /**
+       Stops the evaluation and display of in-app notifications. Notifications will not be shown or processed until `resumeInApp` is called
+     */
+    @objc public func stopInApp() {
+        CastledInApp.sharedInstance.stopInApp()
+    }
+
+    /**
+       Resumes the evaluation and display of in-app notifications. This method reactivates the process of showing and evaluating notifications
+     */
+    @objc public func resumeInApp() {
+        CastledInApp.sharedInstance.resumeInApp()
     }
 
     func logAppOpenedEventIfAny(showLog: Bool? = false) {
@@ -193,6 +235,30 @@ import UserNotifications
         }
         CastledInApp.sharedInstance.logAppOpenedEventIfAny(showLog: showLog)
     }
+
+    // MARK: - USER ATTRIBUTES
+
+    /**
+     Sets the specified attributes for the user
+     */
+    @objc public func setUserAttributes(_ attributes: CastledUserAttributes) {
+        CastledEventsTracker.sharedInstance.setUserAttributes(attributes)
+    }
+
+    /**
+     This method is used to log out the user from Castled. It typically involves clearing user-related data, invalidating sessions, and resetting any state associated with the current user
+     */
+
+    @objc public func logout() {
+        if let userId = CastledUserDefaults.shared.userId {
+            DispatchQueue.main.async {
+                CastledUserDefaults.clearAllFromPreference()
+                CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
+            }
+        }
+    }
+
+    // MARK: PRIVATE METHODS
 
     /**
      Funtion which alllows to register the User & Token with Castled.
@@ -234,32 +300,6 @@ import UserNotifications
         DispatchQueue.main.async {
             if let application = UIApplication.getSharedApplication() as? UIApplication {
                 application.registerForRemoteNotifications()
-            }
-        }
-    }
-
-    @objc public func requestPushPermission(showSettingsAlert: Bool = false) {
-        DispatchQueue.main.async {
-            UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
-
-                if settings.authorizationStatus == .notDetermined {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [.sound, .badge, .alert], completionHandler: { granted, _ in
-                        if granted {
-                            self?.registerForAPNsToken()
-                        } else {
-                            CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
-                        }
-                    })
-                } else {
-                    if settings.authorizationStatus == .authorized {
-                        self?.registerForAPNsToken()
-                    } else {
-                        CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
-                        if showSettingsAlert {
-                            self?.showSettingsAlert()
-                        }
-                    }
-                }
             }
         }
     }

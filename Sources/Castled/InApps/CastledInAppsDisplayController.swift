@@ -92,7 +92,8 @@ import UIKit
     }
 
     func logAppEvent(eventName: String, params: [String: Any]?, showLog: Bool? = true) {
-        guard !CastledInApp.sharedInstance.userId.isEmpty else {
+        guard !CastledInApp.sharedInstance.userId.isEmpty, CastledInApp.sharedInstance.currentDisplayState != .stopped else {
+            // CastledLog.castledLog("Ignoring in-app evaluation as the state is ‘stopped’ Or userId is not set.", logLevel: .debug)
             return
         }
 
@@ -118,7 +119,7 @@ import UIKit
 
     // MARK: - Display methods
 
-    private func validateInappBeforeDisplay(_ events: [CastledInAppObject]) {
+    private func validateInappBeforeDisplay(_ events: [CastledInAppObject], shouldShow: Bool = false) {
         if events.isEmpty {
             return
         }
@@ -129,8 +130,12 @@ import UIKit
                 if let satisiiedIndex = events.firstIndex(where: { item in
                     self.isSatisfiedWithGlobalIntervalBtwDisplays(inAppObj: item) && self.canShowInViewController(currentTopVc)
                 }) {
-                    self.displayInappNotification(event: campaigns[satisiiedIndex])
-                    campaigns.remove(at: satisiiedIndex)
+                    if CastledInApp.sharedInstance.currentDisplayState == .active || shouldShow {
+                        self.displayInappNotification(event: campaigns[satisiiedIndex])
+                        campaigns.remove(at: satisiiedIndex)
+                    } else {
+                        CastledLog.castledLog("Ignoring in-app display as the state is not active.", logLevel: .debug)
+                    }
                 }
                 self.enqueInappObject(campaigns)
             }
@@ -262,8 +267,8 @@ import UIKit
         return true
     }
 
-    func checkPendingNotificationsIfAny() {
-        self.validateInappBeforeDisplay(self.getAllPendingItems())
+    func checkPendingNotificationsIfAny(shouldShow: Bool = false) {
+        self.validateInappBeforeDisplay(self.getAllPendingItems(), shouldShow: shouldShow)
     }
 
     private func enqueInappObject(_ inApps: [CastledInAppObject]) {

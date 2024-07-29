@@ -49,20 +49,34 @@ import UserNotificationsUI
                      mediaListVC.view.layoutIfNeeded()
                      preferredContentSize = mediaListVC.preferredContentSize
                  }*/
-                preferredContentSize = CGSize(width: UIScreen.main.bounds.size.width, height: 200)
 
                 let defaultVC = UIStoryboard(name: "CNotificationContent", bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: "CastledDefaultViewController") as! CastledDefaultViewController
+                defaultVC.view.translatesAutoresizingMaskIntoConstraints = false
                 addChild(defaultVC)
-                defaultVC.view.frame = CGRectMake(0, 0, UIScreen.main.bounds.size.width, 200)
                 view.addSubview(defaultVC.view)
+
+                NSLayoutConstraint.activate([
+                    defaultVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+                    defaultVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+                    defaultVC.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+                    defaultVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+                ])
+
+                defaultVC.populateDetails()
+                defaultVC.view.layoutIfNeeded()
+                DispatchQueue.main.async {
+                    print("defaultVC.view.bounds.size \(defaultVC.getContentHeight())")
+
+                    self.preferredContentSize = CGSize(width: defaultVC.view.frame.width, height: defaultVC.getContentHeight())
+                    print("defaultVC.preferredContentSize \(self.preferredContentSize)")
+                    print("defaultVC.view.bounds.size \(defaultVC.view.bounds.size)")
+                    self.view.setNeedsUpdateConstraints()
+                    self.view.setNeedsLayout()
+                }
                 if !appGroupId.isEmpty {
                     //  defaultVC.setUserdefaults(FromAppgroup: appGroupId)
                 }
                 childViewController = defaultVC
-                defaultVC.view.layoutIfNeeded()
-                preferredContentSize = defaultVC.preferredContentSize
-                view.setNeedsUpdateConstraints()
-                view.setNeedsLayout()
             }
             // other types
         }
