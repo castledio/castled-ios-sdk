@@ -152,4 +152,9 @@ public enum CastledConstants {
         static let APP_ID = "App-Id"
         static let Platform = "Platform"
     }
+
+    enum AppGroupID {
+        // Dont cleanup this code.This is to separate this key from CastledUserDefault Class
+        static let kCastledAppGroupId = "_castledAppGroupId_"
+    }
 }

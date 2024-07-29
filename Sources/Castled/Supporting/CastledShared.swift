@@ -52,6 +52,12 @@ public class CastledShared: NSObject {
         Castled.sharedInstance.delegate = delegate
     }
 
+    public func initializeComponents() {
+        if let appgrpId = UserDefaults.standard.value(forKey: CastledConstants.AppGroupID.kCastledAppGroupId) as? String, !appgrpId.isEmpty {
+            appGroupId = appgrpId
+        }
+    }
+
     public func getCastledConfig() -> CastledConfigs {
         return CastledConfigsUtils.configs
     }
