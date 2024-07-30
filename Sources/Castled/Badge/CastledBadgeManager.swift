@@ -37,7 +37,7 @@ class CastledBadgeManager {
 
     private func modifyBadgeCount(by delta: Int = 1) {
         Castled.sharedInstance.castledCommonQueue.async {
-            var currentBadge = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledBadgeKey) as? Int ?? 0
+            var currentBadge = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledBadgeKey) as? Int ?? 0
             currentBadge += delta
             self.setApplicationBadge(currentBadge)
         }
@@ -53,8 +53,8 @@ class CastledBadgeManager {
              1. background
              2. will present
              3. notification extension */
-            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledBadgeKey, badge)
-            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledLastBadgeIncrementTimeKey, currentTimestamp)
+            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledBadgeKey, badge)
+            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledLastBadgeIncrementTimeKey, currentTimestamp)
 
             DispatchQueue.main.async {
                 if #available(iOS 16.0, *) {

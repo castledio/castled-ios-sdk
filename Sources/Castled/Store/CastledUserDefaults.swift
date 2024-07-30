@@ -12,7 +12,7 @@ public class CastledUserDefaults: NSObject {
     public static let shared = CastledUserDefaults()
     private var observers: [CastledPreferenceStoreListener] = []
     static var appGroupId = ""
-    static let userDefaults: UserDefaults = {
+    static var userDefaults: UserDefaults = {
         if appGroupId.isEmpty {
             return UserDefaults.standard
         }
@@ -47,12 +47,12 @@ public class CastledUserDefaults: NSObject {
     static let kCastledSessionStartTime = "_castledSessionStartTime_"
     static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
     static let kCastledInAppsList = "_castledInappsList_"
-    static let kCastledIsMigratedToSuit = "_castledUsMigratedToSuit_"
+    static let kCastledIsMigratedToSuit = "_castledIsMigratedToSuit_"
     static let kCastledAppInForeground = "_castledAppInForeground_"
 
     public var userId: String? {
         didSet {
-            if let userId = userId {
+            if let userId = userId, oldValue != userId {
                 notifyUserIdObservers(userId)
             }
         }
@@ -91,46 +91,44 @@ public class CastledUserDefaults: NSObject {
         userToken = CastledUserDefaults.getString(CastledUserDefaults.kCastledUserTokenKey)
     }
 
-    @objc static func getString(_ key: String) -> String? {
-        // Fetch value from UserDefaults
-        if let stringValue = userDefaults.string(forKey: key) {
-            return stringValue
-        }
-        return nil
-    }
+    // MARK: - SETTERS
 
     static func setString(_ key: String, _ value: String?) {
-        // Save the value in UserDefaults
-        userDefaults.set(value, forKey: key)
-        userDefaults.synchronize()
+        CastledUserDefaults.setValueFor(key: key, value)
     }
 
-    static func getBoolean(_ key: String) -> Bool {
-        // Fetch Bool value from UserDefaults
-        return userDefaults.bool(forKey: key)
-    }
-
-    static func setBoolean(_ key: String, _ value: Bool?) {
-        // Store value in UserDefaults
-        userDefaults.set(value, forKey: key)
-        userDefaults.synchronize()
-    }
-
-    static func removeFor(_ key: String) {
-        // Remove value from UserDefaults
-        userDefaults.removeObject(forKey: key)
-        userDefaults.synchronize()
+    static func setBoolean(_ key: String, _ value: Bool) {
+        CastledUserDefaults.setValueFor(key: key, value)
     }
 
     public static func setObjectFor(_ key: String, _ data: Any) {
-        // Save the value in UserDefaults
-        userDefaults.set(data, forKey: key)
-        userDefaults.synchronize()
+        CastledUserDefaults.setValueFor(key: key, data)
+    }
+
+    // MARK: - GETTERS
+
+    @objc static func getString(_ key: String) -> String? {
+        guard let value = CastledUserDefaults.getObjectFor(key) as? String else {
+            return nil
+        }
+        return value
+    }
+
+    static func getBoolean(_ key: String) -> Bool {
+        guard let value = CastledUserDefaults.getObjectFor(key) as? Bool else {
+            return false
+        }
+        return value
     }
 
     static func getDataFor(_ key: String) -> Data? {
-        return userDefaults.data(forKey: key)
+        guard let value = CastledUserDefaults.getObjectFor(key) as? Data else {
+            return nil
+        }
+        return value
     }
+
+    // MARK: - COMMON METHODS
 
     public static func getObjectFor(_ key: String) -> Any? {
         return userDefaults.object(forKey: key)
@@ -153,41 +151,47 @@ public class CastledUserDefaults: NSObject {
         let encoder = JSONEncoder()
         do {
             let data = try encoder.encode(object)
-            userDefaults.set(data, forKey: key)
-            userDefaults.synchronize()
+            CastledUserDefaults.setValueFor(key: key, data)
         } catch {}
     }
 
-    static func setValueFor(_ key: String, _ data: Any) {
-        // Save the value in UserDefaults
-        userDefaults.setValue(data, forKey: key)
+    static func removeFor(_ key: String) {
+        // Remove value from UserDefaults
+        userDefaults.removeObject(forKey: key)
         userDefaults.synchronize()
     }
 
-    static func getValueFor(_ key: String) -> Any? {
-        return userDefaults.value(forKey: key)
+    private static func setValueFor(key: String, _ data: Any?) {
+        // Save the value in UserDefaults
+        userDefaults.set(data, forKey: key)
+        userDefaults.synchronize()
     }
 
     static func getUserDefaults() -> UserDefaults {
         return userDefaults
     }
 
+    // MARK: - FUNCTION EXCUTED AFTER LOGOUT
+
     static func clearAllFromPreference() {
-        removeFor(kCastledUserIdKey)
-        removeFor(kCastledDeviceIddKey)
-        removeFor(kCastledDeviceInfoKey)
-        removeFor(kCastledUserTokenKey)
-        removeFor(kCastledFailedRequests)
-        removeFor(kCastledSavedInappConfigs)
-        removeFor(kCastledDeliveredPushIds)
-        removeFor(kCastledClickedPushIds)
-        removeFor(kCastledLastInappDisplayedTime)
-        removeFor(kCastledInAppsList)
-        removeFor(kCastledClickedNotiContentIndx)
+        userDefaults.removeObject(forKey: kCastledUserIdKey)
+        userDefaults.removeObject(forKey: kCastledDeviceIddKey)
+        userDefaults.removeObject(forKey: kCastledDeviceInfoKey)
+        userDefaults.removeObject(forKey: kCastledUserTokenKey)
+        userDefaults.removeObject(forKey: kCastledFailedRequests)
+        userDefaults.removeObject(forKey: kCastledSavedInappConfigs)
+        userDefaults.removeObject(forKey: kCastledDeliveredPushIds)
+        userDefaults.removeObject(forKey: kCastledClickedPushIds)
+        userDefaults.removeObject(forKey: kCastledLastInappDisplayedTime)
+        userDefaults.removeObject(forKey: kCastledInAppsList)
+        userDefaults.removeObject(forKey: kCastledClickedNotiContentIndx)
+        userDefaults.synchronize()
         CastledUserDefaults.shared.notifyLogout()
         CastledUserDefaults.shared.userId = nil
 //        CastledUserDefaults.shared.userToken = nil
     }
+
+    // MARK: - OBSERVERS FOR USERID AND LOGOUT
 
     public func addObserver(_ observer: CastledPreferenceStoreListener) {
         if let userId = userId {
@@ -208,15 +212,17 @@ public class CastledUserDefaults: NSObject {
         }
     }
 
+    // MARK: - Migration to suit, as suit was not there for the earlier sdk versions
+
     static func migrateDatasToSuit() {
         // Check if migration has already been performed
         if userDefaults.bool(forKey: kCastledIsMigratedToSuit) == true {
             return
         }
 
-        // Use defer to mark migration as complete, even if an error occurs
+        // Use defer to mark migration as complete
         defer {
-            userDefaults.setValue(true, forKey: kCastledIsMigratedToSuit)
+            userDefaults.set(true, forKey: kCastledIsMigratedToSuit)
             userDefaults.synchronize()
             CastledUserDefaults.shared.initializeUserDetails()
             CastledUserDefaults.saveAppGroupId()
@@ -224,7 +230,6 @@ public class CastledUserDefaults: NSObject {
         guard userDefaultsLocal.string(forKey: kCastledAppIddKey) != nil else {
             return
         }
-
         // Keys to migrate
         let keysToMigrate = [
             kCastledAppIddKey,
@@ -264,11 +269,24 @@ public class CastledUserDefaults: NSObject {
         userDefaultsLocal.synchronize()
     }
 
+    // MARK: - FOR OTHER SDKs
+
     static func saveAppGroupId() {
         // this is for react, there is no option to get the appgroup id for push click when the app is in terminated state as the intiialization part happens in react side. so local userdefault will get initialize instead of suit
         DispatchQueue.main.async {
-            userDefaultsLocal.setValue(appGroupId, forKey: CastledConstants.AppGroupID.kCastledAppGroupId)
+            userDefaultsLocal.set(appGroupId, forKey: CastledConstants.AppGroupID.kCastledAppGroupId)
             userDefaultsLocal.synchronize()
         }
+    }
+
+    static func resetUserDefaults() {
+        // this is for the other sdk like react, after changing the appgropupid
+        if appGroupId.isEmpty {
+            return
+        }
+        guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            return
+        }
+        userDefaults = defaults
     }
 }
