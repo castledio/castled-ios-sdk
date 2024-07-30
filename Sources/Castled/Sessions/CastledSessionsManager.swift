@@ -11,13 +11,13 @@ import UIKit
 class CastledSessionsManager {
     static let shared = CastledSessionsManager()
 
-    lazy var sessionId = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionId) as? String ?? ""
-    private lazy var sessionStartTime = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionStartTime) as? Double ?? Date().timeIntervalSince1970
-    private lazy var sessionEndTime = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledLastSessionEndTime) as? Double ?? 0
+    lazy var sessionId = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSessionId) as? String ?? ""
+    private lazy var sessionStartTime = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSessionStartTime) as? Double ?? Date().timeIntervalSince1970
+    private lazy var sessionEndTime = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledLastSessionEndTime) as? Double ?? 0
     private lazy var
-        sessionDuration = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledSessionDuration) as? Double ?? 0
+        sessionDuration = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSessionDuration) as? Double ?? 0
     private lazy var lastSessionDurationForTestCases: Double = 0
-    private lazy var isFirstSession = CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledIsFirstSesion) ?? true
+    private lazy var isFirstSession = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledIsFirstSesion) ?? true
     private var currentStartTime: Double = 0
     private let sessionTrackingQueue = DispatchQueue(label: "CastledSessionsTrackingQueue", attributes: .concurrent)
     private var isSaving = false
@@ -52,7 +52,7 @@ class CastledSessionsManager {
                                    CastledConstants.Sessions.sessionTimeStamp: dateEnded.string(),
                                    CastledConstants.Sessions.properties: [CastledConstants.kCastledPlatformKey: CastledConstants.kCastledPlatformValue,
                                                                           CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
-            CastledUserDefaults.setValueFor(CastledUserDefaults.kCastledIsFirstSesion, false)
+            CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledIsFirstSesion, false)
             isFirstSession = false
         }
         lastSessionDurationForTestCases = sessionDuration

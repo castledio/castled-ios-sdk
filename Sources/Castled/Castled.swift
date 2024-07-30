@@ -43,7 +43,6 @@ import UserNotifications
             Castled.sharedInstance.delegate = castledDelegate
         }
         CastledUserDefaults.appGroupId = config.appGroupId
-        if !config.appGroupId.isEmpty { CastledUserDefaults.migrateDatasToSuit() }
 
         CastledConfigsUtils.saveTheConfigs(config: config)
         Castled.sharedInstance.initialSetup()

@@ -132,7 +132,7 @@ public extension Castled {
         var clickedParams: [AnyHashable: Any]?
         let userInfo = response.notification.request.content.userInfo
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-            if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.getValueFor(CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
+            if let defaultActionDetails: [String: Any] = CastledCommonClass.getDefaultActionDetails(dict: userInfo, index: CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedNotiContentIndx) as? Int ?? 0),
                let defaultAction = defaultActionDetails[CastledConstants.PushNotification.CustomProperties.Category.Action.clickAction] as? String
             {
                 // Any change here should handle in the background delegate also
