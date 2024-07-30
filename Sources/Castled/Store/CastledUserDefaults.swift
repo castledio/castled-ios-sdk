@@ -59,9 +59,14 @@ public class CastledUserDefaults: NSObject {
     }
 
     var userToken: String?
-    public var isAppInForeground = false {
+    public lazy var isAppInForeground = false {
         didSet {
-            CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledAppInForeground, isAppInForeground)
+            DispatchQueue.main.async {[weak self] in
+                if let selfObject = self{
+                    CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledAppInForeground, selfObject.isAppInForeground)
+
+                }
+            }
         }
     }
 
