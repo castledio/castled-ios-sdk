@@ -42,8 +42,6 @@ import UserNotifications
         if let castledDelegate = delegate {
             Castled.sharedInstance.delegate = castledDelegate
         }
-        CastledUserDefaults.appGroupId = config.appGroupId
-
         CastledConfigsUtils.saveTheConfigs(config: config)
         Castled.sharedInstance.initialSetup()
     }
