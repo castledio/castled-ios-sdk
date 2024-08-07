@@ -12,7 +12,7 @@ import Foundation
     var userId = CastledUserDefaults.shared.userId ?? ""
     var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
     var isInitilized = false
-    var shouldReportFromNotiExtension = false
+    lazy var shouldReportFromNotiExtension = false
 
     override private init() {}
 

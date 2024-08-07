@@ -29,9 +29,6 @@ public class CastledShared: NSObject {
 
     public func reportCastledPushEventsFromExtension(userInfo: [AnyHashable: Any]) {
         if !appGroupId.isEmpty {
-            if CastledUserDefaults.getBoolean(CastledUserDefaults.kCastledAppInForeground) {
-                return
-            }
             CastledPushNotification.sharedInstance.shouldReportFromNotiExtension = true
             Castled.sharedInstance.processCastledPushEvents(userInfo: userInfo, deliveredDate: Date())
         } else {

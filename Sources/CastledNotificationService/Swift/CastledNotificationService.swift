@@ -16,7 +16,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
 
     @objc public var appGroupId = "" {
         didSet {
-            if !appGroupId.isEmpty {
+            if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
                 CastledShared.sharedInstance.appGroupId = appGroupId
                 sharedUserDefaults = UserDefaults(suiteName: appGroupId)
             }
