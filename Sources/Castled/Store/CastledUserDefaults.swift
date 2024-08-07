@@ -59,16 +59,7 @@ public class CastledUserDefaults: NSObject {
     }
 
     var userToken: String?
-    public lazy var isAppInForeground = false {
-        didSet {
-            DispatchQueue.main.async {[weak self] in
-                if let selfObject = self{
-                    CastledUserDefaults.setBoolean(CastledUserDefaults.kCastledAppInForeground, selfObject.isAppInForeground)
-
-                }
-            }
-        }
-    }
+    public lazy var isAppInForeground = false
 
     func getDeliveredPushIds() -> [String] {
         return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
@@ -293,5 +284,19 @@ public class CastledUserDefaults: NSObject {
             return
         }
         userDefaults = defaults
+    }
+
+    public static func isAppGroupIsEnabledFor(_ appgroupId: String) -> Bool {
+        if let _ = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appgroupId) {
+            //CastledLog.castledLog("App group is available for '\(appgroupId)'", logLevel: .debug)
+            return true
+        } else {
+            let errorMessage = "Kindly enable the App Groups in the Xcode capabilities for '\(appgroupId)'. Follow the link \nhttps://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#3-adding-an-app-group-id\n"
+            if !CastledEnvironmentChecker.isRunningInDesignOrTestEnvironment() {
+                fatalError(errorMessage)
+            }
+            CastledLog.castledLog(errorMessage, logLevel: .error)
+        }
+        return false
     }
 }

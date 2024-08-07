@@ -169,8 +169,9 @@ public extension Castled {
 
     internal func processCastledPushEvents(userInfo: [AnyHashable: Any], isOpened: Bool? = false, isDismissed: Bool? = false, actionLabel: String? = "", actionType: String? = "", actionUri: String? = "", deliveredDate: Date = Date()) {
         castledNotificationQueue.async {
-            if let customCasledDict = CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: userInfo), 
-                let notificationId = customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] as? String {
+            if let customCasledDict = CastledPushNotification.sharedInstance.getCastledDictionary(userInfo: userInfo),
+               let notificationId = customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] as? String
+            {
                 let sourceContext = customCasledDict[CastledConstants.PushNotification.CustomProperties.sourceContext] as? String
                 var event = CastledConstants.CastledEventTypes.received.rawValue
                 if isOpened == true {
@@ -220,7 +221,7 @@ public extension Castled {
         }
     }
 
-    private func getPushPayload(event: String, sourceContext: String, actionLabel: String? = "", actionType: String? = "", actionUri: String = "", deliveredDate: Date, notificationId : String) -> [[String: String]] {
+    private func getPushPayload(event: String, sourceContext: String, actionLabel: String? = "", actionType: String? = "", actionUri: String = "", deliveredDate: Date, notificationId: String) -> [[String: String]] {
         if sourceContext.isEmpty {
             return []
         }
@@ -228,7 +229,7 @@ public extension Castled {
         var date = deliveredDate
         if event == CastledConstants.CastledEventTypes.received.rawValue {
             var deliveredPushIds = CastledUserDefaults.shared.getDeliveredPushIds()
-            if deliveredPushIds.contains(where: { $0 == notificationId || $0 == sourceContext })  {
+            if deliveredPushIds.contains(where: { $0 == notificationId || $0 == sourceContext }) {
                 return payload
             } else {
                 deliveredPushIds.append(notificationId)
