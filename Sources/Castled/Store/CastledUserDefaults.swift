@@ -11,7 +11,9 @@ import Foundation
 public class CastledUserDefaults: NSObject {
     public static let shared = CastledUserDefaults()
     private var observers: [CastledPreferenceStoreListener] = []
+    private static var userDefaultsLocal = UserDefaults.standard
     static var appGroupId = ""
+
     static var userDefaults: UserDefaults = {
         if appGroupId.isEmpty {
             return UserDefaults.standard
@@ -22,33 +24,6 @@ public class CastledUserDefaults: NSObject {
 
         return defaults
     }()
-
-    private static var userDefaultsLocal = UserDefaults.standard
-
-    // Userdefault keys
-    static let kCastledAppIddKey = "_castledAppid_"
-    static let kCastledUserIdKey = "_castledUserId_"
-    static let kCastledDeviceIddKey = "_castledDeviceId_"
-    static let kCastledDeviceInfoKey = "_castledDeviceInfo_"
-    static let kCastledUserTokenKey = "_castleduserToken_"
-    static let kCastledAPNsTokenKey = "_castledApnsToken_"
-    static let kCastledFCMTokenKey = "_castledFCMToken_"
-    public static let kCastledBadgeKey = "_castledApplicationBadge_"
-    public static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
-    public static let kCastledFailedRequests = "_castledFailedRequests_"
-    static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
-    static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
-    static let kCastledClickedPushIds = "_castledClickedPushIds_"
-    static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
-    static let kCastledClickedNotiContentIndx = "_castledClickedNotiContentIndx_"
-    static let kCastledSessionId = "_castledSessionId_"
-    static let kCastledLastSessionEndTime = "_castledLastSessionEndTime_"
-    static let kCastledSessionDuration = "_castledSessionDuration_"
-    static let kCastledSessionStartTime = "_castledSessionStartTime_"
-    static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
-    static let kCastledInAppsList = "_castledInappsList_"
-    static let kCastledIsMigratedToSuit = "_castledIsMigratedToSuit_"
-    static let kCastledAppInForeground = "_castledAppInForeground_"
 
     public var userId: String? {
         didSet {
@@ -61,14 +36,6 @@ public class CastledUserDefaults: NSObject {
     var userToken: String?
     public lazy var isAppInForeground = false
 
-    func getDeliveredPushIds() -> [String] {
-        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
-    }
-
-    func getClickedPushIds() -> [String] {
-        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
-    }
-
     lazy var apnsToken: String? = {
         CastledUserDefaults.getString(CastledUserDefaults.kCastledAPNsTokenKey)
     }()
@@ -80,6 +47,14 @@ public class CastledUserDefaults: NSObject {
     override private init() {
         super.init()
         initializeUserDetails()
+    }
+
+    func getDeliveredPushIds() -> [String] {
+        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledDeliveredPushIds) as? [String] ?? [String]()
+    }
+
+    func getClickedPushIds() -> [String] {
+        return CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledClickedPushIds) as? [String] ?? [String]()
     }
 
     private func initializeUserDetails() {
@@ -167,24 +142,16 @@ public class CastledUserDefaults: NSObject {
         return userDefaults
     }
 
-    // MARK: - FUNCTION EXCUTED AFTER LOGOUT
+    // MARK: - FUNCTION TO CHECK THE SPECIFIED App Group ID is available and correctly configured
 
-    static func clearAllFromPreference() {
-        userDefaults.removeObject(forKey: kCastledUserIdKey)
-        userDefaults.removeObject(forKey: kCastledDeviceIddKey)
-        userDefaults.removeObject(forKey: kCastledDeviceInfoKey)
-        userDefaults.removeObject(forKey: kCastledUserTokenKey)
-        userDefaults.removeObject(forKey: kCastledFailedRequests)
-        userDefaults.removeObject(forKey: kCastledSavedInappConfigs)
-        userDefaults.removeObject(forKey: kCastledDeliveredPushIds)
-        userDefaults.removeObject(forKey: kCastledClickedPushIds)
-        userDefaults.removeObject(forKey: kCastledLastInappDisplayedTime)
-        userDefaults.removeObject(forKey: kCastledInAppsList)
-        userDefaults.removeObject(forKey: kCastledClickedNotiContentIndx)
-        userDefaults.synchronize()
-        CastledUserDefaults.shared.notifyLogout()
-        CastledUserDefaults.shared.userId = nil
-//        CastledUserDefaults.shared.userToken = nil
+    public static func isAppGroupIsEnabledFor(_ appgroupId: String) -> Bool {
+        if let _ = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appgroupId) {
+            // CastledLog.castledLog("App group is available for '\(appgroupId)'", logLevel: .debug)
+            return true
+        } else {
+            let errorMessage = "\nError ❌❌❌: Kindly enable the App Groups in the Xcode capabilities for '\(appgroupId)'. Follow the link \nhttps://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#3-adding-an-app-group-id\n"
+            fatalError(errorMessage)
+        }
     }
 
     // MARK: - OBSERVERS FOR USERID AND LOGOUT
@@ -206,6 +173,26 @@ public class CastledUserDefaults: NSObject {
         for observer in observers {
             observer.onUserLoggedOut()
         }
+    }
+
+    // MARK: - FUNCTION EXCUTED AFTER LOGOUT
+
+    static func clearAllFromPreference() {
+        userDefaults.removeObject(forKey: kCastledUserIdKey)
+        userDefaults.removeObject(forKey: kCastledDeviceIddKey)
+        userDefaults.removeObject(forKey: kCastledDeviceInfoKey)
+        userDefaults.removeObject(forKey: kCastledUserTokenKey)
+        userDefaults.removeObject(forKey: kCastledFailedRequests)
+        userDefaults.removeObject(forKey: kCastledSavedInappConfigs)
+        userDefaults.removeObject(forKey: kCastledDeliveredPushIds)
+        userDefaults.removeObject(forKey: kCastledClickedPushIds)
+        userDefaults.removeObject(forKey: kCastledLastInappDisplayedTime)
+        userDefaults.removeObject(forKey: kCastledInAppsList)
+        userDefaults.removeObject(forKey: kCastledClickedNotiContentIndx)
+        userDefaults.synchronize()
+        CastledUserDefaults.shared.notifyLogout()
+        CastledUserDefaults.shared.userId = nil
+//        CastledUserDefaults.shared.userToken = nil
     }
 
     // MARK: - Migration to suit, as suit was not there for the earlier sdk versions
@@ -285,18 +272,31 @@ public class CastledUserDefaults: NSObject {
         }
         userDefaults = defaults
     }
+}
 
-    public static func isAppGroupIsEnabledFor(_ appgroupId: String) -> Bool {
-        if let _ = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appgroupId) {
-            //CastledLog.castledLog("App group is available for '\(appgroupId)'", logLevel: .debug)
-            return true
-        } else {
-            let errorMessage = "Kindly enable the App Groups in the Xcode capabilities for '\(appgroupId)'. Follow the link \nhttps://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#3-adding-an-app-group-id\n"
-            if !CastledEnvironmentChecker.isRunningInDesignOrTestEnvironment() {
-                fatalError(errorMessage)
-            }
-            CastledLog.castledLog(errorMessage, logLevel: .error)
-        }
-        return false
-    }
+public extension CastledUserDefaults {
+    // Userdefault keys
+    static let kCastledAppIddKey = "_castledAppid_"
+    static let kCastledUserIdKey = "_castledUserId_"
+    static let kCastledDeviceIddKey = "_castledDeviceId_"
+    static let kCastledDeviceInfoKey = "_castledDeviceInfo_"
+    static let kCastledUserTokenKey = "_castleduserToken_"
+    static let kCastledAPNsTokenKey = "_castledApnsToken_"
+    static let kCastledFCMTokenKey = "_castledFCMToken_"
+    static let kCastledBadgeKey = "_castledApplicationBadge_"
+    static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
+    static let kCastledFailedRequests = "_castledFailedRequests_"
+    static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
+    static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
+    static let kCastledClickedPushIds = "_castledClickedPushIds_"
+    static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
+    static let kCastledClickedNotiContentIndx = "_castledClickedNotiContentIndx_"
+    static let kCastledSessionId = "_castledSessionId_"
+    static let kCastledLastSessionEndTime = "_castledLastSessionEndTime_"
+    static let kCastledSessionDuration = "_castledSessionDuration_"
+    static let kCastledSessionStartTime = "_castledSessionStartTime_"
+    static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
+    static let kCastledInAppsList = "_castledInappsList_"
+    static let kCastledIsMigratedToSuit = "_castledIsMigratedToSuit_"
+    static let kCastledAppInForeground = "_castledAppInForeground_"
 }
