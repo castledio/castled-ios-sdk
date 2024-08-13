@@ -55,6 +55,9 @@ import UserNotifications
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
 
         if config.enablePush {
+            if config.appGroupId.isEmpty {
+                CastledLog.castledLog("'appGroupId' is empty. Consider setting a value for proper functionality.", logLevel: .warning)
+            }
             CastledPushNotification.sharedInstance.initializePush()
             setNotificationCategories(withItems: Set<UNNotificationCategory>())
         }

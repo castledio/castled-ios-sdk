@@ -1,3 +1,4 @@
+
 //
 //  AppDelegate.swift
 //  CastledDemo
@@ -15,24 +16,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
+        let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
         config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
         config.enableTracking = true
         config.enableSessionTracking = true
         config.skipUrlHandling = false
-        config.sessionTimeOutSec = 30
-        config.location = CastledLocation.US
+        config.sessionTimeOutSec = 15
+        config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
         registerForPush()
         // UNUserNotificationCenter.current().delegate = self
-
         Castled.initialize(withConfig: config, andDelegate: self)
-        //  Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
-        //   Castled.sharedInstance.setLaunchOptions(launchOptions)
+        // CastledInbox.sharedInstance.initializeAppInbox()
+        // Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
+        // Castled.sharedInstance.setLaunchOptions(launchOptions)
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -46,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let notificationCategories = getNotificationCategories()
         Castled.sharedInstance.setNotificationCategories(withItems: notificationCategories)
         window?.makeKeyAndVisible()
+
         // Castled.sharedInstance.setLaunchOptions(launchOptions)
         return true
     }
@@ -56,13 +58,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let action2 = UNNotificationAction(identifier: "DECLINE", title: "Decline", options: UNNotificationActionOptions.foreground)
 
         // Create the category with the custom actions
-        let customCategory1 = UNNotificationCategory(identifier: "ACCEPT_DECLINE", actions: [action1, action2], intentIdentifiers: [], options: [])
+        let customCategory1 = UNNotificationCategory(identifier: "ACCEPT_DECLINE", actions: [action1, action2], intentIdentifiers: [], options: .customDismissAction)
 
         let action3 = UNNotificationAction(identifier: "YES", title: "Yes", options: [UNNotificationActionOptions.foreground])
         let action4 = UNNotificationAction(identifier: "NO", title: "No", options: [])
 
         // Create the category with the custom actions
-        let customCategory2 = UNNotificationCategory(identifier: "YES_NO", actions: [action3, action4], intentIdentifiers: [], options: [])
+        let customCategory2 = UNNotificationCategory(identifier: "YES_NO", actions: [action3, action4], intentIdentifiers: [], options: .customDismissAction)
 
         let categoriesSet = Set([customCategory1, customCategory2])
 
@@ -86,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         // code to handle the URL
 
-        if url.scheme == "com.castled" {
+        if url.scheme == "castledios" {
             let host = url.host
             // let pathComponents = url.pathComponents
             var parameters: [String: String] = [:]
@@ -141,8 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 extension AppDelegate: CastledNotificationDelegate {
     func registerForPush() {
-        UNUserNotificationCenter.current().delegate = self
-        Castled.sharedInstance.requestPushPermission()
+        // UNUserNotificationCenter.current().delegate = self
+        Castled.sharedInstance.requestPushPermission(showSettingsAlert: true)
     }
 
     func notificationClicked(withNotificationType type: CastledNotificationType, buttonAction: CastledButtonAction, userInfo: [AnyHashable: Any]) {
@@ -183,41 +185,6 @@ extension AppDelegate: CastledNotificationDelegate {
                 break
         }
     }
-
-    /* func notificationClicked(withNotificationType type: CastledNotificationType, action: CastledClickActionType, kvPairs: [AnyHashable: Any]?, userInfo: [AnyHashable: Any]) {
-         let inboxCopyEnabled = kvPairs?["inboxCopyEnabled"] as? Bool ?? false
-
-         print("type \(type.rawValue) action \(action.rawValue) kvPairs \(kvPairs)\n*****************inboxCopyEnabled \(inboxCopyEnabled)")
-         switch action {
-             case .deepLink:
-                 if let details = kvPairs, let value = details["clickActionUrl"] as? String, let url = URL(string: value) {
-                     handleDeepLink(url: url)
-                 }
-
-             case .navigateToScreen:
-                 if let details = kvPairs, let screenName = details["clickActionUrl"] as? String {
-                     handleNavigateToScreen(screenName: screenName)
-                 }
-             case .richLanding:
-                 // TODO:
-
-                 break
-             case .requestForPush:
-                 // TODO:
-
-                 break
-             case .dismiss:
-                 // TODO:
-
-                 break
-             case .custom:
-                 // TODO:
-
-                 break
-             default:
-                 break
-         }
-     }*/
 
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
         print("***** Castled Notificiation Received *****\n \(userInfo)\n")
