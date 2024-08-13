@@ -6,6 +6,7 @@
 //
 
 import Castled
+import CastledGeoFencer
 import CastledInbox
 import UIKit
 import UserNotifications
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
         config.enableAppInbox = true
+        config.enableGeofencing = true
         config.enablePush = true
         config.enableInApp = true
         config.enableTracking = true
@@ -30,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registerForPush()
         // UNUserNotificationCenter.current().delegate = self
         Castled.initialize(withConfig: config, andDelegate: self)
+        CastledGeoFencer.sharedInstance.startGeofenceMonitoring()
+
         // CastledInbox.sharedInstance.initializeAppInbox()
         // Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")
         // Castled.sharedInstance.setLaunchOptions(launchOptions)
@@ -63,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let action4 = UNNotificationAction(identifier: "NO", title: "No", options: [])
 
         // Create the category with the custom actions
-        let customCategory2 = UNNotificationCategory(identifier: "YES_NO", actions: [action3, action4], intentIdentifiers: [], options: [])
+        let customCategory2 = UNNotificationCategory(identifier: "YES_NO", actions: [action3, action4], intentIdentifiers: [], options: .customDismissAction)
 
         let categoriesSet = Set([customCategory1, customCategory2])
 

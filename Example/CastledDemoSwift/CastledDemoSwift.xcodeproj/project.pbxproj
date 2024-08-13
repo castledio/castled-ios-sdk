@@ -832,6 +832,9 @@
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CastledDemoSwift/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "To ensure the best experience with location-based features, we require access to your location both when the app is in use and in the background.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "To provide accurate location-based services and notifications, we need access to your location even when the app is not actively in use.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location while you are using the app to offer relevant features and updates based on your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -864,6 +867,9 @@
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CastledDemoSwift/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "To ensure the best experience with location-based features, we require access to your location both when the app is in use and in the background.";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "To provide accurate location-based services and notifications, we need access to your location even when the app is not actively in use.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need access to your location while you are using the app to offer relevant features and updates based on your location.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

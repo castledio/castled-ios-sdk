@@ -34,6 +34,7 @@ import Foundation
     }
 
     @objc public var enableAppInbox: Bool = false
+    @objc public var enableGeofencing: Bool = false
     @objc public var enableInApp: Bool = false
     @objc public var enableSessionTracking: Bool = true
     @objc public var enableTracking: Bool = false
@@ -73,6 +74,7 @@ import Foundation
         self.permittedBGIdentifier = try container.decodeIfPresent(String.self, forKey: .permittedBGIdentifier) ?? ""
         self.enablePush = try container.decodeIfPresent(Bool.self, forKey: .enablePush) ?? false
         self.enableAppInbox = try container.decodeIfPresent(Bool.self, forKey: .enableAppInbox) ?? false
+        self.enableGeofencing = try container.decodeIfPresent(Bool.self, forKey: .enableGeofencing) ?? false
         self.enableInApp = try container.decodeIfPresent(Bool.self, forKey: .enableInApp) ?? false
         self.enableSessionTracking = try container.decodeIfPresent(Bool.self, forKey: .enableSessionTracking) ?? true
         self.enableTracking = try container.decodeIfPresent(Bool.self, forKey: .enableTracking) ?? false
@@ -94,6 +96,7 @@ import Foundation
         try container.encode(permittedBGIdentifier, forKey: .permittedBGIdentifier)
         try container.encode(enablePush, forKey: .enablePush)
         try container.encode(enableAppInbox, forKey: .enableAppInbox)
+        try container.encode(enableGeofencing, forKey: .enableGeofencing)
         try container.encode(enableInApp, forKey: .enableInApp)
         try container.encode(enableSessionTracking, forKey: .enableSessionTracking)
         try container.encode(enableTracking, forKey: .enableTracking)
@@ -111,6 +114,7 @@ import Foundation
         case permittedBGIdentifier
         case enablePush
         case enableAppInbox
+        case enableGeofencing
         case enableInApp
         case enableSessionTracking
         case enableTracking

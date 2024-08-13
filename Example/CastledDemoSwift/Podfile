@@ -7,6 +7,7 @@ target 'CastledDemoSwift' do
   # Pods for CastledDemo
   pod 'Castled', :path => '../../'
   pod 'CastledInbox', :path => '../../'
+  pod 'CastledGeoFencer', :path => '../../'
 
   # Custom test target name
   target 'CastledDemoSwiftTests' do
