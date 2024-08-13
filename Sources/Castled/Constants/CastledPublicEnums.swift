@@ -81,6 +81,7 @@ import Foundation
 @objc public enum CastledLogLevel: Int, Codable {
     case none
     case error
+    case warning
     case info
     case debug
 }

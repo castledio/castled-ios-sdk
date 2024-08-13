@@ -6,20 +6,40 @@
 
 import Foundation
 @_spi(CastledInternal)
+import os.log
 
 public enum CastledLog {
     private static var defaultLogLevel: CastledLogLevel = .debug
+    private static let logger = OSLog(subsystem: "com.castled.CastlediOS", category: "Castled")
+
     static func setLogLevel(_ logLevel: CastledLogLevel) {
         defaultLogLevel = logLevel
     }
 
-    public static func castledLog(_ item: Any, logLevel: CastledLogLevel, separator: String = " ", terminator: String = "\n") {
+    public static func castledLog(_ item: Any, logLevel: CastledLogLevel, separator: String = " ", terminator: String = "\n", _ args: CVarArg...) {
         if logLevel.rawValue <= defaultLogLevel.rawValue {
-            var logLvelString = "Castled"
-            if logLevel == CastledLogLevel.error {
-                logLvelString += " Error ❌❌❌"
+            var logLevelString = "Castled"
+            var logType = OSLogType.debug
+
+            switch logLevel {
+            case .error:
+                logLevelString += " Error ❌"
+                logType = OSLogType.error
+            case .warning:
+                logLevelString += " Warning ⚠️"
+                logType = OSLogType.error
+            case .info:
+                // logLevelString += " Info ℹ️"
+                logType = OSLogType.info
+            case .debug:
+                // logLevelString += " Debug"
+                logType = OSLogType.debug
+            case .none:
+                break
             }
-            print("\(logLvelString): \(item)", separator: separator, terminator: terminator)
+
+            let message = "\(logLevelString): \(item)"
+            os_log("%@", log: logger, type: logType, message)
         }
     }
 }

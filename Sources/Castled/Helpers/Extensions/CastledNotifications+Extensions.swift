@@ -163,7 +163,9 @@ public extension Castled {
                 return
             }
         }
-        CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: clickedParams, userInfo: userInfo)
+        if pushActionType != CastledClickActionType.dismiss {
+            CastledButtonActionHandler.notificationClicked(withNotificationType: .push, action: pushActionType, kvPairs: clickedParams, userInfo: userInfo)
+        }
         CastledBadgeManager.shared.clearApplicationBadge()
     }
 
@@ -238,7 +240,7 @@ public extension Castled {
                 }
                 CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledDeliveredPushIds, deliveredPushIds)
             }
-        } else if event == CastledConstants.CastledEventTypes.cliked.rawValue {
+        } else if event == CastledConstants.CastledEventTypes.cliked.rawValue || event == CastledConstants.CastledEventTypes.discarded.rawValue {
             payload.append(contentsOf: Castled.sharedInstance.getPushPayload(event: CastledConstants.CastledEventTypes.received.rawValue, sourceContext: sourceContext, deliveredDate: deliveredDate, notificationId: notificationId))
             var clickedPushIds = CastledUserDefaults.shared.getClickedPushIds()
 
