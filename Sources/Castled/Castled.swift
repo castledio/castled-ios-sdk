@@ -20,13 +20,10 @@ import UserNotifications
     var delegate: CastledNotificationDelegate?
 
     private var isInitialized = false
-    // Create a dispatch queue
-    let castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
-    let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .userInteractive)
-    let castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", qos: .userInitiated, attributes: .concurrent)
 
-    // Create a semaphore
-    private let castledSemaphore = DispatchSemaphore(value: 1)
+    lazy var castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
+    lazy var castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .userInteractive)
+    lazy var castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", qos: .userInitiated, attributes: .concurrent)
 
     override private init() {}
 

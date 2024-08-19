@@ -9,10 +9,9 @@ import Foundation
 
 @objc class CastledPushNotification: NSObject {
     @objc static var sharedInstance = CastledPushNotification()
-    var userId = CastledUserDefaults.shared.userId ?? ""
-    var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
+    lazy var userId = CastledUserDefaults.shared.userId ?? ""
+    var instanceId: String { CastledConfigsUtils.appId ?? "" }
     var isInitilized = false
-    lazy var shouldReportFromNotiExtension = false
 
     override private init() {}
 
@@ -35,17 +34,11 @@ import Foundation
     }
 
     func reportPushEvents(params: [[String: Any]], success: @escaping (Bool) -> Void) {
-        if userId.isEmpty {
-            success(false)
-            return
-        }
-        else if Castled.sharedInstance.instanceId.isEmpty {
-            //  else if !isInitilized, !shouldReportFromNotiExtension {
+        if instanceId.isEmpty {
             CastledLog.castledLog("Report push events failed: \(CastledExceptionMessages.notInitialised.rawValue)", logLevel: CastledLogLevel.error)
             success(false)
             return
         }
-        // shouldReportFromNotiExtension = false
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
             success(result)
         }
