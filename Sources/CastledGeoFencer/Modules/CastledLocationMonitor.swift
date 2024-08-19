@@ -15,6 +15,7 @@ class CastledLocationMonitor: NSObject {
     }
 
     func startMonitoringLocation() {
+        locationManager.distanceFilter = CastledGeoFencer.sharedInstance.configs.locationFilterDistance
         locationManager.startUpdatingLocation()
         if CastledGeofecerValidations.isSignificantLocationChangeAvailable() {
             locationManager.startMonitoringSignificantLocationChanges()
@@ -25,9 +26,9 @@ class CastledLocationMonitor: NSObject {
     }
 
     func stopMonitoingLocation() {
-        // locationManager.stopUpdatingLocation()
+        locationManager.stopUpdatingLocation()
         if CastledGeofecerValidations.isSignificantLocationChangeAvailable() {
-            //   locationManager.stopMonitoringSignificantLocationChanges()
+            locationManager.stopMonitoringSignificantLocationChanges()
         }
     }
 }

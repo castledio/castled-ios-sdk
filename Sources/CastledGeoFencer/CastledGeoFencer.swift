@@ -15,8 +15,13 @@ import UIKit
     var userId = ""
     var enableGeofencing: Bool { CastledShared.sharedInstance.getCastledConfig().enableGeofencing }
     var instanceId: String { CastledShared.sharedInstance.getCastledConfig().instanceId }
-
     var isInitilized = false
+    lazy var configs: CastledGeofenceConfigs = {
+        guard let savedConfig = CastledUserDefaults.getObjectFor(CastledGeofencerUtils.GeofenceConstants.geoConfigs, as: CastledGeofenceConfigs.self) else {
+            return CastledGeofenceConfigs()
+        }
+        return savedConfig
+    }()
 
     override private init() {}
 
@@ -52,14 +57,22 @@ import UIKit
         return true
     }
 
-    @objc public func startGeofenceMonitoring() {
+    @objc public func startMonitoring(configs: CastledGeofenceConfigs?) {
         if !isValidated() {
             return
         }
+        return
+            print("geoconfigs before \(CastledGeoFencer.sharedInstance.configs)")
+        if let geoConfig = configs {
+            CastledGeoFencer.sharedInstance.configs = geoConfig
+            CastledGeofencerUtils.updateGeofenceConfigs(configs: geoConfig)
+        }
+        print("geoconfigs after \(CastledGeoFencer.sharedInstance.configs)")
+
         CastledGeoFencerController.sharedInstance.startGeofenceMonitoring()
     }
 
-    @objc public func stopGeofenceMonitoring() {
+    @objc public func stopMonitoring() {
         if !isValidated() {
             return
         }

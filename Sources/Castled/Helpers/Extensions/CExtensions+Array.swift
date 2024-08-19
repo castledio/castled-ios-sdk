@@ -34,6 +34,23 @@ public extension Array where Element == [String: Any] {
         // Example: Check if dictionaries have the same keys and values
         return NSDictionary(dictionary: dict1).isEqual(to: dict2)
     }
+
+    func decode<T: Codable>(_ type: T.Type) -> [T] {
+        do {
+            // Convert array of dictionaries to JSON data
+            let jsonData = try JSONSerialization.data(withJSONObject: self, options: [])
+
+            // Decode JSON data to array of Codable objects
+            let decoder = JSONDecoder()
+            let decodedObjects = try decoder.decode([T].self, from: jsonData)
+            return decodedObjects
+        } catch {
+            // Log the error if needed
+            print("Error decoding data: \(error)")
+            // Return an empty array in case of error
+            return []
+        }
+    }
 }
 
 extension Array where Element: Equatable {

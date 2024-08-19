@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registerForPush()
         // UNUserNotificationCenter.current().delegate = self
         Castled.initialize(withConfig: config, andDelegate: self)
-        CastledGeoFencer.sharedInstance.startGeofenceMonitoring()
+        CastledGeoFencer.sharedInstance.startMonitoring(configs: nil)
 
         // CastledInbox.sharedInstance.initializeAppInbox()
         // Castled.sharedInstance.setUserId("antony@castled.io", userToken: "vbePXGpzBunDmIK6SRbetvWGXaAf48xZEnDTAzMRDkE=")

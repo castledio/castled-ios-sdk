@@ -19,7 +19,7 @@ class CastledGeoFencerController: NSObject, CastledPreferenceStoreListener, Cast
 
     private lazy var visitMonitor = CastledVisitMonitor(locationManager)
     private lazy var locationMonitor = CastledLocationMonitor(locationManager)
-    private lazy var regionMonitor = CastledRegionMonitor(locationManager)
+    lazy var regionMonitor = CastledRegionMonitor(locationManager)
     private lazy var headingMonitor = CastledHeadingMonitor(locationManager)
 
     override private init() {}
@@ -55,7 +55,7 @@ class CastledGeoFencerController: NSObject, CastledPreferenceStoreListener, Cast
         locationManager.delegate = self
         locationMonitor.startMonitoringLocation()
         visitMonitor.startVisitMonitoring()
-        regionMonitor.startMonitoringRegions()
+        regionMonitor.initilizeMonitoring()
         headingMonitor.startHeadingMonitoring()
     }
 
@@ -127,10 +127,8 @@ class CastledGeoFencerController: NSObject, CastledPreferenceStoreListener, Cast
              CastledGeofencerUtils.castledLog("Location services are not enabled on this device. Please enable location services in settings.", logLevel: .error)
          }*/
     }
-}
 
-extension CastledGeoFencerController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+    private func handledidChangeAuthorization(status: CLAuthorizationStatus) {
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
             // Authorization granted, start monitoring
@@ -147,32 +145,56 @@ extension CastledGeoFencerController: CLLocationManagerDelegate {
             print("Unknown authorization status.")
         }
     }
+}
 
+extension CastledGeoFencerController: CLLocationManagerDelegate {
     // MARK: - Location updates
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        handledidChangeAuthorization(status: status)
+    }
+
+    @available(iOS 14, *)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        handledidChangeAuthorization(status: manager.authorizationStatus)
+    }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // Pass the locations to the appropriate manager if needed
         print("Updated locations: \(locations)")
+        guard let location = locations.last else {
+            return
+        }
+        CastledGeofecerProcessor.didLocationUpdate(location)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to update location or region: \(error.localizedDescription)")
     }
 
+    func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
+        locationManager.requestLocation()
+    }
+
+    func locationManagerDidResumeLocationUpdates(_ manager: CLLocationManager) {
+        locationManager.startUpdatingLocation()
+    }
+
     // MARK: - Visit
 
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         // visitMonitor.handleVisitUpdate(visit)
+        Castled.sharedInstance.logCustomAppEvent("chrysalis_entered", params: [:])
     }
 
     // MARK: - Geofencing
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        // regionMonitor.handleRegionEntry(region)
+        CastledGeofecerProcessor.handleRegionEntry(region)
     }
 
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        // regionMonitor.handleRegionExit(region)
+        CastledGeofecerProcessor.handleRegionExit(region)
     }
 
     // MARK: - Heading

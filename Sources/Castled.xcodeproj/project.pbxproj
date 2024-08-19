@@ -23,6 +23,10 @@
 		0A13955B2C69C31000DD8F5B /* CastledLocationMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A13955A2C69C31000DD8F5B /* CastledLocationMonitor.swift */; };
 		0A13955D2C6A206100DD8F5B /* CastledGeofecerValidations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A13955C2C6A206100DD8F5B /* CastledGeofecerValidations.swift */; };
 		0A1395602C6A22C700DD8F5B /* CastledGeofencerUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A13955F2C6A22C700DD8F5B /* CastledGeofencerUtils.swift */; };
+		0A1395622C6B7A5500DD8F5B /* CastledGeofecerProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1395612C6B7A5500DD8F5B /* CastledGeofecerProcessor.swift */; };
+		0A1395642C6C784000DD8F5B /* CastledGeofeceObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1395632C6C784000DD8F5B /* CastledGeofeceObject.swift */; };
+		0A1395682C6CA4AB00DD8F5B /* CastledVisitedPlacesDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1395672C6CA4AB00DD8F5B /* CastledVisitedPlacesDetails.swift */; };
+		0A13956A2C6CAE0000DD8F5B /* CastledGeofenceConfigs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1395692C6CAE0000DD8F5B /* CastledGeofenceConfigs.swift */; };
 		0A1855502B6A2DA7005C1681 /* CastledBadgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A18554F2B6A2DA7005C1681 /* CastledBadgeManager.swift */; };
 		0A1B4B782A7BB1E100D6430B /* CIFsDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */; };
 		0A1B4B792A7BB1E100D6430B /* CIHTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1B4B762A7BB1E100D6430B /* CIHTMLView.swift */; };
@@ -257,6 +261,10 @@
 		0A13955A2C69C31000DD8F5B /* CastledLocationMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledLocationMonitor.swift; sourceTree = "<group>"; };
 		0A13955C2C6A206100DD8F5B /* CastledGeofecerValidations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledGeofecerValidations.swift; sourceTree = "<group>"; };
 		0A13955F2C6A22C700DD8F5B /* CastledGeofencerUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledGeofencerUtils.swift; sourceTree = "<group>"; };
+		0A1395612C6B7A5500DD8F5B /* CastledGeofecerProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledGeofecerProcessor.swift; sourceTree = "<group>"; };
+		0A1395632C6C784000DD8F5B /* CastledGeofeceObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledGeofeceObject.swift; sourceTree = "<group>"; };
+		0A1395672C6CA4AB00DD8F5B /* CastledVisitedPlacesDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledVisitedPlacesDetails.swift; sourceTree = "<group>"; };
+		0A1395692C6CAE0000DD8F5B /* CastledGeofenceConfigs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledGeofenceConfigs.swift; sourceTree = "<group>"; };
 		0A18554F2B6A2DA7005C1681 /* CastledBadgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledBadgeManager.swift; sourceTree = "<group>"; };
 		0A1B4B752A7BB1E100D6430B /* CIFsDefaultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIFsDefaultView.swift; sourceTree = "<group>"; };
 		0A1B4B762A7BB1E100D6430B /* CIHTMLView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIHTMLView.swift; sourceTree = "<group>"; };
@@ -546,6 +554,10 @@
 			children = (
 				0A13955C2C6A206100DD8F5B /* CastledGeofecerValidations.swift */,
 				0A13955F2C6A22C700DD8F5B /* CastledGeofencerUtils.swift */,
+				0A1395612C6B7A5500DD8F5B /* CastledGeofecerProcessor.swift */,
+				0A1395632C6C784000DD8F5B /* CastledGeofeceObject.swift */,
+				0A1395672C6CA4AB00DD8F5B /* CastledVisitedPlacesDetails.swift */,
+				0A1395692C6CAE0000DD8F5B /* CastledGeofenceConfigs.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1559,6 +1571,10 @@
 				0A6E0A442C64C5B000B51920 /* CastledGeoFencerSetupLoader.swift in Sources */,
 				0A1395552C69C29A00DD8F5B /* CastledVisitMonitor.swift in Sources */,
 				0A1395592C69C2D500DD8F5B /* CastledHeadingMonitor.swift in Sources */,
+				0A13956A2C6CAE0000DD8F5B /* CastledGeofenceConfigs.swift in Sources */,
+				0A1395642C6C784000DD8F5B /* CastledGeofeceObject.swift in Sources */,
+				0A1395622C6B7A5500DD8F5B /* CastledGeofecerProcessor.swift in Sources */,
+				0A1395682C6CA4AB00DD8F5B /* CastledVisitedPlacesDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

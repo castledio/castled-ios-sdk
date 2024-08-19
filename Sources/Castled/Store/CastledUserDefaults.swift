@@ -14,7 +14,7 @@ public class CastledUserDefaults: NSObject {
     private static var userDefaultsLocal = UserDefaults.standard
     static var appGroupId = ""
 
-    static var userDefaults: UserDefaults = {
+    private static var userDefaults: UserDefaults = {
         if appGroupId.isEmpty {
             return UserDefaults.standard
         }
@@ -138,7 +138,7 @@ public class CastledUserDefaults: NSObject {
         userDefaults.synchronize()
     }
 
-    static func getUserDefaults() -> UserDefaults {
+    public static func getUserDefaults() -> UserDefaults {
         return userDefaults
     }
 

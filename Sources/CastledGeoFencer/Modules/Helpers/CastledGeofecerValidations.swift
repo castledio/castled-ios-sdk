@@ -62,4 +62,8 @@ class CastledGeofecerValidations: NSObject {
         }
         return backgroundModes.contains("location")
     }
+
+    static func isUpdateIntervalPassedSinceLastVisit(lastVisitedTime: TimeInterval) -> Bool {
+        return (CastledGeofencerUtils.getCurrentTIme() - lastVisitedTime) > CastledGeoFencer.sharedInstance.configs.locationUpdateIntervalSec
+    }
 }
