@@ -7,10 +7,9 @@
 
 import UIKit
 
-class CastledMediasViewController: UIViewController {
-    private var userDefaults: UserDefaults?
+class CastledMediasViewController: UIViewController, CastledNotificationContentProtocol {
+    var userDefaults: UserDefaults?
     private var mediaObjects: [CastledNotificationMediaObject]
-    private static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
 
     private let pageControl: UIPageControl = {
         let control = UIPageControl()
@@ -65,11 +64,11 @@ class CastledMediasViewController: UIViewController {
         pageControl.numberOfPages = mediaObjects.count
     }
 
-    func setUserdefaults(FromAppgroup appGroupId: String) {
-        userDefaults = UserDefaults(suiteName: appGroupId)
-        userDefaults?.removeObject(forKey: CastledMediasViewController.kCastledClickedNotiContentIndx)
-        userDefaults?.synchronize()
+    func getContentSizeHeight() -> CGFloat {
+        return view.frame.size.width
     }
+
+    func populateDetailsFrom(notificaiton: UNNotification) {}
 }
 
 extension CastledMediasViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -87,7 +86,7 @@ extension CastledMediasViewController: UICollectionViewDataSource, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mediaObject = mediaObjects[indexPath.row]
         if mediaObject.mediaType == .image {
-            userDefaults?.setValue(indexPath.item, forKey: CastledMediasViewController.kCastledClickedNotiContentIndx)
+            userDefaults?.setValue(indexPath.item, forKey: CastledNotificationContentConstants.kCastledClickedNotiContentIndx)
             userDefaults?.synchronize()
             extensionContext?.performNotificationDefaultAction()
         }

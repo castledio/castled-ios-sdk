@@ -6,8 +6,10 @@
 //
 
 import UIKit
+@_spi(CastledInternal) import Castled
 
-class CastledDefaultViewController: UIViewController {
+class CastledDefaultViewController: UIViewController, CastledNotificationContentProtocol {
+    var userDefaults: UserDefaults?
     @IBOutlet weak var lblBody: UILabel!
     @IBOutlet weak var lblSubTitle: UILabel!
     @IBOutlet weak var lblTitle: UILabel!
@@ -28,13 +30,20 @@ class CastledDefaultViewController: UIViewController {
          // Pass the selected object to the new view controller.
      }
      */
-    func populateDetails() {
-        lblTitle.text = "Create complex customer journeys and personalised engagement campaigns using customer data locked securely in your data warehouse.Create complex customer journeys and personalised engagement campaigns using customer data locked securely in your data warehouse.Create complex customer journeys and personalised engagement campaigns using customer data locked securely in your data warehouse.Create complex customer journeys and personalised engagement campaigns using customer data locked securely in your data warehouse.Create complex customer journeys and personalised engagement campaigns using customer data locked securely in your data warehouse."
-        lblSubTitle.text = "Sub Create the most effective user segments using our visual audience builder to run your dream cross-channel campaigns. Integrate effortlessly with other tools in your marketing ecosystem..Create the most effective user segments using our visual audience builder to run your dream cross-channel campaigns. Integrate effortlessly with other tools in your marketing ecosystem..Create the most effective user segments using our visual audience builder to run your dream cross-channel campaigns. Integrate effortlessly with other tools in your marketing ecosystem..Create the most effective user segments using our visual audience builder to run your dream cross-channel campaigns. Integrate effortlessly with other tools in your marketing ecosystem..f"
-        lblBody.text = "Body The ROI of these platforms begins to decline once you surpass initial growth thresholds, ultimately leading to a point where developing an in-house solution becomes the only viable option.The ROI of these platforms begins to decline once you surpass initial growth thresholds, ultimately leading to a point where developing an in-house solution becomes the only viable optionThe ROI of these platforms begins to decline once you surpass initial growth thresholds, ultimately leading to a point where developing an in-house solution becomes the only viable optionThe ROI of these platforms begins to decline once you surpass initial growth thresholds, ultimately leading to a point where developing an in-house solution becomes the only viable optionThe ROI of these platforms begins to decline once you surpass initial growth thresholds, ultimately leading to a point where developing an in-house solution becomes the only viable optionThe ROI of these platforms begins to decline once you surpass initial growth thresholds, ultimately leading to a point where developing an in-house solution becomes the only viable option f"
+    func populateDetailsFrom(notificaiton: UNNotification) {
+        lblTitle.text = notificaiton.request.content.title
+        lblSubTitle.text = notificaiton.request.content.subtitle
+        lblBody.text = notificaiton.request.content.body
+        lblDate.text = notificaiton.date.timeAgo()
     }
 
-    func getContentHeight() -> Double {
+    func getContentSizeHeight() -> CGFloat {
         return lblTitle.frame.origin.y+lblBody.frame.origin.y+lblBody.frame.size.height+lblTitle.frame.origin.y
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        userDefaults?.setValue(0, forKey: CastledNotificationContentConstants.kCastledClickedNotiContentIndx)
+        userDefaults?.synchronize()
+        extensionContext?.performNotificationDefaultAction()
     }
 }

@@ -169,6 +169,8 @@
 		0AD586A42AF79ADB00965E2E /* CastledBridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 0AD586A32AF79ADB00965E2E /* CastledBridge.js */; };
 		0ADBF14E2A437C810018F110 /* CastledMediasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */; };
 		0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */; };
+		0AE6007C2C75A16F00D656FC /* CastledNotificationContentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE6007B2C75A16F00D656FC /* CastledNotificationContentProtocol.swift */; };
+		0AE600812C75AF4600D656FC /* CastledNotificationContentConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE600802C75AF4600D656FC /* CastledNotificationContentConstants.swift */; };
 		0AE9DAEA2AC3E4AC00FE975C /* CastledStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */; };
 		0AE9DAF12AC42DBB00FE975C /* CastledNetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9DAF02AC42DBB00FE975C /* CastledNetworkMonitor.swift */; };
 		0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */; };
@@ -390,6 +392,8 @@
 		0AD586A32AF79ADB00965E2E /* CastledBridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = CastledBridge.js; sourceTree = "<group>"; };
 		0ADBF14D2A437C810018F110 /* CastledMediasViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediasViewController.swift; sourceTree = "<group>"; };
 		0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
+		0AE6007B2C75A16F00D656FC /* CastledNotificationContentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationContentProtocol.swift; sourceTree = "<group>"; };
+		0AE600802C75AF4600D656FC /* CastledNotificationContentConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledNotificationContentConstants.swift; sourceTree = "<group>"; };
 		0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledStore.swift; sourceTree = "<group>"; };
 		0AE9DAF02AC42DBB00FE975C /* CastledNetworkMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNetworkMonitor.swift; sourceTree = "<group>"; };
 		0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledReachability.swift; sourceTree = "<group>"; };
@@ -803,6 +807,7 @@
 			isa = PBXGroup;
 			children = (
 				0A9C266D2A42413100ADB960 /* CastledNotificationViewController.swift */,
+				0AE6007D2C75AA9A00D656FC /* Utils */,
 				0A9C266C2A42413100ADB960 /* ContentAssets.xcassets */,
 				0A365E0B2A437C370048BD09 /* Views */,
 				0A9C26662A42413100ADB960 /* Model */,
@@ -814,6 +819,8 @@
 			isa = PBXGroup;
 			children = (
 				0A9C26672A42413100ADB960 /* CastledNotificationMediaObject.swift */,
+				0AE6007B2C75A16F00D656FC /* CastledNotificationContentProtocol.swift */,
+				0AE600802C75AF4600D656FC /* CastledNotificationContentConstants.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1067,6 +1074,13 @@
 			isa = PBXGroup;
 			children = (
 				0ACCAC022B4D5ABE00C0E9B8 /* CastledButtonActionHandler.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		0AE6007D2C75AA9A00D656FC /* Utils */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1595,9 +1609,11 @@
 				0A0E11212A41F4C4004F247F /* CastledNotificationViewControllerObjC.m in Sources */,
 				0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */,
 				0A9C266E2A42413100ADB960 /* CastledNotificationMediaObject.swift in Sources */,
+				0AE600812C75AF4600D656FC /* CastledNotificationContentConstants.swift in Sources */,
 				0A7EF7912C520DE0001D35F1 /* CastledDefaultViewController.swift in Sources */,
 				66D18BB62A0D55960075AB43 /* CastledNotificationContent.docc in Sources */,
 				0A9C26722A42413100ADB960 /* CastledNotificationViewController.swift in Sources */,
+				0AE6007C2C75A16F00D656FC /* CastledNotificationContentProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,9 +7,12 @@
 import AVFoundation
 import SDWebImage
 import UIKit
+@_spi(CastledInternal) import Castled
 
 class CastledMediaCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "MediaCell"
+    lazy var placeholderImage = UIImage(named: "castled_placeholder", in: Bundle.resourceBundle(for: CastledMediaCollectionViewCell.self), compatibleWith: nil)
+    lazy var emptyImage = UIImage(named: "empty_image", in: Bundle.resourceBundle(for: CastledMediaCollectionViewCell.self), compatibleWith: nil)
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -26,7 +29,7 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
         return view
     }()
 
-    private let titleLabel: UILabel = {
+    private let lblTitle: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
@@ -34,11 +37,11 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
         label.shadowColor = .black
         label.shadowOffset = CGSize(width: 1, height: 1)
         label.textAlignment = .left
-        label.numberOfLines = 2
+        label.numberOfLines = 3
         return label
     }()
 
-    private let subtitleLabel: UILabel = {
+    private let lblBody: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
@@ -46,7 +49,7 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
         label.shadowColor = .black
         label.shadowOffset = CGSize(width: 1, height: 1)
         label.textAlignment = .left
-        label.numberOfLines = 2
+        label.numberOfLines = 3
         return label
     }()
 
@@ -65,8 +68,8 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(imageView)
         contentView.addSubview(videoPlayerView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(subtitleLabel)
+        contentView.addSubview(lblTitle)
+        contentView.addSubview(lblBody)
         contentView.addSubview(playPauseButton)
         playPauseButton.setImage(pauseImage, for: .normal)
         playPauseButton.addTarget(self, action: #selector(playPauseButtonTapped(_:)), for: .touchUpInside)
@@ -82,13 +85,13 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
             videoPlayerView.topAnchor.constraint(equalTo: contentView.topAnchor),
             videoPlayerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            titleLabel.bottomAnchor.constraint(equalTo: subtitleLabel.topAnchor, constant: -5),
+            lblTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            lblTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            lblTitle.bottomAnchor.constraint(equalTo: lblBody.topAnchor, constant: -5),
 
-            subtitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            subtitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            subtitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            lblBody.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            lblBody.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            lblBody.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
 
             playPauseButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             playPauseButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -108,19 +111,16 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
     }
 
     func configure(with mediaViewModel: CastledNotificationMediaObject) {
-        titleLabel.text = mediaViewModel.title
-        subtitleLabel.text = mediaViewModel.subTitle
-
-        //  imageView.image = nil
-
+        lblTitle.text = mediaViewModel.title
+        lblBody.text = mediaViewModel.subTitle
         let urlImageString = mediaViewModel.thumbUrl
-        let placeholderImage = UIImage(named: "media_placeholder", in: Bundle.resourceBundle(for: CastledMediaCollectionViewCell.self), compatibleWith: nil)
         if !urlImageString.isEmpty, let url = URL(string: urlImageString) {
             imageView.sd_setImage(with: url, placeholderImage: placeholderImage)
 
         } else {
             imageView.image = placeholderImage
         }
+        imageView.image = placeholderImage
 
         switch mediaViewModel.mediaType {
         case .image:
@@ -161,8 +161,10 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
 
             NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
 
-        case .none:
-            break
+        case .other, .none:
+            imageView.isHidden = true
+            videoPlayerView.isHidden = true
+            playPauseButton.isHidden = true
         }
     }
 
@@ -249,33 +251,5 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
 
     deinit {
         removePlayerItems()
-    }
-}
-
-extension Bundle {
-    static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
-        let mainBundle = Bundle.main
-        let sourceBundle = Bundle(for: bundleClass)
-        guard let moduleName = String(reflecting: bundleClass).components(separatedBy: ".").first else {
-            fatalError("Couldn't determine module name from class \(bundleClass)")
-        }
-        var bundle: Bundle?
-        // CocoaPods (framework)
-        if bundle == nil, let frameworkBundlePath = sourceBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: frameworkBundlePath)
-        }
-        // CocoaPods (static)
-        else if bundle == nil, let staticBundlePath = mainBundle.path(forResource: moduleName, ofType: "bundle") {
-            bundle = Bundle(path: staticBundlePath)
-        }
-        // SPM
-        else if bundle == nil, let bundlePath = mainBundle.path(forResource: "\(moduleName)_\(moduleName)", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        // SPM for other modules : Inbox
-        else if bundle == nil, let bundlePath = mainBundle.path(forResource: "Castled_\(moduleName)", ofType: "bundle") {
-            bundle = Bundle(path: bundlePath)
-        }
-        return bundle ?? sourceBundle
     }
 }

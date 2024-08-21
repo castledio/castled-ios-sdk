@@ -42,5 +42,6 @@ struct CastledNotificationMediaObject: Codable {
         case image = "IMAGE"
         case video = "VIDEO"
         case audio = "AUDIO"
+        case other = "NONE"
     }
 }

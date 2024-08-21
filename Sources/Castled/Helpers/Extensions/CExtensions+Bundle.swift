@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-@_spi(CastledInternal)
 
 public extension Bundle {
     static func resourceBundle(for bundleClass: AnyClass) -> Bundle {
