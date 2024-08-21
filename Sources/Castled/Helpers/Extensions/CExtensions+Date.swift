@@ -38,9 +38,9 @@ public extension Date {
                 return "\(days) day\(days > 1 ? "s" : "") ago"
             }
         } else if let hours = components.hour, hours > 0 {
-            return "\(hours) hour\(hours > 1 ? "s" : "") ago"
+            return "\(hours)h ago"
         } else if let minutes = components.minute, minutes > 0 {
-            return "\(minutes) minute\(minutes > 1 ? "s" : "") ago"
+            return "\(minutes)m ago"
         } else {
             return "Now"
         }

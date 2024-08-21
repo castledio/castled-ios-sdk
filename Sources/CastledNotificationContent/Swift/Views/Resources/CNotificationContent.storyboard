@@ -34,7 +34,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2u-xQ-7G6">
-                                <rect key="frame" x="10" y="38" width="373" height="17"/>
+                                <rect key="frame" x="10" y="30.666666666666671" width="373" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" id="LQi-K6-AAn"/>
                                 </constraints>
@@ -42,7 +42,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aai-Re-Rau">
-                                <rect key="frame" x="10" y="65" width="373" height="17"/>
+                                <rect key="frame" x="10" y="50" width="373" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" id="w3M-W1-42K"/>
                                 </constraints>
@@ -60,8 +60,8 @@
                             <constraint firstItem="Nw2-Zn-4eC" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" constant="10" id="LSA-by-6F6"/>
                             <constraint firstAttribute="trailing" secondItem="cn0-xd-ph9" secondAttribute="trailing" constant="10" id="cYq-sk-uSH"/>
                             <constraint firstItem="k6K-IX-zoz" firstAttribute="trailing" secondItem="Z2u-xQ-7G6" secondAttribute="trailing" constant="10" id="dRC-0m-FZL"/>
-                            <constraint firstItem="Z2u-xQ-7G6" firstAttribute="top" secondItem="Nw2-Zn-4eC" secondAttribute="bottom" constant="10" id="nOe-Xz-4sA"/>
-                            <constraint firstItem="aai-Re-Rau" firstAttribute="top" secondItem="Z2u-xQ-7G6" secondAttribute="bottom" constant="10" id="oUc-Lu-MKl"/>
+                            <constraint firstItem="Z2u-xQ-7G6" firstAttribute="top" secondItem="Nw2-Zn-4eC" secondAttribute="bottom" constant="2.5" id="nOe-Xz-4sA"/>
+                            <constraint firstItem="aai-Re-Rau" firstAttribute="top" secondItem="Z2u-xQ-7G6" secondAttribute="bottom" constant="2.5" id="oUc-Lu-MKl"/>
                             <constraint firstItem="cn0-xd-ph9" firstAttribute="top" secondItem="Nw2-Zn-4eC" secondAttribute="top" id="sKw-K0-i0P"/>
                             <constraint firstItem="cn0-xd-ph9" firstAttribute="leading" secondItem="Nw2-Zn-4eC" secondAttribute="trailing" constant="10" id="vC2-97-SSF"/>
                         </constraints>
