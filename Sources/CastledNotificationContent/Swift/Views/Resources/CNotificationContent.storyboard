@@ -18,6 +18,7 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Now" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cn0-xd-ph9">
                                 <rect key="frame" x="357.33333333333331" y="10" width="25.666666666666686" height="14.333333333333336"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" id="PDI-iF-6Wn"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" id="f1w-uV-ARy"/>
@@ -26,7 +27,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nw2-Zn-4eC">
-                                <rect key="frame" x="10" y="10" width="337.33333333333331" height="18"/>
+                                <rect key="frame" x="10" y="10" width="345" height="18"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" id="F0V-WJ-fSk"/>
                                 </constraints>
@@ -63,7 +65,7 @@
                             <constraint firstItem="Z2u-xQ-7G6" firstAttribute="top" secondItem="Nw2-Zn-4eC" secondAttribute="bottom" constant="2.5" id="nOe-Xz-4sA"/>
                             <constraint firstItem="aai-Re-Rau" firstAttribute="top" secondItem="Z2u-xQ-7G6" secondAttribute="bottom" constant="2.5" id="oUc-Lu-MKl"/>
                             <constraint firstItem="cn0-xd-ph9" firstAttribute="top" secondItem="Nw2-Zn-4eC" secondAttribute="top" id="sKw-K0-i0P"/>
-                            <constraint firstItem="cn0-xd-ph9" firstAttribute="leading" secondItem="Nw2-Zn-4eC" secondAttribute="trailing" constant="10" id="vC2-97-SSF"/>
+                            <constraint firstItem="cn0-xd-ph9" firstAttribute="leading" secondItem="Nw2-Zn-4eC" secondAttribute="trailing" constant="2.5" id="vC2-97-SSF"/>
                         </constraints>
                     </view>
                     <connections>
