@@ -20,13 +20,10 @@ import UserNotifications
     var delegate: CastledNotificationDelegate?
 
     private var isInitialized = false
-    // Create a dispatch queue
-    let castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
-    let castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .userInteractive)
-    let castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", qos: .userInitiated, attributes: .concurrent)
 
-    // Create a semaphore
-    private let castledSemaphore = DispatchSemaphore(value: 1)
+    lazy var castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
+    lazy var castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .userInteractive)
+    lazy var castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", qos: .userInitiated, attributes: .concurrent)
 
     override private init() {}
 
@@ -42,9 +39,6 @@ import UserNotifications
         if let castledDelegate = delegate {
             Castled.sharedInstance.delegate = castledDelegate
         }
-        CastledUserDefaults.appGroupId = config.appGroupId
-        if !config.appGroupId.isEmpty { CastledUserDefaults.migrateDatasToSuit() }
-
         CastledConfigsUtils.saveTheConfigs(config: config)
         Castled.sharedInstance.initialSetup()
     }
@@ -58,6 +52,9 @@ import UserNotifications
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
 
         if config.enablePush {
+            if config.appGroupId.isEmpty {
+                CastledLog.castledLog("'appGroupId' is empty. Consider setting a value for proper functionality.", logLevel: .warning)
+            }
             CastledPushNotification.sharedInstance.initializePush()
             setNotificationCategories(withItems: Set<UNNotificationCategory>())
         }
@@ -81,7 +78,7 @@ import UserNotifications
         checkAndRegisterForAPNsToken()
     }
 
-    @objc public func isCastledInitialized() -> Bool {
+    func isCastledInitialized() -> Bool {
         return isInitialized
     }
 
@@ -336,25 +333,5 @@ import UserNotifications
                 }
             }
         }
-    }
-
-    // MARK: - REACT AND OTHER SDK SUPPORT
-
-    /**
-     Supporting method for react and other SDKs
-     */
-    public func logMessage(_ message: String, _ logLevel: CastledLogLevel) {
-        CastledLog.castledLog(message, logLevel: logLevel)
-    }
-
-    /**
-     Supporting method for react and other SDKs
-     */
-    public static func setDelegate(_ delegate: CastledNotificationDelegate) {
-        Castled.sharedInstance.delegate = delegate
-    }
-
-    func getCastledConfig() -> CastledConfigs {
-        return CastledConfigsUtils.configs
     }
 }

@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let config = CastledConfigs.initialize(appId: "718c38e2e359d94367a2e0d35e1fd4df")
+        let config = CastledConfigs.initialize(appId: "e8a4f68bfb6a58b40a77a0e6150eca0b")
         config.enableAppInbox = true
         config.enablePush = true
         config.enableInApp = true
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         config.enableSessionTracking = true
         config.skipUrlHandling = false
         config.sessionTimeOutSec = 15
-        config.location = CastledLocation.US
+        config.location = CastledLocation.TEST
         config.logLevel = CastledLogLevel.debug
         config.appGroupId = "group.com.castled.CastledPushDemo.Castled"
         // Register the custom category
@@ -57,13 +57,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let action2 = UNNotificationAction(identifier: "DECLINE", title: "Decline", options: UNNotificationActionOptions.foreground)
 
         // Create the category with the custom actions
-        let customCategory1 = UNNotificationCategory(identifier: "ACCEPT_DECLINE", actions: [action1, action2], intentIdentifiers: [], options: [])
+        let customCategory1 = UNNotificationCategory(identifier: "ACCEPT_DECLINE", actions: [action1, action2], intentIdentifiers: [], options: .customDismissAction)
 
         let action3 = UNNotificationAction(identifier: "YES", title: "Yes", options: [UNNotificationActionOptions.foreground])
         let action4 = UNNotificationAction(identifier: "NO", title: "No", options: [])
 
         // Create the category with the custom actions
-        let customCategory2 = UNNotificationCategory(identifier: "YES_NO", actions: [action3, action4], intentIdentifiers: [], options: [])
+        let customCategory2 = UNNotificationCategory(identifier: "YES_NO", actions: [action3, action4], intentIdentifiers: [], options: .customDismissAction)
 
         let categoriesSet = Set([customCategory1, customCategory2])
 

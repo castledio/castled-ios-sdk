@@ -14,7 +14,7 @@ public enum CastledConstants {
     static let kCastledPlatformValue = "ios"
     static let kCastledPlatformKey = "platform"
 
-    static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
+    public static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
 
@@ -151,5 +151,10 @@ public enum CastledConstants {
         static let AUTH_KEY = "Auth-Key"
         static let APP_ID = "App-Id"
         static let Platform = "Platform"
+    }
+
+    enum AppGroupID {
+        // Dont cleanup this code.This is to separate this key from CastledUserDefault Class
+        static let kCastledAppGroupId = "_castledAppGroupId_"
     }
 }
