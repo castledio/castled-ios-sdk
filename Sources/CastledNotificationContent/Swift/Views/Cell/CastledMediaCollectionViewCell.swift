@@ -161,7 +161,7 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
 
             NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
 
-        case .other, .none:
+        case .text_only, .none:
             imageView.isHidden = true
             videoPlayerView.isHidden = true
             playPauseButton.isHidden = true

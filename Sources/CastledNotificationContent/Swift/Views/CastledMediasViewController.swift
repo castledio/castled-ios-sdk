@@ -86,7 +86,7 @@ extension CastledMediasViewController: UICollectionViewDataSource, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mediaObject = mediaObjects[indexPath.row]
         if mediaObject.mediaType == .image {
-            userDefaults?.setValue(indexPath.item, forKey: CastledNotificationContentConstants.kCastledClickedNotiContentIndx)
+            userDefaults?.setValue(indexPath.item, forKey: CastledNotificationContentConstants.CastledClickedNotiContentIndx)
             userDefaults?.synchronize()
             extensionContext?.performNotificationDefaultAction()
         }

@@ -32,7 +32,7 @@ struct CastledNotificationMediaObject: Codable {
         self.subTitle = (try? container.decodeIfPresent(String.self, forKey: .subTitle)) ?? ""
         self.mediaUrl = (try? container.decodeIfPresent(String.self, forKey: .mediaUrl)) ?? ""
         self.thumbUrl = (try? container.decodeIfPresent(String.self, forKey: .thumbUrl)) ?? self.mediaUrl
-        self.mediaType = (try? container.decodeIfPresent(CNMediaType.self, forKey: .mediaType)) ?? .image
+        self.mediaType = (try? container.decodeIfPresent(CNMediaType.self, forKey: .mediaType)) ?? .text_only
         self.clickAction = (try? container.decodeIfPresent(String.self, forKey: .clickAction)) ?? ""
         self.body = (try? container.decodeIfPresent(String.self, forKey: .body)) ?? ""
         self.keyVals = (try? container.decodeIfPresent([String: String].self, forKey: .keyVals)) ?? [String: String]()
@@ -42,6 +42,6 @@ struct CastledNotificationMediaObject: Codable {
         case image = "IMAGE"
         case video = "VIDEO"
         case audio = "AUDIO"
-        case other = "NONE"
+        case text_only = "NONE"
     }
 }

@@ -19,8 +19,6 @@ import UserNotificationsUI
         }
     }
 
-    private static let kMsg_frames = "msg_frames"
-
     @IBOutlet var imageView: UIImageView!
     var childViewController: CastledNotificationContentProtocol?
 
@@ -38,21 +36,27 @@ import UserNotificationsUI
                 CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: notification.request.content.userInfo)
                 setuserDefaults()
             }
-            if let msgFramesString = customCasledDict[CastledNotificationViewController.kMsg_frames] as? String {
-                // type =  carousel
-                if let convertedAttachments = convertToArray(text: msgFramesString), !convertedAttachments.isEmpty {
-                    if let mediaType = convertedAttachments.first?.mediaType, mediaType != CastledNotificationMediaObject.CNMediaType.other {
-                        let mediaListVC = CastledMediasViewController(mediaObjects: convertedAttachments)
-                        addChild(mediaListVC)
-                        mediaListVC.view.frame = view.frame
-                        view.addSubview(mediaListVC.view)
-                        childViewController = mediaListVC
-                        mediaListVC.view.layoutIfNeeded()
-                        preferredContentSize = mediaListVC.preferredContentSize
-                        return
-                    }
+            let templateType = customCasledDict[CastledNotificationContentConstants.templateType] as? String ?? CastledNotificationContentConstants.TemplateType.defaultTemplate.rawValue
+            if let msgFramesString = customCasledDict[CastledNotificationContentConstants.messageFrames] as? String,
+               let convertedAttachments = convertToArray(text: msgFramesString), !convertedAttachments.isEmpty
+            {
+                switch templateType {
+                    case CastledNotificationContentConstants.TemplateType.defaultTemplate.rawValue:
+                        if let mediaType = convertedAttachments.first?.mediaType, mediaType != CastledNotificationMediaObject.CNMediaType.text_only {
+                            let mediaListVC = CastledMediasViewController(mediaObjects: convertedAttachments)
+                            addChild(mediaListVC)
+                            mediaListVC.view.frame = view.frame
+                            view.addSubview(mediaListVC.view)
+                            childViewController = mediaListVC
+                            mediaListVC.view.layoutIfNeeded()
+                            preferredContentSize = mediaListVC.preferredContentSize
+                            return
+                        }
+                    default:
+                        break
                 }
             }
+
             createDefaultContentView(notification)
         }
     }
@@ -81,7 +85,7 @@ import UserNotificationsUI
     private func setuserDefaults() {
         if !appGroupId.isEmpty {
             childViewController?.userDefaults = UserDefaults(suiteName: appGroupId)
-            childViewController?.userDefaults?.removeObject(forKey: CastledNotificationContentConstants.kCastledClickedNotiContentIndx)
+            childViewController?.userDefaults?.removeObject(forKey: CastledNotificationContentConstants.CastledClickedNotiContentIndx)
         }
     }
 
@@ -102,13 +106,18 @@ import UserNotificationsUI
     }
 
     private func convertToArray(text: String) -> [CastledNotificationMediaObject]? {
-        // Convert the string to data
         guard let jsonData = text.data(using: .utf8) else {
             return nil
         }
+
         let jsonDecoder = JSONDecoder()
-        let convertedAttachments = try? jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
-        return convertedAttachments
+        do {
+            let convertedAttachments = try jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
+            return convertedAttachments
+        } catch {
+            print("Failed to decode JSON: \(error)")
+            return nil
+        }
     }
 
     @objc public func isNotificaitonFromCastled(_ notification: UNNotification) -> Bool {

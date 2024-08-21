@@ -6,5 +6,12 @@
 //
 
 enum CastledNotificationContentConstants {
-    static let kCastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
+    static let CastledClickedNotiContentIndx = "_kCastledClickedNotiContentIndx_"
+    static let messageFrames = "msg_frames"
+    static let templateType = "template_type"
+
+    public enum TemplateType: String {
+        case defaultTemplate = "DEFAULT"
+        case carousel = "CAROUSEL"
+    }
 }
