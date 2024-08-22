@@ -21,7 +21,7 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
         navigationItem.title = "Castled"
 
         self.showRequiredViews()
-    //    Castled.sharedInstance.pauseInApp()
+        //    Castled.sharedInstance.pauseInApp()
         //
 
         // Do any additional setup after loading the view.
@@ -124,11 +124,12 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
     @objc func inboxTapped() {
         // Handle the button tap here
         let style = CastledInboxDisplayConfig()
-        style.inboxViewBackgroundColor = .white
+        style.inboxViewBackgroundColor = UIColor(hexString: "ADD8E6")
         style.navigationBarBackgroundColor = .link
         style.navigationBarTitle = "Castled Inbox"
         style.navigationBarButtonTintColor = .white
         style.loaderTintColor = .blue
+
         //  Optional
         //  style.hideBackButton = true
         //  style.backButtonImage = UIImage(named: 'back_image')
@@ -189,5 +190,25 @@ class ViewController: UIViewController, CastledInboxViewControllerDelegate {
             default:
                 break
         }
+    }
+}
+
+extension UIColor {
+    convenience init(hexString: String) {
+        let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int = UInt64()
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+            case 3: // RGB (12-bit)
+                (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+            case 6: // RGB (24-bit)
+                (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+            case 8: // ARGB (32-bit)
+                (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+            default:
+                (a, r, g, b) = (255, 255, 255, 255)
+        }
+        self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
 }
