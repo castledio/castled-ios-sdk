@@ -46,7 +46,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                 guard let urlString = customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] as? String,
                       let fileUrl = URL(string: urlString)
                 else {
-                    CastledLog.castledLog("Returing as attachmenturl is nil '\(customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] ?? "")'", logLevel: .error)
+                    CastledLog.castledLog("Returing as attachmenturl is nil or empty, Probably text message '\(customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] ?? "")'", logLevel: .debug)
                     return
                 }
                 let fileExtension = fileUrl.pathExtension

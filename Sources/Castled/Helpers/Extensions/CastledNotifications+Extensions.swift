@@ -227,6 +227,7 @@ public extension Castled {
 
     private func getPushPayload(event: String, sourceContext: String, actionLabel: String? = "", actionType: String? = "", actionUri: String = "", deliveredDate: Date, notificationId: String) -> [[String: String]] {
         if sourceContext.isEmpty {
+            CastledLog.castledLog("No need to report the test notificaiton", logLevel: .debug)
             return []
         }
         var payload = [[String: String]]()
@@ -234,6 +235,7 @@ public extension Castled {
         if event == CastledConstants.CastledEventTypes.received.rawValue {
             var deliveredPushIds = CastledUserDefaults.shared.getDeliveredPushIds()
             if deliveredPushIds.contains(where: { $0 == notificationId || $0 == sourceContext }) {
+                CastledLog.castledLog("Already reported the push received event '\(notificationId)'", logLevel: .debug)
                 return payload
             } else {
                 deliveredPushIds.append(notificationId)
@@ -247,6 +249,7 @@ public extension Castled {
             var clickedPushIds = CastledUserDefaults.shared.getClickedPushIds()
 
             if clickedPushIds.contains(where: { $0 == notificationId || $0 == sourceContext }) {
+                CastledLog.castledLog("Already reported the push click event'\(notificationId)'", logLevel: .debug)
                 return payload
             } else {
                 clickedPushIds.append(notificationId)
