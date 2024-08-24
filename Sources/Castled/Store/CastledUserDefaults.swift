@@ -16,11 +16,14 @@ public class CastledUserDefaults: NSObject {
 
     static var userDefaults: UserDefaults = {
         if appGroupId.isEmpty {
+            CastledLog.castledLog("Initializing shared userdefaults, as appGroupId is empty", logLevel: .debug)
             return UserDefaults.standard
         }
         guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            CastledLog.castledLog("Initializing shared userdefaults, as suit is nil", logLevel: .debug)
             return UserDefaults.standard
         }
+        CastledLog.castledLog("Initializing suit userdefaults from appGroupId '\(appGroupId)'", logLevel: .debug)
 
         return defaults
     }()
@@ -150,6 +153,7 @@ public class CastledUserDefaults: NSObject {
             return true
         } else {
             let errorMessage = "\nError ❌❌❌: Kindly enable the App Groups in the Xcode capabilities for '\(appgroupId)'. Follow the link \nhttps://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#3-adding-an-app-group-id\n"
+            CastledLog.castledLog(errorMessage, logLevel: .error)
             fatalError(errorMessage)
         }
     }
