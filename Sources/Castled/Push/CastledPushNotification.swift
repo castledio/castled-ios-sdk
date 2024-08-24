@@ -40,6 +40,7 @@ import Foundation
             return
         }
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
+            CastledLog.castledLog("Push reporting response '\(result)'", logLevel: .debug)
             success(result)
         }
     }

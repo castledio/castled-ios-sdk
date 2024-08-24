@@ -46,14 +46,16 @@ import UserNotifications
     private func initialSetup() {
         let config = CastledConfigs.sharedInstance
         CastledLog.setLogLevel(config.logLevel)
-        #if !DEBUG
-        CastledLog.setLogLevel(CastledLogLevel.none)
-        #endif
+//        #if !DEBUG
+//        CastledLog.setLogLevel(CastledLogLevel.none)
+//        #endif
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
 
         if config.enablePush {
             if config.appGroupId.isEmpty {
                 CastledLog.castledLog("'appGroupId' is empty. Consider setting a value for proper functionality.", logLevel: .warning)
+            } else {
+                CastledLog.castledLog("Initilized with appGroupId '\(config.appGroupId)'", logLevel: .debug)
             }
             CastledPushNotification.sharedInstance.initializePush()
             setNotificationCategories(withItems: Set<UNNotificationCategory>())

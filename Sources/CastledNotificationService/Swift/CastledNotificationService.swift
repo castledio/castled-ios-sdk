@@ -16,6 +16,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
 
     @objc public var appGroupId = "" {
         didSet {
+            CastledLog.castledLog("appGroupId '\(appGroupId)' is set inside Notificiation service", logLevel: .debug)
             if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
                 CastledShared.sharedInstance.appGroupId = appGroupId
                 sharedUserDefaults = UserDefaults(suiteName: appGroupId)
@@ -27,13 +28,16 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     @objc public var bestAttemptContent: UNMutableNotificationContent?
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        CastledLog.castledLog("Push notification received inside Notificiation service", logLevel: .debug)
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         if bestAttemptContent != nil {
             if let customCasledDict = CastledShared.sharedInstance.getCastledDictionary(userInfo: request.content.userInfo),
                customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String
             {
+                CastledLog.castledLog("Received push is from Castled", logLevel: .debug)
                 defer {
+                    CastledLog.castledLog("About to report the push event from extension", logLevel: .debug)
                     CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
                     setApplicationBadge()
                     contentHandler(bestAttemptContent ?? request.content)
@@ -42,6 +46,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                 guard let urlString = customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] as? String,
                       let fileUrl = URL(string: urlString)
                 else {
+                    CastledLog.castledLog("Returing as attachmenturl is nil or empty, Probably text message '\(customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] ?? "")'", logLevel: .debug)
                     return
                 }
                 let fileExtension = fileUrl.pathExtension
@@ -49,11 +54,14 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                 guard let imageData = NSData(contentsOf: fileUrl),
                       let attachment = UNNotificationAttachment.saveImageToDisk(fileIdentifier: imageFileIdentifier, data: imageData, options: nil)
                 else {
+                    CastledLog.castledLog("Returning without displaying as imageData is nil", logLevel: .error)
                     return
                 }
 
                 bestAttemptContent?.attachments = [attachment]
             }
+        } else {
+            CastledLog.castledLog("Push notification ignoring as bestAttemptContent is nil", logLevel: .debug)
         }
     }
 
@@ -111,6 +119,7 @@ extension UNNotificationAttachment {
             return attachment
 
         } catch {
+            CastledLog.castledLog("Error in saveImageToDisk \(error)", logLevel: .error)
             print("error \(error)")
         }
         return nil
