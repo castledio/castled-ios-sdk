@@ -10,7 +10,7 @@ import os.log
 
 public enum CastledLog {
     private static var defaultLogLevel: CastledLogLevel = .debug
-    private static let logger = OSLog(subsystem: "com.castled.CastlediOS", category: "Castled")
+    private static let logger = OSLog(subsystem: "com.castled.logging", category: "Castled")
 
     static func setLogLevel(_ logLevel: CastledLogLevel) {
         defaultLogLevel = logLevel
