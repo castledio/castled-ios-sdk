@@ -15,7 +15,7 @@ public class CastledShared: NSObject {
     @objc public var appGroupId: String = "" {
         didSet {
             if !appGroupId.isEmpty {
-                CastledLog.castledLog("Set the appGroupId from extensions '\(appGroupId)'", logLevel: .debug)
+                //CastledLog.castledLog("Set the appGroupId from extensions '\(appGroupId)'", logLevel: .debug)
                 CastledUserDefaults.appGroupId = appGroupId
                 if let event = pendingPushEvent {
                     // this is to handle the scenario where the user set the appid after theu super. in their extension class

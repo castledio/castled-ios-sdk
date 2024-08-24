@@ -16,7 +16,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
 
     @objc public var appGroupId = "" {
         didSet {
-            CastledLog.castledLog("appGroupId '\(appGroupId)' is set inside Notificiation service", logLevel: .debug)
+            // CastledLog.castledLog("appGroupId '\(appGroupId)' is set inside Notificiation service", logLevel: .debug)
             if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
                 CastledShared.sharedInstance.appGroupId = appGroupId
                 sharedUserDefaults = UserDefaults(suiteName: appGroupId)

@@ -189,7 +189,7 @@ public extension Castled {
                     CastledPushNotification.sharedInstance.reportPushEvents(params: params) { _ in
                     }
                 } else {
-                    CastledLog.castledLog("Not reporting as params empty '\(userInfo)'", logLevel: .debug)
+                    CastledLog.castledLog("Not reporting as params empty", logLevel: .debug)
                 }
             }
         }
