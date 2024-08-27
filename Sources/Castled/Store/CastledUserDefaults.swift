@@ -150,11 +150,9 @@ public class CastledUserDefaults: NSObject {
             return true
         } else {
             let errorMessage = "\nKindly enable the App Groups in the Xcode capabilities for '\(appgroupId)'. Follow the link \nhttps://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#3-adding-an-app-group-id\n"
-            CastledLog.castledLog(errorMessage, logLevel: .error)
-            #if DEBUG
-            fatalError(errorMessage)
-            #endif
+            CastledErrorHandler.throwCastledFatalError(errorMessage: errorMessage)
         }
+        return false
     }
 
     // MARK: - OBSERVERS FOR USERID AND LOGOUT

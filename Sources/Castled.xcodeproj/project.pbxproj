@@ -169,6 +169,7 @@
 		0ADBF1502A437C890018F110 /* CastledMediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */; };
 		0AE9DAEA2AC3E4AC00FE975C /* CastledStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */; };
 		0AE9DAF12AC42DBB00FE975C /* CastledNetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE9DAF02AC42DBB00FE975C /* CastledNetworkMonitor.swift */; };
+		0AF453BC2C7DC14E0013C1DA /* CastledErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF453BB2C7DC14E0013C1DA /* CastledErrorHandler.swift */; };
 		0AF4D2A42A02F77300D023A5 /* CastledReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */; };
 		12C72C4F2947986300B6B3DC /* CastledInAppDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */; };
 		12C876AE2938A0E80005BB52 /* CastledCommonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */; };
@@ -388,6 +389,7 @@
 		0ADBF14F2A437C890018F110 /* CastledMediaCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledMediaCollectionViewCell.swift; sourceTree = "<group>"; };
 		0AE9DAE92AC3E4AC00FE975C /* CastledStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledStore.swift; sourceTree = "<group>"; };
 		0AE9DAF02AC42DBB00FE975C /* CastledNetworkMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastledNetworkMonitor.swift; sourceTree = "<group>"; };
+		0AF453BB2C7DC14E0013C1DA /* CastledErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledErrorHandler.swift; sourceTree = "<group>"; };
 		0AF4D2A32A02F77300D023A5 /* CastledReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledReachability.swift; sourceTree = "<group>"; };
 		12C72C4E2947986300B6B3DC /* CastledInAppDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledInAppDisplayViewController.swift; sourceTree = "<group>"; };
 		12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastledCommonClass.swift; sourceTree = "<group>"; };
@@ -917,6 +919,7 @@
 				12C876AD2938A0E80005BB52 /* CastledCommonClass.swift */,
 				0A3865C52C455FF50047B370 /* CastledEnvironmentChecker.swift */,
 				0A5832612C4670A800A679E7 /* CastledTestingHelper.swift */,
+				0AF453BB2C7DC14E0013C1DA /* CastledErrorHandler.swift */,
 				0ACE7AA82BF7539F0003F596 /* Extensions */,
 				0ACE7AA92BF753B90003F596 /* Utils */,
 			);
@@ -1556,6 +1559,7 @@
 				0AB9BEB62BFC9ADE00DB7744 /* CastledEventsProductRequestHandler.swift in Sources */,
 				0A1B4B7A2A7BB1E100D6430B /* CIModalDefaultView.swift in Sources */,
 				0AC493F92AF3723F007E5967 /* CastledEventsTracker.swift in Sources */,
+				0AF453BC2C7DC14E0013C1DA /* CastledErrorHandler.swift in Sources */,
 				0ACA959B2B8D945F00165C41 /* CastledConfigsUtils.swift in Sources */,
 				0AB9BEA12BFC78CD00DB7744 /* CastledSessions.swift in Sources */,
 				0AB9BEC62BFCB11000DB7744 /* CastledPushNotificationEventsRequestHandler.swift in Sources */,
