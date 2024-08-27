@@ -18,6 +18,12 @@ public enum CastledConstants {
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
 
+    public enum DispatchQueues {
+        static let CastledCommonQueue = "CastledCommonQueue"
+        static let CastledNotificationQueue = "CastledNotificationQueue"
+        static let CastledProfileQueue = "CastledProfileQueue"
+    }
+
     public enum PushNotification {
         public static let castledKey = "castled"
         static let apsKey = "aps"
