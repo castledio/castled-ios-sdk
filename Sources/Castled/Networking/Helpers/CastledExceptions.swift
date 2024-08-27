@@ -10,7 +10,7 @@ import Foundation
 
 public enum CastledExceptionMessages: String {
     case common = "We are not able to perform this request.Please check your internet connection and try again."
-    case notInitialised = "Kindly initialize the Castled SDK with proper Appid in the Appdelegate."
+    case notInitialised = "Kindly initialize the Castled SDK with proper appId in the AppDelegate"
     case emptyToken = "Kindly allow the permission for push notification from the settings Or pass a valid APNs token in the api call."
     case iOS13Less = "Sorry for the inconvenience. Currently we are supporting iOS 13 and above."
     case paramsMisMatch = "Unable to create the request. Please check the params or url."
