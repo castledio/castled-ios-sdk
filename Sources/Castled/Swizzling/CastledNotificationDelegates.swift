@@ -43,7 +43,13 @@ extension CastledNotificationDelegates {
                     completionHandler(options)
                 }
             } else {
-                completionHandler([[.alert, .badge, .sound]])
+                if #available(iOS 14.0, *) {
+                    // For iOS 14 and later
+                    completionHandler([.banner, .list, .badge, .sound])
+                } else {
+                    // For iOS 13 and earlier
+                    completionHandler([.alert, .badge, .sound])
+                }
             }
         } else {
             completionHandler([])

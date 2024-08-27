@@ -215,7 +215,13 @@ extension AppDelegate {
         print("userNotificationCenter willPresent appdelegate ---- ")
 
         Castled.sharedInstance.userNotificationCenter(center, willPresent: notification)
-        completionHandler([.alert, .badge, .sound])
+        if #available(iOS 14.0, *) {
+            // For iOS 14 and later
+            completionHandler([.banner, .list, .badge, .sound])
+        } else {
+            // For iOS 13 and earlier
+            completionHandler([.alert, .badge, .sound])
+        }
     }
 
     /// This method is called when a remote notification is received and the app is running in the background.

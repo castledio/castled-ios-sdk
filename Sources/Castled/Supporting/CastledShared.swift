@@ -30,10 +30,10 @@ public class CastledShared: NSObject {
 
     public func reportCastledPushEventsFromExtension(userInfo: [AnyHashable: Any]) {
         if !appGroupId.isEmpty {
-            CastledLog.castledLog("Reporting the push event from the extension", logLevel: .debug)
+            CastledLog.castledLog("About to report the push event from the extension", logLevel: .debug)
             Castled.sharedInstance.processCastledPushEvents(userInfo: userInfo, deliveredDate: Date())
         } else {
-            CastledLog.castledLog("Not reporting as appGroupId hasn't set.", logLevel: .warning)
+            CastledLog.castledLog("Not reporting the push event from the extension as appGroupId hasn't set.", logLevel: .warning)
             pendingPushEvent = userInfo
         }
     }
