@@ -149,9 +149,11 @@ public class CastledUserDefaults: NSObject {
             // CastledLog.castledLog("App group is available for '\(appgroupId)'", logLevel: .debug)
             return true
         } else {
-            let errorMessage = "\nError ❌❌❌: Kindly enable the App Groups in the Xcode capabilities for '\(appgroupId)'. Follow the link \nhttps://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#3-adding-an-app-group-id\n"
+            let errorMessage = "\nKindly enable the App Groups in the Xcode capabilities for '\(appgroupId)'. Follow the link \nhttps://docs.castled.io/developer-resources/sdk-integration/ios/push-notifications#3-adding-an-app-group-id\n"
             CastledLog.castledLog(errorMessage, logLevel: .error)
+            #if DEBUG
             fatalError(errorMessage)
+            #endif
         }
     }
 

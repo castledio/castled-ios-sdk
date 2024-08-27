@@ -46,4 +46,16 @@ public extension String {
         }
         return pushActionType
     }
+
+    func maskedString() -> String {
+        #if DEBUG
+        return self
+        #else
+        guard count > 2 else { return self }
+        let firstChar = self.first!
+        let lastChar = self.last!
+        let maskedPart = String(repeating: "*", count: count - 2)
+        return "\(firstChar)\(maskedPart)\(lastChar)"
+        #endif
+    }
 }
