@@ -11,19 +11,21 @@ import Foundation
 public class CastledUserDefaults: NSObject {
     public static let shared = CastledUserDefaults()
     private var observers: [CastledPreferenceStoreListener] = []
-    private static var userDefaultsLocal = UserDefaults.standard
-    static var appGroupId = ""
+    private static var userDefaultsShared = UserDefaults.standard
+    private static var isSuitInitialized = false
 
-    static var userDefaults: UserDefaults = {
-        if appGroupId.isEmpty {
-            return UserDefaults.standard
+    static var appGroupId: String = "" {
+        didSet {
+            if !appGroupId.isEmpty, !isSuitInitialized {
+                resetUserDefaults()
+            }
         }
-        guard let defaults = UserDefaults(suiteName: appGroupId) else {
-            return UserDefaults.standard
-        }
+    }
 
-        return defaults
-    }()
+    private static var _userDefaults: UserDefaults = .standard
+    static var userDefaults: UserDefaults {
+        return _userDefaults
+    }
 
     public var userId: String? {
         didSet {
@@ -211,7 +213,7 @@ public class CastledUserDefaults: NSObject {
             CastledUserDefaults.shared.initializeUserDetails()
             CastledUserDefaults.saveAppGroupId()
         }
-        guard userDefaultsLocal.string(forKey: kCastledAppIddKey) != nil else {
+        guard userDefaultsShared.string(forKey: kCastledAppIddKey) != nil else {
             return
         }
         // Keys to migrate
@@ -240,17 +242,17 @@ public class CastledUserDefaults: NSObject {
 
         // Migrate data
         for key in keysToMigrate {
-            if let value = userDefaultsLocal.object(forKey: key) {
+            if let value = userDefaultsShared.object(forKey: key) {
                 userDefaults.set(value, forKey: key)
             }
         }
 
         // Remove old data
         for key in keysToMigrate {
-            userDefaultsLocal.removeObject(forKey: key)
+            userDefaultsShared.removeObject(forKey: key)
         }
 
-        userDefaultsLocal.synchronize()
+        userDefaultsShared.synchronize()
     }
 
     // MARK: - FOR OTHER SDKs
@@ -258,20 +260,21 @@ public class CastledUserDefaults: NSObject {
     static func saveAppGroupId() {
         // this is for react, there is no option to get the appgroup id for push click when the app is in terminated state as the intiialization part happens in react side. so local userdefault will get initialize instead of suit
         DispatchQueue.main.async {
-            userDefaultsLocal.set(appGroupId, forKey: CastledConstants.AppGroupID.kCastledAppGroupId)
-            userDefaultsLocal.synchronize()
+            userDefaultsShared.set(appGroupId, forKey: CastledConstants.AppGroupID.kCastledAppGroupId)
+            userDefaultsShared.synchronize()
         }
     }
 
-    static func resetUserDefaults() {
-        // this is for the other sdk like react, after changing the appgropupid
-        if appGroupId.isEmpty {
-            return
+    private static func resetUserDefaults() {
+        if !appGroupId.isEmpty,
+           let defaults = UserDefaults(suiteName: appGroupId),
+           isAppGroupIsEnabledFor(appGroupId)
+        {
+            _userDefaults = defaults
+        } else {
+            _userDefaults = UserDefaults.standard
         }
-        guard let defaults = UserDefaults(suiteName: appGroupId) else {
-            return
-        }
-        userDefaults = defaults
+        isSuitInitialized = true
     }
 }
 
