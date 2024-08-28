@@ -12,7 +12,6 @@ public class CastledUserDefaults: NSObject {
     public static let shared = CastledUserDefaults()
     private var observers: [CastledPreferenceStoreListener] = []
     private static var userDefaultsShared = UserDefaults.standard
-    private static var isSuitInitialized = false
 
     static var appGroupId: String = "" {
         didSet {
@@ -22,6 +21,7 @@ public class CastledUserDefaults: NSObject {
         }
     }
 
+    private static var isSuitInitialized = false
     private static var _userDefaults: UserDefaults = .standard
     static var userDefaults: UserDefaults {
         return _userDefaults
