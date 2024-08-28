@@ -75,6 +75,7 @@ public extension Castled {
                 }
             } else {
                 // not from castled, send test/ already reported
+                CastledLog.castledLog("No need to report the push from bg, likely a test notification or one that’s already been reported.", logLevel: .debug)
                 endBackgroundTask()
                 completionHandler(.noData)
             }
@@ -186,7 +187,6 @@ public extension Castled {
 
                 let params = Castled.sharedInstance.getPushPayload(event: event, sourceContext: sourceContext ?? "", actionLabel: actionLabel, actionType: actionType, actionUri: actionUri ?? "", deliveredDate: deliveredDate, notificationId: notificationId)
                 if !params.isEmpty {
-                    CastledLog.castledLog("Push notification is being reported…", logLevel: .debug)
                     CastledPushNotification.sharedInstance.reportPushEvents(params: params) { _ in
                     }
                 } else {

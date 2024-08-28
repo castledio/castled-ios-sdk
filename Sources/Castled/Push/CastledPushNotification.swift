@@ -39,6 +39,7 @@ import Foundation
             success(false)
             return
         }
+        CastledLog.castledLog("Push notification is being reported…", logLevel: .debug)
         CastledPushNotificationRepository.reportPushEvents(params: params) { result in
             success(result)
         }
