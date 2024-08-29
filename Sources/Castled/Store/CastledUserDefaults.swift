@@ -22,10 +22,7 @@ public class CastledUserDefaults: NSObject {
     }
 
     private static var isSuitInitialized = false
-    private static var _userDefaults: UserDefaults = .standard
-    static var userDefaults: UserDefaults {
-        return _userDefaults
-    }
+    private static var userDefaults: UserDefaults = .standard
 
     public var userId: String? {
         didSet {
@@ -270,9 +267,9 @@ public class CastledUserDefaults: NSObject {
            let defaults = UserDefaults(suiteName: appGroupId),
            isAppGroupIsEnabledFor(appGroupId)
         {
-            _userDefaults = defaults
+            userDefaults = defaults
         } else {
-            _userDefaults = UserDefaults.standard
+            userDefaults = UserDefaults.standard
         }
         isSuitInitialized = true
     }
