@@ -26,7 +26,7 @@ import Foundation
 
     @objc public var appGroupId: String = "" {
         didSet {
-            if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
+            if !appGroupId.isEmpty {
                 CastledUserDefaults.appGroupId = appGroupId
                 CastledUserDefaults.migrateDatasToSuit()
             }

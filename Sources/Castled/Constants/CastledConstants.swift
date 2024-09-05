@@ -18,6 +18,12 @@ public enum CastledConstants {
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
 
+    public enum DispatchQueues {
+        static let CastledCommonQueue = "CastledCommonQueue"
+        static let CastledNotificationQueue = "CastledNotificationQueue"
+        static let CastledProfileQueue = "CastledProfileQueue"
+    }
+
     public enum PushNotification {
         public static let castledKey = "castled"
         static let apsKey = "aps"
@@ -40,8 +46,6 @@ public enum CastledConstants {
             public static let notificationId = "castled_notification_id"
             static let teamId = "team_id"
             static let sourceContext = "source_context"
-            public static let mediaType = "media_type"
-            static let mediaURL = "media_url"
             static let categoryActions = "category_actions"
             static let keyValuePair = "key_vals"
             public enum Category {

@@ -50,6 +50,13 @@ class CastledInboxCell: UITableViewCell {
         viewContainer.layer.cornerRadius = 10
         viewContainer.layer.masksToBounds = true
 
+        // https://stackoverflow.com/a/54349214/461386
+        [lblTitle, lblDescription].forEach {
+            $0.numberOfLines = 0
+            $0.lineBreakMode = .byWordWrapping
+            $0.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
+        }
+
         applyShadow(radius: viewContainer.layer.cornerRadius)
     }
 

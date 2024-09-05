@@ -46,8 +46,8 @@ enum CastledPushNotificationRepository {
             in
             if let uid = params[CastledConstants.PushNotification.userId] as? String {
                 if response.success {
-                    CastledLog.castledLog("'\(uid)' registered successfully...", logLevel: CastledLogLevel.debug)
-                } else { CastledLog.castledLog("Register User '\(uid)' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
+                    CastledLog.castledLog("'\(uid.maskedString())' registered successfully...", logLevel: CastledLogLevel.debug)
+                } else { CastledLog.castledLog("Register User '\(uid.maskedString())' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
                 }
             }
         }

@@ -62,8 +62,9 @@ public class CastledCommonClass {
         else {
             return nil
         }
-        if let msgFramesString = customDict["msg_frames"] as? String,
-           let detailsArray = CastledCommonClass.convertToArray(text: msgFramesString) as? [Any],
+
+        if let msgFramesString = customDict[CastledPushMediaConstants.messageFrames] as? String,
+           let detailsArray = CastledPushMediaConstants.getMediaArrayFrom(messageFrames: msgFramesString),
            detailsArray.count > index!,
            var selectedCategory = detailsArray[index!] as? [String: Any]
         {
@@ -78,11 +79,6 @@ public class CastledCommonClass {
             return true
         }
         return false
-    }
-
-    static func convertToArray(text: String) -> Any? {
-        guard let data = text.data(using: .utf8, allowLossyConversion: false) else { return nil }
-        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 
     public static func hexStringToUIColor(hex: String) -> UIColor? {

@@ -42,7 +42,7 @@ class CastledDefaultViewController: UIViewController, CastledNotificationContent
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        userDefaults?.setValue(0, forKey: CastledNotificationContentConstants.CastledClickedNotiContentIndx)
+        userDefaults?.setValue(0, forKey: CastledPushMediaConstants.CastledClickedNotiContentIndx)
         userDefaults?.synchronize()
         extensionContext?.performNotificationDefaultAction()
     }

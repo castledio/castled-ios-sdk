@@ -15,6 +15,7 @@ public class CastledShared: NSObject {
     @objc public var appGroupId: String = "" {
         didSet {
             if !appGroupId.isEmpty {
+                // CastledLog.castledLog("Set the appGroupId from extensions '\(appGroupId)'", logLevel: .debug)
                 CastledUserDefaults.appGroupId = appGroupId
                 if let event = pendingPushEvent {
                     // this is to handle the scenario where the user set the appid after theu super. in their extension class
@@ -29,8 +30,10 @@ public class CastledShared: NSObject {
 
     public func reportCastledPushEventsFromExtension(userInfo: [AnyHashable: Any]) {
         if !appGroupId.isEmpty {
+            CastledLog.castledLog("About to report the push event from the extension", logLevel: .debug)
             Castled.sharedInstance.processCastledPushEvents(userInfo: userInfo, deliveredDate: Date())
         } else {
+            CastledLog.castledLog("Not reporting the push event from the extension as appGroupId hasn't set.", logLevel: .warning)
             pendingPushEvent = userInfo
         }
     }

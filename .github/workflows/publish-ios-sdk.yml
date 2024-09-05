@@ -17,17 +17,69 @@ jobs:
         run: |
           set -eo pipefail
           export LIB_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
-          
-          
-           #pod lib lint Castled.podspec --allow-warnings
-           pod lib lint CastledInbox.podspec --allow-warnings
-           pod lib lint CastledNotificationService.podspec --allow-warnings
-           #pod lib lint CastledNotificationContent.podspec --allow-warnings
-          
-           #pod trunk push Castled.podspec --allow-warnings
-           pod trunk push CastledInbox.podspec --allow-warnings
-           pod trunk push CastledNotificationService.podspec --allow-warnings
-           #pod trunk push CastledNotificationContent.podspec --allow-warnings
+
+          # Initialize counters for success and failure
+          SUCCESS_COUNT=0
+          FAILURE_COUNT=0
+          FAILED_POD_SPECS=""
+
+          # Lint and push Castled
+          echo "Linting and pushing Castled..."
+          if pod lib lint Castled.podspec --allow-warnings && pod trunk push Castled.podspec --allow-warnings; then
+            echo "Castled succeeded"
+            SUCCESS_COUNT=$((SUCCESS_COUNT+1))
+          else
+            echo "Castled failed"
+            FAILURE_COUNT=$((FAILURE_COUNT+1))
+            FAILED_POD_SPECS+="Castled\n"
+          fi
+
+          # Lint and push CastledInbox
+          echo "Linting and pushing CastledInbox..."
+          if pod lib lint CastledInbox.podspec --allow-warnings && pod trunk push CastledInbox.podspec --allow-warnings; then
+            echo "CastledInbox succeeded"
+            SUCCESS_COUNT=$((SUCCESS_COUNT+1))
+          else
+            echo "CastledInbox failed"
+            FAILURE_COUNT=$((FAILURE_COUNT+1))
+            FAILED_POD_SPECS+="CastledInbox\n"
+          fi
+
+          # Lint and push CastledNotificationService
+          echo "Linting and pushing CastledNotificationService..."
+          if pod lib lint CastledNotificationService.podspec --allow-warnings && pod trunk push CastledNotificationService.podspec --allow-warnings; then
+            echo "CastledNotificationService succeeded"
+            SUCCESS_COUNT=$((SUCCESS_COUNT+1))
+          else
+            echo "CastledNotificationService failed"
+            FAILURE_COUNT=$((FAILURE_COUNT+1))
+            FAILED_POD_SPECS+="CastledNotificationService\n"
+          fi
+
+          # Lint and push CastledNotificationContent
+          echo "Linting and pushing CastledNotificationContent..."
+          if pod lib lint CastledNotificationContent.podspec --allow-warnings && pod trunk push CastledNotificationContent.podspec --allow-warnings; then
+            echo "CastledNotificationContent succeeded"
+            SUCCESS_COUNT=$((SUCCESS_COUNT+1))
+          else
+            echo "CastledNotificationContent failed"
+            FAILURE_COUNT=$((FAILURE_COUNT+1))
+            FAILED_POD_SPECS+="CastledNotificationContent\n"
+          fi
+
+          # Summary of results
+          echo "Summary: $SUCCESS_COUNT succeeded, $FAILURE_COUNT failed"
+
+          # Log failed podspecs if any
+          if [ $FAILURE_COUNT -gt 0 ]; then
+            echo -e "The following podspecs failed:\n$FAILED_POD_SPECS"
+          fi
+
+          # Fail the job if all operations failed
+          if [ $FAILURE_COUNT -eq 4 ]; then
+            echo "All podspec operations failed. Failing the job."
+            exit 1
+          fi
 
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}

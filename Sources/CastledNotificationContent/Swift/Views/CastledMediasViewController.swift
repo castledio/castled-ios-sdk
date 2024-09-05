@@ -6,6 +6,7 @@
 //
 
 import UIKit
+@_spi(CastledInternal) import Castled
 
 class CastledMediasViewController: UIViewController, CastledNotificationContentProtocol {
     var userDefaults: UserDefaults?
@@ -86,7 +87,7 @@ extension CastledMediasViewController: UICollectionViewDataSource, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mediaObject = mediaObjects[indexPath.row]
         if mediaObject.mediaType == .image {
-            userDefaults?.setValue(indexPath.item, forKey: CastledNotificationContentConstants.CastledClickedNotiContentIndx)
+            userDefaults?.setValue(indexPath.item, forKey: CastledPushMediaConstants.CastledClickedNotiContentIndx)
             userDefaults?.synchronize()
             extensionContext?.performNotificationDefaultAction()
         }

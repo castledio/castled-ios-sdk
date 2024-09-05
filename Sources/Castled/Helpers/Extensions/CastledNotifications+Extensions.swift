@@ -12,7 +12,7 @@ import UserNotifications
 public extension Castled {
     @objc internal func setDeviceToken(deviceToken: Data) {
         let deviceTokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        CastledLog.castledLog("APNs token \(deviceTokenString)", logLevel: CastledLogLevel.debug)
+        CastledLog.castledLog("APNs token \(deviceTokenString.maskedString())", logLevel: CastledLogLevel.debug)
         Castled.sharedInstance.setPushToken(deviceTokenString, type: .apns)
     }
 
@@ -75,6 +75,7 @@ public extension Castled {
                 }
             } else {
                 // not from castled, send test/ already reported
+                CastledLog.castledLog("No need to report the push from bg, likely a test notification or one that’s already been reported.", logLevel: .debug)
                 endBackgroundTask()
                 completionHandler(.noData)
             }
@@ -188,6 +189,8 @@ public extension Castled {
                 if !params.isEmpty {
                     CastledPushNotification.sharedInstance.reportPushEvents(params: params) { _ in
                     }
+                } else {
+                    CastledLog.castledLog("No need to report the push, likely a test notification or one that’s already been reported.", logLevel: .debug)
                 }
             }
         }

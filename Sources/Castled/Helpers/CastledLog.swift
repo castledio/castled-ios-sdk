@@ -10,13 +10,13 @@ import os.log
 
 public enum CastledLog {
     private static var defaultLogLevel: CastledLogLevel = .debug
-    private static let logger = OSLog(subsystem: "com.castled.CastlediOS", category: "Castled")
+    private static let logger = OSLog(subsystem: "com.castled.logging", category: "Castled")
 
     static func setLogLevel(_ logLevel: CastledLogLevel) {
         defaultLogLevel = logLevel
     }
 
-    public static func castledLog(_ item: Any, logLevel: CastledLogLevel, separator: String = " ", terminator: String = "\n", _ args: CVarArg...) {
+    public static func castledLog(_ item: Any, logLevel: CastledLogLevel, separator: String = " ", terminator: String = "\n") {
         if logLevel.rawValue <= defaultLogLevel.rawValue {
             var logLevelString = "Castled"
             var logType = OSLogType.debug
@@ -39,7 +39,7 @@ public enum CastledLog {
             }
 
             let message = "\(logLevelString): \(item)"
-            os_log("%@", log: logger, type: logType, message)
+            os_log("%{public}@", log: logger, type: logType, message)
         }
     }
 }

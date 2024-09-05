@@ -40,9 +40,9 @@ enum CastledEventsRepository {
         let request = CastledEventsRepository.getEventsTrackingRequest(params: params)
         CastledNetworkLayer.shared.makeApiCall(request: request, path: eventsTrackingPath, withRetry: true) { response in
             if response.success {
-                CastledLog.castledLog("Log event '\(eventName)' success!! ", logLevel: CastledLogLevel.debug)
+                CastledLog.castledLog("Log event '\(eventName.maskedString())' success!! ", logLevel: CastledLogLevel.debug)
             } else {
-                CastledLog.castledLog("Log event '\(eventName)' failed!! : \(response.errorMessage)", logLevel: CastledLogLevel.error)
+                CastledLog.castledLog("Log event '\(eventName.maskedString())' failed!! : \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }
         }
     }

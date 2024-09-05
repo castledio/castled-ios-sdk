@@ -36,13 +36,15 @@ import UserNotificationsUI
                 CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: notification.request.content.userInfo)
                 setuserDefaults()
             }
-            let templateType = customCasledDict[CastledNotificationContentConstants.templateType] as? String ?? CastledNotificationContentConstants.TemplateType.defaultTemplate.rawValue
-            if let msgFramesString = customCasledDict[CastledNotificationContentConstants.messageFrames] as? String,
+            let templateType = customCasledDict[CastledPushMediaConstants.templateType] as? String ?? CastledPushMediaConstants.TemplateType.defaultTemplate.rawValue
+            if let msgFramesString = customCasledDict[CastledPushMediaConstants.messageFrames] as? String,
                let convertedAttachments = convertToArray(text: msgFramesString), !convertedAttachments.isEmpty
             {
                 switch templateType {
-                    case CastledNotificationContentConstants.TemplateType.defaultTemplate.rawValue:
-                        if let mediaType = convertedAttachments.first?.mediaType, mediaType != CastledNotificationMediaObject.CNMediaType.text_only {
+                    case CastledPushMediaConstants.TemplateType.defaultTemplate.rawValue:
+                        if let mediaType = convertedAttachments.first?.mediaType,
+                           mediaType != CastledNotificationMediaObject.CNMediaType.text_only
+                        {
                             let mediaListVC = CastledMediasViewController(mediaObjects: convertedAttachments)
                             addChild(mediaListVC)
                             mediaListVC.view.frame = view.frame
@@ -62,7 +64,7 @@ import UserNotificationsUI
     }
 
     private func createDefaultContentView(_ notification: UNNotification) {
-        let defaultVC = UIStoryboard(name: "CNotificationContent", bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: "CastledDefaultViewController") as! CastledDefaultViewController
+        let defaultVC = UIStoryboard(name: CastledNotificationContentConstants.contentTemplatesStoryBoard, bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: CastledNotificationContentConstants.contentTemplatesDefaultVC) as! CastledDefaultViewController
         defaultVC.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(defaultVC)
         view.addSubview(defaultVC.view)
@@ -85,7 +87,7 @@ import UserNotificationsUI
     private func setuserDefaults() {
         if !appGroupId.isEmpty {
             childViewController?.userDefaults = UserDefaults(suiteName: appGroupId)
-            childViewController?.userDefaults?.removeObject(forKey: CastledNotificationContentConstants.CastledClickedNotiContentIndx)
+            childViewController?.userDefaults?.removeObject(forKey: CastledPushMediaConstants.CastledClickedNotiContentIndx)
         }
     }
 

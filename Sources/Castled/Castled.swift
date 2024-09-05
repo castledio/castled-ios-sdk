@@ -21,9 +21,9 @@ import UserNotifications
 
     private var isInitialized = false
 
-    lazy var castledCommonQueue = DispatchQueue(label: "CastledCommonQueue", qos: .background)
-    lazy var castledNotificationQueue = DispatchQueue(label: "CastledNotificationQueue", qos: .userInteractive)
-    lazy var castledProfileQueue = DispatchQueue(label: "CastledProfileQueue", qos: .userInitiated, attributes: .concurrent)
+    lazy var castledCommonQueue = DispatchQueue(label: CastledConstants.DispatchQueues.CastledCommonQueue, qos: .background)
+    lazy var castledNotificationQueue = DispatchQueue(label: CastledConstants.DispatchQueues.CastledNotificationQueue, qos: .userInteractive)
+    lazy var castledProfileQueue = DispatchQueue(label: CastledConstants.DispatchQueues.CastledProfileQueue, qos: .userInitiated, attributes: .concurrent)
 
     override private init() {}
 
@@ -32,7 +32,7 @@ import UserNotifications
          */
     @objc public static func initialize(withConfig config: CastledConfigs, andDelegate delegate: CastledNotificationDelegate?) {
         if config.instanceId.isEmpty {
-            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
+            fatalError(CastledExceptionMessages.appIdNotInitialized.rawValue)
         }
         Castled.sharedInstance.instanceId = config.instanceId
         Castled.sharedInstance.isInitialized = true
@@ -46,14 +46,10 @@ import UserNotifications
     private func initialSetup() {
         let config = CastledConfigs.sharedInstance
         CastledLog.setLogLevel(config.logLevel)
-        #if !DEBUG
-        CastledLog.setLogLevel(CastledLogLevel.none)
-        #endif
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
-
         if config.enablePush {
             if config.appGroupId.isEmpty {
-                CastledLog.castledLog("'appGroupId' is empty. Consider setting a value for proper functionality.", logLevel: .warning)
+                CastledLog.castledLog(CastledExceptionMessages.appGrouIdEmpty.rawValue, logLevel: .warning)
             }
             CastledPushNotification.sharedInstance.initializePush()
             setNotificationCategories(withItems: Set<UNNotificationCategory>())
@@ -89,7 +85,8 @@ import UserNotifications
      */
     @objc public func setUserId(_ userId: String, userToken: String? = nil) {
         if !Castled.sharedInstance.isCastledInitialized() {
-            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
+            CastledErrorHandler.throwCastledFatalError(errorMessage: "\(CastledExceptionMessages.notInitialised.rawValue) before \(#function)")
+            return
         }
         Castled.sharedInstance.saveUserId(userId, userToken)
     }
@@ -123,7 +120,8 @@ import UserNotifications
 
     @objc public func setLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         if !Castled.sharedInstance.isCastledInitialized() {
-            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
+            CastledErrorHandler.throwCastledFatalError(errorMessage: "\(CastledExceptionMessages.notInitialised.rawValue) before \(#function)")
+            return
         }
 
         let notificationOption = launchOptions?[.remoteNotification]
@@ -140,7 +138,8 @@ import UserNotifications
      */
     @objc public func setNotificationCategories(withItems items: Set<UNNotificationCategory>) {
         if !Castled.sharedInstance.isCastledInitialized() {
-            fatalError("'Appid' has not been initialized. Call CastledConfigs.initialize(appId: <app_id>) with a valid app_id.")
+            CastledErrorHandler.throwCastledFatalError(errorMessage: "\(CastledExceptionMessages.notInitialised.rawValue) before \(#function)")
+            return
         }
         var categorySet = items
         categorySet.insert(getCastledCategory())
@@ -160,14 +159,14 @@ import UserNotifications
                         if granted {
                             self?.registerForAPNsToken()
                         } else {
-                            CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
+                            CastledLog.castledLog(CastledExceptionMessages.pushPermissionNotGranted.rawValue, logLevel: .info)
                         }
                     })
                 } else {
                     if settings.authorizationStatus == .authorized {
                         self?.registerForAPNsToken()
                     } else {
-                        CastledLog.castledLog("Push notification permission has not been granted yet.", logLevel: .info)
+                        CastledLog.castledLog(CastledExceptionMessages.pushPermissionNotGranted.rawValue, logLevel: .info)
                         if showSettingsAlert {
                             self?.showSettingsAlert()
                         }
@@ -305,7 +304,7 @@ import UserNotifications
         DispatchQueue.main.async {
             if let application = UIApplication.getSharedApplication() as? UIApplication {
                 let alertTitle = "Permission Needed"
-                let alertMessage = "You have previously denied push notification permission. Please go to your settings to enable push notifications."
+                let alertMessage = CastledExceptionMessages.pushPreviouslyDenied.rawValue
 
                 let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
 
