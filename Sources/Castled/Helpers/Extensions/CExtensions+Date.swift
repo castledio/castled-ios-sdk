@@ -42,7 +42,7 @@ public extension Date {
         } else if let minutes = components.minute, minutes > 0 {
             return "\(minutes)m ago"
         } else {
-            return "Now"
+            return "now"
         }
     }
 
