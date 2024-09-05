@@ -10,13 +10,10 @@ import UserNotifications
 @_spi(CastledInternal) import Castled
 
 open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
-    private static let kThumbnailURL = "thumbnail_url"
-
-    private var sharedUserDefaults: UserDefaults?
+    var sharedUserDefaults: UserDefaults?
 
     @objc public var appGroupId = "" {
         didSet {
-            // CastledLog.castledLog("appGroupId '\(appGroupId)' is set inside Notificiation service", logLevel: .debug)
             if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
                 CastledShared.sharedInstance.appGroupId = appGroupId
                 sharedUserDefaults = UserDefaults(suiteName: appGroupId)
@@ -28,41 +25,48 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     @objc public var bestAttemptContent: UNMutableNotificationContent?
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        CastledLog.castledLog("Push notification received inside Notification Service Extension.", logLevel: .debug)
+        CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.pushReceived, logLevel: .debug)
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        if bestAttemptContent != nil {
-            if let customCasledDict = CastledShared.sharedInstance.getCastledDictionary(userInfo: request.content.userInfo),
-               customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String
+
+        guard let bestAttemptContent = bestAttemptContent else {
+            contentHandler(request.content)
+            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.ignoringPushAsBestAttemptNil, logLevel: .debug)
+            return
+        }
+
+        if let customCasledDict = CastledShared.sharedInstance.getCastledDictionary(userInfo: request.content.userInfo),
+           customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String
+        {
+            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.pushFromCastled, logLevel: .debug)
+
+            CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
+
+            let completeNotificationHandling: () -> Void = { [weak self] in
+                self?.setApplicationBadge()
+                contentHandler(self?.bestAttemptContent ?? request.content)
+            }
+
+            if let msgFramesString = customCasledDict[CastledPushMediaConstants.messageFrames] as? String,
+               let convertedAttachments = CastledPushMediaConstants.getMediaArrayFrom(messageFrames: msgFramesString) as? [[String: Any]],
+               !convertedAttachments.isEmpty,
+               let media = convertedAttachments.first,
+               let mediaType = media[CastledPushMediaConstants.MediaObject.mediaType.rawValue] as? String,
+               mediaType != CastledPushMediaConstants.MediaType.text_only.rawValue
+
             {
-                CastledLog.castledLog("Received push is from Castled.", logLevel: .debug)
-                CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
-                defer {
-                    setApplicationBadge()
-                    contentHandler(bestAttemptContent ?? request.content)
-                    contentHandler(request.content)
-                }
-                guard let urlString = customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] as? String,
-                      let fileUrl = URL(string: urlString)
-                else {
-                    CastledLog.castledLog("Returning as attachment URL is nil or empty, likely just a text message. '\(customCasledDict[CastledNotificationServiceExtension.kThumbnailURL] ?? "")'", logLevel: .debug)
-                    return
-                }
-                let fileExtension = fileUrl.pathExtension
-                let imageFileIdentifier = UUID().uuidString + "." + fileExtension
-                guard let imageData = NSData(contentsOf: fileUrl),
-                      let attachment = UNNotificationAttachment.saveImageToDisk(fileIdentifier: imageFileIdentifier, data: imageData, options: nil)
-                else {
-                    CastledLog.castledLog("Returning without displaying as imageData is nil.", logLevel: .error)
-                    return
+                getAttachments(medias: convertedAttachments) { attachments in
+                    bestAttemptContent.attachments = attachments
+                    completeNotificationHandling()
                 }
 
-                bestAttemptContent?.attachments = [attachment]
             } else {
-                CastledLog.castledLog("Received push is not from Castled.", logLevel: .debug)
+                CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.likelyTextMessage, logLevel: .info)
+                completeNotificationHandling()
             }
+
         } else {
-            CastledLog.castledLog("Ignoring push notification reporting as bestAttemptContent is nil.", logLevel: .debug)
+            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.notFromCaslted, logLevel: .debug)
         }
     }
 
@@ -70,59 +74,5 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
         if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
             contentHandler(bestAttemptContent)
         }
-    }
-
-    private func setApplicationBadge() {
-        if let userDefaults = sharedUserDefaults {
-            let lastIncrementTimestamp = userDefaults.double(forKey: CastledUserDefaults.kCastledLastBadgeIncrementTimeKey)
-            let currentTimestamp = Date().timeIntervalSince1970
-            var currentCount: Int = (userDefaults.value(forKey: CastledUserDefaults.kCastledBadgeKey) as? Int) ?? 0
-            if currentTimestamp - lastIncrementTimestamp > 2 {
-                /* This check is for avoiding the badge increment more than 1, as we are incrementing the count in
-                 // Check if it's been more than a certain interval (e.g., 2 sec) since the last increment
-
-                 1. background
-                 2. will present
-                 3. notification extension */
-
-                currentCount += (bestAttemptContent?.badge ?? NSNumber(value: 0)).intValue
-                userDefaults.setValue(currentCount, forKey: CastledUserDefaults.kCastledBadgeKey)
-                userDefaults.setValue(currentTimestamp, forKey: CastledUserDefaults.kCastledLastBadgeIncrementTimeKey)
-                userDefaults.synchronize()
-                bestAttemptContent?.badge = NSNumber(value: currentCount)
-
-            } else {
-                if (bestAttemptContent?.badge) != nil {
-                    if bestAttemptContent?.badge?.intValue == 0 {
-                        bestAttemptContent?.badge = NSNumber(value: 0)
-
-                    } else {
-                        bestAttemptContent?.badge = NSNumber(value: currentCount)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@available(iOSApplicationExtension 10.0, *)
-
-extension UNNotificationAttachment {
-    static func saveImageToDisk(fileIdentifier: String, data: NSData, options: [NSObject: AnyObject]?) -> UNNotificationAttachment? {
-        let fileManager = FileManager.default
-        let folderName = ProcessInfo.processInfo.globallyUniqueString
-        let folderURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(folderName, isDirectory: true)
-        do {
-            try fileManager.createDirectory(at: folderURL!, withIntermediateDirectories: true, attributes: nil)
-            let fileURL = folderURL?.appendingPathComponent(fileIdentifier)
-            try data.write(to: fileURL!, options: [])
-            let attachment = try UNNotificationAttachment(identifier: fileIdentifier, url: fileURL!, options: options)
-            return attachment
-
-        } catch {
-            CastledLog.castledLog("Error in saveImageToDisk \(error)", logLevel: .error)
-            print("error \(error)")
-        }
-        return nil
     }
 }
