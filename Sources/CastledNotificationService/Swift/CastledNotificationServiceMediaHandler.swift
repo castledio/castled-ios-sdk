@@ -18,7 +18,7 @@ extension CastledNotificationServiceExtension {
             guard let urlString = media[CastledPushMediaConstants.MediaObject.mediaURL.rawValue] as? String,
                   let url = URL(string: urlString)
             else {
-                CastledNotificationServiceLogManager.logMessage(" \(CastledNotificationServiceLogManager.notDisplayingMediaAttacmentNil)'\(media[CastledPushMediaConstants.MediaObject.mediaURL.rawValue] ?? "")'", logLevel: .debug)
+                CastledNotificationServiceLogManager.logMessage(" \(CastledNotificationServiceConstants.notDisplayingMediaAttacmentNil)'\(media[CastledPushMediaConstants.MediaObject.mediaURL.rawValue] ?? "")'", logLevel: .debug)
                 return
             }
 

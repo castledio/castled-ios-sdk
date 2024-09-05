@@ -25,20 +25,20 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     @objc public var bestAttemptContent: UNMutableNotificationContent?
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.pushReceived, logLevel: .debug)
+        CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.pushReceived, logLevel: .debug)
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
 
         guard let bestAttemptContent = bestAttemptContent else {
             contentHandler(request.content)
-            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.ignoringPushAsBestAttemptNil, logLevel: .debug)
+            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.ignoringPushAsBestAttemptNil, logLevel: .debug)
             return
         }
 
         if let customCasledDict = CastledShared.sharedInstance.getCastledDictionary(userInfo: request.content.userInfo),
            customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String
         {
-            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.pushFromCastled, logLevel: .debug)
+            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.pushFromCastled, logLevel: .debug)
 
             CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
 
@@ -61,12 +61,12 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                 }
 
             } else {
-                CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.likelyTextMessage, logLevel: .info)
+                CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.likelyTextMessage, logLevel: .info)
                 completeNotificationHandling()
             }
 
         } else {
-            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceLogManager.notFromCaslted, logLevel: .debug)
+            CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.notFromCaslted, logLevel: .debug)
         }
     }
 

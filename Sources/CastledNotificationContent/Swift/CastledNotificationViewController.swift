@@ -31,7 +31,10 @@ import UserNotificationsUI
 
     @available(iOSApplicationExtension 10.0, *)
     @objc open func didReceive(_ notification: UNNotification) {
+        CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushReceived, logLevel: .info)
         if let customCasledDict = notification.request.content.userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary {
+            CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushFromCastled, logLevel: .info)
+
             defer {
                 CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: notification.request.content.userInfo)
                 setuserDefaults()
@@ -60,10 +63,13 @@ import UserNotificationsUI
             }
 
             createDefaultContentView(notification)
+        } else {
+            CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.notFromCaslted, logLevel: .info)
         }
     }
 
     private func createDefaultContentView(_ notification: UNNotification) {
+        CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.likelyTextOrUnsupported, logLevel: .info)
         let defaultVC = UIStoryboard(name: CastledNotificationContentConstants.contentTemplatesStoryBoard, bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: CastledNotificationContentConstants.contentTemplatesDefaultVC) as! CastledDefaultViewController
         defaultVC.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(defaultVC)

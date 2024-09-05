@@ -19,10 +19,10 @@ class CastledDefaultViewController: UIViewController, CastledNotificationContent
     @IBOutlet weak var imgLogo: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewContainer.layer.borderColor = lblTitle.textColor.cgColor
-        viewContainer.layer.cornerRadius = 10
-        viewContainer.layer.borderWidth = 0.5
 
+        viewContainer.layer.borderColor = UIColor.systemGray.cgColor
+        viewContainer.layer.cornerRadius = 10
+        viewContainer.layer.borderWidth = 1
         // Do any additional setup after loading the view.
     }
 
@@ -38,6 +38,9 @@ class CastledDefaultViewController: UIViewController, CastledNotificationContent
     func populateDetailsFrom(notificaiton: UNNotification) {
         lblTitle.text = notificaiton.request.content.title
         lblSubTitle.text = notificaiton.request.content.subtitle
+        if let subTitle = lblSubTitle.text, subTitle.isEmpty {
+            constraintBodyTop.constant = 0
+        }
         lblBody.text = notificaiton.request.content.body
         lblDate.text = notificaiton.date.timeAgo()
     }
