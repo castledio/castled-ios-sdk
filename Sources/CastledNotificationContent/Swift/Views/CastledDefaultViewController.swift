@@ -9,14 +9,19 @@ import UIKit
 @_spi(CastledInternal) import Castled
 
 class CastledDefaultViewController: UIViewController, CastledNotificationContentProtocol {
+    @IBOutlet weak var constraintBodyTop: NSLayoutConstraint!
     var userDefaults: UserDefaults?
     @IBOutlet weak var lblBody: UILabel!
     @IBOutlet weak var lblSubTitle: UILabel!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblDate: UILabel!
+    @IBOutlet weak var viewContainer: UIView!
     @IBOutlet weak var imgLogo: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewContainer.layer.borderColor = lblTitle.textColor.cgColor
+        viewContainer.layer.cornerRadius = 10
+        viewContainer.layer.borderWidth = 0.5
 
         // Do any additional setup after loading the view.
     }
@@ -38,7 +43,7 @@ class CastledDefaultViewController: UIViewController, CastledNotificationContent
     }
 
     func getContentSizeHeight() -> CGFloat {
-        return lblTitle.frame.origin.y+lblBody.frame.origin.y+lblBody.frame.size.height+lblTitle.frame.origin.y
+        return viewContainer.frame.origin.y+viewContainer.frame.size.height+viewContainer.frame.origin.y
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
