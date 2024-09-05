@@ -46,8 +46,6 @@ public enum CastledConstants {
             public static let notificationId = "castled_notification_id"
             static let teamId = "team_id"
             static let sourceContext = "source_context"
-            public static let mediaType = "media_type"
-            static let mediaURL = "media_url"
             static let categoryActions = "category_actions"
             static let keyValuePair = "key_vals"
             public enum Category {

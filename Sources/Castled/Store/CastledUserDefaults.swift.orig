@@ -13,11 +13,20 @@ public class CastledUserDefaults: NSObject {
     private var observers: [CastledPreferenceStoreListener] = []
     private static var userDefaultsShared = UserDefaults.standard
 
+<<<<<<< HEAD
+    private static var userDefaults: UserDefaults = {
+        if appGroupId.isEmpty {
+            return UserDefaults.standard
+        }
+        guard let defaults = UserDefaults(suiteName: appGroupId) else {
+            return UserDefaults.standard
+=======
     static var appGroupId: String = "" {
         didSet {
             if !appGroupId.isEmpty, !isSuitInitialized {
                 resetUserDefaults()
             }
+>>>>>>> development
         }
     }
 
@@ -137,7 +146,7 @@ public class CastledUserDefaults: NSObject {
         userDefaults.synchronize()
     }
 
-    static func getUserDefaults() -> UserDefaults {
+    public static func getUserDefaults() -> UserDefaults {
         return userDefaults
     }
 
