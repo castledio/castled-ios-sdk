@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent *contentToDeliver))contentHandler;
 - (void)serviceExtensionTimeWillExpire;
 - (BOOL)isCastledPushNotificationRequest:(UNNotificationRequest *)request;
+//+ (CastledNotificationServiceObjC *)extensionInstance;
 
 @end
 

@@ -13,6 +13,7 @@
 #else
 #import <CastledNotificationService/CastledNotificationService-Swift.h>
 #endif
+static CastledNotificationServiceObjC *sharedInstance = nil;
 @interface CastledNotificationServiceObjC()
 {
     
@@ -23,16 +24,30 @@
 
 @implementation CastledNotificationServiceObjC
 @synthesize appGroupId;
+ 
++ (CastledNotificationServiceObjC *)extensionInstance {
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        sharedInstance = [[self alloc] init];
+        [sharedInstance initializeExtensionObjects];
 
+    });
+    return sharedInstance;
+}
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.serviceExtension = [CastledNotificationServiceExtension extensionInstance];
-        self.serviceExtension.appGroupId = appGroupId;
-
+        [self initializeExtensionObjects];
+        
     }
     return self;
 }
+
+-(void)initializeExtensionObjects{
+    self.serviceExtension = [CastledNotificationServiceExtension extensionInstance];
+    self.serviceExtension.appGroupId = appGroupId;
+}
+
 - (void)setAppGroupId:(NSString *)appGroupId{
     self.serviceExtension.appGroupId = appGroupId;
 }

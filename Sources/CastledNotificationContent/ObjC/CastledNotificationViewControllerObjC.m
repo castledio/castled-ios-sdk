@@ -13,20 +13,62 @@
 #import <CastledNotificationContent/CastledNotificationContent-Swift.h>
 #endif
 
+static CastledNotificationViewControllerObjC *sharedInstance = nil;
+
 @interface CastledNotificationViewControllerObjC ()
 @property (nonatomic, strong) CastledNotificationViewController *contentViewController;
 
 @end
 
 @implementation CastledNotificationViewControllerObjC
-@synthesize appGroupId;
-
+ 
++ (CastledNotificationViewControllerObjC *)extensionInstance {
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Initialize the Swift view controller
-    self.contentViewController = [[CastledNotificationViewController alloc] init];
-    self.contentViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    [self createCastledNotificationViewController];
+   
+
+}
+- (void)setAppGroupId:(NSString *)appGroupId{
     self.contentViewController.appGroupId = appGroupId;
+    _appGroupId = appGroupId; // Use copy if you want to ensure an immutable copy is assigned
+
+ 
+}
+- (BOOL)isCastledPushNotification:(UNNotification *)notification{
+    return [self.contentViewController isCastledPushNotification:notification];
+}
+
+
+- (void)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(void (^)(UNNotificationContentExtensionResponseOption))completion {
+    // Call the Swift view controller's method
+    [[CastledNotificationViewController extensionInstance] didReceiveNotificationResponse:response completionHandler:^(UNNotificationContentExtensionResponseOption responseOption) {
+        completion(responseOption);
+    }];
+}
+
+-(void)preferredContentSizeDidChangeForChildContentContainer:(id<UIContentContainer>)container {
+    [super preferredContentSizeDidChangeForChildContentContainer:container];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.preferredContentSize = [CastledNotificationViewController extensionInstance].preferredContentSize;
+
+    });
+    
+}
+-(void)createCastledNotificationViewController{
+    self.contentViewController = [CastledNotificationViewController extensionInstance];
+    self.contentViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    if([_appGroupId isKindOfClass:[NSString class]]){
+        self.contentViewController.appGroupId = _appGroupId;
+    }
     [self addChildViewController:self.contentViewController];
     [self.view addSubview:self.contentViewController.view];
 
@@ -37,33 +79,13 @@
     [self.contentViewController.view.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
 
     [self.contentViewController didMoveToParentViewController:self];
-
 }
-- (void)setAppGroupId:(NSString *)appGroupId{
-    self.contentViewController.appGroupId = appGroupId;
-
-}
-- (BOOL)isCastledPushNotification:(UNNotification *)notification{
-    return [self.contentViewController isCastledPushNotification:notification];
-}
-
-
-- (void)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(void (^)(UNNotificationContentExtensionResponseOption))completion {
-    // Call the Swift view controller's method
-    [self.contentViewController didReceiveNotificationResponse:response completionHandler:^(UNNotificationContentExtensionResponseOption responseOption) {
-        completion(responseOption);
-    }];
-}
-
--(void)preferredContentSizeDidChangeForChildContentContainer:(id<UIContentContainer>)container {
-    [super preferredContentSizeDidChangeForChildContentContainer:container];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.view.frame = self.contentViewController.view.frame;
-        self.preferredContentSize = self.contentViewController.preferredContentSize;
-
-    });
-    
+- (void)handleRichNotification:(UNNotification *)notification inViewController:(UIViewController *)viewController{
+    self.contentViewController = [CastledNotificationViewController extensionInstance];
+    if([_appGroupId isKindOfClass:[NSString class]]){
+        self.contentViewController.appGroupId = _appGroupId;
+    }
+    [self.contentViewController handleRichNotificationWithNotification:notification in:viewController];
 }
 /*
 #pragma mark - Navigation
@@ -76,17 +98,13 @@
 */
 - (void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
-    self.preferredContentSize = self.contentViewController.view.frame.size;
-}
+ }
 
 - (void)didReceiveNotification:(UNNotification *)notification {
 
     [self.contentViewController didReceiveNotification:notification];
-    [self.contentViewController.view layoutIfNeeded];
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.view.frame = self.contentViewController.view.frame;
         self.preferredContentSize = self.contentViewController.preferredContentSize;
-
     });
 }
 @end
