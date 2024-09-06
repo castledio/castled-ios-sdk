@@ -17,6 +17,8 @@ class NotificationViewController: CastledNotificationViewController {
     }
 
     override func didReceive(_ notification: UNNotification) {
-        if isNotificaitonFromCastled(notification) { super.didReceive(notification) }
+        if isCastledPushNotification(notification) {
+            super.didReceive(notification)
+        }
     }
 }

@@ -43,6 +43,9 @@
     self.contentViewController.appGroupId = appGroupId;
 
 }
+- (BOOL)isCastledPushNotification:(UNNotification *)notification{
+    return [self.contentViewController isCastledPushNotification:notification];
+}
 
 
 - (void)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(void (^)(UNNotificationContentExtensionResponseOption))completion {

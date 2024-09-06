@@ -10,7 +10,28 @@ import UserNotifications
 @_spi(CastledInternal) import Castled
 
 extension CastledNotificationServiceExtension {
-    func getAttachments(medias: [[String: Any]], completion: @escaping ([UNNotificationAttachment]) -> Void) {
+    func getCastledPushObject(_ userInfo: [AnyHashable: Any]) -> [AnyHashable: Any]? {
+        if let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? [AnyHashable: Any] {
+            return customCasledDict
+        }
+        return nil
+    }
+
+    func getMediasArrayFromCastledObject(_ customCasledDict: [AnyHashable: Any]) -> [[String: Any]]? {
+        if let msgFramesString = customCasledDict[CastledPushMediaConstants.messageFrames] as? String,
+           let convertedAttachments = CastledPushMediaConstants.getMediaArrayFrom(messageFrames: msgFramesString) as? [[String: Any]],
+           !convertedAttachments.isEmpty,
+           let media = convertedAttachments.first,
+           let mediaType = media[CastledPushMediaConstants.MediaObject.mediaType.rawValue] as? String,
+           mediaType != CastledPushMediaConstants.MediaType.text_only.rawValue
+
+        {
+            return convertedAttachments
+        }
+        return nil
+    }
+
+    func getNotificationAttachments(medias: [[String: Any]], completion: @escaping ([UNNotificationAttachment]) -> Void) {
         var attachments = [UNNotificationAttachment]()
         let dispatchGroup = DispatchGroup() // Use a dispatch group to wait for all downloads to complete
 
@@ -80,9 +101,7 @@ extension UNNotificationAttachment {
                 completion(nil)
                 return
             }
-
-            let mimeType = response?.mimeType ?? ""
-            let fileExtension = getFileExtension(mediaType: mediaType, mimeType: mimeType, remoteURL: url)
+            let fileExtension = getFileExtension(mediaType: mediaType, response: response, remoteURL: url)
             let fileIdentifier = UUID().uuidString + "." + fileExtension
 
             let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory())
@@ -98,6 +117,34 @@ extension UNNotificationAttachment {
         }
 
         downloadTask.resume()
+    }
+
+    private static func getFileExtension(mediaType: String, response: URLResponse?, remoteURL: URL) -> String {
+        var fileExtension = ""
+        if let filename = response?.suggestedFilename {
+            fileExtension = (filename as NSString).pathExtension
+            if !fileExtension.isEmpty && fileExtension != "unknown" {
+                return fileExtension
+            }
+        }
+        let mimeType = response?.mimeType ?? ""
+        fileExtension = getExtensionFrom(mimeType: mimeType)
+        if fileExtension.isEmpty {
+            fileExtension = remoteURL.pathExtension
+            if fileExtension.isEmpty {
+                switch mediaType {
+                case CastledPushMediaConstants.MediaType.image.rawValue:
+                    fileExtension = "png"
+                case CastledPushMediaConstants.MediaType.video.rawValue:
+                    fileExtension = "mp4"
+                case CastledPushMediaConstants.MediaType.audio.rawValue:
+                    fileExtension = "mp3"
+                default:
+                    fileExtension = "dat"
+                }
+            }
+        }
+        return fileExtension
     }
 
     private static func getExtensionFrom(mimeType: String) -> String {
@@ -135,25 +182,5 @@ extension UNNotificationAttachment {
         default:
             return ""
         }
-    }
-
-    private static func getFileExtension(mediaType: String, mimeType: String, remoteURL: URL) -> String {
-        var fileExtension = getExtensionFrom(mimeType: mimeType)
-        if fileExtension.isEmpty {
-            fileExtension = remoteURL.pathExtension
-            if fileExtension.isEmpty {
-                switch mediaType {
-                case CastledPushMediaConstants.MediaType.image.rawValue:
-                    fileExtension = "png"
-                case CastledPushMediaConstants.MediaType.video.rawValue:
-                    fileExtension = "mp4"
-                case CastledPushMediaConstants.MediaType.audio.rawValue:
-                    fileExtension = "mp3"
-                default:
-                    fileExtension = "dat"
-                }
-            }
-        }
-        return fileExtension
     }
 }

@@ -24,7 +24,9 @@
 }
 
 - (void)didReceiveNotification:(UNNotification *)notification {
-    [super didReceiveNotification:notification];
+    if([self isCastledPushNotification:notification]){
+        [super didReceiveNotification:notification];
+    }
 }
 
 @end

@@ -12,9 +12,12 @@ class NotificationService: CastledNotificationServiceExtension {
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         //  appGroupId = "<your_app_group_id>"
         appGroupId = "group.com.castled.CastledPushDemo.Castled"
-
-        // calling super to make sure Castled implementation is called.
         super.didReceive(request, withContentHandler: contentHandler)
+        if isCastledPushNotificationRequest(request) {
+            print("Castled notfiication received \(#function)")
+        } else {
+            // push from other sdks
+        }
     }
 
     override func serviceExtensionTimeWillExpire() {

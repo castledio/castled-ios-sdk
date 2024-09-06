@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,retain) NSString *appGroupId;
 - (void)didReceiveNotification:(UNNotification *)notification;
+- (BOOL)isCastledPushNotification:(UNNotification *)notification;
 
 @end
 

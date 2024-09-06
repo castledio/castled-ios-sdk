@@ -114,6 +114,7 @@
 		0A0E11092A40BF12004F247F /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		0A0E110A2A40BF12004F247F /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		0A392ECA2A55968A00D1F4DD /* CNotificationContentDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CNotificationContentDemo.entitlements; sourceTree = "<group>"; };
+		0ABDE0FB2C8B147C0075763D /* CNotificationServiceDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CNotificationServiceDemo.entitlements; sourceTree = "<group>"; };
 		12CC1203C2873424FB9538CB /* Pods-CNotificationContentDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CNotificationContentDemo.debug.xcconfig"; path = "Target Support Files/Pods-CNotificationContentDemo/Pods-CNotificationContentDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		24EBAE621014E03A48376A15 /* Pods-CNotificationServiceDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CNotificationServiceDemo.debug.xcconfig"; path = "Target Support Files/Pods-CNotificationServiceDemo/Pods-CNotificationServiceDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		2F66CAF51FFE4F3528F05886 /* Pods-CastledDemoObejctiveCTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CastledDemoObejctiveCTests.debug.xcconfig"; path = "Target Support Files/Pods-CastledDemoObejctiveCTests/Pods-CastledDemoObejctiveCTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -246,6 +247,7 @@
 		0A01A9DE2A3B8B040023F0C2 /* CNotificationServiceDemo */ = {
 			isa = PBXGroup;
 			children = (
+				0ABDE0FB2C8B147C0075763D /* CNotificationServiceDemo.entitlements */,
 				0A01A9DF2A3B8B040023F0C2 /* NotificationService.h */,
 				0A01A9E02A3B8B040023F0C2 /* NotificationService.m */,
 				0A01A9E22A3B8B040023F0C2 /* Info.plist */,
@@ -973,6 +975,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 24EBAE621014E03A48376A15 /* Pods-CNotificationServiceDemo.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CNotificationServiceDemo/CNotificationServiceDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;
@@ -999,6 +1002,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD5C42999086ACC05158C372 /* Pods-CNotificationServiceDemo.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CNotificationServiceDemo/CNotificationServiceDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2BYR4Y5453;

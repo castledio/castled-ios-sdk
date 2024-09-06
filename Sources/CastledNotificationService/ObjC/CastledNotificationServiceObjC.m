@@ -27,7 +27,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.serviceExtension = [[CastledNotificationServiceExtension alloc] init];
+        self.serviceExtension = [CastledNotificationServiceExtension extensionInstance];
         self.serviceExtension.appGroupId = appGroupId;
 
     }
@@ -35,7 +35,6 @@
 }
 - (void)setAppGroupId:(NSString *)appGroupId{
     self.serviceExtension.appGroupId = appGroupId;
-
 }
 
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
@@ -48,4 +47,7 @@
     [_serviceExtension serviceExtensionTimeWillExpire];
 }
 
+- (BOOL)isCastledPushNotificationRequest:(UNNotificationRequest *)request{
+    return  [self.serviceExtension isCastledPushNotificationRequest:request];
+}
 @end

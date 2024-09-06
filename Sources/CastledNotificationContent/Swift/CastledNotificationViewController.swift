@@ -2,7 +2,7 @@
 //  CastledNotificationContent.swift
 //  CastledNotificationContent
 //
-//  Created by Abhilash Thulaseedharan on 11/05/23.
+//  Created by antony on 05/09/2024.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import UserNotificationsUI
 @_spi(CastledInternal) import Castled
 
 @objc open class CastledNotificationViewController: UIViewController, UNNotificationContentExtension {
-    @objc public var appGroupId = "" {
+    @objc public lazy var appGroupId = "" {
         didSet {
             if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
                 CastledShared.sharedInstance.appGroupId = appGroupId
@@ -19,8 +19,7 @@ import UserNotificationsUI
         }
     }
 
-    @IBOutlet var imageView: UIImageView!
-    var childViewController: CastledNotificationContentProtocol?
+    lazy var childViewController: CastledNotificationContentProtocol? = nil
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +31,9 @@ import UserNotificationsUI
     @available(iOSApplicationExtension 10.0, *)
     @objc open func didReceive(_ notification: UNNotification) {
         CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushReceived, logLevel: .info)
-        if let customCasledDict = notification.request.content.userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary {
-            CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushFromCastled, logLevel: .info)
 
+        if let customCasledDict = getCastledPushObject(notification.request.content.userInfo) {
+            CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushFromCastled, logLevel: .info)
             defer {
                 CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: notification.request.content.userInfo)
                 setuserDefaults()
@@ -68,6 +67,31 @@ import UserNotificationsUI
         }
     }
 
+    @objc public func isCastledPushNotification(_ notification: UNNotification) -> Bool {
+        if let customCasledDict = getCastledPushObject(notification.request.content.userInfo), customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
+            return true
+        }
+        return false
+    }
+
+    override open func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+        if let childVc = childViewController {
+            preferredContentSize = CGSize(width: view.frame.size.width, height: childVc.getContentSizeHeight())
+
+        } else {
+            preferredContentSize = CGSize.zero
+        }
+    }
+
+    // Handle next previos action here
+    @objc public func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
+        // Your code implementation here
+
+        completion(.dismissAndForwardAction)
+    }
+}
+
+extension CastledNotificationViewController {
     private func createDefaultContentView(_ notification: UNNotification) {
         CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.likelyTextOrUnsupported, logLevel: .info)
         let defaultVC = UIStoryboard(name: CastledNotificationContentConstants.contentTemplatesStoryBoard, bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: CastledNotificationContentConstants.contentTemplatesDefaultVC) as! CastledDefaultViewController
@@ -97,22 +121,6 @@ import UserNotificationsUI
         }
     }
 
-    override open func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
-        if let childVc = childViewController {
-            preferredContentSize = CGSize(width: view.frame.size.width, height: childVc.getContentSizeHeight())
-
-        } else {
-            preferredContentSize = CGSize.zero
-        }
-    }
-
-    // Handle next previos action here
-    @objc public func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
-        // Your code implementation here
-
-        completion(.dismissAndForwardAction)
-    }
-
     private func convertToArray(text: String) -> [CastledNotificationMediaObject]? {
         guard let jsonData = text.data(using: .utf8) else {
             return nil
@@ -123,15 +131,15 @@ import UserNotificationsUI
             let convertedAttachments = try jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
             return convertedAttachments
         } catch {
-            print("Failed to decode JSON: \(error)")
+            CastledNotificationContentLogManager.logMessage("Failed to decode JSON: \(error)", logLevel: .error)
             return nil
         }
     }
 
-    @objc public func isNotificaitonFromCastled(_ notification: UNNotification) -> Bool {
-        if let customCasledDict = notification.request.content.userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary, customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
-            return true
+    private func getCastledPushObject(_ userInfo: [AnyHashable: Any]) -> [AnyHashable: Any]? {
+        if let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? [AnyHashable: Any] {
+            return customCasledDict
         }
-        return false
+        return nil
     }
 }

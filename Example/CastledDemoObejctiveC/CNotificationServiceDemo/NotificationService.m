@@ -12,6 +12,9 @@
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
     self.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     [super didReceiveNotificationRequest:request withContentHandler:contentHandler];
+    if([self isCastledPushNotificationRequest:request]){
+        NSLog(@"Castled notfiication received %@",self.description);
+    }
  }
 
 - (void)serviceExtensionTimeWillExpire {
