@@ -2,7 +2,7 @@
 //  CastledNotificationServiceExtension.swift
 //  CastledNotificationService
 //
-//  Created by Abhilash Thulaseedharan on 06/05/23.
+//  Created by antony on 05/09/2024.
 //
 
 import Foundation
@@ -10,9 +10,7 @@ import UserNotifications
 @_spi(CastledInternal) import Castled
 
 open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
-    var sharedUserDefaults: UserDefaults?
-
-    @objc public var appGroupId = "" {
+    @objc public lazy var appGroupId = "" {
         didSet {
             if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
                 CastledShared.sharedInstance.appGroupId = appGroupId
@@ -21,11 +19,21 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
         }
     }
 
-    @objc public var contentHandler: ((UNNotificationContent) -> Void)?
-    @objc public var bestAttemptContent: UNMutableNotificationContent?
+    @objc public lazy var contentHandler: ((UNNotificationContent) -> Void)? = nil
+    @objc public lazy var bestAttemptContent: UNMutableNotificationContent? = nil
+
+    @objc static var extensionInstance = CastledNotificationServiceExtension()
+    lazy var sharedUserDefaults: UserDefaults? = nil
+
+    override private init() {}
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        handleNotification(request: request, contentHandler: contentHandler)
+    }
+
+    @objc func handleNotification(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
         CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.pushReceived, logLevel: .debug)
+
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
 
@@ -35,11 +43,10 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
             return
         }
 
-        if let customCasledDict = CastledShared.sharedInstance.getCastledDictionary(userInfo: request.content.userInfo),
+        if let customCasledDict = getCastledPushObject(request.content.userInfo),
            customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String
         {
             CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.pushFromCastled, logLevel: .debug)
-
             CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
 
             let completeNotificationHandling: () -> Void = { [weak self] in
@@ -47,15 +54,8 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
                 contentHandler(self?.bestAttemptContent ?? request.content)
             }
 
-            if let msgFramesString = customCasledDict[CastledPushMediaConstants.messageFrames] as? String,
-               let convertedAttachments = CastledPushMediaConstants.getMediaArrayFrom(messageFrames: msgFramesString) as? [[String: Any]],
-               !convertedAttachments.isEmpty,
-               let media = convertedAttachments.first,
-               let mediaType = media[CastledPushMediaConstants.MediaObject.mediaType.rawValue] as? String,
-               mediaType != CastledPushMediaConstants.MediaType.text_only.rawValue
-
-            {
-                getAttachments(medias: convertedAttachments) { attachments in
+            if let convertedAttachments = getMediasArrayFromCastledObject(customCasledDict) {
+                getNotificationAttachments(medias: convertedAttachments) { attachments in
                     bestAttemptContent.attachments = attachments
                     completeNotificationHandling()
                 }
@@ -74,5 +74,14 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
         if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
             contentHandler(bestAttemptContent)
         }
+    }
+
+    @objc public func isCastledPushNotificationRequest(_ request: UNNotificationRequest) -> Bool {
+        if let customCasledDict = getCastledPushObject(request.content.userInfo),
+           customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String
+        {
+            return true
+        }
+        return false
     }
 }

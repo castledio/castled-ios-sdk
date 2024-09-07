@@ -13,6 +13,7 @@
 #else
 #import <CastledNotificationService/CastledNotificationService-Swift.h>
 #endif
+static CastledNotificationServiceObjC *sharedInstance = nil;
 @interface CastledNotificationServiceObjC()
 {
     
@@ -23,23 +24,41 @@
 
 @implementation CastledNotificationServiceObjC
 @synthesize appGroupId;
+ 
++ (CastledNotificationServiceObjC *)extensionInstance {
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        sharedInstance = [[self alloc] init];
+        [sharedInstance initializeExtensionObjects];
 
+    });
+    return sharedInstance;
+}
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.serviceExtension = [[CastledNotificationServiceExtension alloc] init];
-        self.serviceExtension.appGroupId = appGroupId;
-
+        [self initializeExtensionObjects];
+        
     }
     return self;
 }
-- (void)setAppGroupId:(NSString *)appGroupId{
-    self.serviceExtension.appGroupId = appGroupId;
 
+-(void)initializeExtensionObjects{
+    self.serviceExtension = [CastledNotificationServiceExtension extensionInstance];
+    if ([appGroupId isKindOfClass:[NSString class]]) {
+        self.serviceExtension.appGroupId = appGroupId;
+    }
 }
 
+- (void)setAppGroupId:(NSString *)appGroupId{
+    self.serviceExtension.appGroupId = appGroupId;
+}
+- (void)handleNotificationWithRequest:(UNNotificationRequest *)request
+                          contentHandler:(void (^)(UNNotificationContent *))contentHandler {
+    [_serviceExtension handleNotificationWithRequest:request contentHandler:contentHandler];
+}
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
-    [_serviceExtension didReceiveNotificationRequest:request withContentHandler:contentHandler];
+    [self handleNotificationWithRequest:request contentHandler:contentHandler];
     self.contentHandler = _serviceExtension.contentHandler;
     self.bestAttemptContent = _serviceExtension.bestAttemptContent;
 }
@@ -48,4 +67,7 @@
     [_serviceExtension serviceExtensionTimeWillExpire];
 }
 
+- (BOOL)isCastledPushNotificationRequest:(UNNotificationRequest *)request{
+    return  [self.serviceExtension isCastledPushNotificationRequest:request];
+}
 @end

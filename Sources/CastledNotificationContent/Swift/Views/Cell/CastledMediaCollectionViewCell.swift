@@ -116,11 +116,10 @@ class CastledMediaCollectionViewCell: UICollectionViewCell {
         let urlImageString = mediaViewModel.thumbUrl
         if !urlImageString.isEmpty, let url = URL(string: urlImageString) {
             imageView.sd_setImage(with: url, placeholderImage: placeholderImage)
-
         } else {
             imageView.image = placeholderImage
         }
-        imageView.image = placeholderImage
+        // imageView.image = placeholderImage
 
         switch mediaViewModel.mediaType {
         case .image:

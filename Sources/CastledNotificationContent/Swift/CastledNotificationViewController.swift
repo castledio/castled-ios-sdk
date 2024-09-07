@@ -2,7 +2,7 @@
 //  CastledNotificationContent.swift
 //  CastledNotificationContent
 //
-//  Created by Abhilash Thulaseedharan on 11/05/23.
+//  Created by antony on 05/09/2024.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import UserNotificationsUI
 @_spi(CastledInternal) import Castled
 
 @objc open class CastledNotificationViewController: UIViewController, UNNotificationContentExtension {
-    @objc public var appGroupId = "" {
+    @objc public lazy var appGroupId = "" {
         didSet {
             if !appGroupId.isEmpty, CastledUserDefaults.isAppGroupIsEnabledFor(appGroupId) {
                 CastledShared.sharedInstance.appGroupId = appGroupId
@@ -19,10 +19,10 @@ import UserNotificationsUI
         }
     }
 
-    @IBOutlet var imageView: UIImageView!
-    var childViewController: CastledNotificationContentProtocol?
+    lazy var childViewController: CastledNotificationContentProtocol? = nil
+    @objc static var extensionInstance = CastledNotificationViewController()
 
-    override open func viewDidLoad() {
+    @objc override open func viewDidLoad() {
         super.viewDidLoad()
         view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
@@ -31,10 +31,12 @@ import UserNotificationsUI
 
     @available(iOSApplicationExtension 10.0, *)
     @objc open func didReceive(_ notification: UNNotification) {
-        CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushReceived, logLevel: .info)
-        if let customCasledDict = notification.request.content.userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary {
-            CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushFromCastled, logLevel: .info)
+        removeChildViewsIfAny()
 
+        CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushReceived, logLevel: .info)
+
+        if let customCasledDict = getCastledPushObject(notification.request.content.userInfo) {
+            CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushFromCastled, logLevel: .info)
             defer {
                 CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: notification.request.content.userInfo)
                 setuserDefaults()
@@ -50,11 +52,10 @@ import UserNotificationsUI
                         {
                             let mediaListVC = CastledMediasViewController(mediaObjects: convertedAttachments)
                             addChild(mediaListVC)
-                            mediaListVC.view.frame = view.frame
                             view.addSubview(mediaListVC.view)
                             childViewController = mediaListVC
                             mediaListVC.view.layoutIfNeeded()
-                            preferredContentSize = mediaListVC.preferredContentSize
+                            adjustTemplateViewsContraints(defaultVC: mediaListVC)
                             return
                         }
                     default:
@@ -68,36 +69,14 @@ import UserNotificationsUI
         }
     }
 
-    private func createDefaultContentView(_ notification: UNNotification) {
-        CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.likelyTextOrUnsupported, logLevel: .info)
-        let defaultVC = UIStoryboard(name: CastledNotificationContentConstants.contentTemplatesStoryBoard, bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: CastledNotificationContentConstants.contentTemplatesDefaultVC) as! CastledDefaultViewController
-        defaultVC.view.translatesAutoresizingMaskIntoConstraints = false
-        addChild(defaultVC)
-        view.addSubview(defaultVC.view)
-        NSLayoutConstraint.activate([
-            defaultVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            defaultVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            defaultVC.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            defaultVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
-        defaultVC.populateDetailsFrom(notificaiton: notification)
-        defaultVC.view.layoutIfNeeded()
-        childViewController = defaultVC
-        DispatchQueue.main.async { [weak self] in
-            self?.preferredContentSize = CGSize(width: self?.view.frame.width ?? 0, height: self?.childViewController!.getContentSizeHeight() ?? 0)
-            self?.view.setNeedsUpdateConstraints()
-            self?.view.setNeedsLayout()
+    @objc public func isCastledPushNotification(_ notification: UNNotification) -> Bool {
+        if let customCasledDict = getCastledPushObject(notification.request.content.userInfo), customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
+            return true
         }
+        return false
     }
 
-    private func setuserDefaults() {
-        if !appGroupId.isEmpty {
-            childViewController?.userDefaults = UserDefaults(suiteName: appGroupId)
-            childViewController?.userDefaults?.removeObject(forKey: CastledPushMediaConstants.CastledClickedNotiContentIndx)
-        }
-    }
-
-    override open func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+    @objc override public func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
         if let childVc = childViewController {
             preferredContentSize = CGSize(width: view.frame.size.width, height: childVc.getContentSizeHeight())
 
@@ -108,9 +87,43 @@ import UserNotificationsUI
 
     // Handle next previos action here
     @objc public func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
-        // Your code implementation here
-
         completion(.dismissAndForwardAction)
+    }
+}
+
+extension CastledNotificationViewController {
+    private func adjustTemplateViewsContraints(defaultVC: UIViewController) {
+        defaultVC.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            defaultVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            defaultVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            defaultVC.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            defaultVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+
+        DispatchQueue.main.async { [weak self] in
+            self?.preferredContentSize = CGSize(width: self?.view.frame.width ?? 0, height: self?.childViewController?.getContentSizeHeight() ?? 0)
+            self?.view.setNeedsUpdateConstraints()
+            self?.view.setNeedsLayout()
+        }
+    }
+
+    private func createDefaultContentView(_ notification: UNNotification) {
+        CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.likelyTextOrUnsupported, logLevel: .info)
+        let defaultVC = UIStoryboard(name: CastledNotificationContentConstants.contentTemplatesStoryBoard, bundle: Bundle.resourceBundle(for: CastledNotificationViewController.self)).instantiateViewController(identifier: CastledNotificationContentConstants.contentTemplatesDefaultVC) as! CastledDefaultViewController
+        addChild(defaultVC)
+        view.addSubview(defaultVC.view)
+        defaultVC.populateDetailsFrom(notificaiton: notification)
+        defaultVC.view.layoutIfNeeded()
+        childViewController = defaultVC
+        adjustTemplateViewsContraints(defaultVC: defaultVC)
+    }
+
+    private func setuserDefaults() {
+        if !appGroupId.isEmpty {
+            childViewController?.userDefaults = UserDefaults(suiteName: appGroupId)
+            childViewController?.userDefaults?.removeObject(forKey: CastledPushMediaConstants.CastledClickedNotiContentIndx)
+        }
     }
 
     private func convertToArray(text: String) -> [CastledNotificationMediaObject]? {
@@ -123,15 +136,43 @@ import UserNotificationsUI
             let convertedAttachments = try jsonDecoder.decode([CastledNotificationMediaObject].self, from: jsonData)
             return convertedAttachments
         } catch {
-            print("Failed to decode JSON: \(error)")
+            CastledNotificationContentLogManager.logMessage("Failed to decode JSON: \(error)", logLevel: .error)
             return nil
         }
     }
 
-    @objc public func isNotificaitonFromCastled(_ notification: UNNotification) -> Bool {
-        if let customCasledDict = notification.request.content.userInfo[CastledConstants.PushNotification.castledKey] as? NSDictionary, customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
-            return true
+    private func getCastledPushObject(_ userInfo: [AnyHashable: Any]) -> [AnyHashable: Any]? {
+        if let customCasledDict = userInfo[CastledConstants.PushNotification.castledKey] as? [AnyHashable: Any] {
+            return customCasledDict
         }
-        return false
+        return nil
+    }
+
+    private func removeChildViewsIfAny() {
+        if let child = childViewController as? UIViewController {
+            child.willMove(toParent: nil)
+            child.view.removeFromSuperview()
+            child.removeFromParent()
+            childViewController = nil
+        }
+    }
+
+    // Currently not using this method, we can use this  for changing the current inheritance aproach to direct method call
+    @objc func handleRichNotification(_ notification: UNNotification, with viewController: UIViewController) {
+        removeChildViewsIfAny()
+        viewController.addChild(self)
+        viewController.view.addSubview(view)
+        didMove(toParent: viewController)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: viewController.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: viewController.view.trailingAnchor),
+            view.topAnchor.constraint(equalTo: viewController.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: viewController.view.bottomAnchor)
+        ])
+        didReceive(notification)
+        DispatchQueue.main.async {
+            viewController.preferredContentSize = self.preferredContentSize
+        }
     }
 }
