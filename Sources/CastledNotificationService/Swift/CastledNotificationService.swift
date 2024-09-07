@@ -28,10 +28,10 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     override private init() {}
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        configureNotificationContent(request: request, contentHandler: contentHandler)
+        handleNotification(request: request, contentHandler: contentHandler)
     }
 
-    @objc private func configureNotificationContent(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
+    @objc func handleNotification(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
         CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.pushReceived, logLevel: .debug)
 
         self.contentHandler = contentHandler

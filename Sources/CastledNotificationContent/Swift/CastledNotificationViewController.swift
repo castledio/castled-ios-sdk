@@ -30,7 +30,7 @@ import UserNotificationsUI
     }
 
     @available(iOSApplicationExtension 10.0, *)
-    @objc public func didReceive(_ notification: UNNotification) {
+    @objc open func didReceive(_ notification: UNNotification) {
         removeChildViewsIfAny()
 
         CastledNotificationContentLogManager.logMessage(CastledNotificationContentConstants.pushReceived, logLevel: .info)
@@ -69,7 +69,7 @@ import UserNotificationsUI
         }
     }
 
-    @objc open func isCastledPushNotification(_ notification: UNNotification) -> Bool {
+    @objc public func isCastledPushNotification(_ notification: UNNotification) -> Bool {
         if let customCasledDict = getCastledPushObject(notification.request.content.userInfo), customCasledDict[CastledConstants.PushNotification.CustomProperties.notificationId] is String {
             return true
         }
@@ -91,7 +91,7 @@ import UserNotificationsUI
     }
 }
 
-@objc extension CastledNotificationViewController {
+extension CastledNotificationViewController {
     private func adjustTemplateViewsContraints(defaultVC: UIViewController) {
         defaultVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -158,7 +158,7 @@ import UserNotificationsUI
     }
 
     // Currently not using this method, we can use this  for changing the current inheritance aproach to direct method call
-    @objc func handleRichNotification(notification: UNNotification, in viewController: UIViewController) {
+    @objc func handleRichNotification(_ notification: UNNotification, with viewController: UIViewController) {
         removeChildViewsIfAny()
         viewController.addChild(self)
         viewController.view.addSubview(view)

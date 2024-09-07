@@ -21,13 +21,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     //1. Configure config
-    CastledConfigs *config = [CastledConfigs initializeWithAppId:@"718c38e2e359d94367a2e0d35e1fd4df"];
+    CastledConfigs *config = [CastledConfigs initializeWithAppId:@"e8a4f68bfb6a58b40a77a0e6150eca0b"];
     config.enablePush = TRUE;
     config.enableInApp = TRUE;
     config.enableAppInbox = TRUE;
     config.enableTracking  = TRUE;
     config.enableSessionTracking = TRUE;
     config.sessionTimeOutSec = 60;
+    config.location = CastledLocationTEST;
     config.skipUrlHandling = FALSE;
     config.appGroupId = @"group.com.castled.CastledPushDemo.Castled";
     //2. Call Castled.initialize method

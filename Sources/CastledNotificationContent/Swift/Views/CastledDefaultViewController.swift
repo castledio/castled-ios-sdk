@@ -40,6 +40,8 @@ class CastledDefaultViewController: UIViewController, CastledNotificationContent
         lblSubTitle.text = notificaiton.request.content.subtitle
         if let subTitle = lblSubTitle.text, subTitle.isEmpty {
             constraintBodyTop.constant = 0
+            lblTitle.numberOfLines = 20
+            lblBody.numberOfLines = lblTitle.numberOfLines
         }
         lblBody.text = notificaiton.request.content.body
         lblDate.text = notificaiton.date.timeAgo()

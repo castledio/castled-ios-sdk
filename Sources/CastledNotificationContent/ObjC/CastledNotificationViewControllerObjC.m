@@ -26,6 +26,8 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         sharedInstance = [[self alloc] init];
+        sharedInstance.contentViewController = [CastledNotificationViewController extensionInstance];
+
     });
     return sharedInstance;
 }
@@ -49,7 +51,7 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
 
 - (void)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(void (^)(UNNotificationContentExtensionResponseOption))completion {
     // Call the Swift view controller's method
-    [[CastledNotificationViewController extensionInstance] didReceiveNotificationResponse:response completionHandler:^(UNNotificationContentExtensionResponseOption responseOption) {
+    [self.contentViewController didReceiveNotificationResponse:response completionHandler:^(UNNotificationContentExtensionResponseOption responseOption) {
         completion(responseOption);
     }];
 }
@@ -58,7 +60,7 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
     [super preferredContentSizeDidChangeForChildContentContainer:container];
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.preferredContentSize = [CastledNotificationViewController extensionInstance].preferredContentSize;
+        self.preferredContentSize = self.contentViewController.preferredContentSize;
 
     });
     
@@ -80,12 +82,11 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
 
     [self.contentViewController didMoveToParentViewController:self];
 }
-- (void)handleRichNotification:(UNNotification *)notification inViewController:(UIViewController *)viewController{
-    self.contentViewController = [CastledNotificationViewController extensionInstance];
+- (void)handleRichNotification:(UNNotification *)notification withViewController:(UIViewController *)viewController{
     if([_appGroupId isKindOfClass:[NSString class]]){
         self.contentViewController.appGroupId = _appGroupId;
     }
-    [self.contentViewController handleRichNotificationWithNotification:notification in:viewController];
+    [self.contentViewController handleRichNotification:notification with:viewController];
 }
 /*
 #pragma mark - Navigation

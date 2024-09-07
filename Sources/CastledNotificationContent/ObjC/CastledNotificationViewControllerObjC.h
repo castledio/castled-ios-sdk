@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didReceiveNotification:(UNNotification *)notification;
 - (BOOL)isCastledPushNotification:(UNNotification *)notification;
 //+ (CastledNotificationViewControllerObjC *)extensionInstance;
-//- (void)handleRichNotification:(UNNotification *)notification inViewController:(UIViewController *)viewController;
+//- (void)handleRichNotification:(UNNotification *)notification withViewController:(UIViewController *)viewController;
 @end
 
 NS_ASSUME_NONNULL_END

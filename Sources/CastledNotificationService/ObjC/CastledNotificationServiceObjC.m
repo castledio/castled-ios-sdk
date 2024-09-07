@@ -45,15 +45,20 @@ static CastledNotificationServiceObjC *sharedInstance = nil;
 
 -(void)initializeExtensionObjects{
     self.serviceExtension = [CastledNotificationServiceExtension extensionInstance];
-    self.serviceExtension.appGroupId = appGroupId;
+    if ([appGroupId isKindOfClass:[NSString class]]) {
+        self.serviceExtension.appGroupId = appGroupId;
+    }
 }
 
 - (void)setAppGroupId:(NSString *)appGroupId{
     self.serviceExtension.appGroupId = appGroupId;
 }
-
+- (void)handleNotificationWithRequest:(UNNotificationRequest *)request
+                          contentHandler:(void (^)(UNNotificationContent *))contentHandler {
+    [_serviceExtension handleNotificationWithRequest:request contentHandler:contentHandler];
+}
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
-    [_serviceExtension didReceiveNotificationRequest:request withContentHandler:contentHandler];
+    [self handleNotificationWithRequest:request contentHandler:contentHandler];
     self.contentHandler = _serviceExtension.contentHandler;
     self.bestAttemptContent = _serviceExtension.bestAttemptContent;
 }
