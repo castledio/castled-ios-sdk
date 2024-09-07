@@ -9,6 +9,7 @@ import Foundation
 import UserNotifications
 @_spi(CastledInternal) import Castled
 
+@objcMembers
 open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     @objc public lazy var appGroupId = "" {
         didSet {
@@ -22,16 +23,16 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     @objc public lazy var contentHandler: ((UNNotificationContent) -> Void)? = nil
     @objc public lazy var bestAttemptContent: UNMutableNotificationContent? = nil
 
-    @objc static var extensionInstance = CastledNotificationServiceExtension()
+    //   @objc static var extensionInstance = CastledNotificationServiceExtension()
     lazy var sharedUserDefaults: UserDefaults? = nil
 
-    override private init() {}
+    //  override private init() {}
 
     override open func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         handleNotification(request: request, contentHandler: contentHandler)
     }
 
-    @objc func handleNotification(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
+    func handleNotification(request: UNNotificationRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
         CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.pushReceived, logLevel: .debug)
 
         self.contentHandler = contentHandler

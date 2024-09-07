@@ -26,11 +26,19 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         sharedInstance = [[self alloc] init];
-        sharedInstance.contentViewController = [CastledNotificationViewController extensionInstance];
-
+ 
     });
     return sharedInstance;
 }
+- (CastledNotificationViewController *)contentViewController {
+    if (!_contentViewController) {
+        _contentViewController = [[CastledNotificationViewController alloc] init];
+        // _contentViewController = [CastledNotificationViewController extensionInstance];
+
+    }
+    return _contentViewController;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Initialize the Swift view controller
@@ -66,7 +74,6 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
     
 }
 -(void)createCastledNotificationViewController{
-    self.contentViewController = [CastledNotificationViewController extensionInstance];
     self.contentViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     if([_appGroupId isKindOfClass:[NSString class]]){
         self.contentViewController.appGroupId = _appGroupId;
@@ -82,12 +89,12 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
 
     [self.contentViewController didMoveToParentViewController:self];
 }
-- (void)handleRichNotification:(UNNotification *)notification withViewController:(UIViewController *)viewController{
+/*- (void)handleRichNotification:(UNNotification *)notification withViewController:(UIViewController *)viewController{
     if([_appGroupId isKindOfClass:[NSString class]]){
         self.contentViewController.appGroupId = _appGroupId;
     }
     [self.contentViewController handleRichNotification:notification with:viewController];
-}
+}/
 /*
 #pragma mark - Navigation
 
