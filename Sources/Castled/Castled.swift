@@ -137,12 +137,8 @@ import UserNotifications
      This method sets the categories that define the types of notifications your app can handle. Each category may include actions and options that affect how notifications are presented and interacted with.
      */
     @objc public func setNotificationCategories(withItems items: Set<UNNotificationCategory>) {
-        if !Castled.sharedInstance.isCastledInitialized() {
-            CastledErrorHandler.throwCastledFatalError(errorMessage: "\(CastledExceptionMessages.notInitialised.rawValue) before \(#function)")
-            return
-        }
         var categorySet = items
-        categorySet.insert(getCastledCategory())
+        categorySet.formUnion(getCastledCategories())
         UNUserNotificationCenter.current().setNotificationCategories([])
         UNUserNotificationCenter.current().setNotificationCategories(categorySet)
     }

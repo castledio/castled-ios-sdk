@@ -20,7 +20,7 @@ import UserNotificationsUI
     }
 
     lazy var childViewController: CastledNotificationContentProtocol? = nil
-    @objc static var extensionInstance = CastledNotificationViewController()
+    //  @objc static var extensionInstance = CastledNotificationViewController()
 
     @objc override open func viewDidLoad() {
         super.viewDidLoad()

@@ -274,9 +274,13 @@ public extension Castled {
         return payload
     }
 
-    internal func getCastledCategory() -> UNNotificationCategory {
-        let castledCategory = UNNotificationCategory(identifier: "CASTLED_PUSH_TEMPLATE", actions: [], intentIdentifiers: [], options: .customDismissAction)
-        return castledCategory
+    internal func getCastledCategories() -> Set<UNNotificationCategory> {
+        let templateCategory = UNNotificationCategory(identifier: "CASTLED_PUSH_TEMPLATE", actions: [], intentIdentifiers: [], options: .customDismissAction)
+
+        let defaultCategory = UNNotificationCategory(identifier: "CASTLED_DEFAULT", actions: [], intentIdentifiers: [], options: .customDismissAction)
+
+        // Return a Set containing both categories
+        return Set([templateCategory, defaultCategory])
     }
 
     internal func isCastledSilentPush(fromInfo userInfo: [AnyHashable: Any]) -> Bool {

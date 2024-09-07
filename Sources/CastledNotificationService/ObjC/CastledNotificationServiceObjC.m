@@ -43,8 +43,16 @@ static CastledNotificationServiceObjC *sharedInstance = nil;
     return self;
 }
 
+- (CastledNotificationServiceExtension *)serviceExtension {
+    if (!_serviceExtension) {
+        _serviceExtension = [[CastledNotificationServiceExtension alloc] init];
+        // _serviceExtension = [CastledNotificationServiceExtension extensionInstance];
+
+    }
+    return _serviceExtension;
+}
+
 -(void)initializeExtensionObjects{
-    self.serviceExtension = [CastledNotificationServiceExtension extensionInstance];
     if ([appGroupId isKindOfClass:[NSString class]]) {
         self.serviceExtension.appGroupId = appGroupId;
     }
@@ -55,7 +63,8 @@ static CastledNotificationServiceObjC *sharedInstance = nil;
 }
 - (void)handleNotificationWithRequest:(UNNotificationRequest *)request
                           contentHandler:(void (^)(UNNotificationContent *))contentHandler {
-    [_serviceExtension handleNotificationWithRequest:request contentHandler:contentHandler];
+    [_serviceExtension didReceiveNotificationRequest:request withContentHandler:contentHandler];
+     // Method implementation
 }
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler{
     [self handleNotificationWithRequest:request contentHandler:contentHandler];
