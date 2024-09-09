@@ -16,7 +16,7 @@ class NotificationService: CastledNotificationServiceExtension {
         if isCastledPushNotificationRequest(request) {
             print("Castled notfiication received \(#function)")
         } else {
-            // push from other sdks
+            // push from other sdks, call the respective methods
         }
     }
 

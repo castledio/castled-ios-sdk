@@ -47,7 +47,7 @@ class CastledRetryHandler {
             }
             self?.castledGroup.notify(queue: .main) {
                 if !processedRequests.isEmpty {
-                    CastledStore.deleteFailedRequests(processedRequests)
+                    CastledStore.deleteCastledNetworkRequests(processedRequests)
                 }
                 self?.isResending = false
                 completion?()

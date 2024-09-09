@@ -90,7 +90,7 @@ public class CastledNetworkLayer: NSObject {
                 }
                 if withRetry {
                     // adding the requests to the queue for other errors
-                    CastledStore.enqueFailedRequest(request)
+                    CastledStore.enqueCastledNetworkRequest(request)
                 }
             }
             completion(api_response)

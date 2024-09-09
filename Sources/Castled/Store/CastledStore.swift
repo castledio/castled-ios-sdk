@@ -23,7 +23,7 @@ import Foundation
         return result
     }
 
-    static func deleteFailedRequests(_ items: [CastledNetworkRequest]) {
+    static func deleteCastledNetworkRequests(_ items: [CastledNetworkRequest]) {
         CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
             let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
             let idsToRemove = Set(items.map { $0.requestId })
@@ -32,7 +32,7 @@ import Foundation
         }
     }
 
-    static func enqueFailedRequest(_ request: CastledNetworkRequest) {
+    static func enqueCastledNetworkRequest(_ request: CastledNetworkRequest) {
         CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
             var failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
             failedItems.append(request)
