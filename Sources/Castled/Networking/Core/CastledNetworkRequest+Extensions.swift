@@ -22,6 +22,7 @@ extension CastledNetworkRequest {
         var request = URLRequest(url: components.url ?? url)
         request.httpMethod = method.rawValue
         request.setAuthHeaders()
+        request.timeoutInterval = 30.0
         return request
     }
 
@@ -35,6 +36,7 @@ extension CastledNetworkRequest {
             request.httpBody = requestBody
         }
         request.setAuthHeaders()
+        request.timeoutInterval = 30.0
         return request
     }
 
