@@ -13,12 +13,14 @@ public struct CastledNetworkRequest: Codable, Equatable, Hashable {
     public let method: HTTPMethod
     public let parameters: [String: Any]?
     let requestId: String
+    let insertTime: Double
 
     public init(type: String, method: HTTPMethod, parameters: [String: Any]?) {
         self.type = type
         self.method = method
         self.parameters = parameters
         self.requestId = UUID().uuidString
+        self.insertTime = Date().timeIntervalSince1970
     }
 
     public static func == (lhs: CastledNetworkRequest, rhs: CastledNetworkRequest) -> Bool {
@@ -30,7 +32,7 @@ public struct CastledNetworkRequest: Codable, Equatable, Hashable {
     }
 
     public enum CodingKeys: String, CodingKey {
-        case type, path, method, parameters, requestId
+        case type, path, method, parameters, requestId, insertTime
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -39,6 +41,7 @@ public struct CastledNetworkRequest: Codable, Equatable, Hashable {
         try container.encode(method, forKey: .method)
         try container.encode(requestId, forKey: .requestId)
         try container.encodeIfPresent(parameters, forKey: .parameters)
+        try container.encodeIfPresent(insertTime, forKey: .insertTime)
 
         // Encode other fields if needed
     }
@@ -49,6 +52,7 @@ public struct CastledNetworkRequest: Codable, Equatable, Hashable {
         self.requestId = try container.decode(String.self, forKey: .requestId)
         self.method = try container.decode(HTTPMethod.self, forKey: .method)
         self.parameters = try container.decode([String: Any].self, forKey: .parameters)
+        self.insertTime = try container.decodeIfPresent(Double.self, forKey: .insertTime) ?? (Date().timeIntervalSince1970 - 10 * 60)
     }
 
 //    public init(from decoder: Decoder) throws {}
