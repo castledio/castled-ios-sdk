@@ -50,8 +50,8 @@ public class CastledLifeCycleManager: NSObject {
         for observer in observers {
             observer.appDidBecomeActive()
         }
-        if CastledUserDefaults.shared.userId != nil {
-            CastledBGManager.sharedInstance.executeBackgroundTask {}
+        if let _ = CastledUserDefaults.shared.userId {
+            CastledRetryHandler.shared.retrySendingAllFailedEvents(completion: {})
         }
     }
 
