@@ -32,6 +32,7 @@ public enum CastledConstants {
         static let isCastledSilentPush = "csp"
         static let contentAvailable = "content-available"
         static let userId = "userId"
+        static let deviceId = "deviceId"
 
         enum Token {
             static let apnsToken = "apnsToken"

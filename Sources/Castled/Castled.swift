@@ -278,7 +278,8 @@ import UserNotifications
     private func updateTheUserIdAndToken(_ userId: String, apns apnsToken: String?, fcm fcmToken: String?) {
         let params = [CastledConstants.PushNotification.userId: userId,
                       CastledConstants.PushNotification.Token.apnsToken: apnsToken,
-                      CastledConstants.PushNotification.Token.fcmToken: fcmToken]
+                      CastledConstants.PushNotification.Token.fcmToken: fcmToken,
+                      CastledConstants.PushNotification.deviceId: CastledCommonClass.getDeviceId()]
         CastledPushNotification.sharedInstance.registerUser(params: params.compactMapValues { $0 } as [String: Any])
     }
 
