@@ -279,7 +279,7 @@ import UserNotifications
         let params = [CastledConstants.PushNotification.userId: userId,
                       CastledConstants.PushNotification.Token.apnsToken: apnsToken,
                       CastledConstants.PushNotification.Token.fcmToken: fcmToken,
-                      CastledConstants.PushNotification.deviceId: CastledCommonClass.getDeviceId()]
+                      CastledConstants.PushNotification.deviceId: CastledDeviceInfoUtils.getDeviceId()]
         CastledPushNotification.sharedInstance.registerUser(params: params.compactMapValues { $0 } as [String: Any])
     }
 

@@ -51,7 +51,7 @@ class CastledSessionsManager {
                                    CastledConstants.Sessions.sessionLastDuration: Int(min(sessionDuration, Double(Int32.max))),
                                    CastledConstants.Sessions.sessionTimeStamp: dateEnded.string(),
                                    CastledConstants.Sessions.properties: [CastledConstants.kCastledPlatformKey: CastledConstants.kCastledPlatformValue,
-                                                                          CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
+                                                                          CastledConstants.Sessions.deviceId: CastledDeviceInfoUtils.getDeviceId()]])
             CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledIsFirstSesion, false)
             isFirstSession = false
         }
@@ -70,7 +70,7 @@ class CastledSessionsManager {
                                CastledConstants.Sessions.sessionTimeStamp: dateStarted.string(),
                                CastledConstants.Sessions.sessionisFirstSession: isFirstSession,
                                CastledConstants.Sessions.properties: [CastledConstants.kCastledPlatformKey: CastledConstants.kCastledPlatformValue,
-                                                                      CastledConstants.Sessions.deviceId: CastledCommonClass.getDeviceId()]])
+                                                                      CastledConstants.Sessions.deviceId: CastledDeviceInfoUtils.getDeviceId()]])
         CastledSessions.sharedInstance.reportSessionEvents(params: sessionDetails)
         // CastledLog.castledLog("reportSessionEvents \(sessionDetails)", logLevel: .info)
     }

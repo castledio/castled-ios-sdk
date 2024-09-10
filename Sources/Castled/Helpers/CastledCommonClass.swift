@@ -114,15 +114,6 @@ public class CastledCommonClass {
         return ""
     }
 
-    static func getDeviceId() -> String {
-        if let deviceID = CastledUserDefaults.getString(CastledUserDefaults.kCastledDeviceIddKey) {
-            return deviceID
-        }
-        let random = CastledCommonClass.getUniqueString()
-        CastledUserDefaults.setString(CastledUserDefaults.kCastledDeviceIddKey, random)
-        return random
-    }
-
     private static func randomIntString() -> String {
         let randomInt = Int.random(in: 1 ... Int.max)
         return String(randomInt)
