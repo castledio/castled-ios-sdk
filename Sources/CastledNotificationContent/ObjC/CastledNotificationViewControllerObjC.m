@@ -94,7 +94,7 @@ static CastledNotificationViewControllerObjC *sharedInstance = nil;
         self.contentViewController.appGroupId = _appGroupId;
     }
     [self.contentViewController handleRichNotification:notification with:viewController];
-}/
+}*/
 /*
 #pragma mark - Navigation
 

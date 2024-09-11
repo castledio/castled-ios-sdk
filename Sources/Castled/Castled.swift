@@ -25,7 +25,9 @@ import UserNotifications
     lazy var castledNotificationQueue = DispatchQueue(label: CastledConstants.DispatchQueues.CastledNotificationQueue, qos: .userInteractive)
     lazy var castledProfileQueue = DispatchQueue(label: CastledConstants.DispatchQueues.CastledProfileQueue, qos: .userInitiated, attributes: .concurrent)
 
-    override private init() {}
+    override private init() {
+        CastledCoreDataStack.shared.initialize()
+    }
 
     /**
      This method initilize the Castled SDK using the specified configuration object and optionally assigns a delegate for handling notifications. The configuration (`CastledConfigs`) provides necessary setup parameters, while the delegate (`CastledNotificationDelegate`) can be used to handle notification events and interactions.

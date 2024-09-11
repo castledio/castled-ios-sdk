@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "Castled"
-  spec.version      = '4.4.2'
+  spec.version      = '4.4.3'
   spec.summary      = "iOS SDK for Castled Push and InApp support"
   spec.description  = <<-DESC
   Castled SDK library providing support for push and in app notifications and event handling.
@@ -21,7 +21,7 @@ Pod::Spec.new do |spec|
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
   spec.source_files = 'Sources/Castled/**/*.{h,m,swift}', 'Sources/CastledObjC/**/*.{h,m,swift}'
   spec.resource_bundles = {
-    "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib,js}']
+    "Castled" => ['Sources/Castled/**/*.{xcassets,storyboard,xib,js,xcdatamodeld}']
   }
  spec.readme = 'README.md'
  spec.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }

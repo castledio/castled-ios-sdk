@@ -50,15 +50,15 @@ final class CastledInboxTest: XCTestCase {
     }
 
     func testAClearInboxItemsBeforeOtherOperations() {
-        CastledCoreDataOperations.shared.clearInboxItems()
-        XCTAssertTrue(CastledCoreDataOperations.shared.getAllInboxItemsCount() == 0, "clearInboxItems() method failed..")
+        CastledInboxCoreDataOperations.shared.clearInboxItems()
+        XCTAssertTrue(CastledInboxCoreDataOperations.shared.getAllInboxItemsCount() == 0, "clearInboxItems() method failed..")
     }
 
     func testALoadItems() {
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
         castledInitializer.initializeCaslted(enableAppInbox: true)
         let expectation = XCTestExpectation(description: "Populate mock data and fetch inbox items")
-        CastledCoreDataOperations.shared.refreshInboxItems(liveInboxResponse: inboxObjects)
+        CastledInboxCoreDataOperations.shared.refreshInboxItems(liveInboxResponse: inboxObjects)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             CastledInbox.sharedInstance.getInboxItems { _, items, _ in
                 XCTAssertEqual(items?.count, inboxObjects.count, "There should be \(inboxObjects.count) inbox items")
@@ -93,9 +93,9 @@ final class CastledInboxTest: XCTestCase {
     func testMarkInboxItemRead() {
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
         let expectation = XCTestExpectation(description: "Mark inbox items as read")
-        CastledCoreDataOperations.shared.saveInboxItemsRead(readItems: inboxObjects.filter { !$0.isRead })
+        CastledInboxCoreDataOperations.shared.saveInboxItemsRead(readItems: inboxObjects.filter { !$0.isRead })
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            XCTAssertTrue(CastledCoreDataOperations.shared.getInboxUnreadCount() == 0)
+            XCTAssertTrue(CastledInboxCoreDataOperations.shared.getInboxUnreadCount() == 0)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2.0)
@@ -105,7 +105,7 @@ final class CastledInboxTest: XCTestCase {
         let inboxObjects = CastledInboxMockObjects().loadInboxItemsFromJSON()
         let expectation = XCTestExpectation(description: "Delete last inbox item")
         castledInitializer.initializeCaslted(enableAppInbox: true)
-        CastledCoreDataOperations.shared.deleteInboxItem(inboxItem: inboxObjects.last!)
+        CastledInboxCoreDataOperations.shared.deleteInboxItem(inboxItem: inboxObjects.last!)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             CastledInbox.sharedInstance.getInboxItems { _, items, _ in
                 XCTAssertTrue(items?.count == inboxObjects.count - 1)

@@ -138,7 +138,7 @@ import CoreData
     private func getCategories() -> [String] {
         let context = CastledCoreDataStack.shared.mainContext
         let column = "tag"
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CastledAppInbox.fetchRequest()
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CastledInboxMO.fetchRequest()
         fetchRequest.resultType = .dictionaryResultType
 
         // Set that you want distinct results
@@ -225,7 +225,7 @@ import CoreData
 
     func updateReadStatus() {
         if !readItems.isEmpty {
-            CastledCoreDataOperations.shared.saveInboxIdsRead(readItems: readItems)
+            CastledInboxCoreDataOperations.shared.saveInboxIdsRead(readItems: readItems)
             readItems.removeAll()
         }
     }

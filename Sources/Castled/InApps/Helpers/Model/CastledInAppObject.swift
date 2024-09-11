@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @_spi(CastledInternal)
 
 // MARK: - InAppObject

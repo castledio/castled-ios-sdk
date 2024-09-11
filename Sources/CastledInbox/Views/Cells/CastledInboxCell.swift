@@ -33,7 +33,7 @@ class CastledInboxCell: UITableViewCell {
     @IBOutlet weak var imgBottomLine: UIImageView!
     @IBOutlet weak var constraintImageHeightRatio: NSLayoutConstraint!
     @IBOutlet weak var constraintButtonContainerHeight: NSLayoutConstraint!
-    private var inboxItem: CastledAppInbox?
+    private var inboxItem: CastledInboxMO?
     private var actualCoverImageRatioConstraint: NSLayoutConstraint?
 
     override func awakeFromNib() {
@@ -51,10 +51,10 @@ class CastledInboxCell: UITableViewCell {
         viewContainer.layer.masksToBounds = true
 
         // https://stackoverflow.com/a/54349214/461386
-        [lblTitle, lblDescription].forEach {
-            $0.numberOfLines = 0
-            $0.lineBreakMode = .byWordWrapping
-            $0.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
+        for item in [lblTitle, lblDescription] {
+            item!.numberOfLines = 0
+            item!.lineBreakMode = .byWordWrapping
+            item!.setContentCompressionResistancePriority(UILayoutPriority.required, for: .vertical)
         }
 
         applyShadow(radius: viewContainer.layer.cornerRadius)
@@ -66,7 +66,7 @@ class CastledInboxCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func configureCellWith(_ inboxObj: CastledAppInbox) {
+    func configureCellWith(_ inboxObj: CastledInboxMO) {
         inboxItem = inboxObj
         viewContainer.backgroundColor = inboxObj.colorContainer
         lblTitle.textColor = inboxObj.colorTitle
@@ -85,6 +85,7 @@ class CastledInboxCell: UITableViewCell {
             imageView = imgCover
             imgCover.isHidden = false
             imgBannerLogo.superview?.isHidden = true
+
         case CastledInboxType.messageBanner.rawValue:
             multiplier = 0.0
             imageView = imgBannerLogo
@@ -99,6 +100,7 @@ class CastledInboxCell: UITableViewCell {
 
         case CastledInboxType.other.rawValue:
             break
+
         default:
             break
         }

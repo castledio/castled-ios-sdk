@@ -38,7 +38,7 @@ enum CastledInboxRepository {
         let request = CastledInboxRepository.getFetchRequest()
         CastledNetworkLayer.shared.makeApiCall(request: request, path: fetchPath, responseModel: [CastledInboxItem].self, shouldDecodeResponse: true) { response in
             if response.success {
-                CastledCoreDataOperations.shared.refreshInboxItems(liveInboxResponse: response.result ?? [])
+                CastledInboxCoreDataOperations.shared.refreshInboxItems(liveInboxResponse: response.result ?? [])
             } else {
                 CastledLog.castledLog("Fetch inbox items failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
             }

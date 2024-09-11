@@ -7,22 +7,23 @@
 
 import CoreData
 import Foundation
-@_spi(CastledInternal) import Castled
+
+@_spi(CastledInternal)
 
 public class CastledCoreDataStack {
     public static let shared = CastledCoreDataStack()
-    static let modelName = "CastledInbox"
+    public static let modelName = "CastledModel"
     private init() {}
 
-    static var persistentContainer: NSPersistentContainer = {
+    public static var persistentContainer: NSPersistentContainer = {
         let modelURL = Bundle.resourceBundle(for: CastledCoreDataStack.self).url(forResource: modelName, withExtension: "momd")!
         let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL)
         let container = NSPersistentContainer(name: modelName, managedObjectModel: managedObjectModel!)
-        let storeURL = CastledCoreDataStack.applicationDocumentsDirectory.appendingPathComponent("castled_inbox.sqlite")
+        let storeURL = CastledCoreDataStack.applicationDocumentsDirectory.appendingPathComponent("CastledEntities.sqlite")
         let description = NSPersistentStoreDescription(url: storeURL)
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
-        // CastledLog.castledLog("Inbox path \(storeURL)", logLevel: .info)
+        CastledLog.castledLog("Inbox path \(storeURL)", logLevel: .info)
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { _, error in
 
@@ -59,7 +60,15 @@ public class CastledCoreDataStack {
         }
     }
 
-    static var applicationDocumentsDirectory: URL {
+    // Merge changes from background context into main viewContext
+    public func mergeChangesIntoMainContext(from context: NSManagedObjectContext) {
+        let viewContext = Self.persistentContainer.viewContext
+        viewContext.perform {
+            viewContext.mergeChanges(fromContextDidSave: Notification(name: .NSManagedObjectContextDidSave, object: context, userInfo: nil))
+        }
+    }
+
+    public static var applicationDocumentsDirectory: URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
 }

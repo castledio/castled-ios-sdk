@@ -22,13 +22,9 @@ import UIKit
     }
 
     func prefetchInApps() {
-        if let savedItems = CastledUserDefaults.getDataFor(CastledUserDefaults.kCastledInAppsList) {
-            let decoder = JSONDecoder()
-            if let loadedInApps = try? decoder.decode([CastledInAppObject].self, from: savedItems) {
-                self.savedInApps.removeAll()
-                self.savedInApps.append(contentsOf: loadedInApps)
-            }
-        }
+        let savedItems = CastledInAppCoreDataOperations.shared.getLiveInAppItems()
+        self.savedInApps.removeAll()
+        self.savedInApps.append(contentsOf: CastledInAppCoreDataOperations.shared.getLiveInAppItems())
     }
 
     func reportInAppEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
