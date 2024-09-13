@@ -15,22 +15,24 @@ public class CastledCoreDataOperations {
     private init() {}
 
     public func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        print("performBackgroundTask beinning")
+        print("performBackgroundTask beinning \(Thread.isMainThread) \(Thread.current)")
         let context = CastledCoreDataStack.shared.newBackgroundContext()
         context.perform {
             block(context)
             if context.hasChanges {
                 do {
                     try context.save()
-                    CastledCoreDataStack.shared.saveContext()
-                    print("performBackgroundTask completion")
+                    DispatchQueue.main.async {
+                        CastledCoreDataStack.shared.saveContext()
+                    }
+                    print("performBackgroundTask completion \(Thread.isMainThread) \(Thread.current)")
 
                 } catch {
                     // Handle the error appropriately in your application
                     print("Error saving background context: \(error)")
                 }
             } else {
-                print("performBackgroundTask completion no chnage")
+                print("performBackgroundTask completion no chnage \(Thread.isMainThread) \(Thread.current)")
             }
         }
     }

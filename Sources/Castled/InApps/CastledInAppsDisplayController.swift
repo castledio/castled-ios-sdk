@@ -22,7 +22,6 @@ import UIKit
     }
 
     func prefetchInApps() {
-        let savedItems = CastledInAppCoreDataOperations.shared.getLiveInAppItems()
         self.savedInApps.removeAll()
         self.savedInApps.append(contentsOf: CastledInAppCoreDataOperations.shared.getLiveInAppItems())
     }
@@ -166,22 +165,8 @@ import UIKit
     }
 
     private func saveInappDisplayStatus(event: CastledInAppObject) {
-        let currentTime = Date().timeIntervalSince1970
-        var savedInApptriggers = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSavedInappConfigs) as? [[String: String]]) ?? [[String: String]]()
-        if let index = savedInApptriggers.firstIndex(where: { String(event.notificationID) == $0[CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue] }) {
-            var newValues = savedInApptriggers[index]
-            var counter = Int(newValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue] ?? "0") ?? 0
-            counter += 1
-            newValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue] = "\(counter)"
-            newValues[CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue] = "\(currentTime)"
-            savedInApptriggers[index] = newValues
-        } else {
-            savedInApptriggers.append([CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue: "\(currentTime)",
-                                       CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue: "1",
-                                       CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue: String(event.notificationID)])
-        }
-        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledSavedInappConfigs, savedInApptriggers)
-        CastledUserDefaults.setString(CastledUserDefaults.kCastledLastInappDisplayedTime, "\(currentTime)")
+        CastledInAppCoreDataOperations.shared.updateInAppItemAfterDisplay(Int64(event.notificationID))
+        CastledUserDefaults.setString(CastledUserDefaults.kCastledLastInappDisplayedTime, "\(Date().timeIntervalSince1970)")
     }
 
     // MARK: - Trgigger Evaluation
@@ -192,23 +177,9 @@ import UIKit
         //        if inAppsArray.count>count{
         //            return inAppsArray[count]
         //        }
-        let savedInApptriggers = (CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledSavedInappConfigs) as? [[String: String]]) ?? [[String: String]]()
-        let currentTime = Date().timeIntervalSince1970
-        let filteredArray = inAppsArray.filter { inAppObj in
-            let parentId = inAppObj.notificationID
-            // Check if the savedInApptriggers contains the id
-            if savedInApptriggers.contains(where: { Int($0[CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue] ?? "-1") == parentId }) {
-                guard let savedValues = savedInApptriggers.first(where: { Int($0[CastledConstants.InAppsConfigKeys.inAppNotificationId.rawValue] ?? "") == parentId }),
-                      let currentCounter = Int(savedValues[CastledConstants.InAppsConfigKeys.inAppCurrentDisplayCounter.rawValue]!),
-                      let lastDiplayTime = Double(savedValues[CastledConstants.InAppsConfigKeys.inAppLastDisplayedTime.rawValue]!)
-                else { return false }
-                return currentCounter < inAppObj.displayConfig?.displayLimit ?? 0 &&
-                    (currentTime - lastDiplayTime) > CGFloat(inAppObj.displayConfig?.minIntervalBtwDisplays ?? 0)
-            } else {
-                return true
-            }
-        }
-
+        print("before calling  findTriggeredInApps ********************************")
+        let filteredArray = CastledInAppCoreDataOperations.shared.fetchSatisfiedInAppItemsFrom(inAppsArray.map { $0.notificationID })
+        print("filteredArrayNew from coredata \(filteredArray.count)")
         if !filteredArray.isEmpty {
             let event = filteredArray.sorted { lhs, rhs -> Bool in
                 let lhsPriority = CastledConstants.InDisplayPriority(rawValue: lhs.priority)

@@ -9,40 +9,20 @@ import Foundation
 
 @objc class CastledStore: NSObject {
     static let castledStoreQueue = DispatchQueue(label: "CastledbHandler")
-    static let castledFailedItemsOperations = DispatchQueue(label: "CastledFailedItemsOperations", attributes: .concurrent)
 
     static func getAllFailedRequests() -> [CastledNetworkRequest] {
-        var result: [CastledNetworkRequest]!
-        CastledStore.castledFailedItemsOperations.sync {
-            if let failedItems: [CastledNetworkRequest] = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) {
-                result = failedItems
-            } else {
-                result = [CastledNetworkRequest]()
-            }
-        }
+        print("before calling getAllFailedRequests from CastledStore")
+        let result = CastledRetryCoreDataOperations.shared.getAllFailedRequests()
+        print("after calling getAllFailedRequests from CastledStore \(result.count)")
         return result
     }
 
     static func deleteCastledNetworkRequests(_ items: [CastledNetworkRequest]) {
-        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
-            let failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
-            let idsToRemove = Set(items.map { $0.requestId })
-            let updatedRequests = failedItems.filter { !idsToRemove.contains($0.requestId) }
-            CastledUserDefaults.setObject(updatedRequests, as: [CastledNetworkRequest].self, forKey: CastledUserDefaults.kCastledFailedRequests)
-        }
+        CastledRetryCoreDataOperations.shared.deleteCastledNetworkRequests(items)
     }
 
     static func enqueCastledNetworkRequest(_ request: CastledNetworkRequest) {
-        CastledStore.castledFailedItemsOperations.async(flags: .barrier) {
-            var failedItems = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledFailedRequests, as: [CastledNetworkRequest].self) ?? [CastledNetworkRequest]()
-            failedItems.append(request)
-            let maxmFailedItems = 5000
-            if failedItems.count > maxmFailedItems {
-                let numberOfElementsToRemove = failedItems.count - maxmFailedItems
-                failedItems.removeFirst(numberOfElementsToRemove)
-            }
-            CastledUserDefaults.setObject(failedItems, as: [CastledNetworkRequest].self, forKey: CastledUserDefaults.kCastledFailedRequests)
-        }
+        CastledRetryCoreDataOperations.shared.enqueCastledNetworkRequest(request)
     }
 }
 

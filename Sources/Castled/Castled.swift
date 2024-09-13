@@ -25,9 +25,7 @@ import UserNotifications
     lazy var castledNotificationQueue = DispatchQueue(label: CastledConstants.DispatchQueues.CastledNotificationQueue, qos: .userInteractive)
     lazy var castledProfileQueue = DispatchQueue(label: CastledConstants.DispatchQueues.CastledProfileQueue, qos: .userInitiated, attributes: .concurrent)
 
-    override private init() {
-        CastledCoreDataStack.shared.initialize()
-    }
+    override private init() {}
 
     /**
      This method initilize the Castled SDK using the specified configuration object and optionally assigns a delegate for handling notifications. The configuration (`CastledConfigs`) provides necessary setup parameters, while the delegate (`CastledNotificationDelegate`) can be used to handle notification events and interactions.
@@ -49,6 +47,7 @@ import UserNotifications
         let config = CastledConfigs.sharedInstance
         CastledLog.setLogLevel(config.logLevel)
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
+        CastledCoreDataStack.shared.initialize()
         if config.enablePush {
             if config.appGroupId.isEmpty {
                 CastledLog.castledLog(CastledExceptionMessages.appGrouIdEmpty.rawValue, logLevel: .warning)

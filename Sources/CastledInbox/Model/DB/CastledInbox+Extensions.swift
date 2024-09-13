@@ -1,21 +1,15 @@
 //
-//  CastledInboxMO+CoreDataClass.swift
-//  Castled
+//  CastledInbox+Extensions.swift
+//  CastledInbox
 //
-//  Created by antony on 11/09/2024.
-//
+//  Created by antony on 13/09/2024.
 //
 
-import CoreData
 import Foundation
 import UIKit
+@_spi(CastledInternal) import Castled
 
-@_spi(CastledInternal)
-
-@objc(CastledInboxMO)
-public class CastledInboxMO: NSManagedObject {}
-
-public extension CastledInboxMO {
+extension CastledInboxMO {
     var actionButtonsArray: [[String: Any]] {
         get {
             if let buttons = actionButtons, let arrayOfDictionaries: [[String: Any]] = buttons.objectFromCastledData() {

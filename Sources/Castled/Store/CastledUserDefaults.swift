@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @_spi(CastledInternal)
 
 public class CastledUserDefaults: NSObject {
@@ -182,12 +183,9 @@ public class CastledUserDefaults: NSObject {
         userDefaults.removeObject(forKey: kCastledDeviceIddKey)
         userDefaults.removeObject(forKey: kCastledDeviceInfoKey)
         userDefaults.removeObject(forKey: kCastledUserTokenKey)
-        userDefaults.removeObject(forKey: kCastledFailedRequests)
-        userDefaults.removeObject(forKey: kCastledSavedInappConfigs)
         userDefaults.removeObject(forKey: kCastledDeliveredPushIds)
         userDefaults.removeObject(forKey: kCastledClickedPushIds)
         userDefaults.removeObject(forKey: kCastledLastInappDisplayedTime)
-        userDefaults.removeObject(forKey: kCastledInAppsList)
         userDefaults.removeObject(forKey: kCastledClickedNotiContentIndx)
         userDefaults.synchronize()
         CastledUserDefaults.shared.notifyLogout()
@@ -224,11 +222,8 @@ public class CastledUserDefaults: NSObject {
             kCastledFCMTokenKey,
             kCastledBadgeKey,
             kCastledLastBadgeIncrementTimeKey,
-            kCastledFailedRequests,
-            kCastledSavedInappConfigs,
             kCastledDeliveredPushIds,
             kCastledClickedPushIds,
-            kCastledInAppsList,
             kCastledLastInappDisplayedTime,
             kCastledSessionId,
             kCastledLastSessionEndTime,
@@ -286,8 +281,6 @@ public extension CastledUserDefaults {
     static let kCastledFCMTokenKey = "_castledFCMToken_"
     static let kCastledBadgeKey = "_castledApplicationBadge_"
     static let kCastledLastBadgeIncrementTimeKey = "_castledLastBadgeIncrementTimer_"
-    static let kCastledFailedRequests = "_castledFailedRequests_"
-    static let kCastledSavedInappConfigs = "_castledSavedInappConfigs_"
     static let kCastledDeliveredPushIds = "_castledDeliveredPushIds_"
     static let kCastledClickedPushIds = "_castledClickedPushIds_"
     static let kCastledLastInappDisplayedTime = "_castledLastInappDisplayedTime_"
@@ -297,7 +290,6 @@ public extension CastledUserDefaults {
     static let kCastledSessionDuration = "_castledSessionDuration_"
     static let kCastledSessionStartTime = "_castledSessionStartTime_"
     static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
-    static let kCastledInAppsList = "_castledInappsList_"
     static let kCastledIsMigratedToSuit = "_castledIsMigratedToSuit_"
     static let kCastledAppInForeground = "_castledAppInForeground_"
 }

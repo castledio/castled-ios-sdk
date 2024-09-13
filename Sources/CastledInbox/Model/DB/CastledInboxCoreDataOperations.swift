@@ -48,7 +48,6 @@ class CastledInboxCoreDataOperations {
 
             // Call completion on the main thread
             DispatchQueue.main.async {
-//                self.resetUnreadUncountAfterCRUD()
                 print("inbox insertion completed.... unreadCount before \(CastledInbox.sharedInstance.inboxUnreadCount) after \(unreadCount)")
                 CastledInbox.sharedInstance.inboxUnreadCount = unreadCount
                 CastledInboxCoreDataOperations.shared.isInserting = false
@@ -84,24 +83,6 @@ class CastledInboxCoreDataOperations {
             print("Error fetching unread items: \(error)")
             return 0
         }
-    }
-
-    private func updateOrInsertInboxObject(from item: CastledInboxItem, in context: NSManagedObjectContext) {
-        if let _ = getAppInboxFrom(messageId: item.messageId, in: context) {
-            // Update existing object,
-            //  CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: existingObject)
-
-        } else {
-            // Insert new object
-            let newObject = CastledInboxMO(context: context)
-            CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: newObject)
-        }
-    }
-
-    func getAppInboxFrom(messageId: Int64, in context: NSManagedObjectContext) -> CastledInboxMO? {
-        let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "messageId == %lld", messageId)
-        return CastledCoreDataOperations.shared.getEntity(from: context, fetchRequest: fetchRequest)
     }
 
     func saveInboxItemsRead(readItems: [CastledInboxItem]) {
@@ -156,7 +137,6 @@ class CastledInboxCoreDataOperations {
 
                 try context.save()
 
-                // Ensure main context reflects these changes if needed
                 DispatchQueue.main.async {
                     CastledCoreDataStack.shared.saveContext()
                     self.resetUnreadUncountAfterCRUD()
@@ -218,7 +198,6 @@ class CastledInboxCoreDataOperations {
 
     func clearInboxItems() {
         let deleteFetch: NSFetchRequest<NSFetchRequestResult> = CastledInboxMO.fetchRequest()
-
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
 
         do {
@@ -228,5 +207,25 @@ class CastledInboxCoreDataOperations {
         } catch {
             // error
         }
+    }
+
+    // MARK: - PRIVATE METHODS
+
+    private func updateOrInsertInboxObject(from item: CastledInboxItem, in context: NSManagedObjectContext) {
+        if let _ = getAppInboxFrom(messageId: item.messageId, in: context) {
+            // Update existing object,
+            //  CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: existingObject)
+
+        } else {
+            // Insert new object
+            let newObject = CastledInboxMO(context: context)
+            CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: newObject)
+        }
+    }
+
+    private func getAppInboxFrom(messageId: Int64, in context: NSManagedObjectContext) -> CastledInboxMO? {
+        let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "messageId == %lld", messageId)
+        return CastledCoreDataOperations.shared.getEntity(from: context, fetchRequest: fetchRequest)
     }
 }

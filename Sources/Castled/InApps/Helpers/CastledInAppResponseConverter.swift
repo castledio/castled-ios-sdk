@@ -14,6 +14,10 @@ enum CastledInAppResponseConverter {
 
     static func convertToInapp(inAppItem: CastledInAppObject, data: Data, inapp: CastledInAppMO) {
         inapp.inapp_id = Int64(inAppItem.notificationID)
+        inapp.inapp_attempts = 0
+        inapp.inapp_maxm_attempts = Int16(inAppItem.displayConfig?.displayLimit ?? 0)
+        inapp.inapp_min_interval_btwd_isplays = Int16(inAppItem.displayConfig?.minIntervalBtwDisplays ?? 0)
+        inapp.inapp_last_displayed_time = Date(timeIntervalSince1970: 0)
         inapp.inapp_data = data
     }
 }

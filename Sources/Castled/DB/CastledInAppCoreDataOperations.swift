@@ -15,12 +15,11 @@ class CastledInAppCoreDataOperations {
 
     func refreshInappItems(inAppResponse: [CastledInAppObject], completion: @escaping () -> Void) {
         print("inapp insertion about to begin....\(inAppResponse.count)")
-        if CastledInAppCoreDataOperations.shared.isInserting {
+        if isInserting {
             completion()
             return
         }
-        CastledInAppCoreDataOperations.shared.isInserting = true
-
+        isInserting = true
         CastledCoreDataOperations.shared.performBackgroundTask { context in
             // Step 1: Fetch all existing items from the database
             let fetchRequest: NSFetchRequest<CastledInAppMO> = CastledInAppMO.fetchRequest()
@@ -52,6 +51,60 @@ class CastledInAppCoreDataOperations {
         }
     }
 
+    func getLiveInAppItems() -> [CastledInAppObject] {
+        let fetchRequest: NSFetchRequest<CastledInAppMO> = CastledInAppMO.fetchRequest()
+        let context = CastledCoreDataStack.shared.newBackgroundContext()
+        do {
+            let cachedInAppObjects = try context.fetch(fetchRequest)
+            let liveItems: [CastledInAppObject] = cachedInAppObjects.compactMap {
+                let item = CastledInAppResponseConverter.convertToinAppItem(inapp: $0)
+                return item
+            }
+            return liveItems
+        } catch {
+            print("Error fetching unread items: \(error)")
+            return []
+        }
+    }
+
+    func fetchSatisfiedInAppItemsFrom(_ notificationIDs: [Int]) -> [CastledInAppObject] {
+        var inappResults: [CastledInAppObject] = []
+        let semaphore = DispatchSemaphore(value: 0)
+        CastledCoreDataOperations.shared.performBackgroundTask { context in
+            let fetchRequest: NSFetchRequest<CastledInAppMO> = CastledInAppMO.fetchRequest()
+            let currentDate = Date()
+            let predicate = NSPredicate(format: "inapp_id IN %@ AND inapp_attempts < inapp_maxm_attempts AND (%@ - inapp_last_displayed_time) > inapp_min_interval_btwd_isplays",
+                                        notificationIDs,
+                                        currentDate as NSDate)
+            fetchRequest.predicate = predicate
+            do {
+                let fetchedResults = try context.fetch(fetchRequest)
+                inappResults.append(contentsOf: fetchedResults.compactMap {
+                    let item = CastledInAppResponseConverter.convertToinAppItem(inapp: $0)
+                    return item
+                })
+            } catch {
+                print("Error fetching inbox items: \(error)")
+            }
+
+            semaphore.signal()
+        }
+        semaphore.wait()
+        return inappResults
+    }
+
+    func updateInAppItemAfterDisplay(_ inappId: Int64) {
+        print("updateInAppItemAfterDisplay beginning....*********************\(inappId)")
+        CastledCoreDataOperations.shared.performBackgroundTask { [weak self] context in
+            if let inapp = self?.getInAppFrom(messageId: inappId, in: context) {
+                inapp.inapp_attempts += 1
+                inapp.inapp_last_displayed_time = Date()
+            }
+        }
+    }
+
+    // MARK: - PRIVATE METHODS
+
     private func updateOrInsertInAppObject(from item: CastledInAppObject, in context: NSManagedObjectContext) {
         if let _ = getInAppFrom(messageId: Int64(item.notificationID), in: context) {
             // Update existing object,
@@ -68,21 +121,5 @@ class CastledInAppCoreDataOperations {
         let fetchRequest: NSFetchRequest<CastledInAppMO> = CastledInAppMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "inapp_id == %lld", messageId)
         return CastledCoreDataOperations.shared.getEntity(from: context, fetchRequest: fetchRequest)
-    }
-
-    func getLiveInAppItems() -> [CastledInAppObject] {
-        let fetchRequest: NSFetchRequest<CastledInAppMO> = CastledInAppMO.fetchRequest()
-        let context = CastledCoreDataStack.shared.newBackgroundContext()
-        do {
-            let cachedInAppObjects = try context.fetch(fetchRequest)
-            let liveItems: [CastledInAppObject] = cachedInAppObjects.compactMap {
-                let item = CastledInAppResponseConverter.convertToinAppItem(inapp: $0)
-                return item
-            }
-            return liveItems
-        } catch {
-            print("Error fetching unread items: \(error)")
-            return []
-        }
     }
 }

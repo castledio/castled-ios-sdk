@@ -20,17 +20,17 @@ class CastledRetryHandler {
             return
         }
         isResending = true
+        let failedRequests = CastledStore.getAllFailedRequests()
+        print("failed count after the fetch is \(failedRequests.count) \(Thread.isMainThread)")
+        if failedRequests.isEmpty {
+            completion?()
+            isResending = false
+            return
+        }
         CastledStore.castledStoreQueue.async { [weak self] in
-            let failedRequests = CastledStore.getAllFailedRequests().filter { $0.type == CastledConstants.CastledNetworkRequestType.pushRequest.rawValue ? $0.insertTime < (Date().timeIntervalSince1970 - 2 * 60) : true }
-            // Adding this timeframe to handle the race condition that occurs (avoid duplicate reporting) from the push extension and the click events that happen immediately after receiving it.
-            guard !failedRequests.isEmpty else {
-                completion?()
-                self?.isResending = false
-                return
-            }
             var processedRequests = [CastledNetworkRequest]()
             let requestsByType = Dictionary(grouping: failedRequests) { $0.type }
-            requestsByType.forEach { key, requests in
+            for (key, requests) in requestsByType {
                 if let handler = CastledRequestHelper.sharedInstance.getHandlerFor(key) {
                     self?.castledSemaphore.wait()
                     self?.castledGroup.enter()

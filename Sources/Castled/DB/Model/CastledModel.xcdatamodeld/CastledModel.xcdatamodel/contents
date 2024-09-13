@@ -6,6 +6,7 @@
         <attribute name="inapp_id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="inapp_last_displayed_time" attributeType="Date" defaultDateTimeInterval="747737820" usesScalarValueType="NO"/>
         <attribute name="inapp_maxm_attempts" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="inapp_min_interval_btwd_isplays" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <entity name="CastledInboxMO" representedClassName="CastledInboxMO" syncable="YES">
         <attribute name="actionButtons" optional="YES" attributeType="Binary"/>
@@ -32,7 +33,9 @@
     </entity>
     <entity name="CastledRetryRequestMO" representedClassName="CastledRetryRequestMO" syncable="YES">
         <attribute name="retry_date_added" attributeType="Date" defaultDateTimeInterval="747737520" usesScalarValueType="NO"/>
+        <attribute name="retry_id" attributeType="String"/>
         <attribute name="retry_last_attempt" attributeType="Date" defaultDateTimeInterval="747737580" usesScalarValueType="NO"/>
         <attribute name="retry_request" attributeType="Binary"/>
+        <attribute name="retry_type" attributeType="String"/>
     </entity>
 </model>
