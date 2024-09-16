@@ -2,7 +2,7 @@
 //  CastledInboxMO+CoreDataProperties.swift
 //  Castled
 //
-//  Created by antony on 13/09/2024.
+//  Created by antony on 16/09/2024.
 //
 //
 
@@ -27,7 +27,7 @@ public extension CastledInboxMO {
     @NSManaged var isRead: Bool
     @NSManaged var isRemoved: Bool
     @NSManaged var message: Data?
-@NSManaged var messageId: Int64
+    @NSManaged var messageId: Int64
     @NSManaged var sourceContext: String
     @NSManaged var startTs: Int64
     @NSManaged var tag: String

@@ -11,9 +11,9 @@ import Foundation
 @_spi(CastledInternal)
 
 public class CastledCoreDataStack {
-    public static let modelName = "CastledModel"
+    public static let modelName = "CastledDB"
     private static let castledFolder = "Castled"
-    private static let castledDB = "CastledEntities.sqlite"
+    private static let castledDB = "CastledDB.sqlite"
 
     public static let shared = CastledCoreDataStack()
 
