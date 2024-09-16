@@ -187,6 +187,9 @@ public class CastledUserDefaults: NSObject {
         userDefaults.removeObject(forKey: kCastledClickedPushIds)
         userDefaults.removeObject(forKey: kCastledLastInappDisplayedTime)
         userDefaults.removeObject(forKey: kCastledClickedNotiContentIndx)
+        userDefaults.removeObject(forKey: kCastledIsMigratedToSuit)
+        userDefaults.removeObject(forKey: kCastledBadgeKey)
+        userDefaults.removeObject(forKey: kCastledLastBadgeIncrementTimeKey)
         userDefaults.synchronize()
         CastledUserDefaults.shared.notifyLogout()
         CastledUserDefaults.shared.userId = nil
@@ -291,5 +294,4 @@ public extension CastledUserDefaults {
     static let kCastledSessionStartTime = "_castledSessionStartTime_"
     static let kCastledIsFirstSesion = "_castledIsFirstSesion_"
     static let kCastledIsMigratedToSuit = "_castledIsMigratedToSuit_"
-    static let kCastledAppInForeground = "_castledAppInForeground_"
 }
