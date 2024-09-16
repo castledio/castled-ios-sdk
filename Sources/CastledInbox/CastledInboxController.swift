@@ -46,7 +46,6 @@ class CastledInboxController: NSObject, CastledPreferenceStoreListener, CastledL
     }
 
     func onUserLoggedOut() {
-        CastledInboxCoreDataOperations.shared.clearInboxItems()
         CastledInbox.sharedInstance.inboxUnreadCount = 0
         CastledInbox.sharedInstance.userId = ""
     }

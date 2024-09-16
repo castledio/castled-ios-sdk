@@ -12,7 +12,7 @@ class CastledNetworkMonitor {
     static let shared = CastledNetworkMonitor()
     private var shouldCallApis = false
     private let monitor = NWPathMonitor()
-    private let queue = DispatchQueue(label: "CastledNetworkMonitor")
+    private let queue = DispatchQueue(label: "com.castled.networkMonitor")
     func startMonitoring() {
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {

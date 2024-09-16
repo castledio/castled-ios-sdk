@@ -9,7 +9,7 @@
 import UIKit
 
 class CastledInboxServices: NSObject {
-    private let backgroundQueue = DispatchQueue(label: "CastledInboxQueue", qos: .background)
+    private let backgroundQueue = DispatchQueue(label: "com.castled.inboxBgQueue", qos: .background)
     func reportInboxItemsRead(inboxItems: [CastledInboxItem], changeReadStatus: Bool) {
         if inboxItems.isEmpty {
             return

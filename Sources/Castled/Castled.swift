@@ -245,6 +245,7 @@ import UserNotifications
     @objc public func logout() {
         if let userId = CastledUserDefaults.shared.userId {
             DispatchQueue.main.async {
+                CastledCoreDataOperations.shared.deleteAllData()
                 CastledUserDefaults.clearAllFromPreference()
                 CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
             }

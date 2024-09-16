@@ -35,7 +35,7 @@ public extension Data {
             let data = try encoder.encode(object)
             return data
         } catch {
-            print("Error encoding object: \(error.localizedDescription)")
+            CastledLog.castledLog("Error encoding object: \(error.localizedDescription)", logLevel: .error)
             return nil
         }
     }

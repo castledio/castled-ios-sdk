@@ -14,8 +14,8 @@ import UIKit
     private var pendingInApps = [CastledInAppObject]()
     static var sharedInstance = CastledInAppsDisplayController()
     var savedInApps = [CastledInAppObject]()
-    private let castledInAppsQueue = DispatchQueue(label: "CastledInAppsQueue", attributes: .concurrent)
-    private let castledInAppsPendinItemsQueue = DispatchQueue(label: "CastledInAppsPendingItemsQueue", attributes: .concurrent)
+    private let castledInAppsQueue = DispatchQueue(label: "com.castled.inappsQueue", attributes: .concurrent)
+    private let castledInAppsPendinItemsQueue = DispatchQueue(label: "coim.castled.inappsPendingQueue", attributes: .concurrent)
 
     override private init() {
         super.init()
@@ -23,7 +23,7 @@ import UIKit
 
     func prefetchInApps() {
         self.savedInApps.removeAll()
-        self.savedInApps.append(contentsOf: CastledInAppCoreDataOperations.shared.getLiveInAppItems())
+        self.savedInApps.append(contentsOf: CastledInAppCoreDataOperations.shared.getLiveInAppItems(withFilter: true))
     }
 
     func reportInAppEvent(inappObject: CastledInAppObject, eventType: String, actionType: String?, btnLabel: String?, actionUri: String?) {
@@ -177,9 +177,7 @@ import UIKit
         //        if inAppsArray.count>count{
         //            return inAppsArray[count]
         //        }
-        print("before calling  findTriggeredInApps ********************************")
         let filteredArray = CastledInAppCoreDataOperations.shared.fetchSatisfiedInAppItemsFrom(inAppsArray.map { $0.notificationID })
-        print("filteredArrayNew from coredata \(filteredArray.count)")
         if !filteredArray.isEmpty {
             let event = filteredArray.sorted { lhs, rhs -> Bool in
                 let lhsPriority = CastledConstants.InDisplayPriority(rawValue: lhs.priority)

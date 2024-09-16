@@ -12,6 +12,7 @@ class CastledRetryHandler {
     private let castledSemaphore = DispatchSemaphore(value: 1)
     private let castledGroup = DispatchGroup()
     private var isResending = false
+    static let castledSRetryQueue = DispatchQueue(label: "com.castled.retryDbQueue")
 
     private init() {}
 
@@ -20,14 +21,13 @@ class CastledRetryHandler {
             return
         }
         isResending = true
-        let failedRequests = CastledStore.getAllFailedRequests()
-        print("failed count after the fetch is \(failedRequests.count) \(Thread.isMainThread)")
+        let failedRequests = CastledRetryCoreDataOperations.shared.getAllFailedRequests()
         if failedRequests.isEmpty {
             completion?()
             isResending = false
             return
         }
-        CastledStore.castledStoreQueue.async { [weak self] in
+        CastledRetryHandler.castledSRetryQueue.async { [weak self] in
             var processedRequests = [CastledNetworkRequest]()
             let requestsByType = Dictionary(grouping: failedRequests) { $0.type }
             for (key, requests) in requestsByType {
@@ -48,7 +48,7 @@ class CastledRetryHandler {
             }
             self?.castledGroup.notify(queue: .main) {
                 if !processedRequests.isEmpty {
-                    CastledStore.deleteCastledNetworkRequests(processedRequests)
+                    CastledRetryCoreDataOperations.shared.deleteCastledNetworkRequests(processedRequests)
                 }
                 self?.isResending = false
                 completion?()

@@ -15,7 +15,6 @@ class CastledInboxCoreDataOperations {
     private init() {}
 
     func refreshInboxItems(liveInboxResponse: [CastledInboxItem]) {
-        print("inbox insertion about to begin....\(liveInboxResponse.count)")
         if CastledInboxCoreDataOperations.shared.isInserting {
             return
         }
@@ -28,7 +27,7 @@ class CastledInboxCoreDataOperations {
             do {
                 existingItems = try context.fetch(fetchRequest)
             } catch {
-                print("Error fetching existing items: \(error)")
+                CastledLog.castledLog("Error fetching existing items: \(error)", logLevel: .error)
             }
 
             // Step 2: Create a set of IDs from the response array
@@ -48,7 +47,6 @@ class CastledInboxCoreDataOperations {
 
             // Call completion on the main thread
             DispatchQueue.main.async {
-                print("inbox insertion completed.... unreadCount before \(CastledInbox.sharedInstance.inboxUnreadCount) after \(unreadCount)")
                 CastledInbox.sharedInstance.inboxUnreadCount = unreadCount
                 CastledInboxCoreDataOperations.shared.isInserting = false
             }
@@ -60,16 +58,20 @@ class CastledInboxCoreDataOperations {
     }
 
     func getInboxUnreadCount() -> Int {
-        let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "isRead == %@ AND isRemoved == %@", NSNumber(value: false), NSNumber(value: false))
-        let context = CastledCoreDataStack.shared.newBackgroundContext()
-        do {
-            let count = try context.count(for: fetchRequest)
-            return count
-        } catch {
-            print("Error fetching unread items: \(error)")
-            return 0
+        var unreadCount = 0
+        let semaphore = DispatchSemaphore(value: 0)
+        CastledCoreDataOperations.shared.performBackgroundTask { context in
+            let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "isRead == %@ AND isRemoved == %@", NSNumber(value: false), NSNumber(value: false))
+            do {
+                unreadCount = try context.count(for: fetchRequest)
+            } catch {
+                CastledLog.castledLog("Error fetching unread inbox items: \(error)", logLevel: .error)
+            }
+            semaphore.signal()
         }
+        semaphore.wait()
+        return unreadCount
     }
 
     func getAllInboxItemsCount() -> Int {
@@ -80,7 +82,7 @@ class CastledInboxCoreDataOperations {
             let count = try context.count(for: fetchRequest)
             return count
         } catch {
-            print("Error fetching unread items: \(error)")
+            CastledLog.castledLog("Error fetching inbox items: \(error)", logLevel: .error)
             return 0
         }
     }
@@ -117,7 +119,7 @@ class CastledInboxCoreDataOperations {
                 }
 
             } catch {
-                print("Failed to mark messages as unread: \(error)")
+                CastledLog.castledLog("Failed to mark messages as unread: \(error)", logLevel: .error)
             }
         }
     }
@@ -143,7 +145,7 @@ class CastledInboxCoreDataOperations {
                 }
 
             } catch {
-                print("Failed to mark messages as unread: \(error)")
+                CastledLog.castledLog("Failed to mark messages as deleted: \(error)", logLevel: .error)
             }
         }
     }
@@ -173,7 +175,7 @@ class CastledInboxCoreDataOperations {
                     }
 
                 } catch {
-                    print("Failed to mark messages as unread: \(error)")
+                    CastledLog.castledLog("Failed to delete inbvox item: \(error)", logLevel: .error)
                 }
             }
         }
@@ -191,7 +193,6 @@ class CastledInboxCoreDataOperations {
             }
             return liveInboxItems
         } catch {
-            print("Error fetching unread items: \(error)")
             return []
         }
     }

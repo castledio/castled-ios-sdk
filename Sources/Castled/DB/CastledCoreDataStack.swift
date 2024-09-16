@@ -33,7 +33,7 @@ public class CastledCoreDataStack {
         let description = NSPersistentStoreDescription(url: storeURL)
         description.shouldMigrateStoreAutomatically = true
         description.shouldInferMappingModelAutomatically = true
-        CastledLog.castledLog("DB path \(storeURL)", logLevel: .info)
+        // CastledLog.castledLog("DB path \(storeURL)", logLevel: .info)
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores { _, error in
 
@@ -56,23 +56,12 @@ public class CastledCoreDataStack {
 
     public func newBackgroundContext() -> NSManagedObjectContext {
         return Self.persistentContainer.newBackgroundContext()
-        let context = Self.persistentContainer.newBackgroundContext()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(mergeChangesFromContextDidSave),
-            name: .NSManagedObjectContextDidSave,
-            object: context
-        )
-
-        return context
     }
 
     @objc func mergeChangesFromContextDidSave(notification: Notification) {
-        print("mergeChangesFromContextDidSave about to begin")
         let viewContext = Self.persistentContainer.viewContext
         viewContext.perform {
             viewContext.mergeChanges(fromContextDidSave: notification)
-            print("mergeChangesFromContextDidSave completed..")
         }
     }
 
@@ -80,14 +69,11 @@ public class CastledCoreDataStack {
         let context = Self.persistentContainer.viewContext
         if context.hasChanges {
             do {
-                print("Saving to maincontext completed.. \(Thread.isMainThread) \(Thread.current)")
                 try context.save()
             } catch {
                 //   let nserror = error as NSError
                 // fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
-        } else {
-            print("No change in the context to merge with main.. \(Thread.isMainThread) ")
         }
     }
 
@@ -95,13 +81,8 @@ public class CastledCoreDataStack {
         if !CastledUserDefaults.appGroupId.isEmpty,
            let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: CastledUserDefaults.appGroupId)
         {
-            print("Shared url as uses suit.. \(Thread.isMainThread) ")
-
             return sharedContainerURL
         }
-
-        print("Default url as appgroupid is empty.. \(Thread.isMainThread) ")
-
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
 }

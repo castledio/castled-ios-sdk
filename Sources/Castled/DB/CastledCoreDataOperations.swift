@@ -15,7 +15,6 @@ public class CastledCoreDataOperations {
     private init() {}
 
     public func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        print("performBackgroundTask beinning \(Thread.isMainThread) \(Thread.current)")
         let context = CastledCoreDataStack.shared.newBackgroundContext()
         context.perform {
             block(context)
@@ -25,14 +24,10 @@ public class CastledCoreDataOperations {
                     DispatchQueue.main.async {
                         CastledCoreDataStack.shared.saveContext()
                     }
-                    print("performBackgroundTask completion \(Thread.isMainThread) \(Thread.current)")
 
                 } catch {
-                    // Handle the error appropriately in your application
-                    print("Error saving background context: \(error)")
+                    CastledLog.castledLog("Error saving background context: \(error)", logLevel: .error)
                 }
-            } else {
-                print("performBackgroundTask completion no chnage \(Thread.isMainThread) \(Thread.current)")
             }
         }
     }
@@ -42,8 +37,37 @@ public class CastledCoreDataOperations {
             let results = try context.fetch(fetchRequest)
             return results.first
         } catch {
-            print("Error fetching \(T.self): \(error)")
+            CastledLog.castledLog("Error fetching \(T.self): \(error)", logLevel: .error)
             return nil
         }
+    }
+
+    public func deleteAllData() {
+        CastledCoreDataOperations.shared.performBackgroundTask { context in
+            let entities = self.fetchEntities(context: context)
+            for entity in entities {
+                let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: entity)
+                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+                do {
+                    try context.execute(deleteRequest)
+                } catch {
+                    CastledLog.castledLog("Failed to delete data for entity \(entity): \(error)", logLevel: .error)
+                }
+            }
+
+            if context.hasChanges {
+                do {
+                    try context.save()
+                } catch {
+                    CastledLog.castledLog("Failed to save context after deleting all data: \(error)", logLevel: .error)
+                }
+            }
+        }
+    }
+
+    private func fetchEntities(context: NSManagedObjectContext) -> [String] {
+        let model = context.persistentStoreCoordinator?.managedObjectModel
+        return model?.entitiesByName.keys.sorted() ?? []
     }
 }

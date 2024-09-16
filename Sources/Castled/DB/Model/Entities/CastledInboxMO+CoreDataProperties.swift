@@ -27,7 +27,7 @@ public extension CastledInboxMO {
     @NSManaged var isRead: Bool
     @NSManaged var isRemoved: Bool
     @NSManaged var message: Data?
-    @NSManaged var messageId: Int64
+@NSManaged var messageId: Int64
     @NSManaged var sourceContext: String
     @NSManaged var startTs: Int64
     @NSManaged var tag: String

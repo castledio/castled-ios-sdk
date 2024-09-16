@@ -21,7 +21,7 @@ import CoreData
     @IBOutlet weak var viewTopBar: UIView!
     @IBOutlet weak var constraintTopBarHeight: NSLayoutConstraint!
     @IBOutlet weak var btnClose: UIButton!
-    let castledInboxQueue = DispatchQueue(label: "CastledInboxQueue")
+    let castledInboxQueue = DispatchQueue(label: "com.castled.inboxQueue")
 
     var viewModel = CastledInboxViewModel()
 

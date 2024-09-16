@@ -19,7 +19,7 @@ class CastledSessionsManager {
     private lazy var lastSessionDurationForTestCases: Double = 0
     private lazy var isFirstSession = CastledUserDefaults.getObjectFor(CastledUserDefaults.kCastledIsFirstSesion) ?? true
     private var currentStartTime: Double = 0
-    private let sessionTrackingQueue = DispatchQueue(label: "CastledSessionsTrackingQueue", attributes: .concurrent)
+    private let sessionTrackingQueue = DispatchQueue(label: "com.castled.sessionTrackingQueue", attributes: .concurrent)
     private var isSaving = false
     var isSessionStarted = false
     private init() {}

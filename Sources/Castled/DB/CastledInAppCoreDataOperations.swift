@@ -14,7 +14,6 @@ class CastledInAppCoreDataOperations {
     private init() {}
 
     func refreshInappItems(inAppResponse: [CastledInAppObject], completion: @escaping () -> Void) {
-        print("inapp insertion about to begin....\(inAppResponse.count)")
         if isInserting {
             completion()
             return
@@ -27,7 +26,7 @@ class CastledInAppCoreDataOperations {
             do {
                 existingItems = try context.fetch(fetchRequest)
             } catch {
-                print("Error fetching existing items: \(error)")
+                CastledLog.castledLog("Error fetching existing items: \(error)", logLevel: .error)
             }
 
             // Step 2: Create a set of IDs from the response array
@@ -46,14 +45,17 @@ class CastledInAppCoreDataOperations {
             DispatchQueue.main.async {
                 completion()
                 CastledInAppCoreDataOperations.shared.isInserting = false
-                print("inapp insertion completed....")
             }
         }
     }
 
-    func getLiveInAppItems() -> [CastledInAppObject] {
+    func getLiveInAppItems(withFilter: Bool = false) -> [CastledInAppObject] {
         let fetchRequest: NSFetchRequest<CastledInAppMO> = CastledInAppMO.fetchRequest()
         let context = CastledCoreDataStack.shared.newBackgroundContext()
+        if withFilter {
+            let predicate = NSPredicate(format: "inapp_attempts < inapp_maxm_attempts")
+            fetchRequest.predicate = predicate
+        }
         do {
             let cachedInAppObjects = try context.fetch(fetchRequest)
             let liveItems: [CastledInAppObject] = cachedInAppObjects.compactMap {
@@ -62,7 +64,6 @@ class CastledInAppCoreDataOperations {
             }
             return liveItems
         } catch {
-            print("Error fetching unread items: \(error)")
             return []
         }
     }
@@ -84,7 +85,7 @@ class CastledInAppCoreDataOperations {
                     return item
                 })
             } catch {
-                print("Error fetching inbox items: \(error)")
+                CastledLog.castledLog("Error fetching inbox items: \(error)", logLevel: .error)
             }
 
             semaphore.signal()
@@ -94,7 +95,6 @@ class CastledInAppCoreDataOperations {
     }
 
     func updateInAppItemAfterDisplay(_ inappId: Int64) {
-        print("updateInAppItemAfterDisplay beginning....*********************\(inappId)")
         CastledCoreDataOperations.shared.performBackgroundTask { [weak self] context in
             if let inapp = self?.getInAppFrom(messageId: inappId, in: context) {
                 inapp.inapp_attempts += 1
