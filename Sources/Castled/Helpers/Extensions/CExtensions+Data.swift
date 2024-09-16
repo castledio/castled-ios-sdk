@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @_spi(CastledInternal)
 
 public extension Data {
@@ -18,11 +19,34 @@ public extension Data {
         }
     }
 
-    static func dataFromObject<T>(_ item: T) -> Data? where T: Any {
+    static func dataFromArrayOrDictionary<T>(_ item: T) -> Data? where T: Any {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: item, options: [])
             return jsonData
         } catch {
+            return nil
+        }
+    }
+
+    // Function to encode an Encodable object to Data
+    static func dataFromEncodable<T: Encodable>(_ object: T) -> Data? {
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(object)
+            return data
+        } catch {
+            CastledLog.castledLog("Error encoding object: \(error.localizedDescription)", logLevel: .error)
+            return nil
+        }
+    }
+
+    func encodableFromData<T: Decodable>(to type: T.Type) -> T? {
+        let decoder = JSONDecoder()
+        do {
+            let decodedObject = try decoder.decode(T.self, from: self)
+            return decodedObject
+        } catch {
+            print("Error decoding data: \(error.localizedDescription)")
             return nil
         }
     }

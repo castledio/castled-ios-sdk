@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @_spi(CastledInternal)
 
 public enum CastledConstants {
@@ -17,6 +18,7 @@ public enum CastledConstants {
     public static let kCastledSwzzlingDisableKey = "CastledSwizzlingDisabled"
     static let kCastledExcludedInAppViewControllers = "CastledExcludedInppViews"
     static let kCastledSwizzledMethodPrefix = "swizzled_"
+    static let kCastledFolder = "Castled"
 
     public enum DispatchQueues {
         static let CastledCommonQueue = "CastledCommonQueue"
@@ -32,6 +34,7 @@ public enum CastledConstants {
         static let isCastledSilentPush = "csp"
         static let contentAvailable = "content-available"
         static let userId = "userId"
+        static let deviceId = "deviceId"
 
         enum Token {
             static let apnsToken = "apnsToken"

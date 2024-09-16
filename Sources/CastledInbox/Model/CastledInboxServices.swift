@@ -9,13 +9,13 @@
 import UIKit
 
 class CastledInboxServices: NSObject {
-    private let backgroundQueue = DispatchQueue(label: "CastledInboxQueue", qos: .background)
+    private let backgroundQueue = DispatchQueue(label: "com.castled.inboxBgQueue", qos: .background)
     func reportInboxItemsRead(inboxItems: [CastledInboxItem], changeReadStatus: Bool) {
         if inboxItems.isEmpty {
             return
         }
         if changeReadStatus {
-            CastledCoreDataOperations.shared.saveInboxItemsRead(readItems: inboxItems)
+            CastledInboxCoreDataOperations.shared.saveInboxItemsRead(readItems: inboxItems)
         }
         backgroundQueue.async { [self] in
             let eventType = "READ"
@@ -51,14 +51,14 @@ class CastledInboxServices: NSObject {
     }
 
     func reportInboxItemsDeleted(inboxObject: CastledInboxItem) {
-        CastledCoreDataOperations.shared.saveInboxIdsDeleted(deletedItems: [inboxObject.messageId])
-        // CastledCoreDataOperations.shared.saveInboxItemAsDeletedWith(messageId: inboxObject.messageId)
+        CastledInboxCoreDataOperations.shared.saveInboxIdsDeleted(deletedItems: [inboxObject.messageId])
+        // CastledInboxCoreDataOperations.shared.saveInboxItemAsDeletedWith(messageId: inboxObject.messageId)
         let eventType = "DELETED"
         var savedEventTypes = [[String: String]]()
         savedEventTypes.append(getSendingParametersFrom(eventType, inboxObject, ""))
         updateInBoxEvents(savedEventTypes: savedEventTypes) { success, error in
             if success {
-                CastledCoreDataOperations.shared.deleteInboxItem(inboxItem: inboxObject)
+                CastledInboxCoreDataOperations.shared.deleteInboxItem(inboxItem: inboxObject)
             }
             else {
                 CastledLog.castledLog(" Delete Inbox item failed \(String(describing: error))", logLevel: CastledLogLevel.error)

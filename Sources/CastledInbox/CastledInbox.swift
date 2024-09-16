@@ -13,7 +13,7 @@ import UIKit
     @objc public static var sharedInstance = CastledInbox()
 
     lazy var inboxUnreadCount: Int = {
-        CastledCoreDataOperations.shared.getInboxUnreadCount()
+        CastledInboxCoreDataOperations.shared.getInboxUnreadCount()
 
     }() {
         didSet {
@@ -41,7 +41,6 @@ import UIKit
             return
         }
         CastledRequestHelper.sharedInstance.registerHandlerWith(key: CastledConstants.CastledNetworkRequestType.inboxRequest.rawValue, handler: CastledInboxRequestHandler.self)
-        CastledCoreDataStack.shared.initialize()
         CastledInboxController.sharedInstance.initialize()
         isInitilized = true
         CastledLog.castledLog("Inbox module initialized..", logLevel: CastledLogLevel.info)
@@ -106,7 +105,7 @@ import UIKit
             return
         }
         DispatchQueue.main.async {
-            completion(true, CastledCoreDataOperations.shared.getLiveInboxItems(), nil)
+            completion(true, CastledInboxCoreDataOperations.shared.getLiveInboxItems(), nil)
         }
     }
 

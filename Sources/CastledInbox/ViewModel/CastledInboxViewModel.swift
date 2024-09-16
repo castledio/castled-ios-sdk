@@ -24,7 +24,7 @@ protocol DefaultCastledInboxViewModel: CastledInboxViewModelInput, CastledInboxV
 
 final class CastledInboxViewModel: DefaultCastledInboxViewModel {
     lazy var inboxItemsCount: Int = {
-        CastledCoreDataOperations.shared.getAllInboxItemsCount()
+        CastledInboxCoreDataOperations.shared.getAllInboxItemsCount()
 
     }()
 

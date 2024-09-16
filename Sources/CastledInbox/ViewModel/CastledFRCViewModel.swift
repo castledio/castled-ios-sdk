@@ -7,6 +7,7 @@
 
 import CoreData
 import Foundation
+@_spi(CastledInternal) import Castled
 
 struct FRCViewModelActions {
     let controllerWillChangeContent: () -> Void?
@@ -38,15 +39,15 @@ class CastledFRCViewModel: NSObject, FRCViewModelInput, FRCViewModelOutput {
     private var actions: FRCViewModelActions? = nil
 
     lazy var fetchedResultsController:
-        NSFetchedResultsController<CastledAppInbox> = {
+        NSFetchedResultsController<CastledInboxMO> = {
             // 1
-            let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
+            let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
 //            fetchRequest.fetchLimit = 2
 //            fetchRequest.fetchBatchSize = 2
             let pinSort = NSSortDescriptor(
-                key: #keyPath(CastledAppInbox.isPinned), ascending: false)
+                key: #keyPath(CastledInboxMO.isPinned), ascending: false)
             let dateSort = NSSortDescriptor(
-                key: #keyPath(CastledAppInbox.addedDate), ascending: false)
+                key: #keyPath(CastledInboxMO.addedDate), ascending: false)
 
             fetchRequest.sortDescriptors = [pinSort, dateSort]
             let predicate = NSPredicate(format: currentIndex == 0 ? "isRemoved == %@" : "isRemoved == %@ AND tag = '\(currentCategory)'", NSNumber(value: false))

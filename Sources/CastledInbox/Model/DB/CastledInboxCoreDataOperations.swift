@@ -1,54 +1,33 @@
 //
-//  CastledCoreDataOperations.swift
+//  CastledInboxCoreDataOperations.swift
 //  CastledInbox
 //
-//  Created by antony on 29/05/2024.
+//  Created by antony on 11/09/2024.
 //
 
 import CoreData
 import Foundation
 @_spi(CastledInternal) import Castled
 
-class CastledCoreDataOperations {
-    static let shared = CastledCoreDataOperations()
+class CastledInboxCoreDataOperations {
+    static let shared = CastledInboxCoreDataOperations()
     var isInserting = false
     private init() {}
 
-    func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        let context = CastledCoreDataStack.shared.newBackgroundContext()
-        context.perform {
-            block(context)
-            if context.hasChanges {
-                do {
-                    try context.save()
-                    CastledCoreDataStack.shared.saveContext()
-                    CastledCoreDataOperations.shared.isInserting = false
-
-                } catch {
-                    // Handle the error appropriately in your application
-                    print("Error saving background context: \(error)")
-                    CastledCoreDataOperations.shared.isInserting = false
-                }
-            } else {
-                CastledCoreDataOperations.shared.isInserting = false
-            }
-        }
-    }
-
     func refreshInboxItems(liveInboxResponse: [CastledInboxItem]) {
-        if CastledCoreDataOperations.shared.isInserting {
+        if CastledInboxCoreDataOperations.shared.isInserting {
             return
         }
-        CastledCoreDataOperations.shared.isInserting = true
+        CastledInboxCoreDataOperations.shared.isInserting = true
 
-        self.performBackgroundTask { context in
+        CastledCoreDataOperations.shared.performBackgroundTask { context in
             // Step 1: Fetch all existing items from the database
-            let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
-            var existingItems: [CastledAppInbox] = []
+            let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
+            var existingItems: [CastledInboxMO] = []
             do {
                 existingItems = try context.fetch(fetchRequest)
             } catch {
-                print("Error fetching existing items: \(error)")
+                CastledLog.castledLog("Error fetching existing items: \(error)", logLevel: .error)
             }
 
             // Step 2: Create a set of IDs from the response array
@@ -68,9 +47,8 @@ class CastledCoreDataOperations {
 
             // Call completion on the main thread
             DispatchQueue.main.async {
-//                self.resetUnreadUncountAfterCRUD()
-
                 CastledInbox.sharedInstance.inboxUnreadCount = unreadCount
+                CastledInboxCoreDataOperations.shared.isInserting = false
             }
         }
     }
@@ -80,51 +58,32 @@ class CastledCoreDataOperations {
     }
 
     func getInboxUnreadCount() -> Int {
-        let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "isRead == %@ AND isRemoved == %@", NSNumber(value: false), NSNumber(value: false))
-        let context = CastledCoreDataStack.shared.newBackgroundContext()
-        do {
-            let count = try context.count(for: fetchRequest)
-            return count
-        } catch {
-            print("Error fetching unread items: \(error)")
-            return 0
+        var unreadCount = 0
+        let semaphore = DispatchSemaphore(value: 0)
+        CastledCoreDataOperations.shared.performBackgroundTask { context in
+            let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "isRead == %@ AND isRemoved == %@", NSNumber(value: false), NSNumber(value: false))
+            do {
+                unreadCount = try context.count(for: fetchRequest)
+            } catch {
+                CastledLog.castledLog("Error fetching unread inbox items: \(error)", logLevel: .error)
+            }
+            semaphore.signal()
         }
+        semaphore.wait()
+        return unreadCount
     }
 
     func getAllInboxItemsCount() -> Int {
-        let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
+        let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "isRemoved == %@", NSNumber(value: false))
         let context = CastledCoreDataStack.shared.mainContext
         do {
             let count = try context.count(for: fetchRequest)
             return count
         } catch {
-            print("Error fetching unread items: \(error)")
+            CastledLog.castledLog("Error fetching inbox items: \(error)", logLevel: .error)
             return 0
-        }
-    }
-
-    private func updateOrInsertInboxObject(from item: CastledInboxItem, in context: NSManagedObjectContext) {
-        if let _ = getAppInboxFrom(messageId: item.messageId, in: context) {
-            // Update existing object,
-            //  CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: existingObject)
-
-        } else {
-            // Insert new object
-            let newObject = CastledAppInbox(context: context)
-            CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: newObject)
-        }
-    }
-
-    func getAppInboxFrom(messageId: Int64, in context: NSManagedObjectContext) -> CastledAppInbox? {
-        let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "messageId == %lld", messageId)
-        do {
-            let results = try context.fetch(fetchRequest)
-            return results.first
-        } catch {
-            return nil
         }
     }
 
@@ -138,7 +97,7 @@ class CastledCoreDataOperations {
     func saveInboxIdsRead(readItems: [Int64], withApiCall: Bool = true) {
         let context = CastledCoreDataStack.shared.newBackgroundContext()
         context.perform {
-            let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
+            let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "messageId IN %@", readItems)
 
             do {
@@ -160,7 +119,7 @@ class CastledCoreDataOperations {
                 }
 
             } catch {
-                print("Failed to mark messages as unread: \(error)")
+                CastledLog.castledLog("Failed to mark messages as unread: \(error)", logLevel: .error)
             }
         }
     }
@@ -168,7 +127,7 @@ class CastledCoreDataOperations {
     func saveInboxIdsDeleted(deletedItems: [Int64]) {
         let context = CastledCoreDataStack.shared.newBackgroundContext()
         context.perform {
-            let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
+            let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "messageId IN %@", deletedItems)
 
             do {
@@ -180,14 +139,13 @@ class CastledCoreDataOperations {
 
                 try context.save()
 
-                // Ensure main context reflects these changes if needed
                 DispatchQueue.main.async {
                     CastledCoreDataStack.shared.saveContext()
                     self.resetUnreadUncountAfterCRUD()
                 }
 
             } catch {
-                print("Failed to mark messages as unread: \(error)")
+                CastledLog.castledLog("Failed to mark messages as deleted: \(error)", logLevel: .error)
             }
         }
     }
@@ -217,14 +175,14 @@ class CastledCoreDataOperations {
                     }
 
                 } catch {
-                    print("Failed to mark messages as unread: \(error)")
+                    CastledLog.castledLog("Failed to delete inbvox item: \(error)", logLevel: .error)
                 }
             }
         }
     }
 
     func getLiveInboxItems() -> [CastledInboxItem] {
-        let fetchRequest: NSFetchRequest<CastledAppInbox> = CastledAppInbox.fetchRequest()
+        let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "isRemoved == %@", NSNumber(value: false))
         let context = CastledCoreDataStack.shared.newBackgroundContext()
         do {
@@ -235,14 +193,12 @@ class CastledCoreDataOperations {
             }
             return liveInboxItems
         } catch {
-            print("Error fetching unread items: \(error)")
             return []
         }
     }
 
     func clearInboxItems() {
-        let deleteFetch: NSFetchRequest<NSFetchRequestResult> = CastledAppInbox.fetchRequest()
-
+        let deleteFetch: NSFetchRequest<NSFetchRequestResult> = CastledInboxMO.fetchRequest()
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
 
         do {
@@ -252,5 +208,25 @@ class CastledCoreDataOperations {
         } catch {
             // error
         }
+    }
+
+    // MARK: - PRIVATE METHODS
+
+    private func updateOrInsertInboxObject(from item: CastledInboxItem, in context: NSManagedObjectContext) {
+        if let _ = getAppInboxFrom(messageId: item.messageId, in: context) {
+            // Update existing object,
+            //  CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: existingObject)
+
+        } else {
+            // Insert new object
+            let newObject = CastledInboxMO(context: context)
+            CastledInboxResponseConverter.convertToInbox(inboxItem: item, appinbox: newObject)
+        }
+    }
+
+    private func getAppInboxFrom(messageId: Int64, in context: NSManagedObjectContext) -> CastledInboxMO? {
+        let fetchRequest: NSFetchRequest<CastledInboxMO> = CastledInboxMO.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "messageId == %lld", messageId)
+        return CastledCoreDataOperations.shared.getEntity(from: context, fetchRequest: fetchRequest)
     }
 }

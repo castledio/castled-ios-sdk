@@ -39,11 +39,14 @@ let package = Package(
             path: "Sources/Castled",
             resources: [
                 .process("InApps/Views/CastledAssets.xcassets"),
-                .process("InApps/Views/Resources")
+                .process("InApps/Views/Resources"),
+                .process("DB/Model")
+
             ], linkerSettings: [
                 .linkedFramework("AVFoundation"),
                 .linkedFramework("UIKit"),
-                .linkedFramework("UserNotifications")
+                .linkedFramework("UserNotifications"),
+                .linkedFramework("Coredata")
             ]
         ),
         .target(

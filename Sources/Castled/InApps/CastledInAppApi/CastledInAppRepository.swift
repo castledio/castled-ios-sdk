@@ -35,14 +35,11 @@ enum CastledInAppRepository {
         let request = CastledInAppRepository.getFetchRequest()
         CastledNetworkLayer.shared.makeApiCall(request: request, path: fetchPath, responseModel: [CastledInAppObject].self, shouldDecodeResponse: true) { response in
             if response.success {
-                DispatchQueue.global().async {
-                    let encoder = JSONEncoder()
-                    if let data = try? encoder.encode(response.result) {
-                        CastledUserDefaults.setObjectFor(CastledUserDefaults.kCastledInAppsList, data)
-                        CastledInAppsDisplayController.sharedInstance.prefetchInApps()
-                    }
+                CastledInAppCoreDataOperations.shared.refreshInappItems(inAppResponse: response.result ?? []) {
+                    CastledInAppsDisplayController.sharedInstance.prefetchInApps()
                     completion()
                 }
+
             } else { completion()
             }
         }

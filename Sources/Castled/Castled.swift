@@ -47,6 +47,7 @@ import UserNotifications
         let config = CastledConfigs.sharedInstance
         CastledLog.setLogLevel(config.logLevel)
         CastledLog.castledLog("SDK \(CastledCommonClass.getSDKVersion()) initialized..", logLevel: .debug)
+        CastledCoreDataStack.shared.initialize()
         if config.enablePush {
             if config.appGroupId.isEmpty {
                 CastledLog.castledLog(CastledExceptionMessages.appGrouIdEmpty.rawValue, logLevel: .warning)
@@ -244,6 +245,7 @@ import UserNotifications
     @objc public func logout() {
         if let userId = CastledUserDefaults.shared.userId {
             DispatchQueue.main.async {
+                CastledCoreDataOperations.shared.deleteAllData()
                 CastledUserDefaults.clearAllFromPreference()
                 CastledLog.castledLog("\(userId) has been logged out successfully.", logLevel: .info)
             }
@@ -278,7 +280,8 @@ import UserNotifications
     private func updateTheUserIdAndToken(_ userId: String, apns apnsToken: String?, fcm fcmToken: String?) {
         let params = [CastledConstants.PushNotification.userId: userId,
                       CastledConstants.PushNotification.Token.apnsToken: apnsToken,
-                      CastledConstants.PushNotification.Token.fcmToken: fcmToken]
+                      CastledConstants.PushNotification.Token.fcmToken: fcmToken,
+                      CastledConstants.PushNotification.deviceId: CastledDeviceInfoUtils.getDeviceId()]
         CastledPushNotification.sharedInstance.registerUser(params: params.compactMapValues { $0 } as [String: Any])
     }
 

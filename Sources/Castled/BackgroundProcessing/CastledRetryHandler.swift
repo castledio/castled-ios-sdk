@@ -12,6 +12,7 @@ class CastledRetryHandler {
     private let castledSemaphore = DispatchSemaphore(value: 1)
     private let castledGroup = DispatchGroup()
     private var isResending = false
+    static let castledSRetryQueue = DispatchQueue(label: "com.castled.retryDbQueue")
 
     private init() {}
 
@@ -20,17 +21,16 @@ class CastledRetryHandler {
             return
         }
         isResending = true
-        CastledStore.castledStoreQueue.async { [weak self] in
-            let failedRequests = CastledStore.getAllFailedRequests().filter { $0.type == CastledConstants.CastledNetworkRequestType.pushRequest.rawValue ? $0.insertTime < (Date().timeIntervalSince1970 - 2 * 60) : true }
-            // Adding this timeframe to handle the race condition that occurs (avoid duplicate reporting) from the push extension and the click events that happen immediately after receiving it.
-            guard !failedRequests.isEmpty else {
-                completion?()
-                self?.isResending = false
-                return
-            }
+        let failedRequests = CastledRetryCoreDataOperations.shared.getAllFailedRequests()
+        if failedRequests.isEmpty {
+            completion?()
+            isResending = false
+            return
+        }
+        CastledRetryHandler.castledSRetryQueue.async { [weak self] in
             var processedRequests = [CastledNetworkRequest]()
             let requestsByType = Dictionary(grouping: failedRequests) { $0.type }
-            requestsByType.forEach { key, requests in
+            for (key, requests) in requestsByType {
                 if let handler = CastledRequestHelper.sharedInstance.getHandlerFor(key) {
                     self?.castledSemaphore.wait()
                     self?.castledGroup.enter()
@@ -48,7 +48,7 @@ class CastledRetryHandler {
             }
             self?.castledGroup.notify(queue: .main) {
                 if !processedRequests.isEmpty {
-                    CastledStore.deleteCastledNetworkRequests(processedRequests)
+                    CastledRetryCoreDataOperations.shared.deleteCastledNetworkRequests(processedRequests)
                 }
                 self?.isResending = false
                 completion?()

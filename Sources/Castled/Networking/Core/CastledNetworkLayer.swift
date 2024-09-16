@@ -8,6 +8,7 @@
 
 import Contacts
 import Foundation
+
 @_spi(CastledInternal)
 
 public class CastledNetworkLayer: NSObject {
@@ -90,7 +91,7 @@ public class CastledNetworkLayer: NSObject {
                 }
                 if withRetry {
                     // adding the requests to the queue for other errors
-                    CastledStore.enqueCastledNetworkRequest(request)
+                    CastledRetryCoreDataOperations.shared.enqueCastledNetworkRequest(request)
                 }
             }
             completion(api_response)

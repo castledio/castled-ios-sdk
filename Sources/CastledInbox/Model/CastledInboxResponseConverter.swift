@@ -6,9 +6,10 @@
 //
 
 import Foundation
+@_spi(CastledInternal) import Castled
 
 enum CastledInboxResponseConverter {
-    static func convertToInboxItem(appInbox: CastledAppInbox) -> CastledInboxItem {
+    static func convertToInboxItem(appInbox: CastledInboxMO) -> CastledInboxItem {
         let inboxItem = CastledInboxItem()
         inboxItem.messageId = appInbox.messageId
         inboxItem.teamID = Int(appInbox.teamID)
@@ -33,7 +34,7 @@ enum CastledInboxResponseConverter {
         return inboxItem
     }
 
-    static func convertToInbox(inboxItem: CastledInboxItem, appinbox: CastledAppInbox) {
+    static func convertToInbox(inboxItem: CastledInboxItem, appinbox: CastledInboxMO) {
         appinbox.messageId = inboxItem.messageId
         appinbox.isPinned = inboxItem.isPinned
         appinbox.tag = inboxItem.tag

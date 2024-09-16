@@ -44,7 +44,7 @@ class CastledDeviceInfoController: NSObject, CastledPreferenceStoreListener, Cas
                                   "make": self.getMake(),
                                   "osVersion": self.getOSVersion(),
                                   "locale": self.getLocale(),
-                                  "deviceId": CastledCommonClass.getDeviceId(),
+                                  "deviceId": CastledDeviceInfoUtils.getDeviceId(),
                                   "timeZone": self.getTimeZone(),
                                   "pushPermission": granted ? "1" : "0",
                                   "platform": "MOBILE_IOS"]

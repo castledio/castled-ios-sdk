@@ -35,10 +35,10 @@ enum CastledPushNotificationRepository {
 
     static func reportPushEvents(params: [[String: Any]], success: @escaping (Bool) -> Void) {
         let request = CastledPushNotificationRepository.getEventsRequest(params: params)
-        CastledStore.enqueCastledNetworkRequest(request)
+        CastledRetryCoreDataOperations.shared.enqueCastledNetworkRequest(request)
         CastledNetworkLayer.shared.makeApiCall(request: request, path: eventsPath) { response in
             if response.success {
-                CastledStore.deleteCastledNetworkRequests([request])
+                CastledRetryCoreDataOperations.shared.deleteCastledNetworkRequests([request])
             }
             success(response.success)
         }
@@ -46,12 +46,12 @@ enum CastledPushNotificationRepository {
 
     static func registerUser(params: [String: Any]) {
         let request = CastledPushNotificationRepository.getUserRegnRequest(params: params)
-        CastledStore.enqueCastledNetworkRequest(request)
+        CastledRetryCoreDataOperations.shared.enqueCastledNetworkRequest(request)
         CastledNetworkLayer.shared.makeApiCall(request: request, path: registerUserPath) { response
             in
             if let uid = params[CastledConstants.PushNotification.userId] as? String {
                 if response.success {
-                    CastledStore.deleteCastledNetworkRequests([request])
+                    CastledRetryCoreDataOperations.shared.deleteCastledNetworkRequests([request])
                     CastledLog.castledLog("'\(uid.maskedString())' registered successfully...", logLevel: CastledLogLevel.debug)
                 } else { CastledLog.castledLog("Register User '\(uid.maskedString())' failed: \(response.errorMessage)", logLevel: CastledLogLevel.error)
                 }

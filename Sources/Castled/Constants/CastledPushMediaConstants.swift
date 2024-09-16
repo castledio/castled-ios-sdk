@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 @_spi(CastledInternal)
 
 public enum CastledPushMediaConstants {
@@ -48,7 +49,7 @@ public enum CastledPushMediaConstants {
             }
         } catch {
             // Handle the error, e.g., log it or return nil
-            print("Failed to convert text to array: \(error.localizedDescription)")
+            CastledLog.castledLog("Failed to convert text to array: \(error.localizedDescription)", logLevel: .error)
             return nil
         }
     }

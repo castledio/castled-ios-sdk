@@ -7,6 +7,8 @@
 
 import CoreData
 import UIKit
+@_spi(CastledInternal) import Castled
+
 @_spi(CastledInboxTestable)
 
 public class CastledInboxTestHelper: NSObject {
