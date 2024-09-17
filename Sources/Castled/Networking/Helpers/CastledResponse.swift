@@ -7,6 +7,8 @@
 
 import Foundation
 
+@_spi(CastledInternal)
+
 public class CastledResponse<T: Any>: NSObject {
     let statusCode: Int
     public var success: Bool
