@@ -15,9 +15,11 @@ class SecondViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//    }
+    override func viewDidAppear(_ animated: Bool) {
+        print("viewDidAppear SecondViewController 111")
+        super.viewDidAppear(animated)
+        print("viewDidAppear SecondViewController 222")
+    }
 
     @IBAction func addToCartActiuonnn(_ sender: Any) {
         Castled.sharedInstance.logCustomAppEvent("added_to_cart", params: ["Int": 100, "Date": "12-16-2000", "Name": "Antony"])

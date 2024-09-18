@@ -31,7 +31,7 @@ import UserNotifications
 
     func setApplicationDelegates() {
         isLoaded = true
-        CastledSwizzler.swizzleImplementations(originalSelector: #selector(setter: UIApplication.delegate), originalClass: UIApplication.self, swizzledSelector: #selector(CastledAppDelegate.setCastledApplicationDelegate), swizzlinglClass: type(of: CastledAppDelegate.shared))
+        CastledSwizzler.swizzleImplementations(originalSelector: #selector(setter: UIApplication.delegate), originalClass: UIApplication.self, swizzledSelector: #selector(CastledAppDelegate.setCastledApplicationDelegate), swizzlingClass: type(of: CastledAppDelegate.shared))
         CastledNotificationCenter.shared.setNotiificationDelegates()
     }
 
@@ -44,7 +44,7 @@ import UserNotifications
     private func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {
         let defaultSelector = Selector(methodSelector)
         let swizzledSelector = Selector(CastledConstants.kCastledSwizzledMethodPrefix + methodSelector)
-        CastledSwizzler.swizzleImplementations(originalSelector: defaultSelector, originalClass: className, swizzledSelector: swizzledSelector, swizzlinglClass: CastledNotificationDelegates.self)
+        CastledSwizzler.swizzleImplementations(originalSelector: defaultSelector, originalClass: className, swizzledSelector: swizzledSelector, swizzlingClass: CastledNotificationDelegates.self)
     }
 }
 

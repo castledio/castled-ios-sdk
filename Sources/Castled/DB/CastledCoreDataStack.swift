@@ -41,6 +41,7 @@ public class CastledCoreDataStack {
                 //   fatalError("❌ Loading of store failed:\(err)")
             }
         }
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         container.viewContext.automaticallyMergesChangesFromParent = true
 
         return container
@@ -67,13 +68,12 @@ public class CastledCoreDataStack {
 
     public func saveContext() {
         let context = Self.persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                //   let nserror = error as NSError
-                // fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
+        guard context.hasChanges else { return }
+        do {
+            try context.save()
+        } catch {
+            //   let nserror = error as NSError
+            // fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
 

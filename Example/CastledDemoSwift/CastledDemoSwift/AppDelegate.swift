@@ -159,7 +159,6 @@ extension AppDelegate: CastledNotificationDelegate {
                 if let urlString = buttonAction.actionUri, let url = URL(string: urlString) {
                     //  handleDeepLink(url: url)
                 }
-
             case .navigateToScreen:
                 if let screenName = buttonAction.actionUri {
                     handleNavigateToScreen(screenName: screenName)
@@ -186,7 +185,7 @@ extension AppDelegate: CastledNotificationDelegate {
     }
 
     func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any]) {
-      //  print("***** Castled Notificiation Received *****\n \(userInfo)\n")
+        //  print("***** Castled Notificiation Received *****\n \(userInfo)\n")
     }
 }
 
