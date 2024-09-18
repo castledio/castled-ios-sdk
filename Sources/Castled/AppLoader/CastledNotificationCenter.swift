@@ -16,7 +16,7 @@ class CastledNotificationCenter: NSObject, UNUserNotificationCenterDelegate {
     override private init() {}
 
     func setNotiificationDelegates() {
-        CastledSwizzler.swizzleImplementations(originalSelector: #selector(setter: UNUserNotificationCenter.delegate), originalClass: UNUserNotificationCenter.self, swizzledSelector: #selector(CastledNotificationCenter.setCastledNotificationDelegate), swizzlinglClass: type(of: CastledNotificationCenter.shared))
+        CastledSwizzler.swizzleImplementations(originalSelector: #selector(setter: UNUserNotificationCenter.delegate), originalClass: UNUserNotificationCenter.self, swizzledSelector: #selector(CastledNotificationCenter.setCastledNotificationDelegate), swizzlingClass: type(of: CastledNotificationCenter.shared))
         if let delegate = UNUserNotificationCenter.current().delegate {
             UNUserNotificationCenter.current().delegate = delegate
             // swizzled method will get called after adding this
@@ -33,7 +33,7 @@ class CastledNotificationCenter: NSObject, UNUserNotificationCenterDelegate {
     private func swizzleImplementations(_ className: AnyObject.Type, _ methodSelector: String) {
         let defaultSelector = Selector(methodSelector)
         let swizzledSelector = Selector(CastledConstants.kCastledSwizzledMethodPrefix + methodSelector)
-        CastledSwizzler.swizzleImplementations(originalSelector: defaultSelector, originalClass: className, swizzledSelector: swizzledSelector, swizzlinglClass: CastledNotificationDelegates.self)
+        CastledSwizzler.swizzleImplementations(originalSelector: defaultSelector, originalClass: className, swizzledSelector: swizzledSelector, swizzlingClass: CastledNotificationDelegates.self)
     }
 }
 

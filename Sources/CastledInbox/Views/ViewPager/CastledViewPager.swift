@@ -233,8 +233,7 @@ class CastledViewPager: NSObject {
         lastTab?.trailingAnchor.constraint(equalTo: scrollTabContainer.trailingAnchor).isActive = true
         let numberOfItems = dataSource?.numberOfPagesInViewPager()
 
-        tabBarViews.forEach { tabItem in
-
+        for tabItem in tabBarViews {
             if configs.isEqualWidth {
                 if CGFloat(CGFloat(numberOfItems!) * maxWidth) < UIScreen.main.bounds.width {
                     maxWidth = UIScreen.main.bounds.width / CGFloat(numberOfItems!)

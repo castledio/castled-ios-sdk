@@ -19,7 +19,7 @@ class CastledInAppCoreDataOperations {
             return
         }
         isInserting = true
-        CastledCoreDataOperations.shared.performBackgroundTask { context in
+        CastledCoreDataOperations.shared.performBackgroundTask({ context in
             // Step 1: Fetch all existing items from the database
             let fetchRequest: NSFetchRequest<CastledInAppMO> = CastledInAppMO.fetchRequest()
             var existingItems: [CastledInAppMO] = []
@@ -41,12 +41,12 @@ class CastledInAppCoreDataOperations {
                 context.delete(expiredItem)
             }
 
-            // Call completion on the main thread
+        }, completion: {
             DispatchQueue.main.async {
                 completion()
                 CastledInAppCoreDataOperations.shared.isInserting = false
             }
-        }
+        })
     }
 
     func getLiveInAppItems(withFilter: Bool = false) -> [CastledInAppObject] {

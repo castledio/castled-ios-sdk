@@ -14,7 +14,7 @@ public class CastledCoreDataOperations {
     public static let shared = CastledCoreDataOperations()
     private init() {}
 
-    public func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+    public func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)? = nil) {
         let context = CastledCoreDataStack.shared.newBackgroundContext()
         context.perform {
             block(context)
@@ -23,11 +23,15 @@ public class CastledCoreDataOperations {
                     try context.save()
                     DispatchQueue.main.async {
                         CastledCoreDataStack.shared.saveContext()
+                        completion?()
                     }
 
                 } catch {
                     CastledLog.castledLog("Error saving background context: \(error)", logLevel: .error)
+                    completion?()
                 }
+            } else {
+                completion?()
             }
         }
     }
