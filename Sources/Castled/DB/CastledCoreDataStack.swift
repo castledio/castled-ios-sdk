@@ -38,7 +38,7 @@ public class CastledCoreDataStack {
         container.loadPersistentStores { _, error in
 
             if let err = error {
-                //   fatalError("❌ Loading of store failed:\(err)")
+                CastledLog.castledLog("Loading of store failed:\(err)", logLevel: .error)
             }
         }
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
@@ -72,8 +72,8 @@ public class CastledCoreDataStack {
         do {
             try context.save()
         } catch {
-            //   let nserror = error as NSError
-            // fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            let nserror = error as NSError
+            CastledLog.castledLog("Unresolved error \(nserror), \(nserror.userInfo)", logLevel: .error)
         }
     }
 
