@@ -209,7 +209,6 @@ public class CastledUserDefaults: NSObject {
             userDefaults.set(true, forKey: kCastledIsMigratedToSuit)
             userDefaults.synchronize()
             CastledUserDefaults.shared.initializeUserDetails()
-            CastledUserDefaults.saveAppGroupId()
         }
         guard userDefaultsShared.string(forKey: kCastledAppIddKey) != nil else {
             return
@@ -251,14 +250,6 @@ public class CastledUserDefaults: NSObject {
     }
 
     // MARK: - FOR OTHER SDKs
-
-    static func saveAppGroupId() {
-        // this is for react, there is no option to get the appgroup id for push click when the app is in terminated state as the intiialization part happens in react side. so local userdefault will get initialize instead of suit
-        DispatchQueue.main.async {
-            userDefaultsShared.set(appGroupId, forKey: CastledConstants.AppGroupID.kCastledAppGroupId)
-            userDefaultsShared.synchronize()
-        }
-    }
 
     private static func resetUserDefaults() {
         if !appGroupId.isEmpty,

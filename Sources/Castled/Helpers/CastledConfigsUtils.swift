@@ -37,6 +37,11 @@ class CastledConfigsUtils: NSObject {
                 userDefaults.set(data, forKey: CastledConfigsUtils.kCastledConfigsKey)
             }
             userDefaults.synchronize()
+            if !config.appGroupId.isEmpty {
+                // this is for react, there is no option to get the appgroup id for push click when the app is in terminated state as the intiialization part happens in react side. so local userdefault will get initialize instead of suit
+                UserDefaults.standard.set(config.appGroupId, forKey: CastledConstants.AppGroupID.kCastledAppGroupId)
+                UserDefaults.standard.synchronize()
+            }
         }
     }
 }
