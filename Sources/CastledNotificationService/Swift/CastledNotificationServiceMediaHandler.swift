@@ -28,20 +28,24 @@ extension CastledNotificationServiceExtension {
         {
             return convertedAttachments
         }
+        CastledNotificationServiceLogManager.logMessage("Returning nil from getMediasArrayFromCastledObject \(customCasledDict[CastledPushMediaConstants.messageFrames])", logLevel: .debug)
+
         return nil
     }
 
     func getNotificationAttachments(medias: [[String: Any]], completion: @escaping ([UNNotificationAttachment]) -> Void) {
         var attachments = [UNNotificationAttachment]()
         let dispatchGroup = DispatchGroup() // Use a dispatch group to wait for all downloads to complete
+        CastledNotificationServiceLogManager.logMessage("\(#function) with medias \(medias.count)", logLevel: .debug)
 
-        medias.forEach { media in
+        for media in medias {
             guard let urlString = media[CastledPushMediaConstants.MediaObject.mediaURL.rawValue] as? String,
                   let url = URL(string: urlString)
             else {
                 CastledNotificationServiceLogManager.logMessage(" \(CastledNotificationServiceConstants.notDisplayingMediaAttacmentNil)'\(media[CastledPushMediaConstants.MediaObject.mediaURL.rawValue] ?? "")'", logLevel: .debug)
-                return
+                continue
             }
+            CastledNotificationServiceLogManager.logMessage("About to start downloading image from '\(urlString)'", logLevel: .debug)
 
             dispatchGroup.enter()
 
@@ -55,6 +59,7 @@ extension CastledNotificationServiceExtension {
             }
         }
         dispatchGroup.notify(queue: .main) {
+            CastledNotificationServiceLogManager.logMessage("Completion block called inside \(#function) count \(attachments.count)", logLevel: .debug)
             completion(attachments)
         }
     }
@@ -95,20 +100,30 @@ extension CastledNotificationServiceExtension {
 @available(iOSApplicationExtension 10.0, *)
 extension UNNotificationAttachment {
     static func downloadAndSaveMedia(mediaType: String, from url: URL, completion: @escaping (UNNotificationAttachment?) -> Void) {
+        CastledNotificationServiceLogManager.logMessage("Starting url session for '\(mediaType)' url \(url)", logLevel: .debug)
+
         let downloadTask = URLSession.shared.downloadTask(with: url) { location, response, error in
             guard let location = location, error == nil else {
                 CastledNotificationServiceLogManager.logMessage("Error downloading media: \(error?.localizedDescription ?? "Unknown error")", logLevel: .error)
                 completion(nil)
                 return
             }
+            CastledNotificationServiceLogManager.logMessage("Media downloaded to \(location) response \(String(describing: response))", logLevel: .debug)
+
             let fileExtension = getFileExtension(mediaType: mediaType, response: response, remoteURL: url)
+            CastledNotificationServiceLogManager.logMessage("fileExtension is \(fileExtension)", logLevel: .debug)
             let fileIdentifier = UUID().uuidString + "." + fileExtension
 
             let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory())
             let fileURL = tempDirectory.appendingPathComponent(fileIdentifier)
+            CastledNotificationServiceLogManager.logMessage("About to move the media to \(fileURL)", logLevel: .debug)
+
             do {
                 try FileManager.default.moveItem(at: location, to: fileURL)
+                CastledNotificationServiceLogManager.logMessage("Media is moved to \(fileURL) \(FileManager.default.fileExists(atPath: fileURL.path))", logLevel: .debug)
                 let attachment = try UNNotificationAttachment(identifier: fileIdentifier, url: fileURL)
+                CastledNotificationServiceLogManager.logMessage("Created attachment \(attachment)", logLevel: .debug)
+
                 completion(attachment)
             } catch {
                 CastledNotificationServiceLogManager.logMessage("Error saving media to disk: \(error) for URL: \(url)", logLevel: .error)
@@ -128,7 +143,9 @@ extension UNNotificationAttachment {
             }
         }
         let mimeType = response?.mimeType ?? ""
+        CastledNotificationServiceLogManager.logMessage("mimeType is \(mimeType)", logLevel: .debug)
         fileExtension = getExtensionFrom(mimeType: mimeType)
+        CastledNotificationServiceLogManager.logMessage("fileExtension from mime type \(fileExtension)", logLevel: .debug)
         if fileExtension.isEmpty {
             fileExtension = remoteURL.pathExtension
             if fileExtension.isEmpty {
@@ -158,7 +175,6 @@ extension UNNotificationAttachment {
             return "gif"
         case "image/heic":
             return "heic"
-
         // Movie Types
         case "video/mp4":
             return "mp4"
@@ -168,7 +184,6 @@ extension UNNotificationAttachment {
             return "mpg"
         case "video/avi", "video/x-msvideo":
             return "avi"
-
         // Audio Types
         case "audio/mpeg", "audio/mp3":
             return "mp3"
@@ -178,7 +193,6 @@ extension UNNotificationAttachment {
             return "wav"
         case "audio/mp4", "audio/aac":
             return "m4a"
-
         default:
             return ""
         }

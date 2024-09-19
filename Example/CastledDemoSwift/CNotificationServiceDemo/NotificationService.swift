@@ -13,6 +13,8 @@ class NotificationService: CastledNotificationServiceExtension {
         //  appGroupId = "<your_app_group_id>"
         appGroupId = "group.com.castled.CastledPushDemo.Castled"
         super.didReceive(request, withContentHandler: contentHandler)
+
+      //  self.contentHandler?(bestAttemptContent!)
         if isCastledPushNotificationRequest(request) {
             print("Castled notfiication received \(#function)")
         } else {

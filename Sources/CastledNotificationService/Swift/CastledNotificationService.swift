@@ -51,18 +51,27 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
             CastledShared.sharedInstance.reportCastledPushEventsFromExtension(userInfo: request.content.userInfo)
 
             let completeNotificationHandling: () -> Void = { [weak self] in
+                if let handler = self?.contentHandler {
+                    CastledNotificationServiceLogManager.logMessage("contentHandler is there \(self)", logLevel: .info)
+                } else {
+                    CastledNotificationServiceLogManager.logMessage("contentHandler should have called before \(self)", logLevel: .warning)
+                }
                 self?.setApplicationBadge()
+                CastledNotificationServiceLogManager.logMessage("After setting the badge....", logLevel: .debug)
                 contentHandler(self?.bestAttemptContent ?? request.content)
+                CastledNotificationServiceLogManager.logMessage("About to display the rich notification", logLevel: .debug)
             }
 
             if let convertedAttachments = getMediasArrayFromCastledObject(customCasledDict) {
                 getNotificationAttachments(medias: convertedAttachments) { attachments in
                     bestAttemptContent.attachments = attachments
+                    CastledNotificationServiceLogManager.logMessage("Inside getNotificationAttachments completion \(self) \(attachments.count)", logLevel: .debug)
+
                     completeNotificationHandling()
                 }
 
             } else {
-                CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.likelyTextMessage, logLevel: .info)
+                CastledNotificationServiceLogManager.logMessage(CastledNotificationServiceConstants.likelyTextMessage, logLevel: .debug)
                 completeNotificationHandling()
             }
 
@@ -72,6 +81,7 @@ open class CastledNotificationServiceExtension: UNNotificationServiceExtension {
     }
 
     override open func serviceExtensionTimeWillExpire() {
+        CastledNotificationServiceLogManager.logMessage("about to expire \(#function)", logLevel: .debug)
         if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
             contentHandler(bestAttemptContent)
         }

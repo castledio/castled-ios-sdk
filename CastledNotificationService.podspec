@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "CastledNotificationService"
-  spec.version      = '4.4.5'
+  spec.version      = '3.6.2'
   spec.summary      = "A Notification Service extension for customizing push notifications in your app."
   spec.description  = <<-DESC
     CastledNotificationService is a framework that provides the functionality to modify and customize
@@ -18,11 +18,11 @@ Pod::Spec.new do |spec|
 
   spec.ios.deployment_target = "13.0"
   spec.swift_version = "5.7"
-  spec.ios.dependency 'Castled', '>= 4.4.5'
+  spec.ios.dependency 'Castled', '4.4.2'
 
   spec.weak_frameworks  = 'UserNotifications'
 
-  spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" }
+  spec.source        = { :git => "https://github.com/castledio/castled-ios-sdk.git", :tag => "#{spec.version}" ,:branch => 'nse_debug_logs'}
   # spec.source_files  = "Castled/**/*.{h,m,swift}"
   spec.source_files = 'Sources/CastledNotificationService/**/*.{h,m,swift}'
   spec.readme = 'README.md'
