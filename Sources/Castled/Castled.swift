@@ -9,11 +9,6 @@ import Foundation
 import UIKit
 import UserNotifications
 
-@objc public protocol CastledNotificationDelegate {
-    @objc optional func notificationClicked(withNotificationType type: CastledNotificationType, buttonAction: CastledButtonAction, userInfo: [AnyHashable: Any])
-    @objc optional func didReceiveCastledRemoteNotification(withInfo userInfo: [AnyHashable: Any])
-}
-
 @objc public class Castled: NSObject {
     @objc public static var sharedInstance = Castled()
     lazy var instanceId = CastledConfigsUtils.appId ?? ""
